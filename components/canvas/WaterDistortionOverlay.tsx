@@ -199,7 +199,7 @@ export default function WaterDistortionOverlay({ sourceRef, containerRef }: Prop
     window.addEventListener('resize', resize, { passive: true });
 
     // ── Animate (GSAP ticker — same RAF loop as Lenis + ScrollTrigger) ────
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer()
     let lastScrollY = -1;
 
     const animate = () => {

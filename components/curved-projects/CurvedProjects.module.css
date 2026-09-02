@@ -1,0 +1,333 @@
+.section {
+    position: relative;
+
+    width: 100%;
+    height: 100svh;
+
+    overflow: hidden;
+
+    background: #000;
+
+    isolation: isolate;
+}
+
+/* ============================================
+   CANVAS
+============================================ */
+
+.canvasWrapper {
+    position: absolute;
+    inset: 0;
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+.canvasWrapper canvas {
+    display: block;
+
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ============================================
+   REAL HTML LAYOUT
+
+   This controls actual card layout.
+   WebGL only mirrors it.
+============================================ */
+
+.domStage {
+    position: absolute;
+    inset: 0;
+
+    z-index: 2;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.domTrack {
+    position: absolute;
+
+    top: 18svh;
+    left: 0;
+
+    display: flex;
+
+    gap: 0.75vw;
+
+    width: max-content;
+
+    will-change: transform;
+
+    pointer-events: none;
+}
+
+.domCard {
+    position: relative;
+
+    flex: 0 0 auto;
+
+    width: clamp(460px,
+            42vw,
+            820px);
+
+    aspect-ratio: 1.55 / 1;
+
+    display: block;
+
+    text-decoration: none;
+
+    color: #fff;
+
+    pointer-events: auto;
+}
+
+/*
+ * Real image exists for accessibility/
+ * fallback, but WebGL renders normal view.
+ */
+.domMedia {
+    position: absolute;
+    inset: 0;
+
+    overflow: hidden;
+
+    border-radius: clamp(14px,
+            1.2vw,
+            24px);
+
+    opacity: 0;
+}
+
+.domMedia img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    user-select: none;
+    pointer-events: none;
+}
+
+/* ============================================
+   DOM UI OVER WEBGL
+
+   Text remains crisp HTML.
+============================================ */
+
+.domUi {
+    position: absolute;
+    inset: 0;
+
+    z-index: 3;
+
+    transform-origin: center;
+
+    pointer-events: none;
+
+    will-change:
+        transform,
+        opacity;
+}
+
+.projectTitle {
+    position: absolute;
+
+    left: 18px;
+    bottom: 16px;
+
+    max-width: calc(100% - 100px);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: clamp(17px,
+            1.12vw,
+            22px);
+
+    font-weight: 400;
+    line-height: 1;
+
+    letter-spacing: -0.045em;
+
+    color: #fff;
+
+    white-space: nowrap;
+}
+
+.projectArrow {
+    position: absolute;
+
+    right: 16px;
+    bottom: 14px;
+
+    display: grid;
+    place-items: center;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background: #050505;
+
+    color: #fff;
+
+    font-size: 15px;
+    line-height: 1;
+
+    transition:
+        transform 400ms cubic-bezier(0.16,
+            1,
+            0.3,
+            1);
+}
+
+.domCard:hover .projectArrow {
+    transform:
+        rotate(45deg);
+}
+
+/* ============================================
+   FOCUS
+============================================ */
+
+.domCard:focus-visible {
+    outline: none;
+}
+
+.domCard:focus-visible .domMedia {
+    opacity: 1;
+}
+
+.domCard:focus-visible::after {
+    content: '';
+
+    position: absolute;
+
+    inset: -4px;
+
+    border:
+        2px solid #fff;
+
+    border-radius: 26px;
+}
+
+/* ============================================
+   SCREEN VIGNETTE
+============================================ */
+
+.vignette {
+    position: absolute;
+    inset: 0;
+
+    z-index: 3;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(180deg,
+            rgba(0, 0, 0, 0.38) 0%,
+            transparent 18%,
+            transparent 78%,
+            rgba(0, 0, 0, 0.16) 100%),
+        linear-gradient(90deg,
+            rgba(0, 0, 0, 0.12),
+            transparent 9%,
+            transparent 91%,
+            rgba(0, 0, 0, 0.12));
+}
+
+/* ============================================
+   TABLET
+============================================ */
+
+@media (max-width: 1100px) {
+    .domTrack {
+        top: 20svh;
+
+        gap: 1.4vw;
+    }
+
+    .domCard {
+        width: 56vw;
+    }
+}
+
+/* ============================================
+   MOBILE
+============================================ */
+
+@media (max-width: 767px) {
+    .domTrack {
+        top: 21svh;
+
+        gap: 3vw;
+    }
+
+    .domCard {
+        width: 78vw;
+
+        aspect-ratio:
+            1.1 / 1;
+    }
+
+    .projectTitle {
+        left: 14px;
+        bottom: 14px;
+
+        font-size: 17px;
+    }
+
+    .projectArrow {
+        right: 13px;
+        bottom: 12px;
+
+        width: 38px;
+        height: 38px;
+    }
+}
+
+/* ============================================
+   REDUCED MOTION
+============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .canvasWrapper {
+        display: none;
+    }
+
+    .section {
+        height: auto;
+
+        padding: 60px 0;
+    }
+
+    .domStage {
+        position: relative;
+
+        overflow-x: auto;
+    }
+
+    .domTrack {
+        position: relative;
+
+        top: auto;
+
+        transform: none !important;
+
+        padding-inline: 20px;
+    }
+
+    .domMedia {
+        opacity: 1;
+    }
+}

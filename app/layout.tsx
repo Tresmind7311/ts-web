@@ -31,14 +31,18 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 // ─── Metadata ─────────────────────────────────────────────────────
-export const metadata: Metadata = {
-  title: {
-    default: 'Tresmind',
-    template: '%s | Tresmind',
-  },
-  description: 'Strategic design, modern development.',
-  themeColor: '#4F3DF5',
-};
+// export const metadata: Metadata = {
+//   title: {
+//     default: 'Tresmind',
+//     template: '%s | Tresmind',
+//   },
+//   description: 'Strategic design, modern development.',
+//   themeColor: '#4F3DF5',
+// };
+export const viewport = {
+  themeColor: '#your-color-here',
+}
+
 
 // ─── Layout ───────────────────────────────────────────────────────
 export default function RootLayout({ children }: { children: React.ReactNode }) {
