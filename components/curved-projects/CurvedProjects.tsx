@@ -2,21 +2,16 @@
 
 import {
     Suspense,
-    useLayoutEffect,
+    useEffect,
+    useMemo,
     useRef,
     type PointerEvent as ReactPointerEvent,
 } from 'react';
 
 import { Canvas } from '@react-three/fiber';
-
-import gsap from 'gsap';
-
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-import * as THREE from 'three';
+import { gsap, ScrollTrigger } from '@/lib/gsap';
 
 import CurvedProjectsScene from './CurvedProjectsScene';
-
 import styles from './CurvedProjects.module.css';
 
 import type {
@@ -26,165 +21,265 @@ import type {
     ScrollState,
 } from './types';
 
-if (typeof window !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-}
-
 interface CurvedProjectsProps {
     projects: Project[];
-    /** Override the "(work)" section label */
+    /** Kept for API compatibility with previous component versions. */
     sectionLabel?: string;
 }
 
+/*
+ * Two real loop cards are allowed to reach the centre after all originals.
+ *
+ * Extra look-ahead cards are rendered only so the right side of the gallery
+ * stays populated while those two loop cards pass through the centre.
+ */
+const LEADING_BUFFER_COUNT = 2;
+const LOOP_CENTER_COUNT = 2;
+const LOOKAHEAD_BUFFER_COUNT = 2;
+const SCROLL_PER_CARD_VH = 1.15;
+
+const clamp01 = (value: number) => Math.min(Math.max(value, 0), 1);
+
 export default function CurvedProjects({
     projects,
-    sectionLabel = '(work)',
 }: CurvedProjectsProps) {
-    const sectionRef = useRef<HTMLElement>(null);
+    const projectCount = projects.length;
 
-    /* Card layout refs */
+    const leadingBufferCount =
+        projectCount > 1
+            ? Math.min(LEADING_BUFFER_COUNT, projectCount)
+            : 0;
+
+    const loopedProjects = useMemo(() => {
+        if (projectCount <= 1) {
+            return projects;
+        }
+
+        const leadingProjects = Array.from(
+            { length: leadingBufferCount },
+            (_, index) => {
+                const sourceIndex =
+                    projectCount - leadingBufferCount + index;
+
+                return projects[sourceIndex];
+            },
+        );
+
+        /*
+         * Render 2 loop cards that will reach centre + 2 look-ahead cards
+         * that never become centre. Look-ahead keeps side-card composition
+         * intact at the end of the pinned sequence.
+         */
+        const trailingProjects = Array.from(
+            {
+                length:
+                    LOOP_CENTER_COUNT
+                    + LOOKAHEAD_BUFFER_COUNT,
+            },
+            (_, index) => projects[index % projectCount],
+        );
+
+        return [
+            ...leadingProjects,
+            ...projects,
+            ...trailingProjects,
+        ];
+    }, [
+        projects,
+        projectCount,
+        leadingBufferCount,
+    ]);
+
+    /*
+     * Example with 5 projects:
+     *
+     * Rendered:
+     * P4 P5 | P1 P2 P3 P4 P5 | P1 P2 | P3 P4
+     *
+     * Centre path:
+     *           P1 P2 P3 P4 P5   P1 P2
+     *
+     * First 2 = left-side buffer.
+     * Last 2 = right-side look-ahead only.
+     */
+    const startIndex = leadingBufferCount;
+
+    const endIndex =
+        projectCount > 1
+            ? startIndex
+                + projectCount
+                + LOOP_CENTER_COUNT
+                - 1
+            : 0;
+
+    const scrollSteps =
+        Math.max(endIndex - startIndex, 0);
+
+    const sectionRef = useRef<HTMLElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
     const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-    const uiRefs = useRef<(HTMLDivElement | null)[]>([]);
     const rectsRef = useRef<RectSnapshot[]>([]);
 
-    /* Scroll / interaction state */
-    const hoverRef = useRef<number[]>(projects.map(() => 0));
     const rippleRef = useRef<RippleState[]>(
-        projects.map(() => ({ x: 0.5, y: 0.5, strength: 0 })),
+        loopedProjects.map(() => ({
+            x: 0.5,
+            y: 0.5,
+            strength: 0,
+        })),
     );
-    const scrollRef = useRef<ScrollState>({ target: 0, current: 0, velocity: 0 });
 
-    /*
-     * Imperative UI refs — updated directly from R3F useFrame,
-     * zero React state updates during animation.
-     */
-    const counterElemRef = useRef<HTMLSpanElement>(null);
-    const dotNavRef = useRef<HTMLDivElement>(null);
-    const dragHintRef = useRef<HTMLDivElement>(null);
-    const progressBarRef = useRef<HTMLDivElement>(null);
-    const sectionHeaderRef = useRef<HTMLDivElement>(null);
+    const scrollRef = useRef<ScrollState>({
+        target: startIndex,
+        current: startIndex,
+        velocity: 0,
+    });
 
-    /*
-     * =========================================
-     * SCROLLTRIGGER  +  SECTION REVEAL
-     * =========================================
-     */
-
-    useLayoutEffect(() => {
+    useEffect(() => {
         const section = sectionRef.current;
 
-        if (!section) {
+        rippleRef.current = loopedProjects.map(
+            (_, index) => rippleRef.current[index] ?? {
+                x: 0.5,
+                y: 0.5,
+                strength: 0,
+            },
+        );
+
+        cardRefs.current.length = loopedProjects.length;
+
+        if (!section || projectCount === 0) {
             return;
         }
 
-        hoverRef.current = projects.map((_, i) => hoverRef.current[i] ?? 0);
-
-        rippleRef.current = projects.map(
-            (_, i) => rippleRef.current[i] ?? { x: 0.5, y: 0.5, strength: 0 },
-        );
+        scrollRef.current.target = startIndex;
+        scrollRef.current.current = startIndex;
+        scrollRef.current.velocity = 0;
 
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             return;
         }
 
-        let refreshFrame = 0;
+        let refreshFrameOne = 0;
+        let refreshFrameTwo = 0;
 
         const context = gsap.context(() => {
-            /*
-             * ── Carousel pin ─────────────────────────────
-             * One card step ≈ 0.9 × viewport height of scroll.
-             */
             ScrollTrigger.create({
                 trigger: section,
-
                 start: 'top top',
 
                 end: () => {
                     const projectDistance =
                         window.innerHeight
-                        * Math.max(projects.length - 1, 1)
-                        * 0.9;
+                        * Math.max(scrollSteps, 1)
+                        * SCROLL_PER_CARD_VH;
 
-                    const minimumDistance = window.innerHeight * 3;
+                    const minimumDistance =
+                        window.innerHeight * 3;
 
-                    return `+=${Math.max(projectDistance, minimumDistance)}`;
+                    return `+=${Math.max(
+                        projectDistance,
+                        minimumDistance,
+                    )}`;
                 },
 
                 pin: true,
                 pinSpacing: true,
                 anticipatePin: 1,
+
+                /*
+                 * AnimationSection above = 30.
+                 * CurvedProjects = 20.
+                 * Testimonials below = 10.
+                 *
+                 * This guarantees refresh order follows document/pin order.
+                 */
+                refreshPriority: 20,
                 invalidateOnRefresh: true,
 
                 onUpdate: (self) => {
                     scrollRef.current.target =
-                        self.progress * Math.max(projects.length - 1, 0);
+                        startIndex
+                        + self.progress * scrollSteps;
 
-                    scrollRef.current.velocity = self.getVelocity();
+                    scrollRef.current.velocity =
+                        self.getVelocity();
                 },
 
-                onLeave: () => { scrollRef.current.velocity = 0; },
-                onLeaveBack: () => { scrollRef.current.velocity = 0; },
-            });
+                /*
+                 * A refresh can happen after fonts/images/layout changes.
+                 * Re-sync the carousel to ScrollTrigger's measured progress so
+                 * the first frame never jumps at section entry or exit.
+                 */
+                onRefresh: (self) => {
+                    const syncedIndex =
+                        startIndex
+                        + self.progress * scrollSteps;
 
-            /*
-             * ── Section reveal ────────────────────────────
-             * Initial states are hidden; animate in as the
-             * section scrolls into view from below.
-             */
-            gsap.set(sectionHeaderRef.current, { opacity: 0, y: -10 });
-            gsap.set(dotNavRef.current, { opacity: 0 });
-            gsap.set(dragHintRef.current, { opacity: 0, y: 8 });
-            gsap.set(progressBarRef.current?.parentElement ?? null, { opacity: 0 });
+                    scrollRef.current.target = syncedIndex;
+                    scrollRef.current.current = syncedIndex;
+                    scrollRef.current.velocity = 0;
+                },
 
-            const revealTl = gsap.timeline({ paused: true });
+                onEnter: (self) => {
+                    const syncedIndex =
+                        startIndex
+                        + self.progress * scrollSteps;
 
-            revealTl
-                .to(sectionHeaderRef.current, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: 'power2.out',
-                })
-                .to(
-                    progressBarRef.current?.parentElement ?? null,
-                    { opacity: 1, duration: 0.6, ease: 'power2.out' },
-                    0.1,
-                )
-                .to(
-                    dotNavRef.current,
-                    { opacity: 1, duration: 0.6, ease: 'power2.out' },
-                    0.2,
-                )
-                .to(
-                    dragHintRef.current,
-                    { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' },
-                    0.3,
-                );
+                    scrollRef.current.target = syncedIndex;
+                    scrollRef.current.current = syncedIndex;
+                },
 
-            ScrollTrigger.create({
-                trigger: section,
-                start: 'top 85%',
-                onEnter: () => revealTl.play(),
-                onLeaveBack: () => revealTl.reverse(),
+                onEnterBack: (self) => {
+                    const syncedIndex =
+                        startIndex
+                        + self.progress * scrollSteps;
+
+                    scrollRef.current.target = syncedIndex;
+                    scrollRef.current.current = syncedIndex;
+                },
+
+                onLeave: () => {
+                    /*
+                     * Force exact final loop card into centre before unpinning.
+                     * Prevents R3F position from lagging behind ScrollTrigger.
+                     */
+                    scrollRef.current.target = endIndex;
+                    scrollRef.current.current = endIndex;
+                    scrollRef.current.velocity = 0;
+                },
+
+                onLeaveBack: () => {
+                    scrollRef.current.target = startIndex;
+                    scrollRef.current.current = startIndex;
+                    scrollRef.current.velocity = 0;
+                },
             });
         }, section);
 
-        refreshFrame = window.requestAnimationFrame(() => {
-            ScrollTrigger.refresh();
+        /*
+         * Wait until sibling passive effects have mounted their ScrollTriggers,
+         * then perform one ordered global refresh. Two rAFs avoids measuring
+         * while React/MUI is still committing the neighbouring sections.
+         */
+        refreshFrameOne = window.requestAnimationFrame(() => {
+            refreshFrameTwo = window.requestAnimationFrame(() => {
+                ScrollTrigger.sort();
+                ScrollTrigger.refresh();
+            });
         });
 
         return () => {
-            window.cancelAnimationFrame(refreshFrame);
+            window.cancelAnimationFrame(refreshFrameOne);
+            window.cancelAnimationFrame(refreshFrameTwo);
             context.revert();
         };
-    }, [projects.length]);
-
-    /*
-     * =========================================
-     * RIPPLE POSITION
-     * =========================================
-     */
+    }, [
+        loopedProjects.length,
+        projectCount,
+        startIndex,
+        endIndex,
+        scrollSteps,
+    ]);
 
     const updateRippleFromPointer = (
         index: number,
@@ -199,37 +294,26 @@ export default function CurvedProjects({
             return;
         }
 
-        const x = THREE.MathUtils.clamp(
+        const x = clamp01(
             (clientX - rect.left) / rect.width,
-            0,
-            1,
         );
 
-        /*
-         * DOM Y: top = 0
-         * WebGL UV: top = 1
-         */
-        const y = THREE.MathUtils.clamp(
+        /* DOM top = 0, WebGL UV top = 1. */
+        const y = clamp01(
             1 - (clientY - rect.top) / rect.height,
-            0,
-            1,
         );
 
-        rippleRef.current[index] = { x, y, strength };
+        rippleRef.current[index] = {
+            x,
+            y,
+            strength,
+        };
     };
-
-    /*
-     * =========================================
-     * POINTER EVENTS
-     * =========================================
-     */
 
     const handlePointerEnter = (
         index: number,
         event: ReactPointerEvent<HTMLAnchorElement>,
     ) => {
-        hoverRef.current[index] = 1;
-
         updateRippleFromPointer(
             index,
             event.currentTarget,
@@ -253,8 +337,6 @@ export default function CurvedProjects({
     };
 
     const handlePointerLeave = (index: number) => {
-        hoverRef.current[index] = 0;
-
         const previous = rippleRef.current[index];
 
         rippleRef.current[index] = {
@@ -264,103 +346,60 @@ export default function CurvedProjects({
         };
     };
 
-    const total = String(projects.length).padStart(2, '0');
-
     return (
         <section
             ref={sectionRef}
             className={styles.section}
             aria-label="Featured projects"
         >
-            {/* ====================================
-                SECTION HEADER
-                (work) label  ·  01 / 08 counter
-            ==================================== */}
-
-            <div
-                ref={sectionHeaderRef}
-                className={styles.sectionHeader}
-                aria-hidden="true"
-            >
-                <span className={styles.sectionLabel}>
-                    {sectionLabel}
-                </span>
-
-                <span
-                    ref={counterElemRef}
-                    className={styles.sectionCounter}
-                >
-                    {/* Populated by DomTrackDriver */}
-                    01 / {total}
-                </span>
-            </div>
-
-            {/* ====================================
-                REAL DOM LAYOUT
-
-                Invisible cards define the responsive
-                layout. WebGL mirrors their rects.
-            ==================================== */}
-
+            {/*
+             * Invisible DOM cards remain layout + interaction source.
+             * R3F mirrors their live positions into WebGL.
+             */}
             <div className={styles.domStage}>
-                <div ref={trackRef} className={styles.domTrack}>
-                    {projects.map((project, index) => (
+                <div
+                    ref={trackRef}
+                    className={styles.domTrack}
+                >
+                    {loopedProjects.map((project, index) => (
                         <a
                             key={`${project.href}-${index}`}
-                            ref={(el) => { cardRefs.current[index] = el; }}
+                            ref={(element) => {
+                                cardRefs.current[index] = element;
+                            }}
                             href={project.href}
                             className={styles.domCard}
                             aria-label={`View ${project.title}`}
-                            onPointerEnter={(e) => handlePointerEnter(index, e)}
-                            onPointerMove={(e) => handlePointerMove(index, e)}
-                            onPointerLeave={() => handlePointerLeave(index)}
-                            onPointerCancel={() => handlePointerLeave(index)}
+                            onPointerEnter={(event) => {
+                                handlePointerEnter(index, event);
+                            }}
+                            onPointerMove={(event) => {
+                                handlePointerMove(index, event);
+                            }}
+                            onPointerLeave={() => {
+                                handlePointerLeave(index);
+                            }}
+                            onPointerCancel={() => {
+                                handlePointerLeave(index);
+                            }}
                         >
-                            {/* Accessibility / reduced-motion fallback */}
                             <div className={styles.domMedia}>
                                 <img
                                     src={project.image}
                                     alt=""
                                     draggable={false}
-                                    loading={index <= 1 ? 'eager' : 'lazy'}
+                                    loading={
+                                        Math.abs(index - startIndex) <= 2
+                                            ? 'eager'
+                                            : 'lazy'
+                                    }
                                     decoding="async"
                                 />
-                            </div>
-
-                            {/*
-                             * Text overlay — crisp HTML rendered above WebGL.
-                             * DomTrackDriver matches its transform to the card's
-                             * perspective projection each frame.
-                             */}
-                            <div
-                                ref={(el) => { uiRefs.current[index] = el; }}
-                                className={styles.domUi}
-                            >
-                                {project.tag && (
-                                    <span className={styles.projectTag}>
-                                        {project.tag}
-                                    </span>
-                                )}
-
-                                <span className={styles.projectTitle}>
-                                    {project.title}
-                                </span>
-
-                                <span
-                                    className={styles.projectArrow}
-                                    aria-hidden="true"
-                                >
-                                    ↗
-                                </span>
                             </div>
                         </a>
                     ))}
                 </div>
             </div>
-
-            {/* ====================================
-                WEBGL RENDERING
-            ==================================== */}
 
             <div
                 className={styles.canvasWrapper}
@@ -379,82 +418,28 @@ export default function CurvedProjects({
                         alpha: false,
                         powerPreference: 'high-performance',
                     }}
-                    fallback={
+                    fallback={(
                         <div className={styles.webglFallback}>
                             WebGL unavailable.
                         </div>
-                    }
+                    )}
                 >
-                    <color attach="background" args={['#000000']} />
-
-                    <fog attach="fog" args={['#000000', 14, 48]} />
+                    <color
+                        attach="background"
+                        args={['#ffffff']}
+                    />
 
                     <Suspense fallback={null}>
                         <CurvedProjectsScene
-                            projects={projects}
+                            projects={loopedProjects}
                             cardRefs={cardRefs}
-                            uiRefs={uiRefs}
                             trackRef={trackRef}
                             rectsRef={rectsRef}
                             scrollRef={scrollRef}
-                            hoverRef={hoverRef}
                             rippleRef={rippleRef}
-                            counterElemRef={counterElemRef}
-                            dotNavRef={dotNavRef}
-                            dragHintRef={dragHintRef}
-                            progressBarRef={progressBarRef}
                         />
                     </Suspense>
                 </Canvas>
-            </div>
-
-            {/* ====================================
-                VIGNETTE
-            ==================================== */}
-
-            <div className={styles.vignette} aria-hidden="true" />
-
-            {/* ====================================
-                BOTTOM UI
-            ==================================== */}
-
-            {/* Drag / scroll hint — fades on first card change */}
-            <div
-                ref={dragHintRef}
-                className={styles.dragHint}
-                aria-hidden="true"
-            >
-                <div className={styles.dragHintLine} />
-                <span className={styles.dragHintText}>drag</span>
-                <div className={styles.dragHintLine} />
-            </div>
-
-            {/* Dot indicators (hidden when > 12 projects to avoid crowding) */}
-            {projects.length <= 12 && (
-                <div
-                    ref={dotNavRef}
-                    className={styles.dotNav}
-                    aria-hidden="true"
-                >
-                    {projects.map((_, i) => (
-                        <div
-                            key={i}
-                            className={styles.dot}
-                            style={{
-                                opacity: i === 0 ? 1 : 0.25,
-                                transform: i === 0 ? 'scale(1.5)' : 'scale(1)',
-                            }}
-                        />
-                    ))}
-                </div>
-            )}
-
-            {/* Scroll-progress bar along the bottom edge */}
-            <div className={styles.progressTrack} aria-hidden="true">
-                <div
-                    ref={progressBarRef}
-                    className={styles.progressBar}
-                />
             </div>
         </section>
     );

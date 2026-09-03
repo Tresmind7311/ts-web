@@ -28,7 +28,7 @@ const EXPERIMENTS = [
     image: 'Labsection/black-arch-gate-desert-moon.jpg',
     width: 300,
     height: 390,
-    offsetY: -50,
+    // offsetY: -50,
   },
   {
     id: 2,
@@ -37,7 +37,7 @@ const EXPERIMENTS = [
     image: 'Labsection/girl-skateboard-mini-planet-world.jpg',
     width: 560,
     height: 340,
-    offsetY: 70,
+    // offsetY: 70,
   },
   {
     id: 3,
@@ -46,7 +46,7 @@ const EXPERIMENTS = [
     image: 'Labsection/glowing-rose-in-lightbulb.jpg',
     width: 330,
     height: 410,
-    offsetY: -30,
+    // offsetY: -30,
   },
   {
     id: 4,
@@ -55,7 +55,7 @@ const EXPERIMENTS = [
     image: 'Labsection/glass-globe-pendant-lamp-golden-swirl.jpg',
     width: 520,
     height: 350,
-    offsetY: 40,
+    // offsetY: 40,
   },
   {
     id: 5,
@@ -64,7 +64,7 @@ const EXPERIMENTS = [
     image: 'Labsection/stone-hand-washing-machine-flowers-rocks.jpg',
     width: 320,
     height: 400,
-    offsetY: -60,
+    // offsetY: -60,
   },
   {
     id: 6,
@@ -73,7 +73,7 @@ const EXPERIMENTS = [
     image: 'Labsection/red-cube-clouds-dark-room.jpg',
     width: 520,
     height: 400,
-    offsetY: 40,
+    // offsetY: 40,
   },
   {
     id: 7,
@@ -82,7 +82,7 @@ const EXPERIMENTS = [
     image: 'Labsection/woman-vr-headset-blue-floral.jpg',
     width: 320,
     height: 400,
-    offsetY: -60,
+    // offsetY: -60,
   },
 ];
 

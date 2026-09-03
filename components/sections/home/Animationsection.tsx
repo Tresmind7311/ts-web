@@ -278,8 +278,30 @@ export default function AnimationSection() {
                 end: `+=${scrollLength}`,
                 pinSpacing: true,
                 scrub: SCRUB_LAG,
+
+                /*
+                 * This section is above CurvedProjects and owns the first pin.
+                 * Refresh it first so every section below receives the correct
+                 * pin-spacing offset before its own start/end are measured.
+                 */
+                refreshPriority: 30,
                 invalidateOnRefresh: true,
-                onUpdate: (self) => renderFrame(self.progress * 100),
+
+                onUpdate: (self) => {
+                    renderFrame(self.progress * 100);
+                },
+
+                onRefresh: (self) => {
+                    renderFrame(self.progress * 100);
+                },
+
+                onLeave: () => {
+                    renderFrame(100);
+                },
+
+                onLeaveBack: () => {
+                    renderFrame(0);
+                },
             });
         }, section);
 

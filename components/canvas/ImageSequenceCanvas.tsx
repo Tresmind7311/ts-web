@@ -1,8 +1,7 @@
 'use client';
 import { useRef, useEffect, useCallback } from 'react';
 import { ImageSequenceProps } from '@/types/canvas';
-import { gsap } from '@/lib/gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
+import { gsap, ScrollTrigger } from '@/lib/gsap';
 
 export interface ImageSequenceCanvasProps extends ImageSequenceProps {
     mouseInteraction?: boolean;
@@ -99,8 +98,23 @@ export default function ImageSequenceCanvas({
         loadedRef.current = new Set();
         frames.forEach((src, i) => {
             const img = new Image();
+
+            img.decoding = 'async';
+
+            if (i <= 2) {
+                img.fetchPriority = 'high';
+            }
+
             img.src = src;
-            img.onload = () => loadedRef.current.add(i);
+            img.onload = () => {
+                loadedRef.current.add(i);
+
+                /*
+                 * If this is the frame currently needed,
+                 * allow the next ticker pass to draw it.
+                 */
+                lastFrameIdxRef.current = -1;
+            };
             imagesRef.current[i] = img;
         });
     }, [getFrames]);
@@ -214,7 +228,15 @@ export default function ImageSequenceCanvas({
             // window.scrollY is a cheap cached read — no forced layout.
             const scrolled = window.scrollY - containerTopRef.current;
             const progress = Math.max(0, Math.min(1, scrolled / containerScrollHeightRef.current));
-            const frameIdx = Math.min(frames.length - 1, Math.floor(progress * frames.length));
+            const frameIdx = Math.min(
+                frames.length - 1,
+                Math.max(
+                    0,
+                    Math.round(
+                        progress * (frames.length - 1),
+                    ),
+                ),
+            );
             const img = imagesRef.current[frameIdx];
             if (!img || !loadedRef.current.has(frameIdx)) return;
 

@@ -1,0 +1,197 @@
+.section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 100svh;
+    overflow: hidden;
+    background: #f1f1ef;
+    isolation: isolate;
+
+    /*
+   * Keep vertical page scrolling available.
+   * Desktop pointer drag is handled by section events.
+   */
+    touch-action: pan-y;
+    user-select: none;
+}
+
+.canvasWrapper {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+}
+
+.softVignette {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+
+    background: radial-gradient(circle at 50% 45%,
+            rgba(255, 255, 255, 0) 42%,
+            rgba(255, 255, 255, 0.12) 78%,
+            rgba(255, 255, 255, 0.28) 100%);
+}
+
+@media (max-width: 767px) {
+    .section {
+        min-height: 100svh;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .section {
+        height: 100svh;
+    }
+}
+
+/* ─────────────────────────────────────────────
+   Earth location labels
+   Html anchors live inside the rotating Earth group,
+   so their screen position follows the 3D globe.
+   ───────────────────────────────────────────── */
+
+.earthLabelHtml {
+    pointer-events: none !important;
+}
+
+.earthLabel {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    width: max-content;
+    min-width: 150px;
+    color: #1f3130;
+    font-family: inherit;
+    line-height: 1.25;
+    opacity: 0;
+    visibility: hidden;
+    will-change: opacity;
+}
+
+.earthLabelContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 7px 9px;
+    border-radius: 2px;
+    background: rgba(241, 241, 239, 0.78);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: 0 1px 8px rgba(17, 54, 52, 0.05);
+    white-space: nowrap;
+}
+
+.earthLabelContent strong {
+    margin: 0 0 2px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.earthLabelContent span {
+    display: block;
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.82;
+}
+
+.earthLabelMarker {
+    position: absolute;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    border: 1px solid rgba(39, 91, 88, 0.9);
+    border-radius: 50%;
+    background: #f1f1ef;
+    transform: translateY(-50%);
+}
+
+.earthLabel::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 26px;
+    height: 1px;
+    background: rgba(39, 91, 88, 0.52);
+}
+
+.earthLabelLeft {
+    transform: translate(-118%, -45%);
+}
+
+.earthLabelLeft .earthLabelMarker {
+    right: -35px;
+}
+
+.earthLabelLeft::before {
+    right: -30px;
+}
+
+.earthLabelRight {
+    transform: translate(18%, -45%);
+}
+
+.earthLabelRight .earthLabelMarker {
+    left: -35px;
+}
+
+.earthLabelRight::before {
+    left: -30px;
+}
+
+@media (max-width: 767px) {
+    .earthLabel {
+        min-width: 126px;
+    }
+
+    .earthLabelContent {
+        padding: 6px 7px;
+    }
+
+    .earthLabelContent strong {
+        font-size: 9px;
+    }
+
+    .earthLabelContent span {
+        font-size: 8px;
+    }
+
+    .earthLabel::before {
+        width: 18px;
+    }
+
+    .earthLabelLeft {
+        transform: translate(-108%, -45%);
+    }
+
+    .earthLabelLeft .earthLabelMarker {
+        right: -27px;
+    }
+
+    .earthLabelLeft::before {
+        right: -22px;
+    }
+
+    .earthLabelRight {
+        transform: translate(8%, -45%);
+    }
+
+    .earthLabelRight .earthLabelMarker {
+        left: -27px;
+    }
+
+    .earthLabelRight::before {
+        left: -22px;
+    }
+}

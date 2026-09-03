@@ -1,109 +1,186 @@
 export const CARD_VERTEX_SHADER = /* glsl */ `
   uniform float uViewportWidth;
-  uniform float uCurveDepth;
-  uniform float uCurveDrop;
-  uniform float uVelocity;
-  uniform float uHover;
-
   uniform float uTime;
-  uniform vec2 uRipplePosition;
-  uniform float uRippleStrength;
+  uniform float uWaveOffset;
+  uniform float uWaveStrength;
   uniform float uPlaneAspect;
+  uniform vec2  uRipplePosition;
+  uniform float uRippleStrength;
 
-  varying vec2 vUv;
-  varying float vShade;
+  varying vec2  vUv;
+  varying float vGalleryDistance;
+  varying float vWave;
+  varying float vSideAmount;
   varying float vRipple;
 
   void main() {
     vUv = uv;
 
-    /*
-     * DOM determines base position and size.
-     * WebGL then deforms same geometry.
-     */
     vec4 worldPosition =
-      modelMatrix *
-      vec4(position, 1.0);
-
-    /*
-     * =====================================
-     * GLOBAL CURVED GALLERY SURFACE
-     * =====================================
-     */
+      modelMatrix * vec4(position, 1.0);
 
     float halfViewport =
-      max(
-        uViewportWidth * 0.5,
-        0.001
+      max(uViewportWidth * 0.5, 0.001);
+
+    float cardCenterX = modelMatrix[3][0];
+    float cardCenterY = modelMatrix[3][1];
+
+    float localX = worldPosition.x - cardCenterX;
+    float localY = worldPosition.y - cardCenterY;
+
+    float normalizedCenter = cardCenterX / halfViewport;
+    float distanceFromCenter = abs(normalizedCenter);
+    float sideSign = normalizedCenter < 0.0 ? -1.0 : 1.0;
+
+    /*
+     * Gallery placement stays separate from local deformation.
+     * This is what keeps centre card readable and side cards small.
+     */
+    float mappedDistance =
+      min(
+        distanceFromCenter *
+        (1.0 + 0.32 * distanceFromCenter),
+        1.90
       );
 
-    float normalizedX =
-      worldPosition.x /
+    float mappedCenterX =
+      sideSign *
+      mappedDistance *
       halfViewport;
 
-    float edge =
-      min(
-        abs(normalizedX),
-        1.4
-      );
+    float galleryDepth =
+      min(distanceFromCenter * 7.0, 11.5);
 
-    float curve =
-      edge * edge;
+    float angleProgress =
+      smoothstep(0.0, 1.28, distanceFromCenter);
 
     /*
-     * Cards recede into background
-     * toward viewport edges.
+     * Important: do not approach 90deg. Previous version did that on far
+     * cards and, combined with per-row rotation, caused folded/torn shapes.
      */
-    worldPosition.z -=
-      curve *
-      uCurveDepth;
+    float galleryAngle =
+      sideSign *
+      1.34 *
+      angleProgress *
+      angleProgress;
+
+    const float PI = 3.14159265359;
+
+    float sideAmount =
+      smoothstep(0.28, 1.15, distanceFromCenter);
+
+    float vertical =
+      (uv.y - 0.5) * 2.0;
 
     /*
-     * Slight downward arc.
+     * =============================================
+     * CONTROLLED SIDE WRING
+     * =============================================
+     *
+     * Do NOT rotate each horizontal row around Y.
+     * That can make geometry self-intersect at steep perspective.
+     *
+     * Instead:
+     * - compress centre waist slightly
+     * - shear top/bottom in opposite X directions
+     * - add only a small Z torsion
+     *
+     * Result: reference-like hourglass/wring without broken triangles.
      */
-    worldPosition.y -=
-      curve *
-      uCurveDrop;
+    float waistProfile =
+      1.0 - pow(abs(vertical), 1.45);
+
+    float waistScale =
+      1.0 -
+      sideAmount *
+      waistProfile *
+      0.24;
+
+    float wringShear =
+      sideSign *
+      vertical *
+      sideAmount *
+      0.11;
+
+    float wrungX =
+      localX * waistScale +
+      wringShear;
+
+    float wrungZ =
+      -localX *
+      vertical *
+      sideSign *
+      sideAmount *
+      0.075;
 
     /*
-     * =====================================
-     * LOCAL CARD CURVATURE
-     * =====================================
+     * =============================================
+     * FLAG WAVE
+     * =============================================
+     * Wave is enabled only for the currently active / centred card.
+     * uWaveStrength is set per card from the JS scene driver. Side cards
+     * remain fully wrung/perspective-deformed but do not flap.
      */
+    float freeEdge =
+      pow(uv.x, 1.25);
 
-    float localX =
-      uv.x * 2.0 - 1.0;
+    float waveAmplitude =
+      0.105 * uWaveStrength;
 
-    worldPosition.z -=
-      localX *
-      localX *
-      0.035;
+    float wave1 =
+      sin(
+        uv.x * 2.75 * PI -
+        uTime * 1.55 +
+        uWaveOffset
+      ) *
+      freeEdge *
+      waveAmplitude;
+
+    float wave2 =
+      sin(
+        uv.x * 5.35 * PI -
+        uTime * 2.18 +
+        uWaveOffset * 1.37
+      ) *
+      freeEdge *
+      waveAmplitude *
+      0.30;
+
+    float verticalWave =
+      sin(
+        uv.y * 2.10 * PI +
+        uv.x * 1.65 -
+        uTime * 1.22 +
+        uWaveOffset * 0.72
+      ) *
+      freeEdge *
+      0.032 * uWaveStrength;
+
+    float totalWave = wave1 + wave2;
+
+    wrungZ += totalWave;
+    localY += verticalWave;
 
     /*
-     * =====================================
-     * SCROLL ELASTICITY
-     * =====================================
+     * Gentle convex centre bow. Keeps centre card from looking dead-flat,
+     * but remains much smaller than failed full-cylinder version.
      */
+    float centreFacing = 1.0 - sideAmount;
 
-    worldPosition.x +=
-      (uv.y - 0.5) *
-      uVelocity *
-      0.05;
+    wrungZ +=
+      sin(uv.x * PI) *
+      sin(uv.y * PI) *
+      0.040 *
+      centreFacing;
 
     /*
-     * =====================================
-     * RIPPLE
-     * =====================================
+     * =============================================
+     * POINTER RIPPLE
+     * =============================================
      */
-
     vec2 rippleDelta =
-      uv -
-      uRipplePosition;
+      uv - uRipplePosition;
 
-    /*
-     * Correct for card aspect ratio so
-     * ripple remains circular.
-     */
     rippleDelta.x *=
       uPlaneAspect;
 
@@ -111,17 +188,12 @@ export const CARD_VERTEX_SHADER = /* glsl */ `
       length(rippleDelta);
 
     float rippleEnvelope =
-      exp(
-        -rippleDistance *
-        6.5
-      );
+      exp(-rippleDistance * 6.5);
 
     float rippleWave =
       sin(
-        rippleDistance *
-        42.0 -
-        uTime *
-        8.0
+        rippleDistance * 42.0 -
+        uTime * 8.0
       );
 
     float ripple =
@@ -129,39 +201,31 @@ export const CARD_VERTEX_SHADER = /* glsl */ `
       rippleEnvelope *
       uRippleStrength;
 
-    /*
-     * Physical mesh displacement.
-     */
-    worldPosition.z +=
-      ripple *
-      0.07;
+    wrungZ += ripple * 0.080;
+    localY += ripple * 0.010;
 
     /*
-     * Very subtle hover pressure.
+     * Card-level gallery Y rotation happens last.
      */
-    worldPosition.z +=
-      sin(
-        uv.x *
-        3.14159265
-      ) *
-      sin(
-        uv.y *
-        3.14159265
-      ) *
-      uHover *
-      0.016;
+    float cosA = cos(galleryAngle);
+    float sinA = sin(galleryAngle);
 
+    float rotatedX =
+      wrungX * cosA +
+      wrungZ * sinA;
+
+    float rotatedZ =
+      -wrungX * sinA +
+      wrungZ * cosA;
+
+    worldPosition.x = mappedCenterX + rotatedX;
+    worldPosition.y = cardCenterY + localY;
+    worldPosition.z = -galleryDepth + rotatedZ;
+
+    vGalleryDistance = distanceFromCenter;
+    vWave = totalWave;
+    vSideAmount = sideAmount;
     vRipple = ripple;
-
-    /*
-     * Used to darken side cards.
-     */
-    vShade =
-      1.0 -
-      min(
-        curve * 0.24,
-        0.36
-      );
 
     gl_Position =
       projectionMatrix *
@@ -171,19 +235,19 @@ export const CARD_VERTEX_SHADER = /* glsl */ `
 `;
 
 export const CARD_FRAGMENT_SHADER = /* glsl */ `
-  uniform sampler2D uTexture;
-
-  uniform float uTextureAspect;
-  uniform float uPlaneAspect;
-
-  uniform float uHover;
-
-  uniform float uTime;
-  uniform vec2 uRipplePosition;
+  /* AFTER */
+uniform sampler2D uTexture;
+uniform float uTextureAspect;
+uniform float uPlaneAspect;
+uniform vec2 uTexelSize;
+uniform float uTime;
+  uniform vec2  uRipplePosition;
   uniform float uRippleStrength;
 
-  varying vec2 vUv;
-  varying float vShade;
+  varying vec2  vUv;
+  varying float vGalleryDistance;
+  varying float vWave;
+  varying float vSideAmount;
   varying float vRipple;
 
   vec2 coverUv(
@@ -191,26 +255,15 @@ export const CARD_FRAGMENT_SHADER = /* glsl */ `
     float planeAspect,
     float textureAspect
   ) {
-    vec2 scale =
-      vec2(1.0);
+    vec2 scale = vec2(1.0);
 
-    if (
-      textureAspect >
-      planeAspect
-    ) {
-      scale.x =
-        planeAspect /
-        textureAspect;
+    if (textureAspect > planeAspect) {
+      scale.x = planeAspect / textureAspect;
     } else {
-      scale.y =
-        textureAspect /
-        planeAspect;
+      scale.y = textureAspect / planeAspect;
     }
 
-    return
-      (uv - 0.5) *
-      scale +
-      0.5;
+    return (uv - 0.5) * scale + 0.5;
   }
 
   float roundedMask(
@@ -218,52 +271,24 @@ export const CARD_FRAGMENT_SHADER = /* glsl */ `
     float aspect,
     float radius
   ) {
-    vec2 p =
-      uv -
-      0.5;
-
+    vec2 p = uv - 0.5;
     p.x *= aspect;
 
-    vec2 halfSize =
-      vec2(
-        aspect * 0.5,
-        0.5
-      );
-
-    vec2 q =
-      abs(p) -
-      halfSize +
-      radius;
+    vec2 halfSize = vec2(aspect * 0.5, 0.5);
+    vec2 q = abs(p) - halfSize + radius;
 
     float sdf =
-      length(
-        max(q, 0.0)
-      ) +
-      min(
-        max(q.x, q.y),
-        0.0
-      ) -
+      length(max(q, 0.0)) +
+      min(max(q.x, q.y), 0.0) -
       radius;
 
-    return
-      1.0 -
-      smoothstep(
-        -0.003,
-        0.003,
-        sdf
-      );
+    return 1.0 - smoothstep(-0.003, 0.003, sdf);
   }
 
   void main() {
-    /*
-     * =====================================
-     * RIPPLE UV DISTORTION
-     * =====================================
-     */
-
+    /* Match vertex ripple for subtle UV distortion. */
     vec2 rippleDelta =
-      vUv -
-      uRipplePosition;
+      vUv - uRipplePosition;
 
     rippleDelta.x *=
       uPlaneAspect;
@@ -272,17 +297,12 @@ export const CARD_FRAGMENT_SHADER = /* glsl */ `
       length(rippleDelta);
 
     float rippleEnvelope =
-      exp(
-        -rippleDistance *
-        6.5
-      );
+      exp(-rippleDistance * 6.5);
 
     float rippleWave =
       sin(
-        rippleDistance *
-        42.0 -
-        uTime *
-        8.0
+        rippleDistance * 42.0 -
+        uTime * 8.0
       );
 
     float ripple =
@@ -292,28 +312,16 @@ export const CARD_FRAGMENT_SHADER = /* glsl */ `
 
     vec2 direction =
       rippleDelta /
-      max(
-        rippleDistance,
-        0.0001
-      );
+      max(rippleDistance, 0.0001);
 
     direction.x /=
-      max(
-        uPlaneAspect,
-        0.0001
-      );
+      max(uPlaneAspect, 0.0001);
 
     vec2 distortedUv =
       vUv +
       direction *
       ripple *
-      0.011;
-
-    /*
-     * =====================================
-     * COVER IMAGE
-     * =====================================
-     */
+      0.010;
 
     vec2 imageUv =
       coverUv(
@@ -322,108 +330,135 @@ export const CARD_FRAGMENT_SHADER = /* glsl */ `
         uTextureAspect
       );
 
-    /*
-     * =====================================
-     * SUBTLE CHROMATIC RIPPLE
-     * =====================================
-     */
-
     vec2 chromaticOffset =
       direction *
       ripple *
-      0.0018;
+      0.0014;
 
     vec2 redUv =
       coverUv(
-        distortedUv +
-        chromaticOffset,
+        distortedUv + chromaticOffset,
         uPlaneAspect,
         uTextureAspect
       );
 
     vec2 blueUv =
       coverUv(
-        distortedUv -
-        chromaticOffset,
+        distortedUv - chromaticOffset,
         uPlaneAspect,
         uTextureAspect
       );
 
-    float red =
-      texture2D(
-        uTexture,
-        redUv
-      ).r;
+    float red = texture2D(uTexture, redUv).r;
+    float green = texture2D(uTexture, imageUv).g;
+    float blue = texture2D(uTexture, blueUv).b;
 
-    float green =
-      texture2D(
-        uTexture,
-        imageUv
-      ).g;
+    vec3 color = vec3(red, green, blue);
 
-    float blue =
-      texture2D(
-        uTexture,
-        blueUv
-      ).b;
-
-    vec3 color =
-      vec3(
-        red,
-        green,
-        blue
-      );
-
-    /*
-     * =====================================
-     * ROUNDED CORNERS
-     * =====================================
-     */
-
+    /* Clearly visible rounded corners on WebGL card itself. */
     float mask =
       roundedMask(
         vUv,
         uPlaneAspect,
-        0.04
+        0.034
       );
 
     if (mask < 0.5) {
       discard;
     }
 
-    /*
-     * Side cards become slightly darker.
-     */
-    color *=
-      mix(
-        0.68,
-        1.0,
-        vShade
-      );
-
-    /*
-     * Hover brightness.
-     */
+    /* Cloth-light response from flag wave. */
     color *=
       1.0 +
-      uHover *
-      0.04;
+      vWave *
+      mix(0.18, 0.12, vSideAmount);
 
-    /*
-     * Small light response on ripple peaks.
-     */
     color +=
-      max(
-        vRipple,
-        0.0
-      ) *
-      0.022;
+      max(vRipple, 0.0) *
+      0.020;
 
-    gl_FragColor =
-      vec4(
-        color,
-        1.0
-      );
+    /* AFTER */
+/*
+ * Side-card blur.
+ * Center stays sharp.
+ * Blur increases with distance from center.
+ */
+float blurStrength =
+  smoothstep(
+    0.35,
+    1.65,
+    vGalleryDistance
+  );
+
+float blurRadius =
+  blurStrength * 7.0;
+
+vec2 blurStep =
+  uTexelSize *
+  blurRadius;
+
+vec3 blurredColor =
+  texture2D(
+    uTexture,
+    imageUv
+  ).rgb * 0.227027;
+
+blurredColor +=
+  texture2D(
+    uTexture,
+    imageUv + vec2(blurStep.x, 0.0)
+  ).rgb * 0.1945946;
+
+blurredColor +=
+  texture2D(
+    uTexture,
+    imageUv - vec2(blurStep.x, 0.0)
+  ).rgb * 0.1945946;
+
+blurredColor +=
+  texture2D(
+    uTexture,
+    imageUv + vec2(0.0, blurStep.y)
+  ).rgb * 0.1216216;
+
+blurredColor +=
+  texture2D(
+    uTexture,
+    imageUv - vec2(0.0, blurStep.y)
+  ).rgb * 0.1216216;
+
+blurredColor +=
+  texture2D(
+    uTexture,
+    imageUv + blurStep
+  ).rgb * 0.035135;
+
+blurredColor +=
+  texture2D(
+    uTexture,
+    imageUv - blurStep
+  ).rgb * 0.035135;
+
+blurredColor +=
+  texture2D(
+    uTexture,
+    imageUv + vec2(blurStep.x, -blurStep.y)
+  ).rgb * 0.035135;
+
+blurredColor +=
+  texture2D(
+    uTexture,
+    imageUv + vec2(-blurStep.x, blurStep.y)
+  ).rgb * 0.035135;
+
+color =
+  mix(
+    color,
+    blurredColor,
+    blurStrength
+  );
+
+    gl_FragColor = vec4(color, 1.0);
 
     #include <colorspace_fragment>
   }
@@ -437,13 +472,8 @@ export const GRID_VERTEX_SHADER = /* glsl */ `
 
   void main() {
     vec4 worldPosition =
-      modelMatrix *
-      vec4(position, 1.0);
+      modelMatrix * vec4(position, 1.0);
 
-    /*
-     * Slight horizontal wrapping
-     * so floor also feels curved.
-     */
     float normalizedX =
       clamp(
         worldPosition.x / 30.0,
@@ -452,22 +482,16 @@ export const GRID_VERTEX_SHADER = /* glsl */ `
       );
 
     float curve =
-      normalizedX *
-      normalizedX;
+      normalizedX * normalizedX;
 
     worldPosition.y -=
-      curve *
-      uCurveStrength;
+      curve * uCurveStrength;
 
     worldPosition.z -=
-      curve *
-      2.0;
+      curve * 1.75;
 
-    vDepth =
-      -worldPosition.z;
-
-    vEdge =
-      abs(normalizedX);
+    vDepth = -worldPosition.z;
+    vEdge = abs(normalizedX);
 
     gl_Position =
       projectionMatrix *
@@ -485,7 +509,7 @@ export const GRID_FRAGMENT_SHADER = /* glsl */ `
       1.0 -
       smoothstep(
         8.0,
-        44.0,
+        42.0,
         vDepth
       );
 
@@ -498,13 +522,13 @@ export const GRID_FRAGMENT_SHADER = /* glsl */ `
       );
 
     float alpha =
-      0.32 *
+      0.20 *
       depthFade *
       edgeFade;
 
     gl_FragColor =
       vec4(
-        vec3(0.34),
+        vec3(0.52),
         alpha
       );
 
