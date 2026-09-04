@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { styled } from '@mui/material/styles';
-import gsap from '@/lib/gsap';
+import { gsap } from '@/lib/gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import FrameCanvas, { type FrameCanvasHandle } from '@/components/canvas/FrameCanvas';
 
