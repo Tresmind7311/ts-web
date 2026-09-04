@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { styled, alpha, keyframes } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ImageSequenceCanvas from '@/components/canvas/ImageSequenceCanvas';
@@ -20,10 +20,24 @@ const DESKTOP_FRAMES = generateFrameUrls(
 
 const SCROLL_HEIGHT = '300vh';
 
-// ─── Text transition ──────────────────────────────────────────────
-// Number of final frames over which the text color shifts white → dark.
-// Raise for a longer fade, lower for a snappier one.
-const TEXT_TRANSITION_FRAMES = 80;
+// ═══════════════════════════════════════════════════════════════════
+// Entrance animation
+// Elements stagger in on mount. `both` fill-mode means they start
+// from the `from` state even before the delay fires.
+// ═══════════════════════════════════════════════════════════════════
+
+const fadeSlideIn = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(22px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
+
+const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
 
 // ═══════════════════════════════════════════════════════════════════
 // Styled components
@@ -56,21 +70,12 @@ const ContentOverlay = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     padding: '0 20px',
-    pointerEvents: 'none',
+    pointerEvents: 'auto',
     maxWidth: '1280px',
     margin: 'auto',
-    // ── Reveal-on-final-frame ──────────────────────────────────────
-    // Hidden by default; JS flips opacity to 1 only once the canvas
-    // sequence reaches its last frame, and back to 0 the moment the
-    // user scrolls back out of that final-frame state.
-    opacity: 0,
-    transition: 'opacity 600ms cubic-bezier(0.16,1,0.3,1)',
-    // [theme.breakpoints.up('md')]: {
-    //     padding: '0 64px',
-    // },
-    // [theme.breakpoints.up('lg')]: {
-    //     padding: '0 96px',
-    // },
+    // Visible from the start. JS only sets this to 0 at the end trigger.
+    opacity: 1,
+    transition: `opacity 600ms ${EASE}`,
 }));
 
 const Eyebrow = styled(Typography)({
@@ -81,6 +86,8 @@ const Eyebrow = styled(Typography)({
     textTransform: 'uppercase',
     color: tokens.color.uv300,
     marginBottom: '24px',
+    // First element in — appears almost immediately
+    animation: `${fadeSlideIn} 0.8s ${EASE} 0.05s both`,
 });
 
 const Headline = styled(Typography)(({ theme }) => ({
@@ -89,10 +96,9 @@ const Headline = styled(Typography)(({ theme }) => ({
     fontSize: 'clamp(44px, 7vw, 96px)',
     lineHeight: 0.95,
     letterSpacing: '-0.04em',
-    // CSS var set by scroll handler; falls back to white when not yet set
-    color: `var(--hero-headline-color, ${tokens.color.neutral0})`,
+    color: tokens.color.neutral0,
     marginBottom: '28px',
-    transition: 'none', // JS drives this — no CSS transition lag
+    animation: `${fadeSlideIn} 0.9s ${EASE} 0.22s both`,
     [theme.breakpoints.down('md')]: {
         marginBottom: '20px',
     },
@@ -103,11 +109,10 @@ const SubCopy = styled(Typography)(({ theme }) => ({
     fontWeight: 400,
     fontSize: 'clamp(15px, 1.4vw, 18px)',
     lineHeight: 1.65,
-    // CSS var set by scroll handler; falls back to semi-white when not yet set
-    color: `var(--hero-sub-color, ${alpha(tokens.color.neutral0, 0.6)})`,
+    color: alpha(tokens.color.neutral0, 0.6),
     maxWidth: '380px',
     marginBottom: '40px',
-    transition: 'none',
+    animation: `${fadeSlideIn} 0.8s ${EASE} 0.42s both`,
     [theme.breakpoints.down('md')]: {
         marginBottom: '28px',
     },
@@ -128,28 +133,15 @@ const CtaButton = styled('a')({
     maxWidth: '250px',
     textAlign: 'center',
     pointerEvents: 'all',
+    animation: `${fadeSlideIn} 0.8s ${EASE} 0.62s both`,
     transition: `transform ${tokens.motion.base} ${tokens.motion.ease},
-                     box-shadow ${tokens.motion.base} ${tokens.motion.ease}`,
+                 box-shadow ${tokens.motion.base} ${tokens.motion.ease}`,
     '&:hover': {
         transform: 'translateY(-2px)',
         boxShadow: `0 12px 32px ${alpha(tokens.color.ink900, 0.5)}`,
     },
     '&:active': { transform: 'translateY(0)' },
 });
-
-// ═══════════════════════════════════════════════════════════════════
-// Helpers
-// ═══════════════════════════════════════════════════════════════════
-
-// Linear interpolation between two numbers
-const lerp = (a: number, b: number, t: number) => Math.round(a + (b - a) * t);
-
-// ink900 = #12121A = rgb(18, 18, 26)
-const INK: [number, number, number] = [18, 18, 26];
-// neutral0 = #FFFFFF = rgb(255, 255, 255)
-const WHITE: [number, number, number] = [255, 255, 255];
-// neutral600 = #6B6B75 = rgb(107, 107, 117)
-const SLATE: [number, number, number] = [107, 107, 117];
 
 // ═══════════════════════════════════════════════════════════════════
 // Component
@@ -160,8 +152,6 @@ export default function HeroSection() {
     const frameRef = useRef<HTMLDivElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
 
-    // Tracks the last dispatched "final frame reached" state so we only
-    // fire the navbar event on actual transitions, not every scroll tick.
     const heroCompleteRef = useRef(false);
 
     useEffect(() => {
@@ -172,58 +162,48 @@ export default function HeroSection() {
 
         const onScroll = () => {
             const rect = container.getBoundingClientRect();
-            const scrollable = container.offsetHeight - window.innerHeight;
+            const scrollable =
+                container.offsetHeight - window.innerHeight;
 
             // ── 1. Sticky-via-fixed visibility ────────────────────
             const past = rect.bottom <= 0;
             frame.style.visibility = past ? 'hidden' : 'visible';
             frame.style.pointerEvents = past ? 'none' : '';
 
-            // ── 2. Text color transition ──────────────────────────
-            // t = 0 → white text (normal)
-            // t = 1 → dark text (last frame reached)
             if (scrollable <= 0) return;
-            const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
-            const frameF = progress * (FRAME_COUNT - 1);
-            const tStart = FRAME_COUNT - 1 - TEXT_TRANSITION_FRAMES;
-            const t = Math.max(0, Math.min(1,
-                (frameF - tStart) / TEXT_TRANSITION_FRAMES
-            ));
 
-            // Headline: white → ink900
-            overlay.style.setProperty('--hero-headline-color',
-                `rgb(${lerp(WHITE[0], INK[0], t)},${lerp(WHITE[1], INK[1], t)},${lerp(WHITE[2], INK[2], t)})`
+            const progress = Math.max(
+                0,
+                Math.min(1, -rect.top / scrollable),
             );
 
-            // SubCopy: rgba(255,255,255,0.6) → neutral600
-            // Lerp both RGB and alpha together for a natural fade
-            overlay.style.setProperty('--hero-sub-color',
-                `rgba(${lerp(WHITE[0], SLATE[0], t)},${lerp(WHITE[1], SLATE[1], t)},${lerp(WHITE[2], SLATE[2], t)},${(0.6 + 0.4 * t).toFixed(3)})`
-            );
-
-            // ── 3. Reveal Hero content only on the final frame ────
-            // 0.999 instead of 1 to absorb sub-pixel float rounding —
-            // without it, the reveal can flicker right at the boundary.
+            // ── 2. Reverse trigger ────────────────────────────────
+            // Content is visible from the start (opacity: 1 in CSS).
+            // At the point where it previously appeared, it now hides.
             const isComplete = progress >= 0.999;
 
-            overlay.style.opacity = isComplete ? '1' : '0';
-            overlay.style.pointerEvents = isComplete ? 'auto' : 'none';
+            overlay.style.opacity = isComplete ? '0' : '1';
+            overlay.style.pointerEvents = isComplete
+                ? 'none'
+                : 'auto';
 
-            // ── 4. Notify the navbar — only on actual state change ──
-            // Navbar lives outside this component, so a custom window
-            // event is the least invasive way to reach it without
-            // editing Navbar.tsx directly. See integration snippet.
+            // ── 3. Notify navbar on state change ──────────────────
             if (isComplete !== heroCompleteRef.current) {
                 heroCompleteRef.current = isComplete;
                 window.dispatchEvent(
-                    new CustomEvent('hero-complete-change', { detail: { complete: isComplete } })
+                    new CustomEvent('hero-complete-change', {
+                        detail: { complete: isComplete },
+                    }),
                 );
             }
         };
 
-        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('scroll', onScroll, {
+            passive: true,
+        });
         onScroll();
-        return () => window.removeEventListener('scroll', onScroll);
+        return () =>
+            window.removeEventListener('scroll', onScroll);
     }, []);
 
     return (
@@ -239,11 +219,13 @@ export default function HeroSection() {
                     />
                 </CanvasLayer>
 
-                {/* ── Text overlay ── */}
+                {/* ── Text overlay — visible immediately, exits at trigger ── */}
                 <ContentOverlay ref={overlayRef}>
-                    <Eyebrow component="p">Tresmind Solutions</Eyebrow>
+                    <Eyebrow component={'p' as React.ElementType}>
+                        Tresmind Solutions
+                    </Eyebrow>
 
-                    <Headline component="h1">
+                    <Headline component={'h1' as React.ElementType}>
                         Ideas,<br />refracted.
                     </Headline>
 
