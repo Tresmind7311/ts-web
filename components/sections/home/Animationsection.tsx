@@ -1,220 +1,393 @@
 'use client';
 
-import { useRef, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { tokens } from '@/theme/theme';
 
-// ─── Card data ────────────────────────────────────────────────────
+// ─── Card data ─────────────────────────────────────────────────────
 const REEL_CARDS = [
-    { image: 'UIUX-Design.jpg', number: '01', heading: 'UI/UX Design', description: 'Interfaces shaped around how people actually move.' },
-    { image: 'Brand-Identity.jpg', number: '02', heading: 'Brand Identity', description: 'Systems of type, color, and voice that endure.' },
-    { image: 'Web-Design-and-Dev.jpg', number: '03', heading: 'Web Design & Development', description: 'Sites engineered to feel as good as they look.' },
-    { image: 'Motion-Graphics.jpg', number: '04', heading: 'Motion Graphics', description: 'Movement with intent, never decoration.' },
-    { image: 'Creative-Strategy.jpg', number: '05', heading: 'Creative Strategy', description: 'Decisions grounded in research, not fashion.' },
-    { image: 'Ai.jpg', number: '06', heading: 'AI-Powered Creative', description: 'New tools, applied with editorial judgement.' },
-
-    // { image: '...', number: '07', heading: 'Cinematic Storytelling', description: '...' },
-    // { image: '...', number: '08', heading: 'Commercial Production',  description: '...' },
+    {
+        image: 'UIUX-Design.jpg',
+        number: '01',
+        heading: 'UI/UX Design',
+        description: 'Interfaces shaped around how people actually move.',
+    },
+    {
+        image: 'Brand-Identity.jpg',
+        number: '02',
+        heading: 'Brand Identity',
+        description: 'Systems of type, color, and voice that endure.',
+    },
+    {
+        image: 'Web-Design-and-Dev.jpg',
+        number: '03',
+        heading: 'Web Design & Development',
+        description: 'Sites engineered to feel as good as they look.',
+    },
+    {
+        image: 'Motion-Graphics.jpg',
+        number: '04',
+        heading: 'Motion Graphics',
+        description: 'Movement with intent, never decoration.',
+    },
+    {
+        image: 'Creative-Strategy.jpg',
+        number: '05',
+        heading: 'Creative Strategy',
+        description: 'Decisions grounded in research, not fashion.',
+    },
+    {
+        image: 'Ai.jpg',
+        number: '06',
+        heading: 'AI-Powered Creative',
+        description: 'New tools, applied with editorial judgment.',
+    },
 ];
 
-// const FALLBACK_IMG = '...';
-// const BG_IMG       = '...';
+// ─── Motion config ─────────────────────────────────────────────────
+const SCROLL_PER_STEP = 760;
+const SCRUB_LAG = 0.85;
+const DRAG_SCROLL_MULTIPLIER = 2.8;
 
-// ─── Config ───────────────────────────────────────────────────────
-const ARC_PX = 280;   // parabolic arc depth (px)
-const SCROLL_PER_STEP = 700;   // px of scroll per card step — raise to slow down
-const SCRUB_LAG = 1.2;   // GSAP scrub seconds — higher = floatier
+const DESKTOP_CARD_STEP_X = 940;
+const DESKTOP_CARD_STEP_Y = 105;
+const DESKTOP_CARD_ROTATION_Y = 52;
+const DESKTOP_CARD_DEPTH = 115;
 
-// ═══════════════════════════════════════════════════════════════════
-// Styled components
-// ═══════════════════════════════════════════════════════════════════
+const MOBILE_CARD_STEP_Y = 55;
+const MOBILE_CARD_ROTATION_Y = 34;
+const MOBILE_CARD_DEPTH = 75;
 
-/** Outer trigger element — height is auto; GSAP adds pinSpacing below it */
+// ─── Layout ────────────────────────────────────────────────────────
 const SectionWrapper = styled(Box)({
     position: 'relative',
     width: '100%',
     userSelect: 'none',
 });
 
-/** GSAP pins this to the viewport while the section is active */
 const StickyContent = styled(Box)({
+    position: 'relative',
     width: '100%',
     height: '100vh',
+    minHeight: '100svh',
     overflow: 'hidden',
-    position: 'relative',
     backgroundColor: tokens.color.neutral0,
-    cursor: 'grab',
-    '&:active': { cursor: 'grabbing' },
+    cursor: 'default',
+    touchAction: 'pan-y',
+    isolation: 'isolate',
 });
 
 const GridBackground = styled(Box)({
     position: 'absolute',
-    inset: 0,
+    inset: '-18% -12% -20%',
     zIndex: 0,
-    backgroundImage: [
-        'linear-gradient(to right,  rgba(0,0,0,0.05) 1px, transparent 1px)',
-        'linear-gradient(to bottom, rgba(2,2,2,0.05) 1px, transparent 1px)',
-    ].join(', '),
-    backgroundSize: '68px 68px',
-    WebkitMaskImage: 'radial-gradient(ellipse 80% 65% at 50% 0%, #000 55%, transparent 100%)',
-    maskImage: 'radial-gradient(ellipse 80% 65% at 50% 0%, #000 55%, transparent 100%)',
+    overflow: 'hidden',
     pointerEvents: 'none',
+
+    '&::before': {
+        content: '""',
+        position: 'absolute',
+        left: '-10%',
+        right: '-10%',
+        top: '4%',
+        height: '142%',
+        backgroundImage: [
+            'linear-gradient(to right, rgba(43, 57, 57, 0.055) 1px, transparent 1px)',
+            'linear-gradient(to bottom, rgba(43, 57, 57, 0.055) 1px, transparent 1px)',
+        ].join(', '),
+        backgroundSize: '72px 72px',
+        transformOrigin: '50% 0%',
+        transform: 'perspective(760px) rotateX(61deg) scale(1.52)',
+        WebkitMaskImage:
+            'linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%)',
+        maskImage:
+            'linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%)',
+    },
+
+    '&::after': {
+        content: '""',
+        position: 'absolute',
+        inset: 0,
+        background:
+            'radial-gradient(ellipse 70% 72% at 50% 38%, rgba(255,255,255,0) 35%, rgba(255,255,255,0.18) 68%, rgba(255,255,255,0.82) 100%)',
+    },
 });
-
-const SectionInner = styled(Box)(({ theme }) => ({
-    position: 'relative',
-    zIndex: 1,
-    width: '100%',
-    height: '100%',
-    overflow: 'visible',
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '100px 15px 60px',
-    [theme.breakpoints.up('md')]: { padding: '120px 15px 60px' },
-}));
-
-const HeaderBox = styled(Box)({
-    position: 'relative',
-    zIndex: 50,
-    marginBottom: '20px',
-    textAlign: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-});
-
-// const SectionTitle = styled(Typography)(({ theme }) => ({
-//     color: tokens.color.ink900, fontFamily: 'var(--font-display)', fontWeight: 700,
-//     letterSpacing: '2px', textTransform: 'uppercase', lineHeight: 1, margin: 0,
-//     fontSize: '60px',
-//     [theme.breakpoints.up('md')]: { fontSize: '100px' },
-// }));
-// const TitleUnderline = styled(Box)(() => ({
-//     width: 90, height: 2, background: tokens.color.ink900, marginTop: '8px', marginBottom: '15px',
-// }));
-// const SectionSubtitle = styled(Typography)(({ theme }) => ({
-//     color: alpha(tokens.color.neutral700, 0.9), fontFamily: 'var(--font-body)', fontWeight: 500,
-//     maxWidth: 900, lineHeight: 1.4, marginBottom: '20px', textAlign: 'center', fontSize: '15px',
-//     [theme.breakpoints.up('md')]: { fontSize: '24px' },
-// }));
-// const ExploreButton = styled('a')(() => ({
-//     display: 'inline-flex', alignItems: 'center', gap: '10px', background: tokens.color.neutral0,
-//     color: tokens.color.ink900, padding: '12px 28px', fontFamily: 'var(--font-body)', fontWeight: 600,
-//     fontSize: '18px', textTransform: 'uppercase', letterSpacing: '1px', textDecoration: 'none',
-//     borderRadius: tokens.radius.sm,
-//     transition: `transform ${tokens.motion.base} ${tokens.motion.ease}, box-shadow ${tokens.motion.base} ${tokens.motion.ease}`,
-//     '&:hover': { color: tokens.color.ink900, transform: 'translateY(-2px)', boxShadow: `0 10px 24px ${alpha(tokens.color.ink900, 0.45)}` },
-//     '&::after': { content: '""', display: 'inline-block', width: 14, height: 14,
-//         backgroundImage: `url('https://jawadsalimee.com/new-site/wp-content/uploads/2026/07/SVG-Vector.svg')`,
-//         backgroundSize: 'contain', backgroundRepeat: 'no-repeat' },
-// }));
 
 const CarouselScene = styled(Box)(({ theme }) => ({
-    position: 'relative',
-    width: '100%',
-    flex: 1,
-    // overflow: 'hidden',
-    margin: '0 auto',
-    [theme.breakpoints.down('md')]: { height: '420px', flex: 'none' },
+    position: 'absolute',
+    inset: 0,
+    zIndex: 2,
+    perspective: '1400px',
+    perspectiveOrigin: '50% 43%',
+    transformStyle: 'preserve-3d',
+    overflow: 'visible',
+
+    [theme.breakpoints.down('md')]: {
+        perspective: '1000px',
+        perspectiveOrigin: '50% 46%',
+    },
 }));
 
 const CarouselCard = styled(Box)(({ theme }) => ({
     position: 'absolute',
-    top: '50%',
     left: '50%',
-    marginTop: '-112.5px',
-    marginLeft: '-77.5px',
-    width: '155px',
-    height: '225px',
-    // ── Arc transform — driven by --card-active CSS var (set each frame) ──
-    // transformOrigin controls entry direction:
-    //   '100% 100%' = pivot bottom-RIGHT → cards enter from bottom-LEFT (current)
-    //   '0% 100%'   = pivot bottom-LEFT  → cards enter from bottom-RIGHT
-    //   '50% 100%'  = symmetric fan
-    // X translate sign: -800% = spread left, +800% = spread right
-    transform: [
-        'translate(',
-        '  calc(var(--card-active, 0) * -800%),',
-        '  calc(var(--card-active, 0) * 200% + var(--card-arc-y, 0px))',
-        ')',
-        'rotate(calc(var(--card-active, 0) * -50deg))',
-    ].join(' '),
-    transformOrigin: '100% 100%',
-    borderRadius: tokens.radius.lg,
+    top: '58%',
+    width: 'clamp(720px, 54vw, 980px)',
+    height: 'clamp(580px, 82vh, 720px)',
+    borderRadius: '22px',
     overflow: 'hidden',
-    background: tokens.color.neutral0,
     boxSizing: 'border-box',
-    boxShadow: tokens.shadow.md,
-    cursor: 'inherit',
-    willChange: 'transform, opacity',
-    display: 'flex',
-    flexDirection: 'column',
+    background: tokens.color.neutral0,
+    border: `1px solid ${alpha(tokens.color.ink900, 0.10)}`,
+    boxShadow: `0 20px 60px ${alpha(tokens.color.ink900, 0.08)}`,
+    transformOrigin: '50% 50%',
+    transformStyle: 'preserve-3d',
+    backfaceVisibility: 'hidden',
+    willChange: 'transform, opacity, filter',
+    cursor: 'default',
+
     '&.is-active': {
-        border: `3px solid ${tokens.color.ink900}`,
-        boxShadow: `0 24px 64px ${alpha(tokens.color.ink900, 0.18)}, 0 0 0 1px ${alpha(tokens.color.ink900, 0.06)}`,
+        borderColor: alpha(tokens.color.ink900, 0.14),
+        boxShadow: [
+            `0 26px 70px ${alpha(tokens.color.ink900, 0.10)}`,
+            `0 1px 0 ${alpha(tokens.color.ink900, 0.04)}`,
+        ].join(', '),
     },
-    [theme.breakpoints.up('md')]: {
-        marginTop: '-300px',
-        marginLeft: '-150px',
-        width: '700px',
-        height: '600px',
+
+    [theme.breakpoints.down('md')]: {
+        top: '56%',
+        width: 'min(84vw, 520px)',
+        height: 'min(68vh, 500px)',
+        minHeight: '410px',
+        borderRadius: '18px',
     },
 }));
 
 const CardImageWrapper = styled(Box)(({ theme }) => ({
-    flexShrink: 0,
+    height: '50%',
+    margin: '28px 28px 18px',
     overflow: 'hidden',
-    borderRadius: tokens.radius.md,
-    margin: '6px',
-    height: '55%',
-    width: 'calc(100% - 12px)',
-    [theme.breakpoints.up('md')]: {
-        borderRadius: tokens.radius.lg,
-        margin: '12px',
-        height: '58%',
-        width: 'calc(100% - 24px)',
+    borderRadius: '14px',
+    background: alpha(tokens.color.ink900, 0.035),
+
+    [theme.breakpoints.down('md')]: {
+        height: '47%',
+        margin: '18px 18px 14px',
+        borderRadius: '12px',
     },
 }));
 
 const CardImage = styled('img')({
-    width: '100%', height: '100%', objectFit: 'cover',
-    display: 'block', pointerEvents: 'none', userSelect: 'none',
+    display: 'block',
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    pointerEvents: 'none',
+    userSelect: 'none',
 });
 
 const CardContent = styled(Box)(({ theme }) => ({
-    flex: 1, paddingLeft: '10px', paddingRight: '10px',
-    paddingBottom: '10px', paddingTop: '6px',
-    display: 'flex', flexDirection: 'column', gap: '4px',
-    [theme.breakpoints.up('md')]: {
-        paddingLeft: '20px', paddingRight: '20px',
-        paddingBottom: '20px', paddingTop: '10px', gap: '8px',
+    padding: '0 30px 30px',
+    display: 'flex',
+    flexDirection: 'column',
+
+    [theme.breakpoints.down('md')]: {
+        padding: '0 20px 22px',
     },
 }));
 
-const CardMeta = styled(Box)({ display: 'flex', alignItems: 'center', gap: '10px' });
+const CardMeta = styled(Box)({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '18px',
+});
 
 const CardNumber = styled(Typography)(({ theme }) => ({
-    fontFamily: 'var(--font-body)', fontWeight: 500,
-    color: tokens.color.neutral500, flexShrink: 0, fontSize: '10px',
-    [theme.breakpoints.up('md')]: { fontSize: '14px' },
+    flexShrink: 0,
+    margin: 0,
+    color: alpha(tokens.color.ink900, 0.48),
+    fontFamily: 'var(--font-body)',
+    fontSize: '14px',
+    fontWeight: 500,
+    lineHeight: 1,
+
+    [theme.breakpoints.down('md')]: {
+        fontSize: '11px',
+    },
 }));
 
-const CardDivider = styled(Box)({ flex: 1, height: 1, background: tokens.color.borderSubtle });
+const CardDivider = styled(Box)({
+    flex: 1,
+    height: '1px',
+    background: alpha(tokens.color.ink900, 0.14),
+});
 
 const CardHeading = styled(Typography)(({ theme }) => ({
-    fontFamily: 'var(--font-display)', fontWeight: 700, color: tokens.color.ink900,
-    lineHeight: 1.2, letterSpacing: '-0.01em', fontSize: '13px',
-    [theme.breakpoints.up('md')]: { fontSize: '28px' },
+    marginTop: '24px',
+    color: tokens.color.ink900,
+    fontFamily: 'var(--font-display)',
+    fontSize: 'clamp(28px, 2.75vw, 38px)',
+    fontWeight: 700,
+    lineHeight: 1.06,
+    letterSpacing: '-0.025em',
+
+    [theme.breakpoints.down('md')]: {
+        marginTop: '18px',
+        fontSize: 'clamp(24px, 7vw, 32px)',
+    },
 }));
 
 const CardDescription = styled(Typography)(({ theme }) => ({
-    fontFamily: 'var(--font-body)', color: tokens.color.neutral600,
-    lineHeight: 1.5, fontSize: '10px',
-    [theme.breakpoints.up('md')]: { fontSize: '16px' },
+    marginTop: '16px',
+    color: alpha(tokens.color.ink900, 0.58),
+    fontFamily: 'var(--font-body)',
+    fontSize: '17px',
+    fontWeight: 400,
+    lineHeight: 1.45,
+
+    [theme.breakpoints.down('md')]: {
+        marginTop: '12px',
+        fontSize: '14px',
+    },
 }));
+
+const SectionCounter = styled(Box)(({ theme }) => ({
+    position: 'absolute',
+    left: '4.5vw',
+    bottom: '7vh',
+    zIndex: 20,
+    pointerEvents: 'none',
+
+    [theme.breakpoints.down('md')]: {
+        left: '22px',
+        bottom: '72px',
+    },
+}));
+
+const CounterLabel = styled(Typography)({
+    margin: 0,
+    color: alpha(tokens.color.ink900, 0.52),
+    fontFamily: 'var(--font-body)',
+    fontSize: '10px',
+    fontWeight: 500,
+    lineHeight: 1,
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+});
+
+const CounterValue = styled(Box)({
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: '5px',
+    marginTop: '16px',
+    color: tokens.color.ink900,
+    fontFamily: 'var(--font-body)',
+    fontSize: '13px',
+    lineHeight: 1,
+});
+
+const CounterCurrent = styled('span')({
+    fontWeight: 600,
+});
+
+const CounterTotal = styled('span')({
+    color: alpha(tokens.color.ink900, 0.38),
+    fontWeight: 500,
+});
+
+// ─── Helpers ───────────────────────────────────────────────────────
+function clamp(value: number, min: number, max: number) {
+    return Math.min(max, Math.max(min, value));
+}
+
+function smoothstep(edge0: number, edge1: number, value: number) {
+    const t = clamp(
+        (value - edge0) / Math.max(edge1 - edge0, 0.00001),
+        0,
+        1,
+    );
+
+    return t * t * (3 - 2 * t);
+}
+
+function getCardTransform(relative: number, viewportWidth: number) {
+    const isMobile = viewportWidth < 900;
+    const absRelative = Math.abs(relative);
+
+    const stepX = isMobile
+        ? viewportWidth * 0.76
+        : Math.min(DESKTOP_CARD_STEP_X, viewportWidth * 0.50);
+
+    const stepY = isMobile
+        ? MOBILE_CARD_STEP_Y
+        : DESKTOP_CARD_STEP_Y;
+
+    const rotationPerStep = isMobile
+        ? MOBILE_CARD_ROTATION_Y
+        : DESKTOP_CARD_ROTATION_Y;
+
+    const depthPerStep = isMobile
+        ? MOBILE_CARD_DEPTH
+        : DESKTOP_CARD_DEPTH;
+
+    /*
+     * Normal slider movement:
+     * right card -> center -> left card.
+     *
+     * Important: 3D perspective is NOT part of the movement path.
+     * It fades in only as a card approaches a side slot.
+     * This keeps the center handoff flat/clean instead of producing
+     * a circular / 360-carousel transition.
+     */
+    const x = relative * stepX;
+
+    // Reference rises from bottom-left to upper-right.
+    const y = -relative * stepY;
+
+    /*
+     * 0 near center = normal flat slider.
+     * 1 near side position = full 3D side-card treatment.
+     */
+    const side3D = smoothstep(
+        0.12,
+        0.98,
+        absRelative,
+    );
+
+    const direction =
+        relative === 0
+            ? 0
+            : Math.sign(relative);
+
+    const rotateY =
+        direction *
+        rotationPerStep *
+        side3D;
+
+    const z =
+        -depthPerStep *
+        side3D;
+
+    const scale =
+        1 -
+        side3D *
+        (isMobile ? 0.035 : 0.025);
+
+    return {
+        transform: [
+            'translate(-50%, -50%)',
+            `translate3d(${x}px, ${y}px, ${z}px)`,
+            `rotateY(${rotateY}deg)`,
+            `scale(${scale})`,
+        ].join(' '),
+        absRelative,
+        side3D,
+    };
+}
 
 // ═══════════════════════════════════════════════════════════════════
 // Component
@@ -224,53 +397,118 @@ export default function AnimationSection() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const stickyRef = useRef<HTMLDivElement>(null);
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const prevIntRef = useRef(-1);
+    const currentCounterRef = useRef<HTMLSpanElement>(null);
+    const prevActiveRef = useRef(-1);
 
-    // ─── Direct render — no RAF lerp ─────────────────────────────
-    // GSAP scrub provides the easing; calling renderFrame directly
-    // from onUpdate gives one clean update path with no double-lag.
     const renderFrame = useCallback((progress: number) => {
-        const n = REEL_CARDS.length;
-        const floatActive = (progress / 100) * (n - 1);
-        const intActive = Math.round(floatActive);
+        const cardCount = REEL_CARDS.length;
+        const normalizedProgress = clamp(progress, 0, 100) / 100;
+        const floatActive =
+            normalizedProgress * (cardCount - 1);
+
+        const activeIndex = clamp(
+            Math.round(floatActive),
+            0,
+            cardCount - 1,
+        );
+
+        const viewportWidth = window.innerWidth;
 
         cardRefs.current.forEach((card, index) => {
-            if (!card) return;
-            const cardActive = (index - floatActive) / n;
-            const dist = Math.abs(index - floatActive);
-            const zFloat = n - dist;
-            const opacity = Math.max(0, zFloat / n * 3 - 2);
+            if (!card) {
+                return;
+            }
 
-            card.style.zIndex = String(Math.round(zFloat));
+            const relative = index - floatActive;
+            const {
+                transform,
+                absRelative,
+                side3D,
+            } = getCardTransform(
+                relative,
+                viewportWidth,
+            );
+
+            /*
+             * Keep primary three strong.
+             * Cards beyond them can remain faint, but blur/fade quickly
+             * as distance increases. No abrupt visibility switch while
+             * activeIndex changes during scroll.
+             */
+            const distancePastSide =
+                Math.max(0, absRelative - 1);
+
+            const opacity = clamp(
+                1 -
+                side3D * 0.16 -
+                distancePastSide * 0.72,
+                0,
+                1,
+            );
+
+            const blur =
+                side3D * 2.2 +
+                distancePastSide * 3.2;
+
+            const visible =
+                absRelative < 1.95 &&
+                opacity > 0.01;
+
+            card.style.transform = transform;
             card.style.opacity = String(opacity);
-            card.style.setProperty('--card-active', String(cardActive));
-            card.style.setProperty('--card-arc-y', `${cardActive * cardActive * ARC_PX}px`);
+            card.style.filter =
+                `blur(${Math.min(blur, 6)}px)`;
+
+            /*
+             * Closest-to-center card stays visually on top.
+             * Prevents random DOM-order overlap at transition midpoint.
+             */
+            card.style.zIndex = String(
+                1000 -
+                Math.round(absRelative * 100),
+            );
+
+            card.style.visibility =
+                visible ? 'visible' : 'hidden';
+
+            card.style.pointerEvents =
+                absRelative <= 1.08
+                    ? 'auto'
+                    : 'none';
         });
 
-        if (intActive !== prevIntRef.current) {
-            const prev = prevIntRef.current;
-            if (prev >= 0) cardRefs.current[prev]?.classList.remove('is-active');
-            cardRefs.current[intActive]?.classList.add('is-active');
-            prevIntRef.current = intActive;
+        if (activeIndex !== prevActiveRef.current) {
+            const previous = prevActiveRef.current;
+
+            if (previous >= 0) {
+                cardRefs.current[previous]?.classList.remove('is-active');
+            }
+
+            cardRefs.current[activeIndex]?.classList.add('is-active');
+
+            if (currentCounterRef.current) {
+                currentCounterRef.current.textContent =
+                    REEL_CARDS[activeIndex].number;
+            }
+
+            prevActiveRef.current = activeIndex;
         }
     }, []);
 
-    // ─── GSAP + drag setup ────────────────────────────────────────
     useEffect(() => {
         const section = sectionRef.current;
         const sticky = stickyRef.current;
-        if (!section || !sticky) return;
 
-        renderFrame(0); // paint initial state
+        if (!section || !sticky) {
+            return;
+        }
 
-        // Total scroll distance for the section.
-        // GSAP pinSpacing adds this as padding below the pinned element.
-        const scrollLength = SCROLL_PER_STEP * (REEL_CARDS.length - 1);
+        renderFrame(0);
+
+        const scrollLength =
+            SCROLL_PER_STEP * (REEL_CARDS.length - 1);
 
         const ctx = gsap.context(() => {
-            // ── ScrollTrigger pin + progress driver ──────────────
-            // Scroll drives carousel progress. scrub handles easing.
-            // No wheel/scroll event captured — page scrolls freely.
             ScrollTrigger.create({
                 trigger: section,
                 pin: sticky,
@@ -278,36 +516,29 @@ export default function AnimationSection() {
                 end: `+=${scrollLength}`,
                 pinSpacing: true,
                 scrub: SCRUB_LAG,
-
-                /*
-                 * This section is above CurvedProjects and owns the first pin.
-                 * Refresh it first so every section below receives the correct
-                 * pin-spacing offset before its own start/end are measured.
-                 */
                 refreshPriority: 30,
                 invalidateOnRefresh: true,
 
-                onUpdate: (self) => {
+                onUpdate(self) {
                     renderFrame(self.progress * 100);
                 },
 
-                onRefresh: (self) => {
+                onRefresh(self) {
                     renderFrame(self.progress * 100);
                 },
 
-                onLeave: () => {
+                onLeave() {
                     renderFrame(100);
                 },
 
-                onLeaveBack: () => {
+                onLeaveBack() {
                     renderFrame(0);
                 },
             });
         }, section);
 
-        // ── Drag → page scroll ────────────────────────────────────
-        // Horizontal drag on the pinned element converts to vertical
-        // page scroll, which feeds GSAP naturally. No dual event systems.
+        // Horizontal drag translates to the same vertical page scroll that
+        // drives ScrollTrigger. One progress source keeps drag + wheel synced.
         let isDragging = false;
         let lastX = 0;
 
@@ -315,87 +546,164 @@ export default function AnimationSection() {
             isDragging = true;
             lastX = clientX;
         };
-        const onMove = (clientX: number) => {
-            if (!isDragging) return;
-            const dx = clientX - lastX;
-            lastX = clientX;
-            // Drag left (dx < 0) = advance cards = scroll page down (+y)
-            window.scrollBy(0, -dx * 2.8);
-        };
-        const onUp = () => { isDragging = false; };
 
-        const onMouseDown = (e: MouseEvent) => onDown(e.clientX);
-        const onMouseMove = (e: MouseEvent) => onMove(e.clientX);
-        const onTouchStart = (e: TouchEvent) => onDown(e.touches[0].clientX);
-        const onTouchMove = (e: TouchEvent) => onMove(e.touches[0].clientX);
+        const onMove = (clientX: number) => {
+            if (!isDragging) {
+                return;
+            }
+
+            const deltaX = clientX - lastX;
+            lastX = clientX;
+
+            window.scrollBy(
+                0,
+                -deltaX * DRAG_SCROLL_MULTIPLIER,
+            );
+        };
+
+        const onUp = () => {
+            isDragging = false;
+        };
+
+        const onMouseDown = (event: MouseEvent) => {
+            onDown(event.clientX);
+        };
+
+        const onMouseMove = (event: MouseEvent) => {
+            onMove(event.clientX);
+        };
+
+        const onTouchStart = (event: TouchEvent) => {
+            const touch = event.touches[0];
+
+            if (touch) {
+                onDown(touch.clientX);
+            }
+        };
+
+        const onTouchMove = (event: TouchEvent) => {
+            const touch = event.touches[0];
+
+            if (touch) {
+                onMove(touch.clientX);
+            }
+        };
 
         sticky.addEventListener('mousedown', onMouseDown);
-        sticky.addEventListener('touchstart', onTouchStart, { passive: true });
+        sticky.addEventListener('touchstart', onTouchStart, {
+            passive: true,
+        });
+
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onUp);
-        document.addEventListener('touchmove', onTouchMove, { passive: true });
+        document.addEventListener('touchmove', onTouchMove, {
+            passive: true,
+        });
         document.addEventListener('touchend', onUp);
+        window.addEventListener('blur', onUp);
 
         return () => {
             ctx.revert();
+
             sticky.removeEventListener('mousedown', onMouseDown);
             sticky.removeEventListener('touchstart', onTouchStart);
+
             document.removeEventListener('mousemove', onMouseMove);
             document.removeEventListener('mouseup', onUp);
             document.removeEventListener('touchmove', onTouchMove);
             document.removeEventListener('touchend', onUp);
+            window.removeEventListener('blur', onUp);
         };
     }, [renderFrame]);
 
-    // ─── Render ───────────────────────────────────────────────────
-    return (
-        <SectionWrapper ref={sectionRef} id="services">
-            <StickyContent ref={stickyRef}>
+    const scrollToCard = useCallback((index: number) => {
+        const section = sectionRef.current;
 
+        if (!section || REEL_CARDS.length <= 1) {
+            return;
+        }
+
+        const sectionTop =
+            window.scrollY +
+            section.getBoundingClientRect().top;
+
+        const scrollLength =
+            SCROLL_PER_STEP * (REEL_CARDS.length - 1);
+
+        const targetProgress =
+            index / (REEL_CARDS.length - 1);
+
+        window.scrollTo({
+            top: sectionTop + targetProgress * scrollLength,
+            behavior: 'smooth',
+        });
+    }, []);
+
+    return (
+        <SectionWrapper
+            ref={sectionRef}
+            id="services"
+        >
+            <StickyContent ref={stickyRef}>
                 <GridBackground />
 
-                <SectionInner>
-                    <HeaderBox>
-                        {/* <SectionTitle component="h2">ANIMATION</SectionTitle> */}
-                        {/* <TitleUnderline /> */}
-                        {/* <SectionSubtitle>Transforming Visuals Into Engaging Cinematic Stories...</SectionSubtitle> */}
-                        {/* <ExploreButton href="#">EXPLORE MORE</ExploreButton> */}
-                    </HeaderBox>
+                <CarouselScene>
+                    {REEL_CARDS.map((card, index) => (
+                        <CarouselCard
+                            key={card.number}
+                            ref={(element) => {
+                                cardRefs.current[index] = element;
+                            }}
+                            onClick={() => {
+                                scrollToCard(index);
+                            }}
+                        >
+                            <CardImageWrapper>
+                                <CardImage
+                                    src={card.image}
+                                    alt={card.heading}
+                                    draggable={false}
+                                />
+                            </CardImageWrapper>
 
-                    <CarouselScene>
-                        {REEL_CARDS.map((card, i) => (
-                            <CarouselCard
-                                key={i}
-                                ref={el => { cardRefs.current[i] = el; }}
-                                onClick={() => {
-                                    // Click advances via page scroll → GSAP picks it up
-                                    const triggerTop = sectionRef.current?.getBoundingClientRect().top ?? 0;
-                                    const currentScroll = window.scrollY;
-                                    const targetProgress = i / (REEL_CARDS.length - 1);
-                                    const scrollLength = SCROLL_PER_STEP * (REEL_CARDS.length - 1);
-                                    window.scrollTo({
-                                        top: currentScroll + triggerTop + targetProgress * scrollLength,
-                                        behavior: 'smooth',
-                                    });
-                                }}
-                            >
-                                <CardImageWrapper>
-                                    <CardImage src={card.image} alt={card.heading} draggable={false} />
-                                </CardImageWrapper>
+                            <CardContent>
+                                <CardMeta>
+                                    <CardNumber>
+                                        {card.number}
+                                    </CardNumber>
 
-                                <CardContent>
-                                    <CardMeta>
-                                        <CardNumber>{card.number}</CardNumber>
-                                        <CardDivider />
-                                    </CardMeta>
-                                    <CardHeading>{card.heading}</CardHeading>
-                                    <CardDescription>{card.description}</CardDescription>
-                                </CardContent>
-                            </CarouselCard>
-                        ))}
-                    </CarouselScene>
-                </SectionInner>
+                                    <CardDivider />
+                                </CardMeta>
 
+                                <CardHeading>
+                                    {card.heading}
+                                </CardHeading>
+
+                                <CardDescription>
+                                    {card.description}
+                                </CardDescription>
+                            </CardContent>
+                        </CarouselCard>
+                    ))}
+                </CarouselScene>
+
+                <SectionCounter aria-hidden="true">
+                    <CounterLabel>
+                        Services
+                    </CounterLabel>
+
+                    <CounterValue>
+                        <CounterCurrent
+                            ref={currentCounterRef}
+                        >
+                            01
+                        </CounterCurrent>
+
+                        <CounterTotal>
+                            / {String(REEL_CARDS.length).padStart(2, '0')}
+                        </CounterTotal>
+                    </CounterValue>
+                </SectionCounter>
             </StickyContent>
         </SectionWrapper>
     );

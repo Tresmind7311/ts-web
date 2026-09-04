@@ -18,7 +18,8 @@ import type {
     EarthOrbitState,
 } from "./types";
 
-const SCROLL_DISTANCE_VH = 430;
+const ANIMATION_SCROLL_DISTANCE_VH = 430;
+const SECTION_SCROLL_DISTANCE_VH = 500;
 const EARTH_PRELOAD_PROGRESS = 0.72;
 const EARTH_INTERACTION_PROGRESS = 0.90;
 
@@ -109,7 +110,7 @@ export default function DotGlobeSection() {
                         trigger: section,
                         start: "top top",
 
-                        end: `+=${SCROLL_DISTANCE_VH}vh`,
+                        end: `+=${SECTION_SCROLL_DISTANCE_VH}vh`,
 
                         pin: true,
                         pinSpacing: true,
@@ -118,11 +119,21 @@ export default function DotGlobeSection() {
                         refreshPriority: -1,
 
                         onUpdate(self) {
-                            progressRef.current = self.progress;
-                            syncEarthLoading(self.progress);
-                            syncInteractionCursor(self.progress);
+                            const animationProgress = Math.min(
+                                self.progress *
+                                    (SECTION_SCROLL_DISTANCE_VH /
+                                        ANIMATION_SCROLL_DISTANCE_VH),
+                                1,
+                            );
 
-                            if (self.progress < 0.82 && !orbitRef.current.dragging) {
+                            progressRef.current = animationProgress;
+                            syncEarthLoading(animationProgress);
+                            syncInteractionCursor(animationProgress);
+
+                            if (
+                                animationProgress < 0.82 &&
+                                !orbitRef.current.dragging
+                            ) {
                                 orbitRef.current.targetX = 0;
                                 orbitRef.current.targetY = 0;
                             }
@@ -140,9 +151,16 @@ export default function DotGlobeSection() {
                         },
 
                         onEnterBack(self) {
-                            progressRef.current = self.progress;
-                            syncEarthLoading(self.progress);
-                            syncInteractionCursor(self.progress);
+                            const animationProgress = Math.min(
+                                self.progress *
+                                    (SECTION_SCROLL_DISTANCE_VH /
+                                        ANIMATION_SCROLL_DISTANCE_VH),
+                                1,
+                            );
+
+                            progressRef.current = animationProgress;
+                            syncEarthLoading(animationProgress);
+                            syncInteractionCursor(animationProgress);
                         },
 
                         onLeaveBack() {

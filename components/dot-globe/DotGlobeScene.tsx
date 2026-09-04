@@ -113,9 +113,11 @@ export default function DotGlobeScene({
         isMobile ? 2.45 : 3.2,
     );
 
-    const finalOffsetX = isMobile
-        ? 0
-        : viewport.width * 0.185;
+    // const finalOffsetX = isMobile
+    //     ? 0
+    //     : viewport.width * 0.185;
+
+    const finalOffsetX = 0;
 
     const pointAttributes = useMemo(
         () =>
