@@ -1,3 +1,4 @@
+import CurvedProjectsContinuous from "@/components/curved-projects-continuous/CurvedProjectsContinuous";
 import CurvedProjects from "@/components/curved-projects/CurvedProjects";
 import DotGlobeSection from "@/components/dot-globe/DotGlobeSection";
 import ScrollRefreshManager from "@/components/Scrollrefreshmanager ";
@@ -5,6 +6,7 @@ import AnimationSection from "@/components/sections/home/Animationsection";
 import DepthCarouselSection from "@/components/sections/home/DepthCarouselSection";
 import HeroSection from "@/components/sections/home/HeroSection";
 import LabSection from "@/components/sections/home/Labsection";
+import ScrollCarousel from "@/components/sections/home/Scrollcarousel";
 import ServicesOverviewSection from "@/components/sections/home/ServicesOverviewSection";
 import StatsSection from "@/components/sections/home/StatsSection";
 import TechCarouselSection from "@/components/sections/home/TechCarouselSection";
@@ -43,9 +45,24 @@ export default function HomePage() {
   return (
     <main>
       <HeroSection />
-      <AnimationSection />
+      {/* <ScrollCarousel
+        images={[
+          '/placeholder2.jpg',
+          '/placeholder3.jpg',
+          '/placeholder4.jpg',
+          '/placeholder5.jpg',
+          '/placeholder6.jpg',
+        ]}
+        height="56vh"
+        gap={0}
+        radius={10}
+        scrollPerSlide={100}
+      /> */}
       <StatsSection />
-      <CurvedProjects projects={projects} />
+      {/* <CurvedProjects projects={projects} /> */}
+      <CurvedProjectsContinuous
+        projects={projects}
+      />
       {/* <ScrollRefreshManager /> */}
       {/* <DepthCarouselSection /> */}
       {/* <TechCarouselSection /> */}

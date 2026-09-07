@@ -205,7 +205,7 @@ const Branding = styled('div')(({ theme }) => ({
 const AI = styled('span')(({ theme }) => ({
     position: 'absolute',
     left: '57.2%',
-    top: '-0.52em',
+    top: '-0.82em',
     color: tokens.color.ink900,
     fontFamily: 'var(--font-display)',
     fontWeight: 800,
