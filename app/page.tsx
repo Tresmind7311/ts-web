@@ -1,6 +1,7 @@
 import CurvedProjectsContinuous from "@/components/curved-projects-continuous/CurvedProjectsContinuous";
 import CurvedProjects from "@/components/curved-projects/CurvedProjects";
 import DotGlobeLiteSection from "@/components/dot-globe-lite/DotGlobeLiteSection";
+import DotGlobeReferenceSection from "@/components/dot-globe-reference/DotGlobeReferenceSection";
 import DotGlobeSection from "@/components/dot-globe/DotGlobeSection";
 import ScrollRefreshManager from "@/components/Scrollrefreshmanager ";
 import AnimationSection from "@/components/sections/home/Animationsection";
@@ -74,7 +75,8 @@ export default function HomePage() {
       {/* <div id="globe-wrapper">
         <DotGlobeSection />
       </div> */}
-      <DotGlobeLiteSection />
+      {/* <DotGlobeLiteSection /> */}
+      <DotGlobeReferenceSection />
     </main>
   );
 }
