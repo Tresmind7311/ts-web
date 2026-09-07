@@ -5,6 +5,7 @@ import Navbar from '@/components/layout/Navbar';
 import './globals.css';
 import LenisProvider from '@/components/LenisProvider';
 import FooterSection from '@/components/layout/FooterSection';
+import FooterVideoSection from '@/components/layout/FooterVideoSection';
 
 // ─── Fonts ────────────────────────────────────────────────────────
 // Inter — body copy and UI text
@@ -58,7 +59,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <LenisProvider>
           {children}
           </LenisProvider>
-          <FooterSection/>
+          {/* <FooterSection/> */}
+          <FooterVideoSection/>
         </ThemeRegistry>
       </body>
     </html>
