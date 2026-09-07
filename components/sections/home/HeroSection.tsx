@@ -180,7 +180,7 @@ export default function HeroSection() {
             // ── 2. Reverse trigger ────────────────────────────────
             // Content is visible from the start (opacity: 1 in CSS).
             // At the point where it previously appeared, it now hides.
-            const isComplete = progress >= 0.999;
+            const isComplete = progress >= 0.35;
 
             overlay.style.opacity = isComplete ? '0' : '1';
             overlay.style.pointerEvents = isComplete

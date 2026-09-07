@@ -5,6 +5,7 @@ import ScrollRefreshManager from "@/components/Scrollrefreshmanager ";
 import AnimationSection from "@/components/sections/home/Animationsection";
 import HeroSection from "@/components/sections/home/HeroSection";
 import LabSection from "@/components/sections/home/Labsection";
+import NewsSection from "@/components/sections/home/NewsSection";
 import ScrollCarousel from "@/components/sections/home/Scrollcarousel";
 import ServicesOverviewSection from "@/components/sections/home/ServicesOverviewSection";
 import StatsSection from "@/components/sections/home/StatsSection";
@@ -58,7 +59,8 @@ export default function HomePage() {
         radius={10}
         scrollPerSlide={100}
       /> */}
-      <StatsSection />
+      <NewsSection/>
+      {/* <StatsSection /> */}
       <CurvedProjectsContinuous
         projects={projects}
       />
