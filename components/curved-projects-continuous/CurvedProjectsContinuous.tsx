@@ -19,10 +19,10 @@ interface CurvedProjectsContinuousProps {
     sectionLabel?: string;
 }
 
-const LEADING_BUFFER_COUNT = 2;
-const LOOP_CENTER_COUNT = 2;
+const LEADING_BUFFER_COUNT  = 2;
+const LOOP_CENTER_COUNT     = 2;
 const LOOKAHEAD_BUFFER_COUNT = 2;
-const SCROLL_PER_CARD_VH = 1.15;
+const SCROLL_PER_CARD_VH    = 1.15;
 
 const Section = styled('section')({
     position: 'relative',
@@ -165,100 +165,76 @@ export default function CurvedProjectsContinuous({
             : 0;
 
     const loopedProjects = useMemo(() => {
-        if (projectCount <= 1) {
-            return projects;
-        }
+        if (projectCount <= 1) return projects;
 
         const leadingProjects = Array.from(
             { length: leadingBufferCount },
-            (_, index) =>
-                projects[projectCount - leadingBufferCount + index],
+            (_, index) => projects[projectCount - leadingBufferCount + index],
         );
         const trailingProjects = Array.from(
             { length: LOOP_CENTER_COUNT + LOOKAHEAD_BUFFER_COUNT },
             (_, index) => projects[index % projectCount],
         );
-
         return [...leadingProjects, ...projects, ...trailingProjects];
     }, [projects, projectCount, leadingBufferCount]);
 
     const startIndex = leadingBufferCount;
-    const endIndex =
+    const endIndex   =
         projectCount > 1
             ? startIndex + projectCount + LOOP_CENTER_COUNT - 1
             : 0;
     const scrollSteps = Math.max(endIndex - startIndex, 0);
+
     const sectionRef = useRef<HTMLElement>(null);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const trackRef = useRef<HTMLDivElement>(null);
-    const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+    const canvasRef  = useRef<HTMLCanvasElement>(null);
+    const trackRef   = useRef<HTMLDivElement>(null);
+    const cardRefs   = useRef<(HTMLAnchorElement | null)[]>([]);
 
     useEffect(() => {
         const section = sectionRef.current;
-        const canvas = canvasRef.current;
-        const track = trackRef.current;
+        const canvas  = canvasRef.current;
+        const track   = trackRef.current;
         cardRefs.current.length = loopedProjects.length;
 
-        if (!section || !canvas || !track || projectCount === 0) {
-            return;
-        }
-
-        if (
-            window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        ) {
-            return;
-        }
+        if (!section || !canvas || !track || projectCount === 0) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         const renderer = new CurvedProjectsCanvasRenderer({
             canvas,
             track,
-            cards: cardRefs.current,
+            cards:    cardRefs.current,
             projects: loopedProjects,
         });
-        let currentIndex = startIndex;
-        let resizeFrame = 0;
+
+        let currentIndex    = startIndex;
+        let resizeFrame     = 0;
         let refreshFrameOne = 0;
         let refreshFrameTwo = 0;
 
         /*
-         * PERF: ResizeObserver provides contentRect dimensions directly.
-         * Using entry.contentRect avoids the getBoundingClientRect() call
-         * that was previously inside the resize handler — getBoundingClientRect()
-         * forces a synchronous layout flush (reflow) every time it is called.
+         * PERF: resize uses dimensions from ResizeObserver entry.contentRect —
+         * no getBoundingClientRect() (which forces a synchronous layout reflow).
          *
-         * Also removed: renderer.setContent() was called on EVERY resize event.
-         * setContent() triggers loadImages() which iterates all projects to
-         * check/start image loading.  Content does not change on resize; images
-         * are already loaded at this point.  setContent() is only needed when
-         * the actual project list changes, which happens in the outer effect
-         * dependency array and causes the whole effect to re-run anyway.
+         * PERF: renderer.setContent() removed from the resize path.
+         * setContent() triggers loadImages() on every resize even though the
+         * project list never changes during a viewport resize.  Content only
+         * changes when the effect re-runs due to a new loopedProjects value.
          */
         const resize = (width: number, height: number) => {
             renderer.resize(width, height);
             renderer.render(currentIndex);
         };
 
-        /*
-         * Initial size: read once from getBoundingClientRect (acceptable on
-         * mount since the layout should already be stable at this point).
-         */
+        /* One-time initial sizing from getBoundingClientRect (layout is stable at mount). */
         const initialRect = section.getBoundingClientRect();
         resize(initialRect.width, initialRect.height);
 
         const resizeObserver = new ResizeObserver((entries) => {
             const entry = entries[0];
             if (!entry) return;
-
-            /*
-             * Use contentRect from the observer entry — no forced reflow.
-             * Cancel any pending frame so rapid resize events coalesce into
-             * one render pass (same as the original debounce pattern).
-             */
             const { width, height } = entry.contentRect;
             window.cancelAnimationFrame(resizeFrame);
-            resizeFrame = window.requestAnimationFrame(() => {
-                resize(width, height);
-            });
+            resizeFrame = window.requestAnimationFrame(() => resize(width, height));
         });
         resizeObserver.observe(section);
 
@@ -272,11 +248,7 @@ export default function CurvedProjectsContinuous({
                         * Math.max(scrollSteps, 1)
                         * SCROLL_PER_CARD_VH;
                     const minimumDistance = window.innerHeight * 3;
-
-                    return `+=${Math.max(
-                        projectDistance,
-                        minimumDistance,
-                    )}`;
+                    return `+=${Math.max(projectDistance, minimumDistance)}`;
                 },
                 pin: true,
                 pinSpacing: true,
@@ -289,6 +261,7 @@ export default function CurvedProjectsContinuous({
                 },
                 onRefresh: (self) => {
                     currentIndex = startIndex + self.progress * scrollSteps;
+                    /* getBoundingClientRect is acceptable here — onRefresh implies a layout pass already happened */
                     const rect = section.getBoundingClientRect();
                     resize(rect.width, rect.height);
                 },
@@ -337,9 +310,7 @@ export default function CurvedProjectsContinuous({
                     {loopedProjects.map((project, index) => (
                         <DomCard
                             key={`${project.href}-${index}`}
-                            ref={(element) => {
-                                cardRefs.current[index] = element;
-                            }}
+                            ref={(element) => { cardRefs.current[index] = element; }}
                             href={project.href}
                             aria-label={`View ${project.title}`}
                         >
