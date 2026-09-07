@@ -15,6 +15,7 @@ import { tokens } from '@/theme/theme';
 
 /* ============================================
    FRAME CONFIG
+   Reuses the same Stats-section frame sequence.
 ============================================ */
 
 const FRAME_COUNT = 357;
@@ -27,12 +28,9 @@ const DESKTOP_FRAMES = generateFrameUrls(
 );
 
 /*
- * Same structure as HeroSection:
- *
- * - tall normal document section
- * - full-screen fixed visual frame
- * - canvas progress comes from this container
- * - final frame naturally holds for the last viewport
+ * Same tall-scroll + fixed-frame pattern as StatsSection.
+ * 600vh gives ~126vh of virtual scroll per counter stage,
+ * enough for a smooth full-viewport scroll-through.
  */
 const SCROLL_HEIGHT = '600vh';
 
@@ -43,7 +41,7 @@ const STATS = {
 };
 
 /* ============================================
-   HELPERS
+   HELPERS  (identical to StatsSection)
 ============================================ */
 
 const clamp01 = (value: number) =>
@@ -72,9 +70,7 @@ const rangeProgress = (
     }
 
     return smoothstep(
-        (
-            progress - start
-        )
+        (progress - start)
         / (end - start),
     );
 };
@@ -117,6 +113,8 @@ const stageOpacity = (
 
 /* ============================================
    SECTION
+   Background changed to #0F172A → #1E293B
+   gradient per spec.
 ============================================ */
 
 const ScrollContainer = styled(Box)({
@@ -124,18 +122,20 @@ const ScrollContainer = styled(Box)({
     width: '100%',
     height: SCROLL_HEIGHT,
 
+    /*
+     * Gradient visible before FixedFrame activates
+     * and where canvas frames are transparent.
+     */
     background:
-        tokens.color.ink900,
+        'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
 });
 
 /*
  * IMPORTANT:
  *
- * This intentionally follows the same approach
- * as HeroSection instead of position: sticky.
- *
- * JS controls visibility while the tall scroll
- * container is the active section.
+ * Same fixed-frame approach as StatsSection / HeroSection.
+ * JS controls visibility; tall scroll container is the
+ * active section.
  */
 const FixedFrame = styled(Box)({
     position: 'fixed',
@@ -148,8 +148,13 @@ const FixedFrame = styled(Box)({
 
     overflow: 'hidden',
 
+    /*
+     * Gradient background — visible during frame loads
+     * and the initial intro stage before the canvas
+     * fully paints.
+     */
     background:
-        tokens.color.ink900,
+        'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
 
     visibility: 'hidden',
     pointerEvents: 'none',
@@ -158,7 +163,7 @@ const FixedFrame = styled(Box)({
 });
 
 /* ============================================
-   CANVAS
+   CANVAS  (identical to StatsSection)
 ============================================ */
 
 const CanvasLayer = styled(Box)({
@@ -190,7 +195,7 @@ const CanvasShade = styled(Box)({
 });
 
 /* ============================================
-   COMMON STAGE
+   COMMON STAGE  (identical to StatsSection)
 ============================================ */
 
 const Stage = styled(Box)({
@@ -208,7 +213,7 @@ const Stage = styled(Box)({
 });
 
 /* ============================================
-   INTRO
+   INTRO  (identical to StatsSection)
 ============================================ */
 
 const IntroStage = styled(Stage)({
@@ -243,7 +248,7 @@ const DecorLine = styled(Box)({
 });
 
 /* ============================================
-   KEY FACTS
+   KEY FACTS  (identical to StatsSection)
 ============================================ */
 
 const KeyFactsStage = styled(Stage)(
@@ -269,10 +274,22 @@ const KeyFactsInner = styled(Box)({
 });
 
 /* ============================================
-   STATS POSITIONING
+   COUNTER STAGES
+   All three counters are vertically centered so
+   the Y travel (±100vh) is symmetric around the
+   viewport midpoint — true scroll-through effect.
+
+   Horizontal side is controlled by justifyContent:
+     Counter1: left   (flex-start, default)
+     Counter2: right  (flex-end)
+     Counter3: left   (flex-start, default)
+
+   overflow: hidden on FixedFrame clips the large
+   Y translations cleanly.
 ============================================ */
 
-const SatisfactionStage = styled(Stage)(
+/* Counter 1 — LEFT, vertically centered */
+const Counter1Stage = styled(Stage)(
     ({ theme }) => ({
         display: 'flex',
 
@@ -282,50 +299,47 @@ const SatisfactionStage = styled(Stage)(
             'clamp(32px, 9vw, 170px)',
 
         [theme.breakpoints.down('md')]: {
-            alignItems: 'flex-end',
-
-            padding:
-                '0 24px clamp(80px, 13vh, 120px)',
+            padding: '0 24px',
         },
     }),
 );
 
-const ProjectsStage = styled(Stage)(
+/* Counter 2 — RIGHT, vertically centered */
+const Counter2Stage = styled(Stage)(
     ({ theme }) => ({
         display: 'flex',
 
         justifyContent: 'flex-end',
-        alignItems: 'flex-start',
+        alignItems: 'center',
 
-        padding:
-            'clamp(65px, 10vh, 110px) clamp(32px, 9vw, 170px)',
+        paddingRight:
+            'clamp(32px, 9vw, 170px)',
 
         [theme.breakpoints.down('md')]: {
-            padding:
-                '70px 24px 0',
+            justifyContent: 'flex-end',
+            padding: '0 24px',
         },
     }),
 );
 
-const CountriesStage = styled(Stage)(
+/* Counter 3 — LEFT, vertically centered */
+const Counter3Stage = styled(Stage)(
     ({ theme }) => ({
         display: 'flex',
 
-        justifyContent: 'flex-start',
-        alignItems: 'flex-end',
+        alignItems: 'center',
 
-        padding:
-            '0 clamp(32px, 9vw, 170px) clamp(70px, 11vh, 110px)',
+        paddingLeft:
+            'clamp(32px, 9vw, 170px)',
 
         [theme.breakpoints.down('md')]: {
-            padding:
-                '0 24px 70px',
+            padding: '0 24px',
         },
     }),
 );
 
 /* ============================================
-   TYPOGRAPHY
+   TYPOGRAPHY  (identical to StatsSection)
 ============================================ */
 
 const Eyebrow = styled(Typography)({
@@ -443,7 +457,7 @@ const KeyFactsBody = styled(Body)({
 });
 
 /* ============================================
-   STAT TYPOGRAPHY
+   STAT TYPOGRAPHY  (identical to StatsSection)
 ============================================ */
 
 const StatWrap = styled(Box)({
@@ -556,13 +570,13 @@ export default function StatsSection() {
     const keyFactsRef =
         useRef<HTMLDivElement>(null);
 
-    const satisfactionRef =
+    const counter1Ref =
         useRef<HTMLDivElement>(null);
 
-    const projectsRef =
+    const counter2Ref =
         useRef<HTMLDivElement>(null);
 
-    const countriesRef =
+    const counter3Ref =
         useRef<HTMLDivElement>(null);
 
     const satisfactionNumberRef =
@@ -587,61 +601,84 @@ export default function StatsSection() {
         const keyFacts =
             keyFactsRef.current;
 
-        const satisfaction =
-            satisfactionRef.current;
+        const counter1 =
+            counter1Ref.current;
 
-        const projects =
-            projectsRef.current;
+        const counter2 =
+            counter2Ref.current;
 
-        const countries =
-            countriesRef.current;
+        const counter3 =
+            counter3Ref.current;
 
         if (
             !container
             || !frame
             || !intro
             || !keyFacts
-            || !satisfaction
-            || !projects
-            || !countries
+            || !counter1
+            || !counter2
+            || !counter3
         ) {
             return;
         }
 
+        /*
+         * setStage is used for Intro and KeyFacts
+         * which use the same small drift as StatsSection.
+         */
         const setStage = (
-            element:
-                HTMLElement,
-
-            opacity:
-                number,
-
-            y:
-                number,
-
+            element: HTMLElement,
+            opacity: number,
+            y: number,
             scale = 1,
         ) => {
             element.style.opacity =
                 String(
-                    clamp01(
-                        opacity,
-                    ),
+                    clamp01(opacity),
                 );
 
             element.style.transform =
                 `translate3d(0, ${y}px, 0) scale(${scale})`;
         };
 
+        /*
+         * setCounterStage is used for the three scroll-
+         * through counters. Y can be a large positive
+         * (entering from below) or large negative (exiting
+         * above) value — FixedFrame's overflow: hidden clips
+         * it at the viewport boundary automatically.
+         */
+        const setCounterStage = (
+            element: HTMLElement,
+            opacity: number,
+            yPx: number,
+        ) => {
+            element.style.opacity =
+                String(
+                    clamp01(opacity),
+                );
+
+            element.style.transform =
+                `translate3d(0, ${yPx}px, 0)`;
+        };
+
         const renderContent = (
-            progress:
-                number,
+            progress: number,
         ) => {
             const p =
-                clamp01(
-                    progress,
-                );
+                clamp01(progress);
+
+            /*
+             * vhPx is the full viewport height in px.
+             * Counters travel ±vhPx, giving a true
+             * full-screen vertical scroll-through.
+             */
+            const vhPx =
+                window.innerHeight;
 
             /* ----------------------------
                01 INTRO
+               Identical to StatsSection.
             ---------------------------- */
 
             const introOpacity =
@@ -672,6 +709,7 @@ export default function StatsSection() {
 
             /* ----------------------------
                02 KEY FACTS
+               Identical to StatsSection.
             ---------------------------- */
 
             const keyFactsOpacity =
@@ -697,37 +735,62 @@ export default function StatsSection() {
             );
 
             /* ----------------------------
-               03 98%
+               03 COUNTER 1 — LEFT
+               Satisfaction (98%)
+               Window: 0.35 → 0.58
+               Center: 0.465
+
+               Y at entry:  +vhPx (below viewport)
+               Y at center: 0     (viewport center)
+               Y at exit:   -vhPx (above viewport)
+
+               Counter counts from 0 → 98
+               while counter is near center.
             ---------------------------- */
 
-            const satisfactionOpacity =
+            const SAT_ENTRY  = 0.35;
+            const SAT_CENTER = 0.465;
+            const SAT_EXIT   = 0.58;
+
+            const satOpacity =
                 stageOpacity(
                     p,
 
-                    0.35,
-                    0.405,
+                    SAT_ENTRY,
+                    SAT_ENTRY + 0.03,
 
-                    0.52,
-                    0.59,
+                    SAT_EXIT - 0.03,
+                    SAT_EXIT,
                 );
 
-            setStage(
-                satisfaction,
+            const satY =
+                p < SAT_CENTER
+                    ? (
+                        1
+                        - rangeProgress(
+                            p,
+                            SAT_ENTRY,
+                            SAT_CENTER,
+                        )
+                    ) * vhPx
+                    : -rangeProgress(
+                        p,
+                        SAT_CENTER,
+                        SAT_EXIT,
+                    ) * vhPx;
 
-                satisfactionOpacity,
-
-                (
-                    1
-                    - satisfactionOpacity
-                ) * 34,
+            setCounterStage(
+                counter1,
+                satOpacity,
+                satY,
             );
 
-            const satisfactionCounter =
+            const satCounter =
                 rangeProgress(
                     p,
 
-                    0.405,
-                    0.515,
+                    SAT_ENTRY + 0.05,
+                    SAT_CENTER + 0.04,
                 );
 
             if (
@@ -739,43 +802,68 @@ export default function StatsSection() {
                     String(
                         Math.round(
                             STATS.satisfaction
-                            * satisfactionCounter,
+                            * satCounter,
                         ),
                     );
             }
 
             /* ----------------------------
-               04 150+
+               04 COUNTER 2 — RIGHT
+               Projects (150+)
+               Window: 0.55 → 0.78
+               Center: 0.665
 
-               This remains visible through
-               the final countries phase.
+               Overlaps Counter 1 exit by 0.03
+               but they are on opposite sides
+               so no visual collision.
+
+               Y travel identical pattern.
+               Counter counts 0 → 150.
             ---------------------------- */
 
-            const projectsOpacity =
-                rangeProgress(
+            const PROJ_ENTRY  = 0.55;
+            const PROJ_CENTER = 0.665;
+            const PROJ_EXIT   = 0.78;
+
+            const projOpacity =
+                stageOpacity(
                     p,
 
-                    0.56,
-                    0.63,
+                    PROJ_ENTRY,
+                    PROJ_ENTRY + 0.03,
+
+                    PROJ_EXIT - 0.03,
+                    PROJ_EXIT,
                 );
 
-            setStage(
-                projects,
+            const projY =
+                p < PROJ_CENTER
+                    ? (
+                        1
+                        - rangeProgress(
+                            p,
+                            PROJ_ENTRY,
+                            PROJ_CENTER,
+                        )
+                    ) * vhPx
+                    : -rangeProgress(
+                        p,
+                        PROJ_CENTER,
+                        PROJ_EXIT,
+                    ) * vhPx;
 
-                projectsOpacity,
-
-                (
-                    1
-                    - projectsOpacity
-                ) * -34,
+            setCounterStage(
+                counter2,
+                projOpacity,
+                projY,
             );
 
-            const projectsCounter =
+            const projCounter =
                 rangeProgress(
                     p,
 
-                    0.60,
-                    0.71,
+                    PROJ_ENTRY + 0.05,
+                    PROJ_CENTER + 0.04,
                 );
 
             if (
@@ -787,40 +875,65 @@ export default function StatsSection() {
                     String(
                         Math.round(
                             STATS.projects
-                            * projectsCounter,
+                            * projCounter,
                         ),
                     );
             }
 
             /* ----------------------------
-               05 12+
+               05 COUNTER 3 — LEFT
+               Countries (12+)
+               Window: 0.75 → 0.98
+               Center: 0.865
+
+               Last counter exits near end
+               of scroll (0.98).
+               Counter counts 0 → 12.
             ---------------------------- */
 
-            const countriesOpacity =
-                rangeProgress(
+            const CTRY_ENTRY  = 0.75;
+            const CTRY_CENTER = 0.865;
+            const CTRY_EXIT   = 0.98;
+
+            const ctryOpacity =
+                stageOpacity(
                     p,
 
-                    0.74,
-                    0.81,
+                    CTRY_ENTRY,
+                    CTRY_ENTRY + 0.03,
+
+                    CTRY_EXIT - 0.03,
+                    CTRY_EXIT,
                 );
 
-            setStage(
-                countries,
+            const ctryY =
+                p < CTRY_CENTER
+                    ? (
+                        1
+                        - rangeProgress(
+                            p,
+                            CTRY_ENTRY,
+                            CTRY_CENTER,
+                        )
+                    ) * vhPx
+                    : -rangeProgress(
+                        p,
+                        CTRY_CENTER,
+                        CTRY_EXIT,
+                    ) * vhPx;
 
-                countriesOpacity,
-
-                (
-                    1
-                    - countriesOpacity
-                ) * 34,
+            setCounterStage(
+                counter3,
+                ctryOpacity,
+                ctryY,
             );
 
-            const countriesCounter =
+            const ctryCounter =
                 rangeProgress(
                     p,
 
-                    0.78,
-                    0.90,
+                    CTRY_ENTRY + 0.05,
+                    CTRY_CENTER + 0.04,
                 );
 
             if (
@@ -832,7 +945,7 @@ export default function StatsSection() {
                     String(
                         Math.round(
                             STATS.countries
-                            * countriesCounter,
+                            * ctryCounter,
                         ),
                     );
             }
@@ -848,31 +961,13 @@ export default function StatsSection() {
                 - window.innerHeight;
 
             /*
-             * Same fixed-frame idea as HeroSection.
-             *
-             * Because StatsSection lives in the middle
-             * of the page, we also hide it BEFORE its
-             * top reaches the viewport.
+             * Identical visibility logic as StatsSection.
+             * FixedFrame is active only while the section
+             * occupies the scroll position.
              */
             const hasStarted =
                 rect.top <= 0;
 
-            /*
-             * IMPORTANT:
-             *
-             * The next section starts entering the viewport when the
-             * StatsSection bottom reaches the viewport bottom — NOT when
-             * it reaches viewport top.
-             *
-             * Old:
-             *     rect.bottom <= 0
-             *
-             * That kept this position:fixed frame alive for one extra
-             * viewport and caused it to paint over TestimonialsSection.
-             *
-             * Correct exit:
-             *     rect.bottom <= window.innerHeight
-             */
             const hasEnded =
                 rect.bottom <= window.innerHeight;
 
@@ -890,18 +985,13 @@ export default function StatsSection() {
                     ? ''
                     : 'none';
 
-            if (
-                scrollable <= 0
-            ) {
+            if (scrollable <= 0) {
                 return;
             }
 
             /*
-             * Identical source of truth as canvas:
-             *
-             * container top
-             * +
-             * container scrollable distance
+             * Identical progress source of truth as
+             * StatsSection and HeroSection.
              */
             const progress =
                 clamp01(
@@ -909,25 +999,19 @@ export default function StatsSection() {
                     / scrollable,
                 );
 
-            renderContent(
-                progress,
-            );
+            renderContent(progress);
         };
 
         window.addEventListener(
             'scroll',
             onScroll,
-            {
-                passive: true,
-            },
+            { passive: true },
         );
 
         window.addEventListener(
             'resize',
             onScroll,
-            {
-                passive: true,
-            },
+            { passive: true },
         );
 
         onScroll();
@@ -948,13 +1032,17 @@ export default function StatsSection() {
     return (
         <ScrollContainer
             ref={scrollRef}
-            id="studio"
+            id="news"
         >
             <FixedFrame
                 ref={frameRef}
             >
                 {/* =================================
                     FULL SECTION SCROLL CANVAS
+                    Same ImageSequenceCanvas setup
+                    as StatsSection — containerRef
+                    links canvas progress to this
+                    section's scroll container.
                 ================================= */}
 
                 <CanvasLayer>
@@ -979,6 +1067,10 @@ export default function StatsSection() {
 
                 {/* =================================
                     01 INTRO
+                    "One idea, a thousand facets."
+                    Gradient background shows through
+                    FixedFrame behind canvas during
+                    this stage.
                 ================================= */}
 
                 <IntroStage
@@ -1011,6 +1103,8 @@ export default function StatsSection() {
 
                 {/* =================================
                     02 KEY FACTS
+                    Canvas image sequence is visible
+                    and active alongside this stage.
                 ================================= */}
 
                 <KeyFactsStage
@@ -1034,11 +1128,13 @@ export default function StatsSection() {
                 </KeyFactsStage>
 
                 {/* =================================
-                    03 SATISFACTION
+                    03 COUNTER 1 — LEFT
+                    98% Client Satisfaction
+                    Enters from bottom, exits to top.
                 ================================= */}
 
-                <SatisfactionStage
-                    ref={satisfactionRef}
+                <Counter1Stage
+                    ref={counter1Ref}
                 >
                     <StatWrap>
                         <StatNumber>
@@ -1059,14 +1155,17 @@ export default function StatsSection() {
                             Client Satisfaction
                         </StatLabel>
                     </StatWrap>
-                </SatisfactionStage>
+                </Counter1Stage>
 
                 {/* =================================
-                    04 PROJECTS
+                    04 COUNTER 2 — RIGHT
+                    150+ Projects Delivered
+                    Enters from bottom on right,
+                    exits to top.
                 ================================= */}
 
-                <ProjectsStage
-                    ref={projectsRef}
+                <Counter2Stage
+                    ref={counter2Ref}
                 >
                     <StatWrap>
                         <StatNumber>
@@ -1092,14 +1191,16 @@ export default function StatsSection() {
                             Projects Delivered
                         </StatLabel>
                     </StatWrap>
-                </ProjectsStage>
+                </Counter2Stage>
 
                 {/* =================================
-                    05 COUNTRIES
+                    05 COUNTER 3 — LEFT
+                    12+ Countries Served
+                    Enters from bottom, exits to top.
                 ================================= */}
 
-                <CountriesStage
-                    ref={countriesRef}
+                <Counter3Stage
+                    ref={counter3Ref}
                 >
                     <StatWrap>
                         <StatNumber>
@@ -1120,7 +1221,7 @@ export default function StatsSection() {
                             Countries Served
                         </StatLabel>
                     </StatWrap>
-                </CountriesStage>
+                </Counter3Stage>
             </FixedFrame>
         </ScrollContainer>
     );
