@@ -47,7 +47,7 @@ export default function HomePage() {
   return (
     <main>
       <HeroSection />
-      {/* <ScrollCarousel
+      <ScrollCarousel
         images={[
           '/placeholder2.jpg',
           '/placeholder3.jpg',
@@ -59,7 +59,7 @@ export default function HomePage() {
         gap={0}
         radius={10}
         scrollPerSlide={100}
-      /> */}
+      />
       <StatsSection />
       {/* <CurvedProjects projects={projects} /> */}
       <CurvedProjectsContinuous
