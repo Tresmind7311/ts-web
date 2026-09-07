@@ -1,5 +1,6 @@
 import CurvedProjectsContinuous from "@/components/curved-projects-continuous/CurvedProjectsContinuous";
 import CurvedProjects from "@/components/curved-projects/CurvedProjects";
+import DotGlobeLiteSection from "@/components/dot-globe-lite/DotGlobeLiteSection";
 import DotGlobeSection from "@/components/dot-globe/DotGlobeSection";
 import ScrollRefreshManager from "@/components/Scrollrefreshmanager ";
 import AnimationSection from "@/components/sections/home/Animationsection";
@@ -70,9 +71,10 @@ export default function HomePage() {
       <ServicesOverviewSection />
       <TestimonialsSection />
       <LabSection />
-      <div id="globe-wrapper">
+      {/* <div id="globe-wrapper">
         <DotGlobeSection />
-      </div>
+      </div> */}
+      <DotGlobeLiteSection />
     </main>
   );
 }
