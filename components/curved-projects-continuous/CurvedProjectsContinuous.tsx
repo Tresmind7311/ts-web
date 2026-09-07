@@ -220,19 +220,47 @@ export default function CurvedProjectsContinuous({
         let refreshFrameOne = 0;
         let refreshFrameTwo = 0;
 
-        const resize = () => {
-            const rect = section.getBoundingClientRect();
-            renderer.setContent(cardRefs.current, loopedProjects);
-            renderer.resize(rect.width, rect.height);
+        /*
+         * PERF: ResizeObserver provides contentRect dimensions directly.
+         * Using entry.contentRect avoids the getBoundingClientRect() call
+         * that was previously inside the resize handler — getBoundingClientRect()
+         * forces a synchronous layout flush (reflow) every time it is called.
+         *
+         * Also removed: renderer.setContent() was called on EVERY resize event.
+         * setContent() triggers loadImages() which iterates all projects to
+         * check/start image loading.  Content does not change on resize; images
+         * are already loaded at this point.  setContent() is only needed when
+         * the actual project list changes, which happens in the outer effect
+         * dependency array and causes the whole effect to re-run anyway.
+         */
+        const resize = (width: number, height: number) => {
+            renderer.resize(width, height);
             renderer.render(currentIndex);
         };
 
-        const resizeObserver = new ResizeObserver(() => {
+        /*
+         * Initial size: read once from getBoundingClientRect (acceptable on
+         * mount since the layout should already be stable at this point).
+         */
+        const initialRect = section.getBoundingClientRect();
+        resize(initialRect.width, initialRect.height);
+
+        const resizeObserver = new ResizeObserver((entries) => {
+            const entry = entries[0];
+            if (!entry) return;
+
+            /*
+             * Use contentRect from the observer entry — no forced reflow.
+             * Cancel any pending frame so rapid resize events coalesce into
+             * one render pass (same as the original debounce pattern).
+             */
+            const { width, height } = entry.contentRect;
             window.cancelAnimationFrame(resizeFrame);
-            resizeFrame = window.requestAnimationFrame(resize);
+            resizeFrame = window.requestAnimationFrame(() => {
+                resize(width, height);
+            });
         });
         resizeObserver.observe(section);
-        resize();
 
         const context = gsap.context(() => {
             ScrollTrigger.create({
@@ -261,7 +289,8 @@ export default function CurvedProjectsContinuous({
                 },
                 onRefresh: (self) => {
                     currentIndex = startIndex + self.progress * scrollSteps;
-                    resize();
+                    const rect = section.getBoundingClientRect();
+                    resize(rect.width, rect.height);
                 },
                 onEnter: (self) => {
                     currentIndex = startIndex + self.progress * scrollSteps;
