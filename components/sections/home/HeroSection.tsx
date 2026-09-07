@@ -9,10 +9,10 @@ import { generateFrameUrls } from '@/lib/frameUtils';
 import { tokens } from '@/theme/theme';
 
 // ─── Frame configuration ──────────────────────────────────────────
-const FRAME_COUNT = 151;
+const FRAME_COUNT = 120;
 
 const DESKTOP_FRAMES = generateFrameUrls(
-    '/frames/hero/desktop/hero_{n}.webp',
+    '/frames/hero/desktop/hero_d_{n}.webp',
     1,
     FRAME_COUNT,
     5,
