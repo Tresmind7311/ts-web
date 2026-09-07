@@ -12,7 +12,7 @@ import Box from '@mui/material/Box';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { tokens } from '@/theme/theme';
 
-type ServicesOverviewSectionProps = {
+type ServicesOverviewV2SectionProps = {
     exploreHref?: string;
 };
 
@@ -163,8 +163,25 @@ const BrandingGroup = styled(Box)(({ theme }) => ({
             'radial-gradient(circle at var(--hover-x) 54%, #7da4d1 0%, #4d75a4 24%, #2d4b70 41%, #12121a 72%)',
     },
 
+    /*
+     * FIX: AI disappears on hover because
+     * `WebkitTextFillColor: 'transparent'` set on
+     * .branding-main (parent) is an inherited CSS property.
+     * .branding-ai (child span) inherits it, making the
+     * text invisible. `-webkit-text-fill-color` takes
+     * precedence over `color`, so `color: '#365b86'` alone
+     * is not enough to restore visibility.
+     *
+     * Fix: explicitly set `WebkitTextFillColor: '#365b86'`
+     * on .branding-ai during hover to override the
+     * inherited transparent value.
+     *
+     * This is responsive automatically — no breakpoint
+     * changes needed since it is a color property only.
+     */
     '&:hover .branding-ai': {
         color: '#365b86',
+        WebkitTextFillColor: '#365b86',
     },
 
     [theme.breakpoints.down('md')]: {
@@ -428,7 +445,7 @@ function setHoverX(
 
 export default function ServicesOverviewSection({
     exploreHref = '/services',
-}: ServicesOverviewSectionProps) {
+}: ServicesOverviewV2SectionProps) {
     const sectionRef =
         useRef<HTMLElement>(null);
 
@@ -561,6 +578,7 @@ export default function ServicesOverviewSection({
             });
 
             gsap.set(branding, {
+                x: -44,
                 y: 44,
                 scale: 0.955,
             });
@@ -763,7 +781,7 @@ export default function ServicesOverviewSection({
     return (
         <Section
             ref={sectionRef}
-            id="services"
+            id="services-v2"
         >
             <StickyViewport>
                 <Scene ref={sceneRef}>
