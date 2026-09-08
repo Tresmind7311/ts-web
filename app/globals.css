@@ -5,7 +5,8 @@
 
 :root {
   /* ── Fonts ──────────────────────────────────────────────────── */
-  --font-display: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  --font-display: var(--font-plus-jakarta-sans), 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-hero-body: var(--font-nunito-sans), 'Nunito Sans', system-ui, sans-serif;
   --font-body: var(--font-inter), 'Inter', system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), 'JetBrains Mono', monospace;
 
@@ -25,9 +26,9 @@
   --uv-300: #9384F8;
   --uv-500: #4F3DF5;
   /* base */
-  --uv-600: #3F2FE0;
+  --uv-600: #0DB0DC;
   /* hover */
-  --uv-800: #291A8C;
+  --uv-800: #071463;
 
   /* ── Neutral — ink / paper / slate ────────────────────────── */
   --neutral-0: #FFFFFF;

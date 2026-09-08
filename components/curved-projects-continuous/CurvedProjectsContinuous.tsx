@@ -38,6 +38,26 @@ const Section = styled('section')({
     },
 });
 
+const Heading = styled('h2')({
+    position: 'relative',
+    zIndex: 3,
+    margin: 0,
+    padding: 'clamp(24px, 5svh, 56px) 20px 0',
+    color: '#000',
+    fontFamily: 'var(--font-display)',
+    fontSize: 'clamp(36px, 5.2vw, 64px)',
+    fontWeight: 600,
+    lineHeight: 1.1,
+    letterSpacing: '-0.03em',
+    textAlign: 'center',
+    pointerEvents: 'none',
+
+    '@media (prefers-reduced-motion: reduce)': {
+        paddingTop: 0,
+        marginBottom: '32px',
+    },
+});
+
 const CanvasLayer = styled('canvas')({
     position: 'absolute',
     inset: 0,
@@ -303,6 +323,7 @@ export default function CurvedProjectsContinuous({
 
     return (
         <Section ref={sectionRef} aria-label={sectionLabel}>
+            <Heading>Our Portfolio</Heading>
             <CanvasLayer ref={canvasRef} aria-hidden="true" />
 
             <DomStage>

@@ -270,10 +270,10 @@ const SectionCounter = styled(Box)(({ theme }) => ({
 
 const CounterLabel = styled(Typography)({
     margin: 0,
-    color: alpha(tokens.color.ink900, 0.52),
+    color: alpha(tokens.color.ink900, 0.8),
     fontFamily: 'var(--font-body)',
-    fontSize: '10px',
-    fontWeight: 500,
+    fontSize: '22px',
+    fontWeight: 700,
     lineHeight: 1,
     letterSpacing: '0.14em',
     textTransform: 'uppercase',

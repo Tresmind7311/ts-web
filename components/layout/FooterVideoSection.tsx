@@ -5,11 +5,12 @@ import { styled } from '@mui/material/styles';
 import { gsap } from '@/lib/gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
-// ─── Video config ─────────────────────────────────────────────────────────────
-const VIDEO_SRC = '/videos/footer-video/footer_Rotating_crystal.mp4';
+// ─── Asset config ─────────────────────────────────────────────────────────────
+const GIF_SRC = '/rotating_crystal.gif';
+const BG_IMAGE_SRC = '/footer-bg.jpg'; // set to '' to fall back to solid colour
 
 // ─── Entrance animation config ────────────────────────────────────────────────
-const SLOT_COUNT = 6;
+const SLOT_COUNT = 7;
 const SLOT_STAGGER = 0.3;
 const SLOT_DURATION = 0.7;
 const LIFT_PX = 40;
@@ -25,34 +26,53 @@ const Root = styled('section')({
     position: 'relative',
     height: '100vh',
     overflow: 'hidden',
-    background: '#0B0B0B',
+    background: '#000000',
 });
 
-const VideoLayer = styled('div')({
+/*
+ * Background layer — shows BG_IMAGE_SRC when set,
+ * otherwise falls back to the Root's solid colour.
+ */
+const BgLayer = styled('div')<{ $src: string }>(({ $src }) => ({
     position: 'absolute',
     inset: 0,
     zIndex: 0,
-    background: '#0B0B0B',
+    background: '#000000',
+    ...$src && {
+        backgroundImage: `url("${$src}")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'top center',
+        backgroundRepeat: 'no-repeat',
+    },
+}));
+
+/* GIF wrapper — sits above the eyebrow in the content area */
+const InlineGifWrap = styled('div')({
+    width: 'clamp(180px, 20vw, 300px)',
+    borderRadius: 'clamp(12px, 1.4vw, 18px)',
+    overflow: 'hidden',
+
+    '@media (max-width: 600px)': {
+        width: 'clamp(100px, 32vw, 160px)',
+    },
 });
 
-const BackgroundVideo = styled('video')({
+const InlineGif = styled('img')({
     display: 'block',
     width: '100%',
     height: '100%',
     objectFit: 'cover',
     pointerEvents: 'none',
-    backfaceVisibility: 'hidden',
-    transform: 'translateZ(0)',
-    willChange: 'transform',
 });
 
 const Scrim = styled('div')({
     position: 'absolute',
     inset: 0,
     zIndex: 1,
-    background:
-        'linear-gradient(to bottom, transparent 12%, #0f172a8c 42%, #1e293b86 100%)',
+    background: 'linear-gradient(to top, transparent 12%, #020305d3 82%, #000000 100%)',
     pointerEvents: 'none',
+    borderTopRightRadius: '70px',
+    borderTopLeftRadius: '70px',
 });
 
 const ContentWrap = styled('div')({
@@ -83,7 +103,7 @@ const Eyebrow = styled('span')({
     letterSpacing: '0.18em',
     textTransform: 'uppercase',
     color: 'rgba(246,245,242,0.40)',
-    fontFamily: 'var(--font-geist-mono, ui-monospace, monospace)',
+    fontFamily: 'var(--font-mono)',
 });
 
 const Headline = styled('h2')({
@@ -167,30 +187,20 @@ export default function FooterVideoSection() {
         const slots = slotRefs.current.filter(
             (el): el is HTMLDivElement => Boolean(el)
         );
-
         if (slots.length !== SLOT_COUNT) return;
 
         const entranceTimeline = gsap.timeline({
             paused: true,
-            defaults: {
-                duration: SLOT_DURATION,
-                ease: 'power3.out',
-            },
+            defaults: { duration: SLOT_DURATION, ease: 'power3.out' },
         });
 
-        entranceTimeline.to(slots, {
-            opacity: 1,
-            y: 0,
-            stagger: SLOT_STAGGER,
-        });
+        entranceTimeline.to(slots, { opacity: 1, y: 0, stagger: SLOT_STAGGER });
 
         const entranceTrigger = ScrollTrigger.create({
             trigger: section,
             start: 'top 85%',
             once: true,
-            onEnter: () => {
-                entranceTimeline.play();
-            },
+            onEnter: () => entranceTimeline.play(),
         });
 
         return () => {
@@ -206,50 +216,50 @@ export default function FooterVideoSection() {
     return (
         <Root ref={sectionRef} id="contact">
 
-            {/* ── Video background ────────────────────────────────────────── */}
-            <VideoLayer>
-                <BackgroundVideo
-                    src={VIDEO_SRC}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    aria-hidden="true"
-                    tabIndex={-1}
-                />
-            </VideoLayer>
+            {/* ── Background (colour or image) ──────────────────────── */}
+            <BgLayer $src={BG_IMAGE_SRC} aria-hidden="true" />
 
-            {/* ── Gradient scrim ──────────────────────────────────────────── */}
+            {/* ── Gradient scrim ────────────────────────────────────── */}
             <Scrim />
 
-            {/* ── Animated content ────────────────────────────────────────── */}
+            {/* ── Animated content ──────────────────────────────────── */}
             <ContentWrap>
 
-                {/* Slot 0 — eyebrow */}
+                {/* Slot 0 — rotating crystal GIF */}
                 <AnimSlot ref={slot(0)}>
+                    <InlineGifWrap>
+                        <InlineGif
+                            src={GIF_SRC}
+                            alt="Rotating crystal"
+                            aria-hidden="true"
+                        />
+                    </InlineGifWrap>
+                </AnimSlot>
+
+                {/* Slot 1 — eyebrow */}
+                <AnimSlot ref={slot(1)}>
                     <Eyebrow>Tresmind Studio</Eyebrow>
                 </AnimSlot>
 
-                {/* Slot 1 — main headline */}
-                <AnimSlot ref={slot(1)} style={{ marginTop: '-4px' }}>
+                {/* Slot 2 — main headline */}
+                <AnimSlot ref={slot(2)} style={{ marginTop: '-4px' }}>
                     <Headline>Let&rsquo;s build something extraordinary.</Headline>
                 </AnimSlot>
 
-                {/* Slot 2 — subtitle */}
-                <AnimSlot ref={slot(2)}>
+                {/* Slot 3 — subtitle */}
+                <AnimSlot ref={slot(3)}>
                     <SubHead>
                         We help ambitious brands transform ideas into unforgettable digital experiences.
                     </SubHead>
                 </AnimSlot>
 
-                {/* Slot 3 — divider */}
-                <AnimSlot ref={slot(3)} style={{ margin: '4px 0' }}>
+                {/* Slot 4 — divider */}
+                <AnimSlot ref={slot(4)} style={{ margin: '4px 0' }}>
                     <FooterRule />
                 </AnimSlot>
 
-                {/* Slot 4 — nav links */}
-                <AnimSlot ref={slot(4)}>
+                {/* Slot 5 — nav links */}
+                <AnimSlot ref={slot(5)}>
                     <NavRow aria-label="Footer navigation">
                         {NAV_LINKS.map((label) => (
                             <NavLink key={label} href={`#${label.toLowerCase()}`}>
@@ -259,8 +269,8 @@ export default function FooterVideoSection() {
                     </NavRow>
                 </AnimSlot>
 
-                {/* Slot 5 — contact + social + copyright */}
-                <AnimSlot ref={slot(5)}>
+                {/* Slot 6 — contact + social + copyright */}
+                <AnimSlot ref={slot(6)}>
                     <BottomRow>
                         <BottomLink href={`mailto:${EMAIL}`}>{EMAIL}</BottomLink>
                         {SOCIAL_LINKS.map((s) => (

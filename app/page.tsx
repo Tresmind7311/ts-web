@@ -1,3 +1,4 @@
+import ServicesBanner from "@/components/common/ServicesBanner/ServicesBanner";
 import CurvedProjectsContinuous from "@/components/curved-projects-continuous/CurvedProjectsContinuous";
 import DotGlobeReferenceSection from "@/components/dot-globe-reference/DotGlobeReferenceSection";
 import AnimationSection from "@/components/sections/home/Animationsection";
@@ -38,9 +39,10 @@ const projects = [
 export default function HomePage() {
   return (
     <main>
+
       <HeroSection />
-      <AnimationSection/>
-      <StatsSection/>
+      <AnimationSection />
+      <StatsSection />
       <CurvedProjectsContinuous
         projects={projects}
       />

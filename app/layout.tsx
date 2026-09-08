@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import { Inter, Plus_Jakarta_Sans, Nunito_Sans, JetBrains_Mono } from 'next/font/google';
 import ThemeRegistry from '@/theme/ThemeRegistry';
 import Navbar from '@/components/layout/Navbar';
 import './globals.css';
@@ -15,11 +15,19 @@ const inter = Inter({
   display: 'swap',
 });
 
-// Space Grotesk — display / headings
-const spaceGrotesk = Space_Grotesk({
+// Plus Jakarta Sans — display / headings
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  weight: ['400', '500', '600', '700'],
+  variable: '--font-plus-jakarta-sans',
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+});
+
+// Nunito Sans — hero body copy
+const nunitoSans = Nunito_Sans({
+  subsets: ['latin'],
+  variable: '--font-nunito-sans',
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
 });
 
@@ -50,17 +58,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+      className={`${inter.variable} ${plusJakartaSans.variable} ${nunitoSans.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <body suppressHydrationWarning={true}>
         <ThemeRegistry>
           <Navbar />
           <LenisProvider>
-          {children}
+            {children}
           </LenisProvider>
           {/* <FooterSection/> */}
-          <FooterVideoSection/>
+          <FooterVideoSection />
         </ThemeRegistry>
       </body>
     </html>

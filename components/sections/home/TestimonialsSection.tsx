@@ -5,6 +5,7 @@ import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { tokens } from '@/theme/theme';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { Typography } from '@mui/material';
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const TESTIMONIALS = [
@@ -50,6 +51,20 @@ const TESTIMONIALS = [
         name: 'Priya Nadar',
         title: 'Ops Director @Kestrel',
     },
+    {
+        id: 6,
+        avatar: 'https://i.pravatar.cc/150?img=8',
+        quote: 'Every feature feels considered. Nothing is there by accident, and nothing we need is missing.',
+        name: 'Amara Chen',
+        title: 'Design Lead @Halcyon',
+    },
+    {
+        id: 7,
+        avatar: 'https://i.pravatar.cc/150?img=8',
+        quote: 'Every feature feels considered. Nothing is there by accident, and nothing we need is missing.',
+        name: 'Amara Chen',
+        title: 'Design Lead @Halcyon',
+    },
 ];
 
 const INITIAL_COUNT = 4;
@@ -75,6 +90,26 @@ const Section = styled(Box)(({ theme }) => ({
         overflow: 'visible',
     },
 }));
+
+const Heading = styled('h2')({
+    position: 'relative',
+    zIndex: 3,
+    margin: 0,
+    padding: 'clamp(24px, 5svh, 56px) 20px 0',
+    color: '#000',
+    fontFamily: 'var(--font-display)',
+    fontSize: 'clamp(36px, 5.2vw, 64px)',
+    fontWeight: 800,
+    lineHeight: 1.1,
+    letterSpacing: '-0.03em',
+    textAlign: 'center',
+    pointerEvents: 'none',
+    paddingBottom: '75px',
+    '@media (prefers-reduced-motion: reduce)': {
+        paddingTop: 0,
+        marginBottom: '32px',
+    },
+});
 
 const List = styled(Box)({
     width: '100%',
@@ -383,6 +418,7 @@ export default function TestimonialsSection() {
 
     return (
         <Section ref={sectionRef} id="testimonials">
+            <Heading>Good Work. <span style={{color: tokens.color.uv600,}}>Better Words.</span></Heading>
             <List onMouseLeave={() => setHoverActiveId(null)}>
                 {TESTIMONIALS.slice(0, INITIAL_COUNT).map(renderTestimonial)}
 

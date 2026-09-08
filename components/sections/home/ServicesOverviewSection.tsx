@@ -329,7 +329,7 @@ const BrandCaption = styled('p')(({ theme }) => ({
     margin: 0,
     fontFamily: 'var(--font-body)',
     fontWeight: 500,
-    fontSize: 'clamp(10px, 0.82vw, 13px)',
+    fontSize: 'clamp(18px, 1.2vw, 16px)',
     lineHeight: 1.4,
     color: alpha(tokens.color.ink900, 0.35),
     whiteSpace: 'nowrap',

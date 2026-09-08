@@ -8,10 +8,10 @@ export const tokens = {
     color: {
         // Ultraviolet — primary, 30% of palette
         uv100: '#DBD6FD',
-        uv300: '#9384F8',
-        uv500: '#4F3DF5',  // base
-        uv600: '#3F2FE0',  // hover
-        uv800: '#291A8C',
+        uv300: '#0DB0DC',
+        uv500: '#0783FC',  // base
+        uv600: '#0DB0DC',  // hover
+        uv800: '#071463',
 
         // Neutral — ink / paper / slate, 60% of palette
         neutral0: '#FFFFFF',  // Paper 0
@@ -23,6 +23,7 @@ export const tokens = {
         neutral500: '#8A8A93',  // Slate
         neutral600: '#6B6B75',
         neutral700: '#4A4A55',
+        textmuted800: '#525252',
         ink900: '#12121A',  // Ink
         transparent0: '#ffffff00',
 
@@ -43,7 +44,8 @@ export const tokens = {
 
     // ── Typography ──────────────────────────────────────────────────
     font: {
-        display: '"Space Grotesk", system-ui, sans-serif',
+        display: '"Plus Jakarta Sans", system-ui, sans-serif',
+        heroBody: '"Nunito Sans", system-ui, sans-serif',
         body: '"Inter", system-ui, sans-serif',
         mono: '"JetBrains Mono", "Fira Code", monospace',
     },
@@ -140,7 +142,7 @@ let theme = createTheme({
 
         // Display / headings — Space Grotesk
         h1: {
-            fontFamily: tokens.font.display,
+            fontFamily: tokens.font.display,  // Plus Jakarta Sans
             fontWeight: 700,
             fontSize: 'clamp(36px, 5vw, 64px)',
             lineHeight: 1.08,

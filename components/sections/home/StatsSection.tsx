@@ -748,9 +748,9 @@ export default function StatsSection() {
                while counter is near center.
             ---------------------------- */
 
-            const SAT_ENTRY  = 0.35;
+            const SAT_ENTRY = 0.35;
             const SAT_CENTER = 0.465;
-            const SAT_EXIT   = 0.58;
+            const SAT_EXIT = 0.58;
 
             const satOpacity =
                 stageOpacity(
@@ -821,9 +821,23 @@ export default function StatsSection() {
                Counter counts 0 → 150.
             ---------------------------- */
 
-            const PROJ_ENTRY  = 0.55;
-            const PROJ_CENTER = 0.665;
-            const PROJ_EXIT   = 0.78;
+            /*
+             * FIX: PROJ_ENTRY = SAT_CENTER (0.465).
+             * Counter 2 starts rising from the bottom the exact
+             * moment counter 1 reaches the viewport middle.
+             * By the time counter 1 is halfway to its exit,
+             * counter 2 is halfway up from the bottom — both
+             * clearly visible on screen at the same time.
+             *
+             * PROJ travels: +100vh → 0 → −100vh
+             * SAT travels:    0    → −100vh   (simultaneously)
+             */
+            // const PROJ_ENTRY  = 0.465;
+            // const PROJ_CENTER = 0.58;
+            // const PROJ_EXIT   = 0.695;
+            const PROJ_ENTRY = 0.37;
+            const PROJ_CENTER = 0.485;
+            const PROJ_EXIT = 0.60;
 
             const projOpacity =
                 stageOpacity(
@@ -891,9 +905,16 @@ export default function StatsSection() {
                Counter counts 0 → 12.
             ---------------------------- */
 
-            const CTRY_ENTRY  = 0.75;
-            const CTRY_CENTER = 0.865;
-            const CTRY_EXIT   = 0.98;
+            /*
+             * FIX: CTRY_ENTRY = PROJ_CENTER (0.58).
+             * Same conveyor pattern: counter 3 starts rising
+             * the moment counter 2 hits viewport middle.
+             * CTRY_EXIT stays 0.98 — last counter holds and
+             * drifts slowly out to close the section.
+             */
+            const CTRY_ENTRY = 0.58;
+            const CTRY_CENTER = 0.695;
+            const CTRY_EXIT = 0.98;
 
             const ctryOpacity =
                 stageOpacity(
