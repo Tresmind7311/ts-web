@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -9,10 +10,10 @@ import { tokens } from '@/theme/theme';
 
 // ─── Nav data ─────────────────────────────────────────────────────
 const NAV_LINKS = [
-    { label: 'Work', href: '#work' },
-    { label: 'Services', href: '#services' },
-    { label: 'Studio', href: '#studio' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Work', href: '/#work' },
+    { label: 'Services', href: '/services' },
+    { label: 'Studio', href: '/#studio' },
+    { label: 'Contact', href: '/#contact' },
 ];
 
 // ═══════════════════════════════════════════════════════════════════
@@ -216,13 +217,16 @@ function LogoMark() {
 // ═══════════════════════════════════════════════════════════════════
 
 export default function Navbar() {
+    const pathname = usePathname();
+
     const [scrolled, setScrolled] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [activeLink, setActiveLink] = useState('');
 
-    // Hidden until HeroSection's canvas sequence reaches its final frame.
-    // Starts false — on page load the hero hasn't finished scrolling yet.
-    const [navVisible, setNavVisible] = useState(false);
+    // The homepage keeps its existing hero reveal gate.
+    // Every other route shows the navbar immediately.
+    const [homeNavVisible, setHomeNavVisible] = useState(false);
+    const navVisible = pathname !== '/' || homeNavVisible;
 
     // Frosted glass on scroll
     useEffect(() => {
@@ -237,31 +241,72 @@ export default function Navbar() {
         return () => { document.body.style.overflow = ''; };
     }, [drawerOpen]);
 
-    // Highlight active section via IntersectionObserver
+    // Highlight homepage sections only.
     useEffect(() => {
-        const ids = NAV_LINKS.map(l => l.href.slice(1));
-        const els = ids.map(id => document.getElementById(id)).filter(Boolean);
+        if (pathname !== '/') {
+            setActiveLink('');
+            return;
+        }
+
+        const ids = NAV_LINKS
+            .filter(link => link.href.startsWith('/#'))
+            .map(link => link.href.slice(2));
+
+        const els = ids
+            .map(id => document.getElementById(id))
+            .filter((el): el is HTMLElement => Boolean(el));
+
         if (!els.length) return;
 
         const obs = new IntersectionObserver(
-            entries => entries.forEach(e => { if (e.isIntersecting) setActiveLink(e.target.id); }),
-            { threshold: 0.4 }
+            entries =>
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setActiveLink(entry.target.id);
+                    }
+                }),
+            { threshold: 0.4 },
         );
-        els.forEach(el => el && obs.observe(el));
-        return () => obs.disconnect();
-    }, []);
 
-    // ── Hero reveal-gate listener ───────────────────────────────────
-    // HeroSection dispatches this event only when its "final frame
-    // reached" state actually flips (not every scroll tick).
+        els.forEach(el => obs.observe(el));
+        return () => obs.disconnect();
+    }, [pathname]);
+
+    // Reset the homepage reveal state whenever we enter the homepage.
+    useEffect(() => {
+        if (pathname === '/') {
+            setHomeNavVisible(false);
+        }
+    }, [pathname]);
+
+    // ── Homepage hero reveal-gate listener ─────────────────────────
     useEffect(() => {
         const onHeroChange = (e: Event) => {
-            const { complete } = (e as CustomEvent<{ complete: boolean }>).detail;
-            setNavVisible(complete);
+            if (pathname !== '/') return;
+
+            const { complete } = (
+                e as CustomEvent<{ complete: boolean }>
+            ).detail;
+
+            setHomeNavVisible(complete);
         };
+
         window.addEventListener('hero-complete-change', onHeroChange);
-        return () => window.removeEventListener('hero-complete-change', onHeroChange);
-    }, []);
+        return () =>
+            window.removeEventListener('hero-complete-change', onHeroChange);
+    }, [pathname]);
+
+    const isLinkActive = (href: string) => {
+        if (href === '/services') {
+            return pathname.startsWith('/services');
+        }
+
+        if (pathname === '/' && href.startsWith('/#')) {
+            return activeLink === href.slice(2);
+        }
+
+        return false;
+    };
 
     const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
@@ -281,7 +326,7 @@ export default function Navbar() {
                             <NavLink
                                 key={link.label}
                                 href={link.href}
-                                className={activeLink === link.href.slice(1) ? 'active' : ''}
+                                className={isLinkActive(link.href) ? 'active' : ''}
                             >
                                 {link.label}
                             </NavLink>

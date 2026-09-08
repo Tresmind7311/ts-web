@@ -33,7 +33,7 @@ export const webDevelopmentService: ServiceData = {
             alt: 'Web development service illustration',
         },
         offerImage: {
-            src: '/images/services/web-development/overview/offer-card.webp',
+            src: '/images/services/web-development/web-development-offer.jpg',
             alt: 'Web design and development workspace',
         },
         order: 4,

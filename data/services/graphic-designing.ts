@@ -33,7 +33,7 @@ export const graphicDesigningService: ServiceData = {
             alt: 'Graphic designing service illustration',
         },
         offerImage: {
-            src: '/images/services/graphic-designing/offer-card.png',
+            src: '/images/services/graphic-designing/graphic-designing-offer.jpg',
             alt: 'Creative graphic design workspace',
         },
         order: 5,

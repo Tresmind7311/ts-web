@@ -33,7 +33,7 @@ export const mobileAppDevelopmentService: ServiceData = {
             alt: 'Mobile app development service illustration',
         },
         offerImage: {
-            src: '/images/services/mobile-app-development/showcase-card.png',
+            src: '/images/services/web-development/mobile-app-dev-offer.jpg',
             alt: 'Mobile application technology and development',
         },
         order: 1,
