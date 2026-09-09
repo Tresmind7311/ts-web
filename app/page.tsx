@@ -7,6 +7,7 @@ import LabSection from "@/components/sections/home/Labsection";
 import ServicesOverviewSection from "@/components/sections/home/ServicesOverviewSection";
 import StatsSection from "@/components/sections/home/StatsSection";
 import TestimonialsSection from "@/components/sections/home/TestimonialsSection";
+import { homeTestimonials } from "@/data/testimonials/home";
 
 const projects = [
   {
@@ -47,7 +48,7 @@ export default function HomePage() {
         projects={projects}
       />
       <ServicesOverviewSection />
-      <TestimonialsSection />
+      <TestimonialsSection testimonials={homeTestimonials} />
       <LabSection />
       <DotGlobeReferenceSection />
     </main>

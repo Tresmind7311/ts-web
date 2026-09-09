@@ -5,69 +5,21 @@ import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { tokens } from '@/theme/theme';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
-import { Typography } from '@mui/material';
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
-const TESTIMONIALS = [
-    {
-        id: 0,
-        avatar: 'https://i.pravatar.cc/150?img=12',
-        quote: "This product has completely transformed how we work. The interface is intuitive and the features are exactly what we needed.",
-        name: 'Cristiano Ronaldo',
-        title: 'CEO @CR7',
-    },
-    {
-        id: 1,
-        avatar: 'https://i.pravatar.cc/150?img=33',
-        quote: "I've tried many solutions, but this one stands out for its simplicity and power. Highly recommended!",
-        name: 'Jensen Huang',
-        title: 'CEO Nvidia',
-    },
-    {
-        id: 2,
-        avatar: 'https://i.pravatar.cc/150?img=51',
-        quote: 'The team behind this is incredibly responsive and the product keeps getting better with each update.',
-        name: 'Antony Raphy',
-        title: 'Founder @cndlhaus.studio',
-    },
-    {
-        id: 3,
-        avatar: 'https://i.pravatar.cc/150?img=8',
-        quote: 'Every feature feels considered. Nothing is there by accident, and nothing we need is missing.',
-        name: 'Amara Chen',
-        title: 'Design Lead @Halcyon',
-    },
-    {
-        id: 4,
-        avatar: 'https://i.pravatar.cc/150?img=59',
-        quote: "We evaluated six alternatives before landing here — nothing else came close on speed or support.",
-        name: 'Marcus Webb',
-        title: 'CTO @Ferrovia',
-    },
-    {
-        id: 5,
-        avatar: 'https://i.pravatar.cc/150?img=47',
-        quote: 'Onboarding took an afternoon. Adoption across the team took a day. That almost never happens.',
-        name: 'Priya Nadar',
-        title: 'Ops Director @Kestrel',
-    },
-    {
-        id: 6,
-        avatar: 'https://i.pravatar.cc/150?img=8',
-        quote: 'Every feature feels considered. Nothing is there by accident, and nothing we need is missing.',
-        name: 'Amara Chen',
-        title: 'Design Lead @Halcyon',
-    },
-    {
-        id: 7,
-        avatar: 'https://i.pravatar.cc/150?img=8',
-        quote: 'Every feature feels considered. Nothing is there by accident, and nothing we need is missing.',
-        name: 'Amara Chen',
-        title: 'Design Lead @Halcyon',
-    },
-];
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-const INITIAL_COUNT = 4;
+export interface Testimonial {
+    id: number;
+    avatar: string;
+    quote: string;
+    name: string;
+    title: string;
+}
+
+interface Props {
+    testimonials: Testimonial[];
+    initialCount?: number;
+}
 
 // ─── Styled components ────────────────────────────────────────────────────────
 
@@ -123,11 +75,8 @@ const Row = styled('span', {
     position: 'relative',
     display: 'inline',
     cursor: 'default',
-
-    // Preserve original blur / opacity behavior.
     filter: active ? 'blur(0px)' : 'blur(6px)',
     opacity: active ? 1 : 0.32,
-
     transition:
         'filter 480ms cubic-bezier(0.16,1,0.3,1), opacity 480ms cubic-bezier(0.16,1,0.3,1)',
 }));
@@ -149,12 +98,8 @@ const QuoteText = styled('span')(({ theme }) => ({
     fontSize: 'clamp(20px, 2.4vw, 30px)',
     lineHeight: 1.35,
     letterSpacing: '-0.01em',
-
-    // Preserve original text color.
     color: tokens.color.ink900,
-
     textWrap: 'pretty' as any,
-
     [theme.breakpoints.down('md')]: {
         fontSize: '18px',
     },
@@ -205,7 +150,7 @@ const Chevron = styled('span', {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function TestimonialsSection() {
+export default function TestimonialsSection({ testimonials, initialCount = 4 }: Props) {
     const sectionRef = useRef<HTMLElement>(null);
     const expandedRef = useRef(false);
 
@@ -213,7 +158,7 @@ export default function TestimonialsSection() {
     const [revealed, setRevealed] = useState(false);
 
     const [hoverActiveId, setHoverActiveId] = useState<number | null>(null);
-    const [scrollActiveId, setScrollActiveId] = useState<number>(TESTIMONIALS[0].id);
+    const [scrollActiveId, setScrollActiveId] = useState<number>(testimonials[0].id);
 
     const activeId = hoverActiveId ?? scrollActiveId;
 
@@ -221,7 +166,6 @@ export default function TestimonialsSection() {
         expandedRef.current = expanded;
     }, [expanded]);
 
-    // Pin section and move active testimonial forward/backward with scroll.
     useEffect(() => {
         const section = sectionRef.current;
         if (!section) return;
@@ -230,17 +174,10 @@ export default function TestimonialsSection() {
 
         mm.add('(min-width: 900px)', () => {
             const getCount = () =>
-                expandedRef.current
-                    ? TESTIMONIALS.length
-                    : INITIAL_COUNT;
+                expandedRef.current ? testimonials.length : initialCount;
 
             const getScrollDistance = () => {
                 const count = getCount();
-
-                /*
-                 * Enough pinned scroll for each testimonial to get
-                 * a clear active beat without making section feel slow.
-                 */
                 return Math.round(
                     Math.max(
                         window.innerHeight * 1.9,
@@ -249,161 +186,74 @@ export default function TestimonialsSection() {
                 );
             };
 
-            const setActiveFromProgress = (
-                progress: number,
-            ) => {
+            const setActiveFromProgress = (progress: number) => {
                 const count = getCount();
-
                 const index = Math.min(
-                    Math.floor(
-                        Math.min(
-                            progress,
-                            0.999999,
-                        ) * count,
-                    ),
+                    Math.floor(Math.min(progress, 0.999999) * count),
                     count - 1,
                 );
-
-                setScrollActiveId(
-                    TESTIMONIALS[index].id,
-                );
+                setScrollActiveId(testimonials[index].id);
             };
 
-            const trigger =
-                ScrollTrigger.create({
-                    trigger: section,
-                    start: 'top top',
+            const trigger = ScrollTrigger.create({
+                trigger: section,
+                start: 'top top',
+                end: () => `+=${getScrollDistance()}`,
+                pin: true,
+                pinSpacing: true,
+                refreshPriority: 0,
+                invalidateOnRefresh: true,
+                anticipatePin: 1,
+                onUpdate: ({ progress }) => setActiveFromProgress(progress),
+                onRefresh: ({ progress }) => setActiveFromProgress(progress),
+                onEnter: () => setActiveFromProgress(0),
+                onLeaveBack: () => setScrollActiveId(testimonials[0].id),
+                onLeave: () => {
+                    const count = getCount();
+                    setScrollActiveId(testimonials[count - 1].id);
+                },
+            });
 
-                    end: () =>
-                        `+=${getScrollDistance()}`,
-
-                    pin: true,
-                    pinSpacing: true,
-
-                    /*
-                     * Services section directly above has
-                     * refreshPriority: 5, so Testimonials must
-                     * measure after its pin spacer is finalized.
-                     */
-                    refreshPriority: 0,
-
-                    invalidateOnRefresh: true,
-                    anticipatePin: 1,
-
-                    onUpdate: ({
-                        progress,
-                    }) => {
-                        setActiveFromProgress(
-                            progress,
-                        );
-                    },
-
-                    onRefresh: ({
-                        progress,
-                    }) => {
-                        setActiveFromProgress(
-                            progress,
-                        );
-                    },
-
-                    onEnter: () => {
-                        setActiveFromProgress(0);
-                    },
-
-                    onLeaveBack: () => {
-                        setScrollActiveId(
-                            TESTIMONIALS[0].id,
-                        );
-                    },
-
-                    onLeave: () => {
-                        const count =
-                            getCount();
-
-                        setScrollActiveId(
-                            TESTIMONIALS[
-                                count - 1
-                            ].id,
-                        );
-                    },
-                });
-
-            return () => {
-                trigger.kill();
-            };
+            return () => { trigger.kill(); };
         });
 
-        /*
-         * Mobile/tablet: keep normal document flow.
-         * Still update active testimonial as rows cross viewport.
-         * Avoid pinning a potentially tall text block on small screens.
-         */
         mm.add('(max-width: 899px)', () => {
-            const trigger =
-                ScrollTrigger.create({
-                    trigger: section,
-                    start: 'top 75%',
-                    end: 'bottom 25%',
-                    refreshPriority: 0,
-                    invalidateOnRefresh: true,
+            const trigger = ScrollTrigger.create({
+                trigger: section,
+                start: 'top 75%',
+                end: 'bottom 25%',
+                refreshPriority: 0,
+                invalidateOnRefresh: true,
+                onUpdate: ({ progress }) => {
+                    const count = expandedRef.current ? testimonials.length : initialCount;
+                    const index = Math.min(
+                        Math.floor(Math.min(progress, 0.999999) * count),
+                        count - 1,
+                    );
+                    setScrollActiveId(testimonials[index].id);
+                },
+            });
 
-                    onUpdate: ({
-                        progress,
-                    }) => {
-                        const count =
-                            expandedRef.current
-                                ? TESTIMONIALS.length
-                                : INITIAL_COUNT;
-
-                        const index =
-                            Math.min(
-                                Math.floor(
-                                    Math.min(
-                                        progress,
-                                        0.999999,
-                                    )
-                                    * count,
-                                ),
-                                count - 1,
-                            );
-
-                        setScrollActiveId(
-                            TESTIMONIALS[
-                                index
-                            ].id,
-                        );
-                    },
-                });
-
-            return () => {
-                trigger.kill();
-            };
+            return () => { trigger.kill(); };
         });
 
-        return () => {
-            mm.revert();
-        };
-    }, []);
+        return () => { mm.revert(); };
+    }, [testimonials, initialCount]);
 
-    const extra = TESTIMONIALS.slice(INITIAL_COUNT);
+    const extra = testimonials.slice(initialCount);
 
     const handleExpand = () => {
         const next = !expanded;
-
         setExpanded(next);
-
         if (next) {
             requestAnimationFrame(() => setRevealed(true));
         } else {
             setRevealed(false);
         }
-
-        setTimeout(() => {
-            ScrollTrigger.refresh();
-        }, 520);
+        setTimeout(() => { ScrollTrigger.refresh(); }, 520);
     };
 
-    const renderTestimonial = (item: (typeof TESTIMONIALS)[number]) => (
+    const renderTestimonial = (item: Testimonial) => (
         <Row
             key={item.id}
             active={activeId === item.id}
@@ -418,17 +268,18 @@ export default function TestimonialsSection() {
 
     return (
         <Section ref={sectionRef} id="testimonials">
-            <Heading>Good Work. <span style={{color: tokens.color.uv600,}}>Better Words.</span></Heading>
+            <Heading>
+                Good Work.{' '}
+                <span style={{ color: tokens.color.uv600 }}>Better Words.</span>
+            </Heading>
             <List onMouseLeave={() => setHoverActiveId(null)}>
-                {TESTIMONIALS.slice(0, INITIAL_COUNT).map(renderTestimonial)}
-
+                {testimonials.slice(0, initialCount).map(renderTestimonial)}
                 {expanded && (
                     <RevealWrap show={revealed}>
                         {extra.map(renderTestimonial)}
                     </RevealWrap>
                 )}
             </List>
-
             <ButtonWrap>
                 <LoadMoreButton type="button" onClick={handleExpand} aria-expanded={expanded}>
                     {expanded ? 'Show less' : 'Read testimonials'}

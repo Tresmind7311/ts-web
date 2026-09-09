@@ -34,10 +34,48 @@ export interface ServiceListingData {
     order: number;
 }
 
+export interface ServiceCapabilityItem {
+    id: string;
+    title: string;
+    description: string;
+    image: {
+        src: string;
+        alt: string;
+    };
+    href?: string;
+}
+
+export interface ServiceCapabilitiesData {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    items: ServiceCapabilityItem[];
+    initialVisibleCount?: number;
+}
+
 export interface ServiceData {
     slug: string;
     name: string;
     seo: ServiceSeoData;
     hero: ServiceHeroData;
     listing: ServiceListingData;
+
+    showcase?: ServiceShowcaseData;
+    capabilities?: ServiceCapabilitiesData;
+}
+
+export interface ServiceShowcaseImage {
+    src: string;
+    alt: string;
+}
+
+export interface ServiceShowcaseColumn {
+    images: ServiceShowcaseImage[];
+}
+
+export interface ServiceShowcaseData {
+    title: string;
+    description: string;
+    placeholder?: boolean;
+    columns: ServiceShowcaseColumn[];
 }
