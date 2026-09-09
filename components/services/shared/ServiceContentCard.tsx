@@ -27,7 +27,7 @@ interface ServiceContentCardProps {
 const ImageWrap = styled(Box)({
     position: 'relative',
     width: '100%',
-    aspectRatio: '16 / 7.2',
+    aspectRatio: '3 / 2',
     marginTop: '22px',
     overflow: 'hidden',
     borderRadius: '18px',

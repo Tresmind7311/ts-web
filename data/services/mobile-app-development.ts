@@ -51,7 +51,7 @@ export const mobileAppDevelopmentService: ServiceData = {
                 description:
                     'High-performance Android applications built around intuitive experiences, maintainable architecture and long-term scalability.',
                 image: {
-                    src: '/footer-bg.jpg',
+                    src: '/images/services/mobile-app-development/Native-Android-Development.jpg',
                     alt: 'Native Android development',
                 },
             },
@@ -61,7 +61,7 @@ export const mobileAppDevelopmentService: ServiceData = {
                 description:
                     'Consistent mobile experiences designed to work efficiently across multiple platforms while maintaining strong performance and usability.',
                 image: {
-                    src: '/footer-bg.jpg',
+                    src: '/images/services/mobile-app-development/Cross-Platform-Applications.jpg',
                     alt: 'Cross-platform mobile application development',
                 },
             },
@@ -71,7 +71,7 @@ export const mobileAppDevelopmentService: ServiceData = {
                 description:
                     'Reliable mobile applications connected with APIs, backend systems, databases and third-party services.',
                 image: {
-                    src: '/footer-bg.jpg',
+                    src: '/images/services/mobile-app-development/API-Backend.jpg',
                     alt: 'API and backend integration',
                 },
             },
@@ -81,7 +81,7 @@ export const mobileAppDevelopmentService: ServiceData = {
                 description:
                     'User-focused mobile experiences where interface design, usability and engineering work together from the beginning.',
                 image: {
-                    src: '/footer-bg.jpg',
+                    src: '/images/services/mobile-app-development/UI-UX-Driven.jpg',
                     alt: 'Mobile application UI and UX development',
                 },
             },
@@ -187,6 +187,89 @@ export const mobileAppDevelopmentService: ServiceData = {
                         alt: 'Mobile app interface showcase',
                     },
                 ],
+            },
+        ],
+    },
+    process: {
+        title: 'Our Development Process',
+        description:
+            'Excellence Redefined: Unleashing Tailored Solutions for Your Success Journey.',
+        autoplayMs: 3500,
+        steps: [
+            {
+                id: 'discovery-planning',
+                number: '01',
+                title: 'Discovery & Planning',
+                description:
+                    'Understanding your business goals, users, requirements and technical direction before development begins.',
+                backgroundImage: {
+                    src: '/images/services/mobile-app-development/process-bg.jpg',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/mobile-app-development/process-01.png',
+                    alt: 'Discovery and planning process',
+                },
+            },
+            {
+                id: 'architecture-design',
+                number: '02',
+                title: 'Architecture & Design',
+                description:
+                    'Creating product architecture, user flows and interface systems designed around usability and scalability.',
+                backgroundImage: {
+                    src: '/images/services/mobile-app-development/process-bg.jpg',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/mobile-app-development/process-01.png',
+                    alt: 'Application architecture and design',
+                },
+            },
+            {
+                id: 'development',
+                number: '03',
+                title: 'Development & Integration',
+                description:
+                    'Building reliable application features and connecting APIs, services and backend systems.',
+                backgroundImage: {
+                    src: '/images/services/mobile-app-development/process-bg.jpg',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/mobile-app-development/process-01.png',
+                    alt: 'Mobile application development',
+                },
+            },
+            {
+                id: 'testing',
+                number: '04',
+                title: 'Testing & Optimization',
+                description:
+                    'Validating functionality, usability, compatibility and performance before release.',
+                backgroundImage: {
+                    src: '/images/services/mobile-app-development/process-bg.jpg',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/mobile-app-development/process-01.png',
+                    alt: 'Application testing and optimization',
+                },
+            },
+            {
+                id: 'deployment-support',
+                number: '05',
+                title: 'Deployment & Support',
+                description:
+                    'Ensuring reliability, performance and continued product support after launch.',
+                backgroundImage: {
+                    src: '/images/services/mobile-app-development/process-bg.jpg',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/mobile-app-development/process-01.png',
+                    alt: 'Application deployment and support',
+                },
             },
         ],
     },
