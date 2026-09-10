@@ -27,14 +27,10 @@ const Root = styled('section')({
     height: '100vh',
     overflow: 'hidden',
     background: '#000000',
-    borderTopLeftRadius:'65px',
-    borderTopRightRadius:'65px',
+    borderTopLeftRadius: '65px',
+    borderTopRightRadius: '65px',
 });
 
-/*
- * Background layer — shows BG_IMAGE_SRC when set,
- * otherwise falls back to the Root's solid colour.
- */
 const BgLayer = styled('div')<{ $src: string }>(({ $src }) => ({
     position: 'absolute',
     inset: 0,
@@ -48,7 +44,6 @@ const BgLayer = styled('div')<{ $src: string }>(({ $src }) => ({
     },
 }));
 
-/* GIF wrapper — sits above the eyebrow in the content area */
 const InlineGifWrap = styled('div')({
     width: 'clamp(180px, 20vw, 300px)',
     borderRadius: 'clamp(12px, 1.4vw, 18px)',
@@ -234,6 +229,7 @@ export default function FooterVideoSection() {
                             src={GIF_SRC}
                             alt="Rotating crystal"
                             aria-hidden="true"
+                            loading="lazy"
                         />
                     </InlineGifWrap>
                 </AnimSlot>
