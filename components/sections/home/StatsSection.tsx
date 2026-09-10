@@ -27,6 +27,10 @@ const DESKTOP_FRAMES = generateFrameUrls(
     5,
 );
 
+// Every 3rd desktop frame → ~119 frames for mobile.
+// Same source files, no new assets required.
+const MOBILE_FRAMES = DESKTOP_FRAMES.filter((_, i) => i % 3 === 0);
+
 /*
  * Same tall-scroll + fixed-frame pattern as StatsSection.
  * 600vh gives ~126vh of virtual scroll per counter stage,
@@ -821,20 +825,6 @@ export default function StatsSection() {
                Counter counts 0 → 150.
             ---------------------------- */
 
-            /*
-             * FIX: PROJ_ENTRY = SAT_CENTER (0.465).
-             * Counter 2 starts rising from the bottom the exact
-             * moment counter 1 reaches the viewport middle.
-             * By the time counter 1 is halfway to its exit,
-             * counter 2 is halfway up from the bottom — both
-             * clearly visible on screen at the same time.
-             *
-             * PROJ travels: +100vh → 0 → −100vh
-             * SAT travels:    0    → −100vh   (simultaneously)
-             */
-            // const PROJ_ENTRY  = 0.465;
-            // const PROJ_CENTER = 0.58;
-            // const PROJ_EXIT   = 0.695;
             const PROJ_ENTRY = 0.37;
             const PROJ_CENTER = 0.485;
             const PROJ_EXIT = 0.60;
@@ -905,13 +895,6 @@ export default function StatsSection() {
                Counter counts 0 → 12.
             ---------------------------- */
 
-            /*
-             * FIX: CTRY_ENTRY = PROJ_CENTER (0.58).
-             * Same conveyor pattern: counter 3 starts rising
-             * the moment counter 2 hits viewport middle.
-             * CTRY_EXIT stays 0.98 — last counter holds and
-             * drifts slowly out to close the section.
-             */
             const CTRY_ENTRY = 0.58;
             const CTRY_CENTER = 0.695;
             const CTRY_EXIT = 0.98;
@@ -1058,58 +1041,29 @@ export default function StatsSection() {
             <FixedFrame
                 ref={frameRef}
             >
-                {/* =================================
-                    FULL SECTION SCROLL CANVAS
-                    Same ImageSequenceCanvas setup
-                    as StatsSection — containerRef
-                    links canvas progress to this
-                    section's scroll container.
-                ================================= */}
-
                 <CanvasLayer>
                     <ImageSequenceCanvas
-                        desktopFrames={
-                            DESKTOP_FRAMES
-                        }
-
-                        containerRef={
-                            scrollRef
-                        }
-
+                        desktopFrames={DESKTOP_FRAMES}
+                        mobileFrames={MOBILE_FRAMES}
+                        containerRef={scrollRef}
                         objectFit="cover"
-
-                        mouseInteraction={
-                            false
-                        }
+                        mouseInteraction={false}
                     />
                 </CanvasLayer>
 
                 <CanvasShade />
 
-                {/* =================================
-                    01 INTRO
-                    "One idea, a thousand facets."
-                    Gradient background shows through
-                    FixedFrame behind canvas during
-                    this stage.
-                ================================= */}
-
-                <IntroStage
-                    ref={introRef}
-                >
+                <IntroStage ref={introRef}>
                     <IntroInner>
                         <DecorLine />
-
                         <Eyebrow>
                             Chapter 01 — The Prism
                         </Eyebrow>
-
                         <IntroHeadline>
                             One idea, a
                             <br />
                             thousand facets.
                         </IntroHeadline>
-
                         <Body>
                             We are Tresmind Solutions —
                             a creative technology studio.
@@ -1122,24 +1076,14 @@ export default function StatsSection() {
                     </IntroInner>
                 </IntroStage>
 
-                {/* =================================
-                    02 KEY FACTS
-                    Canvas image sequence is visible
-                    and active alongside this stage.
-                ================================= */}
-
-                <KeyFactsStage
-                    ref={keyFactsRef}
-                >
+                <KeyFactsStage ref={keyFactsRef}>
                     <KeyFactsInner>
                         <Eyebrow>
                             Chapter 02 — In Numbers
                         </Eyebrow>
-
                         <KeyFactsHeadline>
                             Key Facts
                         </KeyFactsHeadline>
-
                         <KeyFactsBody>
                             A decade of light, measured.
                             What remains when the noise
@@ -1148,96 +1092,42 @@ export default function StatsSection() {
                     </KeyFactsInner>
                 </KeyFactsStage>
 
-                {/* =================================
-                    03 COUNTER 1 — LEFT
-                    98% Client Satisfaction
-                    Enters from bottom, exits to top.
-                ================================= */}
-
-                <Counter1Stage
-                    ref={counter1Ref}
-                >
+                <Counter1Stage ref={counter1Ref}>
                     <StatWrap>
                         <StatNumber>
-                            <span
-                                ref={
-                                    satisfactionNumberRef
-                                }
-                            >
+                            <span ref={satisfactionNumberRef}>
                                 0
                             </span>
-
-                            <Accent>
-                                %
-                            </Accent>
+                            <Accent>%</Accent>
                         </StatNumber>
-
                         <StatLabel>
                             Client Satisfaction
                         </StatLabel>
                     </StatWrap>
                 </Counter1Stage>
 
-                {/* =================================
-                    04 COUNTER 2 — RIGHT
-                    150+ Projects Delivered
-                    Enters from bottom on right,
-                    exits to top.
-                ================================= */}
-
-                <Counter2Stage
-                    ref={counter2Ref}
-                >
+                <Counter2Stage ref={counter2Ref}>
                     <StatWrap>
                         <StatNumber>
-                            <span
-                                ref={
-                                    projectsNumberRef
-                                }
-                            >
+                            <span ref={projectsNumberRef}>
                                 0
                             </span>
-
-                            <Accent>
-                                +
-                            </Accent>
+                            <Accent>+</Accent>
                         </StatNumber>
-
-                        <StatLabel
-                            sx={{
-                                textAlign:
-                                    'right',
-                            }}
-                        >
+                        <StatLabel sx={{ textAlign: 'right' }}>
                             Projects Delivered
                         </StatLabel>
                     </StatWrap>
                 </Counter2Stage>
 
-                {/* =================================
-                    05 COUNTER 3 — LEFT
-                    12+ Countries Served
-                    Enters from bottom, exits to top.
-                ================================= */}
-
-                <Counter3Stage
-                    ref={counter3Ref}
-                >
+                <Counter3Stage ref={counter3Ref}>
                     <StatWrap>
                         <StatNumber>
-                            <span
-                                ref={
-                                    countriesNumberRef
-                                }
-                            >
+                            <span ref={countriesNumberRef}>
                                 0
                             </span>
-
-                            <Accent>
-                                +
-                            </Accent>
+                            <Accent>+</Accent>
                         </StatNumber>
-
                         <StatLabel>
                             Countries Served
                         </StatLabel>
