@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -299,6 +299,44 @@ const CounterTotal = styled('span')({
     fontWeight: 500,
 });
 
+
+const MobileNavigation = styled(Box)({
+    display: 'none',
+
+    '@media (max-width: 767px)': {
+        position: 'absolute',
+        left: '50%',
+        bottom: '18px',
+        zIndex: 30,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        transform: 'translateX(-50%)',
+    },
+});
+
+const MobileNavButton = styled('button')({
+    display: 'grid',
+    placeItems: 'center',
+    width: '44px',
+    height: '44px',
+    padding: 0,
+    border: `1px solid ${alpha(tokens.color.ink900, 0.16)}`,
+    borderRadius: '50%',
+    background: tokens.color.neutral0,
+    color: tokens.color.ink900,
+    fontFamily: 'var(--font-body)',
+    fontSize: '20px',
+    lineHeight: 1,
+    cursor: 'pointer',
+    WebkitTapHighlightColor: 'transparent',
+
+    '&:disabled': {
+        opacity: 0.32,
+        cursor: 'default',
+    },
+});
+
 // ─── Helpers ───────────────────────────────────────────────────────
 function clamp(value: number, min: number, max: number) {
     return Math.min(max, Math.max(min, value));
@@ -399,6 +437,7 @@ export default function AnimationSection() {
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const currentCounterRef = useRef<HTMLSpanElement>(null);
     const prevActiveRef = useRef(-1);
+    const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
 
     const renderFrame = useCallback((progress: number) => {
         const cardCount = REEL_CARDS.length;
@@ -503,114 +542,126 @@ export default function AnimationSection() {
 
         renderFrame(0);
 
-        const scrollLength =
-            SCROLL_PER_STEP * (REEL_CARDS.length - 1);
+        const media = gsap.matchMedia();
 
-        const ctx = gsap.context(() => {
-            ScrollTrigger.create({
-                trigger: section,
-                pin: sticky,
-                start: 'top top',
-                end: `+=${scrollLength}`,
-                pinSpacing: true,
-                scrub: SCRUB_LAG,
-                refreshPriority: 30,
-                invalidateOnRefresh: true,
+        media.add('(min-width: 768px)', () => {
+            const scrollLength =
+                SCROLL_PER_STEP * (REEL_CARDS.length - 1);
 
-                onUpdate(self) {
-                    renderFrame(self.progress * 100);
-                },
+            const ctx = gsap.context(() => {
+                ScrollTrigger.create({
+                    trigger: section,
+                    pin: sticky,
+                    start: 'top top',
+                    end: `+=${scrollLength}`,
+                    pinSpacing: true,
+                    scrub: SCRUB_LAG,
+                    refreshPriority: 30,
+                    invalidateOnRefresh: true,
 
-                onRefresh(self) {
-                    renderFrame(self.progress * 100);
-                },
+                    onUpdate(self) {
+                        renderFrame(self.progress * 100);
+                    },
 
-                onLeave() {
-                    renderFrame(100);
-                },
+                    onRefresh(self) {
+                        renderFrame(self.progress * 100);
+                    },
 
-                onLeaveBack() {
-                    renderFrame(0);
-                },
+                    onLeave() {
+                        renderFrame(100);
+                    },
+
+                    onLeaveBack() {
+                        renderFrame(0);
+                    },
+                });
+            }, section);
+
+            // Desktop + tablet only:
+            // horizontal drag translates to the vertical scroll that drives ScrollTrigger.
+            let isDragging = false;
+            let lastX = 0;
+
+            const onDown = (clientX: number) => {
+                isDragging = true;
+                lastX = clientX;
+            };
+
+            const onMove = (clientX: number) => {
+                if (!isDragging) {
+                    return;
+                }
+
+                const deltaX = clientX - lastX;
+                lastX = clientX;
+
+                window.scrollBy(
+                    0,
+                    -deltaX * DRAG_SCROLL_MULTIPLIER,
+                );
+            };
+
+            const onUp = () => {
+                isDragging = false;
+            };
+
+            const onMouseDown = (event: MouseEvent) => {
+                onDown(event.clientX);
+            };
+
+            const onMouseMove = (event: MouseEvent) => {
+                onMove(event.clientX);
+            };
+
+            const onTouchStart = (event: TouchEvent) => {
+                const touch = event.touches[0];
+
+                if (touch) {
+                    onDown(touch.clientX);
+                }
+            };
+
+            const onTouchMove = (event: TouchEvent) => {
+                const touch = event.touches[0];
+
+                if (touch) {
+                    onMove(touch.clientX);
+                }
+            };
+
+            sticky.addEventListener('mousedown', onMouseDown);
+            sticky.addEventListener('touchstart', onTouchStart, {
+                passive: true,
             });
-        }, section);
 
-        // Horizontal drag translates to the same vertical page scroll that
-        // drives ScrollTrigger. One progress source keeps drag + wheel synced.
-        let isDragging = false;
-        let lastX = 0;
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onUp);
+            document.addEventListener('touchmove', onTouchMove, {
+                passive: true,
+            });
+            document.addEventListener('touchend', onUp);
+            window.addEventListener('blur', onUp);
 
-        const onDown = (clientX: number) => {
-            isDragging = true;
-            lastX = clientX;
-        };
+            return () => {
+                ctx.revert();
 
-        const onMove = (clientX: number) => {
-            if (!isDragging) {
-                return;
-            }
+                sticky.removeEventListener('mousedown', onMouseDown);
+                sticky.removeEventListener('touchstart', onTouchStart);
 
-            const deltaX = clientX - lastX;
-            lastX = clientX;
-
-            window.scrollBy(
-                0,
-                -deltaX * DRAG_SCROLL_MULTIPLIER,
-            );
-        };
-
-        const onUp = () => {
-            isDragging = false;
-        };
-
-        const onMouseDown = (event: MouseEvent) => {
-            onDown(event.clientX);
-        };
-
-        const onMouseMove = (event: MouseEvent) => {
-            onMove(event.clientX);
-        };
-
-        const onTouchStart = (event: TouchEvent) => {
-            const touch = event.touches[0];
-
-            if (touch) {
-                onDown(touch.clientX);
-            }
-        };
-
-        const onTouchMove = (event: TouchEvent) => {
-            const touch = event.touches[0];
-
-            if (touch) {
-                onMove(touch.clientX);
-            }
-        };
-
-        sticky.addEventListener('mousedown', onMouseDown);
-        sticky.addEventListener('touchstart', onTouchStart, {
-            passive: true,
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onUp);
+                document.removeEventListener('touchmove', onTouchMove);
+                document.removeEventListener('touchend', onUp);
+                window.removeEventListener('blur', onUp);
+            };
         });
 
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onUp);
-        document.addEventListener('touchmove', onTouchMove, {
-            passive: true,
+        media.add('(max-width: 767px)', () => {
+            renderFrame(0);
         });
-        document.addEventListener('touchend', onUp);
-        window.addEventListener('blur', onUp);
 
         return () => {
-            ctx.revert();
-
-            sticky.removeEventListener('mousedown', onMouseDown);
-            sticky.removeEventListener('touchstart', onTouchStart);
-
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onUp);
-            document.removeEventListener('touchmove', onTouchMove);
-            document.removeEventListener('touchend', onUp);
-            window.removeEventListener('blur', onUp);
+            media.revert();
         };
     }, [renderFrame]);
 
@@ -637,6 +688,27 @@ export default function AnimationSection() {
         });
     }, []);
 
+    const goToMobileCard = useCallback(
+        (index: number) => {
+            if (REEL_CARDS.length <= 1) {
+                return;
+            }
+
+            const nextIndex = clamp(
+                index,
+                0,
+                REEL_CARDS.length - 1,
+            );
+
+            setMobileActiveIndex(nextIndex);
+
+            renderFrame(
+                (nextIndex / (REEL_CARDS.length - 1)) * 100,
+            );
+        },
+        [renderFrame],
+    );
+
     return (
         <SectionWrapper
             ref={sectionRef}
@@ -653,6 +725,14 @@ export default function AnimationSection() {
                                 cardRefs.current[index] = element;
                             }}
                             onClick={() => {
+                                if (
+                                    window.matchMedia(
+                                        '(max-width: 767px)',
+                                    ).matches
+                                ) {
+                                    return;
+                                }
+
                                 scrollToCard(index);
                             }}
                         >
@@ -702,6 +782,34 @@ export default function AnimationSection() {
                         </CounterTotal>
                     </CounterValue>
                 </SectionCounter>
+
+
+                <MobileNavigation aria-label="Carousel navigation">
+                    <MobileNavButton
+                        type="button"
+                        aria-label="Previous service"
+                        disabled={mobileActiveIndex === 0}
+                        onClick={() => {
+                            goToMobileCard(mobileActiveIndex - 1);
+                        }}
+                    >
+                        ←
+                    </MobileNavButton>
+
+                    <MobileNavButton
+                        type="button"
+                        aria-label="Next service"
+                        disabled={
+                            mobileActiveIndex ===
+                            REEL_CARDS.length - 1
+                        }
+                        onClick={() => {
+                            goToMobileCard(mobileActiveIndex + 1);
+                        }}
+                    >
+                        →
+                    </MobileNavButton>
+                </MobileNavigation>
             </StickyContent>
         </SectionWrapper>
     );

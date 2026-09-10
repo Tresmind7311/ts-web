@@ -75,8 +75,8 @@ export default function HomePage() {
     return (
         <main>
             <HeroSection />
-            <AnimationSection />
             <StatsSection />
+            <AnimationSection />
             <CurvedProjectsContinuous projects={projects} />
             <ServicesOverviewSection />
             <TestimonialsSection testimonials={homeTestimonials} />

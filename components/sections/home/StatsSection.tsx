@@ -88,7 +88,7 @@ const ScrollContainer = styled(Box)({
     position: 'relative',
     width: '100%',
     height: SCROLL_HEIGHT,
-    background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
+    // background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
 });
 
 const FixedFrame = styled(Box)({
