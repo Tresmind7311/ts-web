@@ -47,10 +47,10 @@ const NavRoot = styled('header')<{ scrolled: number; visible: number }>(({ scrol
     pointerEvents: visible ? 'auto' : 'none',
 }));
 
-const NavInner = styled(Box)(() => ({
+const NavInner = styled(Container)(() => ({
     width: '100%',
-    maxWidth: '1280px',
-    margin: '0 auto',
+    // maxWidth: '1280px',
+    // margin: '0 auto',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -187,6 +187,7 @@ const DrawerFooterLink = styled('a')(() => ({
 
 
 import Image from 'next/image';
+import { Container } from '@mui/material';
 
 function LogoMark() {
     return (
@@ -313,7 +314,7 @@ export default function Navbar() {
     return (
         <>
             <NavRoot scrolled={scrolled ? 1 : 0} visible={navVisible ? 1 : 0} role="banner">
-                <NavInner>
+                <NavInner maxWidth="xl">
 
                     {/* Logo */}
                     <LogoLink href="/" aria-label="Tresmind — home">

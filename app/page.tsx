@@ -77,8 +77,8 @@ export default function HomePage() {
             <HeroSection />
             <StatsSection />
             <AnimationSection />
-            <CurvedProjectsContinuous projects={projects} />
             <ServicesOverviewSection />
+            <CurvedProjectsContinuous projects={projects} />
             <TestimonialsSection testimonials={homeTestimonials} />
             <LabSection />
             <DotGlobeReferenceSection />
