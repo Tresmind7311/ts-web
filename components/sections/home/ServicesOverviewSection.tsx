@@ -396,30 +396,6 @@ const ExploreLink = styled('a')(({ theme }) => ({
     },
 }));
 
-const ShadeSweep = styled(Box)({
-    position: 'absolute',
-    zIndex: 7,
-    top: 0,
-    left: 0,
-    width: '165%',
-    height: '100%',
-    pointerEvents: 'none',
-    willChange: 'transform',
-    transform: 'translate3d(100%, 0, 0)',
-    background:
-        'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.48) 57%, rgba(255,255,255,0.91) 82%, rgba(255,255,255,0.985) 100%)',
-});
-
-const EndWash = styled(Box)({
-    position: 'absolute',
-    zIndex: 8,
-    inset: 0,
-    pointerEvents: 'none',
-    opacity: 0,
-    willChange: 'opacity',
-    background: 'rgba(255,255,255,0.86)',
-});
-
 function setHoverX(
     event:
         ReactPointerEvent<HTMLElement>,
@@ -452,12 +428,6 @@ export default function ServicesOverviewSection({
     const sceneRef =
         useRef<HTMLDivElement>(null);
 
-    const shadeRef =
-        useRef<HTMLDivElement>(null);
-
-    const endWashRef =
-        useRef<HTMLDivElement>(null);
-
     const uiuxRef =
         useRef<HTMLDivElement>(null);
 
@@ -488,9 +458,6 @@ export default function ServicesOverviewSection({
     useEffect(() => {
         const section = sectionRef.current;
         const scene = sceneRef.current;
-        const shade = shadeRef.current;
-        const endWash = endWashRef.current;
-
         const uiux = uiuxRef.current;
         const web = webRef.current;
         const branding = brandingRef.current;
@@ -504,8 +471,6 @@ export default function ServicesOverviewSection({
         if (
             !section
             || !scene
-            || !shade
-            || !endWash
             || !uiux
             || !web
             || !branding
@@ -528,14 +493,6 @@ export default function ServicesOverviewSection({
         }
 
         const ctx = gsap.context(() => {
-            gsap.set(shade, {
-                xPercent: 105,
-            });
-
-            gsap.set(endWash, {
-                opacity: 0,
-            });
-
             gsap.set(scene, {
                 yPercent: 0,
                 opacity: 1,
@@ -720,35 +677,6 @@ export default function ServicesOverviewSection({
                 0.07,
             );
 
-            /*
-             * Small hold after all content is visible.
-             * Then reference-style shade starts.
-             */
-            timeline.to(
-                shade,
-                {
-                    xPercent: -22,
-                    duration: 0.235,
-                    ease:
-                        'power1.inOut',
-                },
-                0.665,
-            );
-
-            /*
-             * Final washed-out reference state.
-             */
-            timeline.to(
-                endWash,
-                {
-                    opacity: 0.86,
-                    duration: 0.14,
-                    ease:
-                        'power1.in',
-                },
-                0.86,
-            );
-
             timeline.to(
                 scene,
                 {
@@ -876,13 +804,6 @@ export default function ServicesOverviewSection({
                     </ExploreLink>
                 </Scene>
 
-                <ShadeSweep
-                    ref={shadeRef}
-                />
-
-                <EndWash
-                    ref={endWashRef}
-                />
             </StickyViewport>
         </Section>
     );

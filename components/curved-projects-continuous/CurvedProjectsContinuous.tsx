@@ -273,7 +273,7 @@ export default function CurvedProjectsContinuous({
                 pin: true,
                 pinSpacing: true,
                 anticipatePin: 1,
-                refreshPriority: 20,
+                refreshPriority: 0,
                 invalidateOnRefresh: true,
                 onUpdate: (self) => {
                     currentIndex = startIndex + self.progress * scrollSteps;

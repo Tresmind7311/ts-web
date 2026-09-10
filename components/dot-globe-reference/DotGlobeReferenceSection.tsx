@@ -147,6 +147,14 @@ export default function DotGlobeReferenceSection() {
             renderer.setPointer(0, 0, 0);
             renderer.setOrbit(0, 0, false);
             syncInteractionCursor(1);
+
+            return () => {
+                window.cancelAnimationFrame(resizeFrame);
+                resizeObserver.disconnect();
+                intersectionObserver.disconnect();
+                renderer.destroy();
+                rendererRef.current = null;
+            };
         }
 
         let context: ReturnType<typeof gsap.context> | undefined;
@@ -166,19 +174,10 @@ export default function DotGlobeReferenceSection() {
                         refreshPriority: -1,
 
                         onUpdate(self) {
-                            if (reducedMotion) {
-                                progressRef.current = 1;
-                                renderer.setProgress(1);
-                                renderer.setPointer(0, 0, 0);
-                                renderer.setOrbit(0, 0, false);
-                                syncInteractionCursor(1);
-                                return;
-                            }
-
                             const animationProgress = Math.min(
                                 self.progress *
-                                (SECTION_SCROLL_DISTANCE_VH /
-                                    ANIMATION_SCROLL_DISTANCE_VH),
+                                    (SECTION_SCROLL_DISTANCE_VH /
+                                        ANIMATION_SCROLL_DISTANCE_VH),
                                 1,
                             );
 
@@ -197,19 +196,10 @@ export default function DotGlobeReferenceSection() {
                         },
 
                         onRefresh(self) {
-                            if (reducedMotion) {
-                                progressRef.current = 1;
-                                renderer.setProgress(1);
-                                renderer.setPointer(0, 0, 0);
-                                renderer.setOrbit(0, 0, false);
-                                syncInteractionCursor(1);
-                                return;
-                            }
-
                             const animationProgress = Math.min(
                                 self.progress *
-                                (SECTION_SCROLL_DISTANCE_VH /
-                                    ANIMATION_SCROLL_DISTANCE_VH),
+                                    (SECTION_SCROLL_DISTANCE_VH /
+                                        ANIMATION_SCROLL_DISTANCE_VH),
                                 1,
                             );
 
@@ -219,15 +209,6 @@ export default function DotGlobeReferenceSection() {
                         },
 
                         onEnter() {
-                            if (reducedMotion) {
-                                progressRef.current = 1;
-                                renderer.setProgress(1);
-                                renderer.setPointer(0, 0, 0);
-                                renderer.setOrbit(0, 0, false);
-                                syncInteractionCursor(1);
-                                return;
-                            }
-
                             progressRef.current = 0;
                             renderer.setProgress(0);
                             syncInteractionCursor(0);
@@ -236,29 +217,14 @@ export default function DotGlobeReferenceSection() {
                         onLeave() {
                             progressRef.current = 1;
                             renderer.setProgress(1);
-
-                            if (reducedMotion) {
-                                renderer.setPointer(0, 0, 0);
-                                renderer.setOrbit(0, 0, false);
-                            }
-
                             syncInteractionCursor(1);
                         },
 
                         onEnterBack(self) {
-                            if (reducedMotion) {
-                                progressRef.current = 1;
-                                renderer.setProgress(1);
-                                renderer.setPointer(0, 0, 0);
-                                renderer.setOrbit(0, 0, false);
-                                syncInteractionCursor(1);
-                                return;
-                            }
-
                             const animationProgress = Math.min(
                                 self.progress *
-                                (SECTION_SCROLL_DISTANCE_VH /
-                                    ANIMATION_SCROLL_DISTANCE_VH),
+                                    (SECTION_SCROLL_DISTANCE_VH /
+                                        ANIMATION_SCROLL_DISTANCE_VH),
                                 1,
                             );
 
@@ -268,21 +234,12 @@ export default function DotGlobeReferenceSection() {
                         },
 
                         onLeaveBack() {
+                            progressRef.current = 0;
                             orbitRef.current.dragging = false;
                             orbitRef.current.targetYaw = 0;
                             orbitRef.current.targetPitch = 0;
                             dragPointerIdRef.current = null;
 
-                            if (reducedMotion) {
-                                progressRef.current = 1;
-                                renderer.setProgress(1);
-                                renderer.setPointer(0, 0, 0);
-                                renderer.setOrbit(0, 0, false);
-                                syncInteractionCursor(1);
-                                return;
-                            }
-
-                            progressRef.current = 0;
                             renderer.setProgress(0);
                             renderer.setPointer(0, 0, 0);
                             renderer.setOrbit(0, 0, false);
@@ -365,7 +322,7 @@ export default function DotGlobeReferenceSection() {
                     Math.min(
                         0.72,
                         orbitRef.current.targetPitch +
-                        deltaY * 0.0038,
+                            deltaY * 0.0038,
                     ),
                 );
 
@@ -381,13 +338,13 @@ export default function DotGlobeReferenceSection() {
             const normalizedX =
                 ((event.clientX - rect.left) /
                     Math.max(rect.width, 1)) *
-                2 -
+                    2 -
                 1;
             const normalizedY =
                 1 -
                 ((event.clientY - rect.top) /
                     Math.max(rect.height, 1)) *
-                2;
+                    2;
 
             renderer.setPointer(
                 normalizedX,
@@ -429,7 +386,7 @@ export default function DotGlobeReferenceSection() {
 
             event.currentTarget.style.cursor =
                 !reducedMotionRef.current &&
-                    progressRef.current >= GLOBE_INTERACTION_PROGRESS
+                progressRef.current >= GLOBE_INTERACTION_PROGRESS
                     ? "grab"
                     : "default";
         },
