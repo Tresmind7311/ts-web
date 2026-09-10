@@ -18,6 +18,10 @@ const DESKTOP_FRAMES = generateFrameUrls(
     5,
 );
 
+// Every 2nd desktop frame → 60 frames for mobile.
+// Same source files, no new assets required.
+const MOBILE_FRAMES = DESKTOP_FRAMES.filter((_, i) => i % 2 === 0);
+
 const SCROLL_HEIGHT = '300vh';
 
 // ═══════════════════════════════════════════════════════════════════
@@ -214,6 +218,7 @@ export default function HeroSection() {
                 <CanvasLayer>
                     <ImageSequenceCanvas
                         desktopFrames={DESKTOP_FRAMES}
+                        mobileFrames={MOBILE_FRAMES}
                         containerRef={scrollRef}
                         objectFit="cover"
                     />
