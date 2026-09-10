@@ -863,7 +863,7 @@ export default class DotGlobeReferenceCanvasRenderer {
 
         const progress = this.currentProgress;
         const morph = smoothstep(0.22, 0.68, progress);
-        const finalReveal = smoothstep(0.72, 0.95, progress);
+        const finalReveal = this.reducedMotion ? 0 : smoothstep(0.72, 0.95, progress);
         const geographyReveal = this.reducedMotion
             ? 0
             : smoothstep(0.62, 0.88, progress);
