@@ -147,7 +147,7 @@ const CarouselCard = styled(Box)(({ theme }) => ({
     transformOrigin: '50% 50%',
     transformStyle: 'preserve-3d',
     backfaceVisibility: 'hidden',
-    willChange: 'transform, opacity, filter',
+    willChange: 'transform, opacity',
     cursor: 'default',
 
     '&.is-active': {
@@ -456,8 +456,6 @@ export default function AnimationSection() {
 
             card.style.transform = transform;
             card.style.opacity = String(opacity);
-            card.style.filter =
-                `blur(${Math.min(blur, 6)}px)`;
 
             /*
              * Closest-to-center card stays visually on top.
