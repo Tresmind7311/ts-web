@@ -175,10 +175,6 @@ function getGlobeRadiusWorld(
     viewportHeight: number,
     isMobile: boolean,
 ) {
-    /*
-     * The reference globe is intentionally dominant. This is slightly
-     * larger than dot-globe-lite while keeping the same camera model.
-     */
     return Math.min(
         viewportHeight * (isMobile ? 0.34 : 0.41),
         isMobile ? 2.55 : 3.45,
@@ -367,18 +363,8 @@ function createGlobeGridPolylines(radius: number): Polyline3D[] {
     }
 
     const longitudes = [
-        -150,
-        -120,
-        -90,
-        -60,
-        -30,
-        0,
-        30,
-        60,
-        90,
-        120,
-        150,
-        180,
+        -150, -120, -90, -60, -30, 0,
+        30, 60, 90, 120, 150, 180,
     ];
 
     for (const longitude of longitudes) {
@@ -576,9 +562,11 @@ export default class DotGlobeReferenceCanvasRenderer {
         this.canvas = options.canvas;
         this.labels = options.labels;
 
+        // desynchronized: true removed — causes visual tearing on iOS Safari
+        // (WebKit's implementation is inconsistent across iOS versions) and
+        // interacts badly with Lenis' scroll position updates.
         const context = this.canvas.getContext("2d", {
             alpha: true,
-            desynchronized: true,
         });
 
         if (!context) {
@@ -1019,9 +1007,9 @@ export default class DotGlobeReferenceCanvasRenderer {
             let planeY =
                 plane[offset + 1] -
                 this.currentProgress *
-                    fieldHeight *
-                    1.45 *
-                    flowSpeeds[index];
+                fieldHeight *
+                1.45 *
+                flowSpeeds[index];
 
             planeY =
                 positiveModulo(
@@ -1031,15 +1019,15 @@ export default class DotGlobeReferenceCanvasRenderer {
 
             const scrollWave1 = Math.sin(
                 planeX * 0.72 +
-                    planeY * 0.22 +
-                    this.currentProgress * 9 +
-                    timeSeconds * 0.18,
+                planeY * 0.22 +
+                this.currentProgress * 9 +
+                timeSeconds * 0.18,
             );
             const scrollWave2 = Math.sin(
                 planeX * 0.23 -
-                    planeY * 0.82 -
-                    this.currentProgress * 6.5 +
-                    seedPhases[index],
+                planeY * 0.82 -
+                this.currentProgress * 6.5 +
+                seedPhases[index],
             );
             const globalWave =
                 scrollWave1 * 0.65 + scrollWave2 * 0.35;
@@ -1144,11 +1132,11 @@ export default class DotGlobeReferenceCanvasRenderer {
             const radius = Math.max(
                 0.5,
                 sizes[index] *
-                    cursorSize *
-                    depthSize *
-                    sphereSize *
-                    perspective *
-                    0.5,
+                cursorSize *
+                depthSize *
+                sphereSize *
+                perspective *
+                0.5,
             );
 
             const baseAlpha = lerp(
@@ -1257,13 +1245,6 @@ export default class DotGlobeReferenceCanvasRenderer {
         rotationY: number,
         reveal: number,
     ) {
-        /*
-         * Reference look:
-         * - very light spherical scanlines
-         * - denser horizontal land hatching
-         * - country/coast outlines slightly stronger
-         * - no back-side geometry
-         */
         this.drawFrontPolylines(
             this.surfaceLines,
             rotationX,
@@ -1285,7 +1266,6 @@ export default class DotGlobeReferenceCanvasRenderer {
             [0.8, 1.25],
         );
 
-        /* Near-facing hatch gets a second subtle pass for depth. */
         this.drawFrontPolylines(
             this.geographyHatches,
             rotationX,
@@ -1482,15 +1462,15 @@ export default class DotGlobeReferenceCanvasRenderer {
             0.0005;
         const pointerSettling =
             Math.abs(this.currentPointerX - this.targetPointerX) >
-                0.001 ||
+            0.001 ||
             Math.abs(this.currentPointerY - this.targetPointerY) >
-                0.001 ||
+            0.001 ||
             Math.abs(
                 this.currentPointerActive - this.targetPointerActive,
             ) > 0.003;
         const orbitSettling =
             Math.abs(this.currentOrbitYaw - this.targetOrbitYaw) >
-                0.0005 ||
+            0.0005 ||
             Math.abs(
                 this.currentOrbitPitch - this.targetOrbitPitch,
             ) > 0.0005;
@@ -1508,10 +1488,6 @@ export default class DotGlobeReferenceCanvasRenderer {
             return false;
         }
 
-        /*
-         * Only the pre-final dot/wave phase has time-based motion.
-         * Once geography is established, a stationary final hold is idle.
-         */
         return this.currentProgress < 0.92;
     }
 
@@ -1560,7 +1536,7 @@ export default class DotGlobeReferenceCanvasRenderer {
             900,
             Math.round(
                 baseCount *
-                    (this.isLowPowerDevice() ? 0.72 : 1),
+                (this.isLowPowerDevice() ? 0.72 : 1),
             ),
         );
     }
