@@ -865,10 +865,10 @@ export default class DotGlobeReferenceCanvasRenderer {
         const morph = smoothstep(0.22, 0.68, progress);
         const finalReveal = smoothstep(0.72, 0.95, progress);
         const geographyReveal = this.reducedMotion
-            ? 1
+            ? 0
             : smoothstep(0.62, 0.88, progress);
         const particleOpacity = this.reducedMotion
-            ? 0
+            ? 1
             : 1 - smoothstep(0.70, 0.92, progress);
 
         const originalBaseRotationY = lerp(-0.68, 0.22, progress);
