@@ -39,6 +39,8 @@ function drawContain(
 
 // ─── component ────────────────────────────────────────────────────────────────
 
+const BATCH_SIZE = 10;
+
 export default function ImageSequenceCanvas({
     desktopFrames,
     mobileFrames,
@@ -64,22 +66,13 @@ export default function ImageSequenceCanvas({
     const lensRRef = useRef(0);
 
     // ── perf: scroll metrics cached outside the tick ──────────────────────────
-    // getBoundingClientRect is called ONCE on mount + resize/ST-refresh,
-    // never inside the 60fps tick. Reading window.scrollY is a cheap
-    // property access with no layout side-effects.
     const containerTopRef = useRef(0);
-    const containerScrollHeightRef = useRef(1); // 1 avoids /0 before first cache
+    const containerScrollHeightRef = useRef(1);
 
     // ── perf: skip redundant canvas draws ────────────────────────────────────
-    // When the user isn't scrolling, frameIdx stays the same every tick.
-    // Skipping the drawImage call (and clearRect) cuts idle CPU usage
-    // to near-zero for non-mouseInteraction sections.
     const lastFrameIdxRef = useRef(-1);
 
     // ── perf: IO-driven render gate ───────────────────────────────────────────
-    // tick() returns immediately when the scroll container is off-screen,
-    // so no canvas work (no drawImage, no offscreen compositing) happens
-    // when the section isn't visible.
     const isVisibleRef = useRef(false);
 
     // ── frame list ────────────────────────────────────────────────────────────
@@ -91,33 +84,48 @@ export default function ImageSequenceCanvas({
         return [] as string[];
     }, [desktopFrames, mobileFrames]);
 
-    // ── preload ───────────────────────────────────────────────────────────────
-    useEffect(() => {
-        const frames = getFrames();
-        imagesRef.current = [];
+    // ── batched preload ───────────────────────────────────────────────────────
+    // Loads BATCH_SIZE frames at a time. When all frames in a batch finish
+    // (load or error), the next batch starts automatically. This prevents
+    // all 120–357 Image() requests from saturating the connection pool at once.
+    const loadFramesBatched = useCallback((frames: string[]) => {
+        imagesRef.current = new Array(frames.length);
         loadedRef.current = new Set();
-        frames.forEach((src, i) => {
-            const img = new Image();
+        lastFrameIdxRef.current = -1;
 
-            img.decoding = 'async';
+        const loadBatch = (start: number) => {
+            const end = Math.min(start + BATCH_SIZE, frames.length);
+            const batchCount = end - start;
+            if (batchCount <= 0) return;
 
-            if (i <= 2) {
-                img.fetchPriority = 'high';
-            }
+            let settled = 0;
 
-            img.src = src;
-            img.onload = () => {
-                loadedRef.current.add(i);
-
-                /*
-                 * If this is the frame currently needed,
-                 * allow the next ticker pass to draw it.
-                 */
-                lastFrameIdxRef.current = -1;
+            const onSettle = () => {
+                settled++;
+                if (settled === batchCount) loadBatch(end);
             };
-            imagesRef.current[i] = img;
-        });
-    }, [getFrames]);
+
+            for (let i = start; i < end; i++) {
+                const img = new Image();
+                img.decoding = 'async';
+                // Give the first three frames high fetch priority so the
+                // initial canvas draw happens as soon as possible.
+                if (i <= 2) img.fetchPriority = 'high';
+                img.src = frames[i];
+                imagesRef.current[i] = img;
+                img.onload = () => {
+                    loadedRef.current.add(i);
+                    // Invalidate cached frame so the tick redraws immediately
+                    // when the newly loaded frame is the one currently needed.
+                    lastFrameIdxRef.current = -1;
+                    onSettle();
+                };
+                img.onerror = onSettle;
+            }
+        };
+
+        loadBatch(0);
+    }, []);
 
     // ── resize + canvas sizing ────────────────────────────────────────────────
     useEffect(() => {
@@ -146,17 +154,14 @@ export default function ImageSequenceCanvas({
         if (!container) return;
 
         const updateMetrics = () => {
-            // One-shot layout read — fine on mount and resize events.
             const rect = container.getBoundingClientRect();
             containerTopRef.current = rect.top + window.scrollY;
             containerScrollHeightRef.current = Math.max(1, container.offsetHeight - window.innerHeight);
-            // Invalidate cached frame so the new scroll position redraws correctly.
             lastFrameIdxRef.current = -1;
         };
 
         updateMetrics();
         window.addEventListener('resize', updateMetrics);
-        // GSAP shifts pin spacers during refresh — re-cache after that settles.
         ScrollTrigger.addEventListener('refresh', updateMetrics);
 
         return () => {
@@ -165,7 +170,34 @@ export default function ImageSequenceCanvas({
         };
     }, [containerRef]);
 
+    // ── preload gate (IntersectionObserver on scroll container) ──────────────
+    // Fires once when the container is within 200px of the viewport bottom.
+    // Disconnects immediately after triggering so the observer doesn't persist.
+    // This replaces the previous eager useEffect that fired all Image() requests
+    // at React hydration time regardless of scroll position.
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const io = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    loadFramesBatched(getFrames());
+                    io.disconnect();
+                }
+            },
+            // Start loading 200px before the container enters the viewport
+            // so the first frames are ready by the time the user reaches it.
+            { rootMargin: '0px 0px 200px 0px', threshold: 0 },
+        );
+
+        io.observe(container);
+        return () => io.disconnect();
+    }, [containerRef, getFrames, loadFramesBatched]);
+
     // ── visibility gate (IntersectionObserver on scroll container) ────────────
+    // Separate from the preload observer — this one persists and gates the
+    // tick() render loop so no canvas work runs when the section is off-screen.
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
@@ -178,7 +210,6 @@ export default function ImageSequenceCanvas({
     }, [containerRef]);
 
     // ── mouse tracking ────────────────────────────────────────────────────────
-    // Listener on window — overlay divs would otherwise eat canvas-level events.
     useEffect(() => {
         if (!mouseInteraction) return;
         const canvas = canvasRef.current;
@@ -225,25 +256,19 @@ export default function ImageSequenceCanvas({
             const ch = canvas.height;
 
             // ── Scroll → frame (no layout recalc) ─────────────────────────────
-            // window.scrollY is a cheap cached read — no forced layout.
             const scrolled = window.scrollY - containerTopRef.current;
             const progress = Math.max(0, Math.min(1, scrolled / containerScrollHeightRef.current));
             const frameIdx = Math.min(
                 frames.length - 1,
                 Math.max(
                     0,
-                    Math.round(
-                        progress * (frames.length - 1),
-                    ),
+                    Math.round(progress * (frames.length - 1)),
                 ),
             );
             const img = imagesRef.current[frameIdx];
             if (!img || !loadedRef.current.has(frameIdx)) return;
 
             if (mouseInteraction) {
-                // Mouse path — always redraws: lerp changes every frame regardless
-                // of scroll, so skipping redundant-frame check here is correct.
-
                 if (smoothMouseRef.current.x < 0) {
                     smoothMouseRef.current = { x: cw / 2, y: ch / 2 };
                     targetMouseRef.current = { x: cw / 2, y: ch / 2 };
@@ -317,9 +342,6 @@ export default function ImageSequenceCanvas({
                 }
 
             } else {
-                // ── Skip draw when frame hasn't changed ───────────────────────
-                // While the user is stopped (not scrolling), this prevents
-                // clearRect + drawImage from running on every frame tick.
                 if (frameIdx === lastFrameIdxRef.current) return;
                 lastFrameIdxRef.current = frameIdx;
 
@@ -329,9 +351,6 @@ export default function ImageSequenceCanvas({
             }
         };
 
-        // Single RAF loop — synced with Lenis + ScrollTrigger via GSAP ticker.
-        // Previously: own requestAnimationFrame loop calling getBoundingClientRect
-        // every frame. This eliminates that layout thrash entirely.
         gsap.ticker.add(tick);
         return () => gsap.ticker.remove(tick);
     }, [containerRef, getFrames, objectFit, mouseInteraction]);
