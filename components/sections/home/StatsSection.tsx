@@ -456,7 +456,7 @@ export default function StatsSection() {
             const scrollable = container.offsetHeight - window.innerHeight;
 
             const hasStarted = rect.top <= 0;
-            const hasEnded = rect.bottom <= window.innerHeight;
+            const hasEnded = rect.bottom <= 0;
             const active = hasStarted && !hasEnded;
 
             frame.style.visibility = active ? 'visible' : 'hidden';
