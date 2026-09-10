@@ -27,6 +27,8 @@ const Root = styled('section')({
     height: '100vh',
     overflow: 'hidden',
     background: '#000000',
+    borderTopLeftRadius:'65px',
+    borderTopRightRadius:'65px',
 });
 
 /*
