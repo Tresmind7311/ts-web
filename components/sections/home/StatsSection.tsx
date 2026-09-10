@@ -29,7 +29,7 @@ const DESKTOP_FRAMES = generateFrameUrls(
 
 // Every 3rd desktop frame → ~119 frames for mobile.
 // Same source files, no new assets required.
-const MOBILE_FRAMES = DESKTOP_FRAMES.filter((_, i) => i % 3 === 0);
+const MOBILE_FRAMES = DESKTOP_FRAMES.filter((_, i) => i % 6 === 0);
 
 /*
  * Same tall-scroll + fixed-frame pattern as StatsSection.
