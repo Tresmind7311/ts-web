@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { keyframes, styled } from '@mui/material/styles';
 
+import { SecondaryButton } from '@/components/common/Button';
 import ServiceContentCard, {
     type ServiceContentCardItem,
 } from './ServiceContentCard';
@@ -158,26 +158,6 @@ const ButtonWrap = styled(Box)({
     marginTop: '34px',
 });
 
-const SeeMoreButton = styled(Button)({
-    minWidth: '160px',
-    minHeight: '48px',
-    padding: '10px 28px',
-    borderRadius: '10px',
-    borderColor: tokens.color.neutral0,
-    color: tokens.color.neutral0,
-    fontFamily: tokens.font.body,
-    fontSize: '15px',
-    fontWeight: 500,
-    textTransform: 'none',
-    backgroundColor: 'transparent',
-
-    '&:hover': {
-        borderColor: tokens.color.neutral0,
-        backgroundColor: 'rgba(255,255,255,0.10)',
-        transform: 'translateY(-1px)',
-    },
-});
-
 export default function ServiceCardsSection({
     id = 'service-cards-heading',
     eyebrow,
@@ -299,12 +279,11 @@ export default function ServiceCardsSection({
 
                 {canExpand ? (
                     <ButtonWrap>
-                        <SeeMoreButton
-                            variant="outlined"
+                        <SecondaryButton
                             onClick={() => setExpanded(true)}
                         >
                             See more
-                        </SeeMoreButton>
+                        </SecondaryButton>
                     </ButtonWrap>
                 ) : null}
             </SectionContainer>

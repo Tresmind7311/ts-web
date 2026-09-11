@@ -1,11 +1,11 @@
 'use client';
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
+import { PrimaryButton, SecondaryButton } from '@/components/common/Button';
 import { tokens } from '@/theme/theme';
 
 const HeroSection = styled(Box)(({ theme }) => ({
@@ -112,67 +112,6 @@ const Actions = styled(Box)(({ theme }) => ({
     },
 }));
 
-const PrimaryButton = styled(Button)(({ theme }) => ({
-    minHeight: '54px',
-    padding: '13px 28px',
-    borderRadius: '11px',
-    fontFamily: tokens.font.body,
-    fontSize: '16px',
-    fontWeight: 600,
-    lineHeight: 1,
-    textTransform: 'none',
-    color: tokens.color.neutral0,
-    background: `linear-gradient(
-        100deg,
-        ${tokens.color.uv800} 0%,
-        ${tokens.color.uv500} 64%,
-        ${tokens.color.uv300} 100%
-    )`,
-    boxShadow: 'none',
-
-    '&:hover': {
-        background: `linear-gradient(
-            100deg,
-            ${tokens.color.uv800} 0%,
-            ${tokens.color.uv500} 64%,
-            ${tokens.color.uv300} 100%
-        )`,
-        boxShadow: '0 10px 28px rgba(7, 20, 99, 0.16)',
-        transform: 'translateY(-1px)',
-    },
-
-    [theme.breakpoints.down('sm')]: {
-        width: '100%',
-        minHeight: '50px',
-        fontSize: '15px',
-    },
-}));
-
-const SecondaryButton = styled(Button)(({ theme }) => ({
-    minHeight: '54px',
-    padding: '13px 28px',
-    borderRadius: '11px',
-    fontFamily: tokens.font.body,
-    fontSize: '16px',
-    fontWeight: 600,
-    lineHeight: 1,
-    textTransform: 'none',
-    color: tokens.color.uv800,
-    borderColor: 'rgba(7, 20, 99, 0.55)',
-    background: 'rgba(255, 255, 255, 0.35)',
-
-    '&:hover': {
-        borderColor: tokens.color.uv500,
-        background: 'rgba(255, 255, 255, 0.60)',
-    },
-
-    [theme.breakpoints.down('sm')]: {
-        width: '100%',
-        minHeight: '50px',
-        fontSize: '15px',
-    },
-}));
-
 export default function ServicesMainHero() {
     return (
         <HeroSection component="section">
@@ -191,17 +130,13 @@ export default function ServicesMainHero() {
 
                     <Actions>
                         <PrimaryButton
-                            component="a"
                             href="#contact"
-                            variant="contained"
                         >
                             Start Your Project
                         </PrimaryButton>
 
                         <SecondaryButton
-                            component="a"
                             href="#contact"
-                            variant="outlined"
                         >
                             Schedule a Consultation
                         </SecondaryButton>

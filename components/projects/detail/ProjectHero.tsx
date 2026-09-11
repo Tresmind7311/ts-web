@@ -3,9 +3,9 @@
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Image from 'next/image';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { PrimaryButton } from '@/components/common/Button';
 import { Project } from '@/data/projects/types';
 
 const HeroRoot = styled(Box)(({ theme }) => ({
@@ -116,23 +116,14 @@ export default function ProjectHero({ project }: Props) {
           <Title variant="h1">{project.title}</Title>
           <Desc variant="body1">{project.shortDescription}</Desc>
           {project.overview.liveUrl && (
-            <Button
-              variant="contained"
+            <PrimaryButton
               href={project.overview.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
               endIcon={<OpenInNewIcon />}
-              sx={{
-                borderRadius: '999px',
-                px: 3.5,
-                py: 1.4,
-                fontWeight: 600,
-                textTransform: 'none',
-                fontSize: '0.95rem',
-              }}
             >
               View Live Project
-            </Button>
+            </PrimaryButton>
           )}
         </Box>
         <ImgWrap>

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import { SecondaryButton } from '@/components/common/Button';
 import { tokens } from '@/theme/theme';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 
@@ -117,26 +118,6 @@ const ButtonWrap = styled(Box)({
     marginTop: 'clamp(32px, 5vh, 56px)',
     display: 'flex',
     justifyContent: 'center',
-});
-
-const LoadMoreButton = styled('button')({
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '8px',
-    padding: '10px 22px',
-    borderRadius: '999px',
-    border: `1px solid ${alpha(tokens.color.ink900, 0.15)}`,
-    background: tokens.color.neutral0,
-    color: tokens.color.ink900,
-    fontFamily: 'var(--font-body)',
-    fontWeight: 500,
-    fontSize: '14px',
-    cursor: 'pointer',
-    transition: `all ${tokens.motion.base} ${tokens.motion.ease}`,
-    '&:hover': {
-        background: alpha(tokens.color.ink900, 0.04),
-        borderColor: alpha(tokens.color.ink900, 0.28),
-    },
 });
 
 const Chevron = styled('span', {
@@ -281,10 +262,10 @@ export default function TestimonialsSection({ testimonials, initialCount = 4 }: 
                 )}
             </List>
             <ButtonWrap>
-                <LoadMoreButton type="button" onClick={handleExpand} aria-expanded={expanded}>
+                <SecondaryButton type="button" onClick={handleExpand} aria-expanded={expanded}>
                     {expanded ? 'Show less' : 'Read testimonials'}
                     <Chevron open={expanded}>▾</Chevron>
-                </LoadMoreButton>
+                </SecondaryButton>
             </ButtonWrap>
         </Section>
     );
