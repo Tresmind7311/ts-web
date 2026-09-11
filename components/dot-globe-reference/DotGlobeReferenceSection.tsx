@@ -56,7 +56,7 @@ export interface DotGlobeReferenceSectionProps {
 export default function DotGlobeReferenceSection({
     phoneNumber = "+44 20 7946 0958",
     // Replace this placeholder with the site's contact email, or pass the prop.
-    emailAddress = "hello@example.com",
+    emailAddress = "contact@tresmind.com",
 }: DotGlobeReferenceSectionProps = {}) {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -169,10 +169,23 @@ export default function DotGlobeReferenceSection({
             const distance = sectionProgress * SECTION_SCROLL_DISTANCE_VH;
             fadeContact(phoneRef.current, distance, 15);
             fadeContact(emailRef.current, distance, 120);
-            const animationProgress = Math.max(0, Math.min(
-                (distance - CONTACT_SCROLL_DISTANCE_VH) / ANIMATION_SCROLL_DISTANCE_VH,
-                1,
-            ));
+            // First 22% controls dot movement before globe morph begins.
+            const DOT_FLOW_END_PROGRESS = 0.22;
+
+            const animationProgress =
+                distance <= CONTACT_SCROLL_DISTANCE_VH
+                    ? DOT_FLOW_END_PROGRESS *
+                    Math.max(0, Math.min(
+                        distance / CONTACT_SCROLL_DISTANCE_VH,
+                        1,
+                    ))
+                    : DOT_FLOW_END_PROGRESS +
+                    (1 - DOT_FLOW_END_PROGRESS) *
+                    Math.max(0, Math.min(
+                        (distance - CONTACT_SCROLL_DISTANCE_VH) /
+                        ANIMATION_SCROLL_DISTANCE_VH,
+                        1,
+                    ));
             progressRef.current = animationProgress;
             renderer.setProgress(animationProgress);
             syncInteractionCursor(animationProgress);
@@ -295,7 +308,7 @@ export default function DotGlobeReferenceSection({
                     Math.min(
                         0.72,
                         orbitRef.current.targetPitch +
-                            deltaY * 0.0038,
+                        deltaY * 0.0038,
                     ),
                 );
 
@@ -311,13 +324,13 @@ export default function DotGlobeReferenceSection({
             const normalizedX =
                 ((event.clientX - rect.left) /
                     Math.max(rect.width, 1)) *
-                    2 -
+                2 -
                 1;
             const normalizedY =
                 1 -
                 ((event.clientY - rect.top) /
                     Math.max(rect.height, 1)) *
-                    2;
+                2;
 
             renderer.setPointer(
                 normalizedX,

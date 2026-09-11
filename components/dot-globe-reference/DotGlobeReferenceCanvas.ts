@@ -90,7 +90,7 @@ const ROUTES: GlobeRoute[] = [
 
 const VISUAL_COLORS = {
     uv600: "#0DB0DC",
-    uv500: "#0783FC",
+    uv500: "#071463",
     uv300: "#0DB0DC",
 };
 
@@ -107,10 +107,10 @@ const COLOR_BUCKETS = DOT_COLORS.length;
 const ALPHA_BUCKETS = ALPHA_LEVELS.length;
 const BUCKET_COUNT = COLOR_BUCKETS * ALPHA_BUCKETS;
 
-const GEO_HATCH_RGB = "13, 176, 220";
-const GEO_BOUNDARY_RGB = "7, 131, 252";
-const GEO_COAST_RGB = "7, 131, 252";
-const GEO_SURFACE_RGB = "13, 176, 220";
+const GEO_HATCH_RGB = "7, 20, 99";
+const GEO_BOUNDARY_RGB = "7, 20, 99";
+const GEO_COAST_RGB = "7, 20, 99";
+const GEO_SURFACE_RGB = "7, 20, 99";
 
 function clamp(value: number, min: number, max: number) {
     return Math.min(max, Math.max(min, value));
