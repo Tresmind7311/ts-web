@@ -15,8 +15,10 @@ import DotGlobeReferenceCanvasRenderer, {
 } from "./DotGlobeReferenceCanvas";
 import styles from "./DotGlobeReference.module.css";
 
-const ANIMATION_SCROLL_DISTANCE_VH = 430;
-const SECTION_SCROLL_DISTANCE_VH = 500;
+// Contact intro, then the original globe timeline stretched from 430 to 650vh.
+const CONTACT_SCROLL_DISTANCE_VH = 220;
+const ANIMATION_SCROLL_DISTANCE_VH = 650;
+const SECTION_SCROLL_DISTANCE_VH = 940;
 const GLOBE_INTERACTION_PROGRESS = 0.90;
 
 const LOCATIONS: EarthLocation[] = [
@@ -46,14 +48,24 @@ const LOCATIONS: EarthLocation[] = [
     },
 ];
 
-export default function DotGlobeReferenceSection() {
+export interface DotGlobeReferenceSectionProps {
+    phoneNumber?: string;
+    emailAddress?: string;
+}
+
+export default function DotGlobeReferenceSection({
+    phoneNumber = "+44 20 7946 0958",
+    // Replace this placeholder with the site's contact email, or pass the prop.
+    emailAddress = "hello@example.com",
+}: DotGlobeReferenceSectionProps = {}) {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const rendererRef = useRef<DotGlobeReferenceCanvasRenderer | null>(null);
     const labelRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+    const phoneRef = useRef<HTMLDivElement>(null);
+    const emailRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef(0);
-    const reducedMotionRef = useRef(false);
 
     const orbitRef = useRef({
         targetYaw: 0,
@@ -75,7 +87,6 @@ export default function DotGlobeReferenceSection() {
         }
 
         if (
-            !reducedMotionRef.current &&
             progress >= GLOBE_INTERACTION_PROGRESS
         ) {
             section.style.cursor = orbitRef.current.dragging
@@ -109,11 +120,12 @@ export default function DotGlobeReferenceSection() {
         rendererRef.current = renderer;
         renderer.setVisible(false);
 
-        const reducedMotion = window.matchMedia(
-            "(prefers-reduced-motion: reduce)",
-        ).matches;
-        reducedMotionRef.current = reducedMotion;
-        renderer.setReducedMotion(reducedMotion);
+        const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const updateMotionPreference = () => {
+            renderer.setReducedMotion(motionQuery.matches);
+        };
+        updateMotionPreference();
+        motionQuery.addEventListener("change", updateMotionPreference);
 
         const resize = () => {
             const rect = section.getBoundingClientRect();
@@ -141,21 +153,36 @@ export default function DotGlobeReferenceSection() {
         );
         intersectionObserver.observe(section);
 
-        if (reducedMotion) {
-            progressRef.current = 1;
-            renderer.setProgress(1);
-            renderer.setPointer(0, 0, 0);
-            renderer.setOrbit(0, 0, false);
-            syncInteractionCursor(1);
-
-            return () => {
-                window.cancelAnimationFrame(resizeFrame);
-                resizeObserver.disconnect();
-                intersectionObserver.disconnect();
-                renderer.destroy();
-                rendererRef.current = null;
+        // All states derive from scroll position, including reverse scroll and refresh.
+        const fadeContact = (element: HTMLDivElement | null, distance: number, start: number) => {
+            if (!element) return;
+            const smooth = (value: number) => {
+                const t = Math.max(0, Math.min(1, value));
+                return t * t * (3 - 2 * t);
             };
-        }
+            const opacity = smooth((distance - start) / 25) *
+                (1 - smooth((distance - start - 60) / 25));
+            element.style.opacity = String(opacity);
+            element.style.visibility = opacity > 0.001 ? "visible" : "hidden";
+        };
+        const syncScroll = (sectionProgress: number) => {
+            const distance = sectionProgress * SECTION_SCROLL_DISTANCE_VH;
+            fadeContact(phoneRef.current, distance, 15);
+            fadeContact(emailRef.current, distance, 120);
+            const animationProgress = Math.max(0, Math.min(
+                (distance - CONTACT_SCROLL_DISTANCE_VH) / ANIMATION_SCROLL_DISTANCE_VH,
+                1,
+            ));
+            progressRef.current = animationProgress;
+            renderer.setProgress(animationProgress);
+            syncInteractionCursor(animationProgress);
+            if (animationProgress < 0.82 && !orbitRef.current.dragging) {
+                orbitRef.current.targetYaw = 0;
+                orbitRef.current.targetPitch = 0;
+                renderer.setOrbit(0, 0, false);
+            }
+        };
+        syncScroll(0);
 
         let context: ReturnType<typeof gsap.context> | undefined;
         let rafOne = 0;
@@ -167,74 +194,20 @@ export default function DotGlobeReferenceSection() {
                     ScrollTrigger.create({
                         trigger: section,
                         start: "top top",
-                        end: `+=${SECTION_SCROLL_DISTANCE_VH}vh`,
+                        end: () => `+=${section.clientHeight * SECTION_SCROLL_DISTANCE_VH / 100}`,
                         pin: true,
                         pinSpacing: true,
                         invalidateOnRefresh: true,
                         refreshPriority: -1,
 
-                        onUpdate(self) {
-                            const animationProgress = Math.min(
-                                self.progress *
-                                    (SECTION_SCROLL_DISTANCE_VH /
-                                        ANIMATION_SCROLL_DISTANCE_VH),
-                                1,
-                            );
-
-                            progressRef.current = animationProgress;
-                            renderer.setProgress(animationProgress);
-                            syncInteractionCursor(animationProgress);
-
-                            if (
-                                animationProgress < 0.82 &&
-                                !orbitRef.current.dragging
-                            ) {
-                                orbitRef.current.targetYaw = 0;
-                                orbitRef.current.targetPitch = 0;
-                                renderer.setOrbit(0, 0, false);
-                            }
-                        },
-
-                        onRefresh(self) {
-                            const animationProgress = Math.min(
-                                self.progress *
-                                    (SECTION_SCROLL_DISTANCE_VH /
-                                        ANIMATION_SCROLL_DISTANCE_VH),
-                                1,
-                            );
-
-                            progressRef.current = animationProgress;
-                            renderer.setProgress(animationProgress);
-                            syncInteractionCursor(animationProgress);
-                        },
-
-                        onEnter() {
-                            progressRef.current = 0;
-                            renderer.setProgress(0);
-                            syncInteractionCursor(0);
-                        },
-
-                        onLeave() {
-                            progressRef.current = 1;
-                            renderer.setProgress(1);
-                            syncInteractionCursor(1);
-                        },
-
-                        onEnterBack(self) {
-                            const animationProgress = Math.min(
-                                self.progress *
-                                    (SECTION_SCROLL_DISTANCE_VH /
-                                        ANIMATION_SCROLL_DISTANCE_VH),
-                                1,
-                            );
-
-                            progressRef.current = animationProgress;
-                            renderer.setProgress(animationProgress);
-                            syncInteractionCursor(animationProgress);
-                        },
+                        onUpdate(self) { syncScroll(self.progress); },
+                        onRefresh(self) { syncScroll(self.progress); },
+                        onEnter(self) { syncScroll(self.progress); },
+                        onLeave() { syncScroll(1); },
+                        onEnterBack(self) { syncScroll(self.progress); },
 
                         onLeaveBack() {
-                            progressRef.current = 0;
+                            syncScroll(0);
                             orbitRef.current.dragging = false;
                             orbitRef.current.targetYaw = 0;
                             orbitRef.current.targetPitch = 0;
@@ -254,6 +227,7 @@ export default function DotGlobeReferenceSection() {
             window.cancelAnimationFrame(resizeFrame);
             window.cancelAnimationFrame(rafOne);
             window.cancelAnimationFrame(rafTwo);
+            motionQuery.removeEventListener("change", updateMotionPreference);
             resizeObserver.disconnect();
             intersectionObserver.disconnect();
             context?.revert();
@@ -265,7 +239,6 @@ export default function DotGlobeReferenceSection() {
     const handlePointerDown = useCallback(
         (event: ReactPointerEvent<HTMLElement>) => {
             if (
-                reducedMotionRef.current ||
                 progressRef.current < GLOBE_INTERACTION_PROGRESS
             ) {
                 return;
@@ -385,7 +358,6 @@ export default function DotGlobeReferenceSection() {
             );
 
             event.currentTarget.style.cursor =
-                !reducedMotionRef.current &&
                 progressRef.current >= GLOBE_INTERACTION_PROGRESS
                     ? "grab"
                     : "default";
@@ -423,6 +395,21 @@ export default function DotGlobeReferenceSection() {
                 className={styles.softVignette}
                 aria-hidden="true"
             />
+
+            <div className={styles.contactLayer} aria-hidden="true">
+                <div ref={phoneRef} className={styles.contactDetail}>
+                    <span className={styles.contactLabel}>Phone</span>
+                    <strong>{phoneNumber}</strong>
+                </div>
+                <div ref={emailRef} className={styles.contactDetail}>
+                    <span className={styles.contactLabel}>Email</span>
+                    <strong>{emailAddress}</strong>
+                </div>
+            </div>
+            <div className={styles.srOnly}>
+                <p>Phone: {phoneNumber}</p>
+                <p>Email: {emailAddress}</p>
+            </div>
 
             <div className={styles.labelLayer}>
                 {LOCATIONS.map((location) => (

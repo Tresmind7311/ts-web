@@ -88,12 +88,18 @@ const ROUTES: GlobeRoute[] = [
     },
 ];
 
+const VISUAL_COLORS = {
+    uv600: "#0DB0DC",
+    uv500: "#0783FC",
+    uv300: "#0DB0DC",
+};
+
 const DOT_COLORS = [
-    "rgb(174 184 184)",
-    "rgb(127 157 155)",
-    "rgb(82 128 125)",
-    "rgb(41 91 88)",
-    "rgb(6 65 62)",
+    VISUAL_COLORS.uv300,
+    VISUAL_COLORS.uv600,
+    VISUAL_COLORS.uv500,
+    VISUAL_COLORS.uv600,
+    VISUAL_COLORS.uv500,
 ];
 
 const ALPHA_LEVELS = [0.28, 0.45, 0.66];
@@ -101,10 +107,10 @@ const COLOR_BUCKETS = DOT_COLORS.length;
 const ALPHA_BUCKETS = ALPHA_LEVELS.length;
 const BUCKET_COUNT = COLOR_BUCKETS * ALPHA_BUCKETS;
 
-const GEO_HATCH_RGB = "137, 160, 178";
-const GEO_BOUNDARY_RGB = "102, 132, 154";
-const GEO_COAST_RGB = "83, 119, 146";
-const GEO_SURFACE_RGB = "151, 171, 186";
+const GEO_HATCH_RGB = "13, 176, 220";
+const GEO_BOUNDARY_RGB = "7, 131, 252";
+const GEO_COAST_RGB = "7, 131, 252";
+const GEO_SURFACE_RGB = "13, 176, 220";
 
 function clamp(value: number, min: number, max: number) {
     return Math.min(max, Math.max(min, value));
@@ -698,12 +704,10 @@ export default class DotGlobeReferenceCanvasRenderer {
         this.reducedMotion = reducedMotion;
 
         if (reducedMotion) {
-            this.targetProgress = 1;
-            this.currentProgress = 1;
+            this.currentProgress = this.targetProgress;
             this.targetPointerActive = 0;
             this.currentPointerActive = 0;
-            this.targetOrbitPitch = 0;
-            this.currentOrbitPitch = 0;
+            this.currentOrbitPitch = this.targetOrbitPitch;
         }
 
         this.wake();
@@ -813,7 +817,7 @@ export default class DotGlobeReferenceCanvasRenderer {
             this.currentPointerY = this.targetPointerY;
             this.currentPointerActive = 0;
             this.currentOrbitYaw = this.targetOrbitYaw;
-            this.currentOrbitPitch = 0;
+            this.currentOrbitPitch = this.targetOrbitPitch;
             return;
         }
 
@@ -863,13 +867,9 @@ export default class DotGlobeReferenceCanvasRenderer {
 
         const progress = this.currentProgress;
         const morph = smoothstep(0.22, 0.68, progress);
-        const finalReveal = this.reducedMotion ? 0 : smoothstep(0.72, 0.95, progress);
-        const geographyReveal = this.reducedMotion
-            ? 0
-            : smoothstep(0.62, 0.88, progress);
-        const particleOpacity = this.reducedMotion
-            ? 1
-            : 1 - smoothstep(0.70, 0.92, progress);
+        const finalReveal = smoothstep(0.72, 0.95, progress);
+        const geographyReveal = smoothstep(0.62, 0.88, progress);
+        const particleOpacity = 1 - smoothstep(0.70, 0.92, progress);
 
         const originalBaseRotationY = lerp(-0.68, 0.22, progress);
         const referencePoseBlend = smoothstep(0.58, 0.90, progress);
@@ -910,7 +910,7 @@ export default class DotGlobeReferenceCanvasRenderer {
                 this.transitionGridLines,
                 rotationX,
                 rotationY,
-                "49, 95, 93",
+                "7, 131, 252",
                 transitionGridOpacity * 0.24,
                 0.9,
                 -0.08,
@@ -919,7 +919,7 @@ export default class DotGlobeReferenceCanvasRenderer {
 
         if (particleOpacity > 0.001) {
             this.prepareParticles(
-                timeSeconds,
+                this.reducedMotion ? 0 : timeSeconds,
                 morph,
                 finalReveal,
                 rotationX * morph,
@@ -933,7 +933,7 @@ export default class DotGlobeReferenceCanvasRenderer {
                 this.routeLines,
                 rotationX,
                 rotationY,
-                "102, 203, 197",
+                "13, 176, 220",
                 routeOpacity * 0.72,
                 1,
                 -0.05,
@@ -1475,6 +1475,10 @@ export default class DotGlobeReferenceCanvasRenderer {
                 this.currentOrbitPitch - this.targetOrbitPitch,
             ) > 0.0005;
 
+        if (this.reducedMotion) {
+            return false;
+        }
+
         if (
             progressSettling ||
             pointerSettling ||
@@ -1482,10 +1486,6 @@ export default class DotGlobeReferenceCanvasRenderer {
             this.dragging
         ) {
             return true;
-        }
-
-        if (this.reducedMotion) {
-            return false;
         }
 
         return this.currentProgress < 0.92;
