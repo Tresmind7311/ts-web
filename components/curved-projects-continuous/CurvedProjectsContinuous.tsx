@@ -32,7 +32,7 @@ const Section = styled('section')({
     overflow: 'hidden',
     background: tokens.color.neutral0,
     isolation: 'isolate',
-    paddingTop: '50px',
+    paddingTop: '40px',
     '@media (prefers-reduced-motion: reduce)': {
         height: 'auto',
         padding: '60px 0',

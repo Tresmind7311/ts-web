@@ -6,7 +6,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ImageSequenceCanvas from '@/components/canvas/ImageSequenceCanvas';
 import { generateFrameUrls } from '@/lib/frameUtils';
-import { tokens } from '@/theme/theme';
+import theme, { tokens } from '@/theme/theme';
+import { SecondaryButton } from '@/components/common/Button';
 
 // ─── Frame configuration ──────────────────────────────────────────
 const FRAME_COUNT = 120;
@@ -73,10 +74,10 @@ const ContentOverlay = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    padding: '0 20px',
+    padding: '0 6vw',
     pointerEvents: 'auto',
-    maxWidth: '1280px',
-    margin: 'auto',
+    // maxWidth: '1580px',
+    // margin: 'auto',
     // Visible from the start. JS only sets this to 0 at the end trigger.
     opacity: 1,
     transition: `opacity 600ms ${EASE}`,
@@ -85,7 +86,10 @@ const ContentOverlay = styled(Box)(({ theme }) => ({
 const Eyebrow = styled(Typography)({
     fontFamily: 'var(--font-body)',
     fontWeight: 600,
-    fontSize: '11px',
+    fontSize: '0.9vw',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '14px',
+    },
     letterSpacing: '0.14em',
     textTransform: 'uppercase',
     color: tokens.color.uv300,
@@ -96,8 +100,11 @@ const Eyebrow = styled(Typography)({
 
 const Headline = styled(Typography)(({ theme }) => ({
     fontFamily: 'var(--font-display)',
-    fontWeight: 800,
-    fontSize: 'clamp(44px, 7vw, 96px)',
+    fontWeight: 700,
+    fontSize: '6.5vw',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '45px',
+    },
     lineHeight: 0.95,
     letterSpacing: '-0.04em',
     color: tokens.color.neutral0,
@@ -111,14 +118,20 @@ const Headline = styled(Typography)(({ theme }) => ({
 const SubCopy = styled(Typography)(({ theme }) => ({
     fontFamily: 'var(--font-body)',
     fontWeight: 400,
-    fontSize: 'clamp(15px, 1.4vw, 18px)',
+    fontSize: '1.2vw',
     lineHeight: 1.65,
     color: alpha(tokens.color.neutral0, 0.6),
-    maxWidth: '380px',
+    maxWidth: '22vw',
     marginBottom: '40px',
     animation: `${fadeSlideIn} 0.8s ${EASE} 0.42s both`,
+
     [theme.breakpoints.down('md')]: {
         marginBottom: '28px',
+    },
+
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '16px',
+        maxWidth: '100%',
     },
 }));
 
@@ -132,7 +145,7 @@ const CtaButton = styled('a')({
     color: tokens.color.neutral50,
     background: tokens.color.transparent0,
     padding: '14px 28px',
-    borderRadius: tokens.radius.full,
+    borderRadius: '10px',
     border: `1px solid ${tokens.color.neutral50}`,
     maxWidth: '250px',
     textAlign: 'center',
@@ -239,9 +252,31 @@ export default function HeroSection() {
                         digital experiences for those who see further.
                     </SubCopy>
 
-                    <CtaButton href="#contact">
+                    {/* <CtaButton href="#contact">
                         Start a project&nbsp;&nbsp;→
-                    </CtaButton>
+                    </CtaButton> */}
+                    <SecondaryButton
+                        sx={{
+                            maxWidth: '12vw',
+
+                            [theme.breakpoints.down('md')]: {
+                                maxWidth: '18vw',
+                            },
+
+                            [theme.breakpoints.down('sm')]: {
+                                maxWidth: '50vw',
+                            },
+                        }}
+                        textColor="#FFFFFF"
+                        borderColor="rgba(255,255,255,0.45)"
+                        gradientBorderStart="#0DB0DC"
+                        gradientBorderEnd="#0DB0DC"
+                        hoverBackgroundColor="transparent"
+
+                        href="#contact"
+                    >
+                        Start a project&nbsp;&nbsp;→
+                    </SecondaryButton>
                 </ContentOverlay>
 
             </StickyFrame>

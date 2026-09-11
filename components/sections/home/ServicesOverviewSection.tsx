@@ -114,6 +114,8 @@ const UIUX = styled(FilledWord)(({ theme }) => ({
     top: '9.5vh',
     left: '3.7vw',
     fontSize: '6.2vw',
+    letterSpacing:' 0',
+    lineHeight: '100%',
 
     [theme.breakpoints.down('md')]: {
         top: '9vh',
@@ -185,13 +187,16 @@ const Branding = styled('div')(({ theme }) => ({
     color: tokens.color.ink900,
     fontFamily: 'var(--font-display)',
     fontWeight: 800,
-    fontSize: '12vw',
+    fontSize: '11vw',
     lineHeight: 0.78,
-    letterSpacing: '-0.072em',
+    letterSpacing: '-2px',
     textTransform: 'uppercase',
     whiteSpace: 'nowrap',
     userSelect: 'none',
     cursor: 'default',
+    // ponytail: lineHeight:0.78 shrinks the paint box below the glyph ink extent;
+    // paddingBottom restores it so background-clip:text covers caps like G/D/N.
+    paddingBottom: '0.25em',
 
     [theme.breakpoints.down('md')]: {
         fontSize: 'clamp(82px, 17vw, 132px)',
@@ -482,10 +487,6 @@ export default function ServicesOverviewSection({
                 opacity: 1,
             });
 
-            /*
-             * Every service item starts hidden.
-             * Scroll reveals them one-by-one.
-             */
             gsap.set(
                 [
                     uiux,
@@ -560,18 +561,11 @@ export default function ServicesOverviewSection({
                 scrollTrigger: {
                     trigger: section,
                     start: 'top top',
-
-                    /*
-                     * Extra scroll room is intentional:
-                     * each service gets its own reveal beat,
-                     * then shade + ending run afterwards.
-                     */
                     end: () =>
                         `+=${Math.round(
                             window.innerHeight
                             * 3.5,
                         )}`,
-
                     pin: true,
                     pinSpacing: true,
                     scrub: 0.7,
@@ -602,64 +596,15 @@ export default function ServicesOverviewSection({
                 );
             };
 
-            /*
-             * Reveal order:
-             * UI/UX → WEB → BRANDING → MOTION →
-             * STRATEGY → PRODUCTS → supporting text / CTA
-             */
-            reveal(
-                uiux,
-                0.00,
-                0.085,
-            );
-
-            reveal(
-                web,
-                0.085,
-                0.08,
-            );
-
-            reveal(
-                branding,
-                0.165,
-                0.11,
-            );
-
-            reveal(
-                motion,
-                0.275,
-                0.085,
-            );
-
-            reveal(
-                strategy,
-                0.36,
-                0.085,
-            );
-
-            reveal(
-                products,
-                0.445,
-                0.085,
-            );
-
-            reveal(
-                supportingCopy,
-                0.53,
-                0.07,
-            );
-
-            reveal(
-                brandCaption,
-                0.565,
-                0.07,
-            );
-
-            reveal(
-                exploreLink,
-                0.60,
-                0.07,
-            );
+            reveal(uiux, 0.00, 0.085);
+            reveal(web, 0.085, 0.08);
+            reveal(branding, 0.165, 0.11);
+            reveal(motion, 0.275, 0.085);
+            reveal(strategy, 0.36, 0.085);
+            reveal(products, 0.445, 0.085);
+            reveal(supportingCopy, 0.53, 0.07);
+            reveal(brandCaption, 0.565, 0.07);
+            reveal(exploreLink, 0.60, 0.07);
 
             timeline.to(
                 scene,
@@ -667,8 +612,7 @@ export default function ServicesOverviewSection({
                     yPercent: -16,
                     opacity: 0.58,
                     duration: 0.14,
-                    ease:
-                        'power1.in',
+                    ease: 'power1.in',
                 },
                 0.86,
             );
@@ -682,10 +626,7 @@ export default function ServicesOverviewSection({
             );
 
         return () => {
-            window.cancelAnimationFrame(
-                refreshId,
-            );
-
+            window.cancelAnimationFrame(refreshId);
             ctx.revert();
         };
     }, []);
@@ -701,27 +642,21 @@ export default function ServicesOverviewSection({
 
                     <UIUX
                         ref={uiuxRef}
-                        onPointerMove={
-                            setHoverX
-                        }
+                        onPointerMove={setHoverX}
                     >
                         UI/UX
                     </UIUX>
 
                     <Web
                         ref={webRef}
-                        onPointerMove={
-                            setHoverX
-                        }
+                        onPointerMove={setHoverX}
                     >
                         WEB
                     </Web>
 
                     <BrandingGroup
                         ref={brandingRef}
-                        onPointerMove={
-                            setHoverX
-                        }
+                        onPointerMove={setHoverX}
                     >
                         <Branding className="branding-main">
                             BRANDING
@@ -733,27 +668,21 @@ export default function ServicesOverviewSection({
 
                     <Motion
                         ref={motionRef}
-                        onPointerMove={
-                            setHoverX
-                        }
+                        onPointerMove={setHoverX}
                     >
                         MOTION
                     </Motion>
 
                     <Strategy
                         ref={strategyRef}
-                        onPointerMove={
-                            setHoverX
-                        }
+                        onPointerMove={setHoverX}
                     >
                         STRATEGY
                     </Strategy>
 
                     <Products
                         ref={productsRef}
-                        onPointerMove={
-                            setHoverX
-                        }
+                        onPointerMove={setHoverX}
                     >
                         PRODUCTS
                     </Products>
@@ -780,14 +709,9 @@ export default function ServicesOverviewSection({
                         href={exploreHref}
                     >
                         Explore services
-                        <span
-                            aria-hidden="true"
-                        >
-                            ↗
-                        </span>
+                        <span aria-hidden="true">↗</span>
                     </ExploreLink>
                 </Scene>
-
             </StickyViewport>
         </Section>
     );

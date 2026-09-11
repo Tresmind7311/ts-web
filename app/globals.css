@@ -187,3 +187,9 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+@property --button-border-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
