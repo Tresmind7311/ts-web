@@ -5,6 +5,8 @@ import {
     useEffect,
     useRef,
     type PointerEvent as ReactPointerEvent,
+    type ReactNode,
+    type CSSProperties,
 } from "react";
 
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -14,6 +16,7 @@ import DotGlobeReferenceCanvasRenderer, {
     type LabelBinding,
 } from "./DotGlobeReferenceCanvas";
 import styles from "./DotGlobeReference.module.css";
+import { PrimaryButton } from "../common/Button";
 
 // Contact intro, then the original globe timeline stretched from 430 to 650vh.
 const CONTACT_SCROLL_DISTANCE_VH = 220;
@@ -51,21 +54,32 @@ const LOCATIONS: EarthLocation[] = [
 export interface DotGlobeReferenceSectionProps {
     phoneNumber?: string;
     emailAddress?: string;
+    locationText?: string;
+    /** Pass your existing button component here; no button import is assumed. */
+    contactCta?: ReactNode;
+    /** Map these to your project text tokens without changing global styles. */
+    textColor?: string;
+    mutedTextColor?: string;
 }
 
 export default function DotGlobeReferenceSection({
     phoneNumber = "+44 20 7946 0958",
-    // Replace this placeholder with the site's contact email, or pass the prop.
     emailAddress = "contact@tresmind.com",
+    locationText = "London, United Kingdom",
+    contactCta,
+    textColor,
+    mutedTextColor,
 }: DotGlobeReferenceSectionProps = {}) {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const rendererRef = useRef<DotGlobeReferenceCanvasRenderer | null>(null);
     const labelRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-    const phoneRef = useRef<HTMLDivElement>(null);
-    const emailRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef(0);
+    const finalRef = useRef<HTMLDivElement>(null);
+    const introRef = useRef<HTMLDivElement>(null);
+    const ctaRef = useRef<HTMLDivElement>(null);
+    const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
 
     const orbitRef = useRef({
         targetYaw: 0,
@@ -113,14 +127,37 @@ export default function DotGlobeReferenceSection({
                 : [];
         });
 
+        const reveal = (element: HTMLElement | null, value: number, lift = 0) => {
+            if (!element) return;
+            const t = Math.max(0, Math.min(1, value));
+            const eased = t * t * (3 - 2 * t);
+            element.style.opacity = String(eased);
+            element.style.visibility = eased > 0.001 ? "visible" : "hidden";
+            element.style.transform = `translateY(${motionQuery.matches ? 0 : (1 - eased) * lift}px)`;
+            // Hidden CTA/contact links must not be reachable by keyboard.
+            element.toggleAttribute("inert", eased < 0.99);
+        };
+        const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let previousContactProgress = -1;
+        let previousReducedMotion = motionQuery.matches;
         const renderer = new DotGlobeReferenceCanvasRenderer({
             canvas,
             labels,
+            onContactFrame(progress) {
+                if (progress === previousContactProgress &&
+                    previousReducedMotion === motionQuery.matches) return;
+                previousContactProgress = progress;
+                previousReducedMotion = motionQuery.matches;
+                reveal(introRef.current, (progress - 0.12) / 0.35, 18);
+                itemRefs.current.forEach((element, index) => {
+                    reveal(element, (progress - 0.30 - index * 0.12) / 0.25, 8);
+                });
+                reveal(ctaRef.current, (progress - 0.76) / 0.24, 8);
+            },
         });
         rendererRef.current = renderer;
         renderer.setVisible(false);
 
-        const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
         const updateMotionPreference = () => {
             renderer.setReducedMotion(motionQuery.matches);
         };
@@ -154,38 +191,24 @@ export default function DotGlobeReferenceSection({
         intersectionObserver.observe(section);
 
         // All states derive from scroll position, including reverse scroll and refresh.
-        const fadeContact = (element: HTMLDivElement | null, distance: number, start: number) => {
-            if (!element) return;
-            const smooth = (value: number) => {
-                const t = Math.max(0, Math.min(1, value));
-                return t * t * (3 - 2 * t);
-            };
-            const opacity = smooth((distance - start) / 25) *
-                (1 - smooth((distance - start - 60) / 25));
-            element.style.opacity = String(opacity);
-            element.style.visibility = opacity > 0.001 ? "visible" : "hidden";
-        };
         const syncScroll = (sectionProgress: number) => {
             const distance = sectionProgress * SECTION_SCROLL_DISTANCE_VH;
-            fadeContact(phoneRef.current, distance, 15);
-            fadeContact(emailRef.current, distance, 120);
-            // First 22% controls dot movement before globe morph begins.
+            // Preserve the requested dot movement from the first scroll.
             const DOT_FLOW_END_PROGRESS = 0.22;
-
-            const animationProgress =
-                distance <= CONTACT_SCROLL_DISTANCE_VH
-                    ? DOT_FLOW_END_PROGRESS *
-                    Math.max(0, Math.min(
-                        distance / CONTACT_SCROLL_DISTANCE_VH,
-                        1,
-                    ))
-                    : DOT_FLOW_END_PROGRESS +
-                    (1 - DOT_FLOW_END_PROGRESS) *
-                    Math.max(0, Math.min(
-                        (distance - CONTACT_SCROLL_DISTANCE_VH) /
-                        ANIMATION_SCROLL_DISTANCE_VH,
-                        1,
-                    ));
+            const animationProgress = distance <= CONTACT_SCROLL_DISTANCE_VH
+                ? DOT_FLOW_END_PROGRESS * Math.max(0, distance / CONTACT_SCROLL_DISTANCE_VH)
+                : DOT_FLOW_END_PROGRESS + (1 - DOT_FLOW_END_PROGRESS) *
+                Math.max(0, Math.min(
+                    (distance - CONTACT_SCROLL_DISTANCE_VH) / ANIMATION_SCROLL_DISTANCE_VH,
+                    1,
+                ));
+            // Intro: stagger in over 70vh, hold until 150vh, then fade out
+            // before globe formation begins at 220vh. The center stays empty.
+            renderer.setContactProgress(Math.max(0, Math.min(
+                distance / 70,
+                (CONTACT_SCROLL_DISTANCE_VH - distance) / 70,
+                1,
+            )));
             progressRef.current = animationProgress;
             renderer.setProgress(animationProgress);
             syncInteractionCursor(animationProgress);
@@ -252,6 +275,7 @@ export default function DotGlobeReferenceSection({
     const handlePointerDown = useCallback(
         (event: ReactPointerEvent<HTMLElement>) => {
             if (
+                finalRef.current?.contains(event.target as Node) ||
                 progressRef.current < GLOBE_INTERACTION_PROGRESS
             ) {
                 return;
@@ -388,6 +412,11 @@ export default function DotGlobeReferenceSection({
         <section
             ref={sectionRef}
             className={styles.section}
+            aria-label="Contact Tresmind"
+            style={{
+                "--contact-text": textColor,
+                "--contact-muted": mutedTextColor,
+            } as CSSProperties}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={stopDragging}
@@ -409,16 +438,6 @@ export default function DotGlobeReferenceSection({
                 aria-hidden="true"
             />
 
-            <div className={styles.contactLayer} aria-hidden="true">
-                <div ref={phoneRef} className={styles.contactDetail}>
-                    <span className={styles.contactLabel}>Phone</span>
-                    <strong>{phoneNumber}</strong>
-                </div>
-                <div ref={emailRef} className={styles.contactDetail}>
-                    <span className={styles.contactLabel}>Email</span>
-                    <strong>{emailAddress}</strong>
-                </div>
-            </div>
             <div className={styles.srOnly}>
                 <p>Phone: {phoneNumber}</p>
                 <p>Email: {emailAddress}</p>
@@ -456,6 +475,58 @@ export default function DotGlobeReferenceSection({
                         </div>
                     </div>
                 ))}
+            </div>
+            <div ref={finalRef} className={styles.finalContact}>
+                <div className={styles.finalLeft}>
+                    <div ref={introRef} className={styles.finalReveal}>
+                        <p className={styles.eyebrow}>LET&apos;S BUILD</p>
+                        <h2 className={styles.finalHeading}>
+                            What&apos;s Next Together.
+                        </h2>
+                        <p className={styles.finalDescription}>
+                            Have a project in mind or simply want to say hello?
+                            We&apos;re always open to discussing new ideas, products, and opportunities.
+                        </p>
+                    </div>
+                        {/* <PrimaryButton>Get In Touch</PrimaryButton> */}
+                    <div ref={ctaRef} className={`${styles.finalReveal} ${styles.finalCta}`}>
+                        {contactCta ?? (
+                            <PrimaryButton className={styles.ctaFallback} href={`mailto:${emailAddress}`}>
+                                Get In Touch <span aria-hidden="true">↗</span>
+                            </PrimaryButton>
+
+                        )}
+                    </div>
+                </div>
+                <div className={styles.finalRight}>
+                    {[
+                        { label: "Phone", value: phoneNumber, href: `tel:${phoneNumber.replace(/[^+\d]/g, "")}`, icon: "phone" },
+                        { label: "Email", value: emailAddress, href: `mailto:${emailAddress}`, icon: "email" },
+                        { label: "Location", value: locationText, href: undefined, icon: "location" },
+                    ].map((item, index) => (
+                        <div
+                            key={item.label}
+                            ref={(element) => { itemRefs.current[index] = element; }}
+                            className={`${styles.finalReveal} ${styles.contactItem}`}
+                        >
+                            <svg className={styles.contactIcon} viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+                                strokeLinejoin="round" aria-hidden="true" focusable="false">
+                                {item.icon === "phone" ? (
+                                    <path d="M5 3h4l2 5-3 2c1.5 3 3 4.5 6 6l2-3 5 2v4a2 2 0 0 1-2 2C10 21 3 14 3 5a2 2 0 0 1 2-2Z" />
+                                ) : item.icon === "email" ? (
+                                    <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></>
+                                ) : (
+                                    <><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" /><circle cx="12" cy="10" r="2.5" /></>
+                                )}
+                            </svg>
+                            <div className={styles.contactItemText}>
+                                <span className={styles.itemLabel}>{item.label}</span>
+                                {item.href ? <a href={item.href}>{item.value}</a> : <span>{item.value}</span>}
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </section>
     );

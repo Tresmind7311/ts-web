@@ -42,6 +42,7 @@ interface Polyline3D {
 interface DotGlobeReferenceCanvasOptions {
     canvas: HTMLCanvasElement;
     labels: LabelBinding[];
+    onContactFrame?: (progress: number) => void;
 }
 
 const CAMERA_Z = 10;
@@ -515,6 +516,9 @@ export default class DotGlobeReferenceCanvasRenderer {
     private readonly canvas: HTMLCanvasElement;
     private readonly context: CanvasRenderingContext2D;
     private readonly labels: LabelBinding[];
+    private readonly onContactFrame?: (progress: number) => void;
+    private targetContactProgress = 0;
+    private currentContactProgress = 0;
 
     private width = 1;
     private height = 1;
@@ -567,6 +571,7 @@ export default class DotGlobeReferenceCanvasRenderer {
     constructor(options: DotGlobeReferenceCanvasOptions) {
         this.canvas = options.canvas;
         this.labels = options.labels;
+        this.onContactFrame = options.onContactFrame;
 
         // desynchronized: true removed — causes visual tearing on iOS Safari
         // (WebKit's implementation is inconsistent across iOS versions) and
@@ -671,6 +676,11 @@ export default class DotGlobeReferenceCanvasRenderer {
         this.wake();
     }
 
+    public setContactProgress(progress: number) {
+        this.targetContactProgress = clamp(progress, 0, 1);
+        this.wake();
+    }
+
     public setPointer(x: number, y: number, active: number) {
         this.targetPointerX = clamp(x, -1.5, 1.5);
         this.targetPointerY = clamp(y, -1.5, 1.5);
@@ -765,7 +775,16 @@ export default class DotGlobeReferenceCanvasRenderer {
 
         this.lastDrawTimestamp = timestamp;
         this.updateSmoothedState(elapsed);
+        // Contact content belongs to the intro, independently of globe reveal.
+        const contactTarget = this.targetContactProgress;
+        this.currentContactProgress = this.reducedMotion
+            ? contactTarget
+            : damp(this.currentContactProgress, contactTarget, 10, elapsed);
+        if (Math.abs(this.currentContactProgress - contactTarget) < 0.0005) {
+            this.currentContactProgress = contactTarget;
+        }
         this.render(timestamp * 0.001);
+        this.onContactFrame?.(this.currentContactProgress);
 
         if (this.shouldContinueRendering()) {
             this.scheduleNext(this.targetFrameInterval);
@@ -1480,6 +1499,8 @@ export default class DotGlobeReferenceCanvasRenderer {
         }
 
         if (
+            Math.abs(this.currentContactProgress -
+                this.targetContactProgress) > 0.0005 ||
             progressSettling ||
             pointerSettling ||
             orbitSettling ||

@@ -87,7 +87,7 @@ const NavLink = styled('a')(() => ({
     transition: `color ${tokens.motion.fast} ${tokens.motion.ease},
                      background ${tokens.motion.fast} ${tokens.motion.ease}`,
     '&:hover': {
-        color: tokens.color.ink900,
+        color: tokens.color.uv600,
         background: alpha(tokens.color.ink900, 0.05),
     },
     '&.active': {
