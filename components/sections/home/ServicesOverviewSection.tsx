@@ -113,37 +113,37 @@ const OutlineWord = styled('div')(({ theme }) => ({
 const UIUX = styled(FilledWord)(({ theme }) => ({
     top: '9.5vh',
     left: '3.7vw',
-    fontSize: 'clamp(58px, 6.2vw, 98px)',
+    fontSize: '6.2vw',
 
     [theme.breakpoints.down('md')]: {
         top: '9vh',
         left: '5vw',
-        fontSize: 'clamp(46px, 10vw, 76px)',
+        fontSize: '10vw',
     },
 
     [theme.breakpoints.down('sm')]: {
         top: '8vh',
         left: '6vw',
-        fontSize: 'clamp(42px, 13vw, 62px)',
+        fontSize: '13vw',
     },
 }));
 
 const Web = styled(OutlineWord)(({ theme }) => ({
     top: '8vh',
     right: '11.2vw',
-    fontSize: 'clamp(48px, 5.1vw, 80px)',
+    fontSize: '6.1vw',
     letterSpacing: '-0.04em',
 
     [theme.breakpoints.down('md')]: {
         top: '10vh',
         right: '6vw',
-        fontSize: 'clamp(42px, 8.2vw, 64px)',
+        fontSize: '9.2vw',
     },
 
     [theme.breakpoints.down('sm')]: {
         top: '18vh',
         right: '7vw',
-        fontSize: 'clamp(35px, 10.5vw, 52px)',
+        fontSize: '10.5vw',
     },
 }));
 
@@ -163,22 +163,6 @@ const BrandingGroup = styled(Box)(({ theme }) => ({
             'radial-gradient(circle at var(--hover-x) 54%, #7da4d1 0%, #4d75a4 24%, #2d4b70 41%, #12121a 72%)',
     },
 
-    /*
-     * FIX: AI disappears on hover because
-     * `WebkitTextFillColor: 'transparent'` set on
-     * .branding-main (parent) is an inherited CSS property.
-     * .branding-ai (child span) inherits it, making the
-     * text invisible. `-webkit-text-fill-color` takes
-     * precedence over `color`, so `color: '#365b86'` alone
-     * is not enough to restore visibility.
-     *
-     * Fix: explicitly set `WebkitTextFillColor: '#365b86'`
-     * on .branding-ai during hover to override the
-     * inherited transparent value.
-     *
-     * This is responsive automatically — no breakpoint
-     * changes needed since it is a color property only.
-     */
     '&:hover .branding-ai': {
         color: '#365b86',
         WebkitTextFillColor: '#365b86',
@@ -201,7 +185,7 @@ const Branding = styled('div')(({ theme }) => ({
     color: tokens.color.ink900,
     fontFamily: 'var(--font-display)',
     fontWeight: 800,
-    fontSize: 'clamp(106px, 11.1vw, 176px)',
+    fontSize: '12vw',
     lineHeight: 0.78,
     letterSpacing: '-0.072em',
     textTransform: 'uppercase',
@@ -240,55 +224,55 @@ const AI = styled('span')(({ theme }) => ({
 const Motion = styled(FilledWord)(({ theme }) => ({
     top: '36.2vh',
     right: '3.9vw',
-    fontSize: 'clamp(66px, 7.1vw, 112px)',
+    fontSize: '6.5vw',
 
     [theme.breakpoints.down('md')]: {
         top: '46vh',
         right: '5vw',
-        fontSize: 'clamp(55px, 12vw, 92px)',
+        fontSize: '12vw',
     },
 
     [theme.breakpoints.down('sm')]: {
         top: '47.5vh',
         right: '5.5vw',
-        fontSize: 'clamp(44px, 13vw, 68px)',
+        fontSize: '13vw',
     },
 }));
 
 const Strategy = styled(FilledWord)(({ theme }) => ({
     top: '65.2vh',
     left: '14.7vw',
-    fontSize: 'clamp(76px, 8.1vw, 128px)',
+    fontSize: '8.5vw',
 
     [theme.breakpoints.down('md')]: {
         top: '63.5vh',
         left: '7vw',
-        fontSize: 'clamp(65px, 14vw, 108px)',
+        fontSize: '14vw',
     },
 
     [theme.breakpoints.down('sm')]: {
         top: '61vh',
         left: '6vw',
-        fontSize: 'clamp(50px, 15.5vw, 78px)',
+        fontSize: '15.5vw',
     },
 }));
 
 const Products = styled(OutlineWord)(({ theme }) => ({
-    top: '74.2vh',
+    top: '66.2vh',
     right: '6.1vw',
-    fontSize: 'clamp(50px, 5vw, 80px)',
+    fontSize: '6vw',
     letterSpacing: '-0.045em',
 
     [theme.breakpoints.down('md')]: {
         top: '76vh',
         right: '6vw',
-        fontSize: 'clamp(43px, 9vw, 70px)',
+        fontSize: '9vw',
     },
 
     [theme.breakpoints.down('sm')]: {
         top: '74vh',
         right: '5.5vw',
-        fontSize: 'clamp(35px, 10.5vw, 54px)',
+        fontSize: '0.5vw',
     },
 }));
 
@@ -301,7 +285,7 @@ const SupportingCopy = styled('p')(({ theme }) => ({
     margin: 0,
     fontFamily: 'var(--font-body)',
     fontWeight: 500,
-    fontSize: 'clamp(12px, 1.05vw, 16px)',
+    fontSize: '1.05vw',
     lineHeight: 1.55,
     color: alpha(tokens.color.ink900, 0.53),
 
@@ -359,7 +343,7 @@ const ExploreLink = styled('a')(({ theme }) => ({
         `1px solid ${alpha(tokens.color.ink900, 0.52)}`,
     fontFamily: 'var(--font-body)',
     fontWeight: 700,
-    fontSize: '11px',
+    fontSize: '0.8vw',
     lineHeight: 1,
     letterSpacing: '0.10em',
     textTransform: 'uppercase',

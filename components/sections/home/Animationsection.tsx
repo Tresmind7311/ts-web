@@ -137,7 +137,7 @@ const CarouselCard = styled(Box)(({ theme }) => ({
     left: '50%',
     top: '58%',
     width: 'clamp(720px, 54vw, 980px)',
-    height: 'clamp(580px, 82vh, 720px)',
+    minHeight: '600px',
     borderRadius: '22px',
     overflow: 'hidden',
     boxSizing: 'border-box',

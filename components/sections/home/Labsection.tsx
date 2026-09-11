@@ -6,11 +6,6 @@ import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { tokens } from '@/theme/theme';
 
 // ─── Data ───────────────────────────────────────────────────────────────────
-// First entry is the "hero" card — larger, matches the initial screenshot
-// (text left, one big image right). Everything after it is the horizontal
-// gallery revealed as the user keeps scrolling. Swap `image` for real
-// assets anytime — width/height/offsetY control each card's size and the
-// scattered vertical stagger from the reference.
 const EXPERIMENTS = [
   {
     id: 0,
@@ -87,10 +82,8 @@ const EXPERIMENTS = [
 ];
 
 // ─── Layout constants ───────────────────────────────────────────────────────
-const TEXT_PANEL_WIDTH = 'clamp(320px, 38vw, 520px)'; // reserved space before first card
+const TEXT_PANEL_WIDTH = 'clamp(320px, 38vw, 520px)';
 const CARD_GAP = 40;
-// Text panel fades out over this fraction of total scroll progress (0–1).
-const TEXT_FADE_END = 0.16;
 
 // ═══════════════════════════════════════════════════════════════════
 // Styled components
@@ -99,8 +92,8 @@ const TEXT_FADE_END = 0.16;
 const SectionWrapper = styled(Box)({
   position: 'relative',
   width: '100%',
-  height: '100vh', // GSAP pin adds the scroll-distance spacer automatically
-  background: tokens.color.neutral0,
+  height: '100vh',
+  background: tokens.color.ink900,
   overflow: 'hidden',
 });
 
@@ -118,29 +111,27 @@ const GridBackground = styled(Box)({
   inset: 0,
   zIndex: 0,
   backgroundImage: [
-    'linear-gradient(to right,  rgba(0,0,0,0.05) 1px, transparent 1px)',
-    'linear-gradient(to bottom, rgba(2,2,2,0.05) 1px, transparent 1px)',
+    'linear-gradient(to right,  rgba(248, 239, 239, 0.05) 1px, transparent 1px)',
+    'linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
   ].join(', '),
   backgroundSize: '68px 68px',
-  WebkitMaskImage: 'radial-gradient(ellipse 80% 65% at 50% 0%, #000 55%, transparent 100%)',
-  maskImage: 'radial-gradient(ellipse 80% 65% at 50% 0%, #000 55%, transparent 100%)',
+  WebkitMaskImage: 'radial-gradient(ellipse 80% 65% at 50% 0%, #ffffff 55%, transparent 100%)',
+  maskImage: 'radial-gradient(ellipse 80% 65% at 50% 0%, #ffffff 55%, transparent 100%)',
   pointerEvents: 'none',
 });
 
+// TextPanel is now a flex item inside GalleryTrack so it scrolls with the
+// cards instead of fading out as an absolute overlay.
 const TextPanel = styled(Box)({
-  position: 'absolute',
-  left: 0,
-  top: 0,
-  height: '100%',
+  flexShrink: 0,
   width: TEXT_PANEL_WIDTH,
+  height: '100vh',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   padding: '0 clamp(24px, 5vw, 72px)',
+  marginRight: `${CARD_GAP}px`,
   zIndex: 5,
-  // A soft fade so the gallery track doesn't hard-cut behind the text
-  background: `linear-gradient(90deg, ${tokens.color.neutral0} 75%, ${alpha(tokens.color.neutral0, 0)} 100%)`,
-  pointerEvents: 'none',
 });
 
 const Eyebrow = styled('p')({
@@ -149,7 +140,7 @@ const Eyebrow = styled('p')({
   fontSize: '11px',
   letterSpacing: '0.14em',
   textTransform: 'uppercase',
-  color: tokens.color.neutral500,
+  color: tokens.color.neutral200,
   margin: '0 0 20px',
 });
 
@@ -159,7 +150,7 @@ const Heading = styled('h2')({
   fontSize: 'clamp(36px, 5.2vw, 64px)',
   lineHeight: 1.05,
   letterSpacing: '-0.03em',
-  color: tokens.color.ink900,
+  color: tokens.color.neutral100,
   margin: '0 0 24px',
 });
 
@@ -173,8 +164,6 @@ const SubCopy = styled('p')({
   margin: 0,
 });
 
-// The scrolling track — width: max-content so scrollWidth reflects the
-// true total width of all cards, exactly like the reference implementation.
 const GalleryTrack = styled(Box)({
   position: 'relative',
   zIndex: 1,
@@ -182,13 +171,6 @@ const GalleryTrack = styled(Box)({
   alignItems: 'center',
   width: 'max-content',
   willChange: 'transform',
-});
-
-// Leading spacer reserves room for TextPanel so the first card starts at
-// the correct x position on load — matches the initial screenshot exactly.
-const LeadSpacer = styled(Box)({
-  flexShrink: 0,
-  width: TEXT_PANEL_WIDTH,
 });
 
 const CardWrap = styled(Box)<{ offsety: number }>(({ offsety }) => ({
@@ -217,6 +199,57 @@ const CardImage = styled('img')({
   userSelect: 'none',
 });
 
+// Closing column — final horizontal item after all cards.
+// Content and layout match the reference screenshot.
+const ClosingColumn = styled(Box)({
+  flexShrink: 0,
+  width: 'clamp(480px, 50vw, 720px)',
+  height: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  padding: '0 clamp(48px, 6vw, 96px)',
+  marginLeft: `${CARD_GAP}px`,
+});
+
+const ClosingHeading = styled('h2')({
+  fontFamily: 'var(--font-display)',
+  fontWeight: 800,
+  fontSize: 'clamp(48px, 6.5vw, 96px)',
+  lineHeight: 1.0,
+  letterSpacing: '-0.04em',
+  color: tokens.color.neutral100,
+  margin: '0 0 28px',
+});
+
+const ClosingSubCopy = styled('p')({
+  fontFamily: 'var(--font-body)',
+  fontWeight: 400,
+  fontSize: 'clamp(14px, 1.15vw, 17px)',
+  lineHeight: 1.7,
+  color: tokens.color.neutral500,
+  maxWidth: '440px',
+  margin: '0 0 40px',
+});
+
+const ClosingCta = styled('a')({
+  fontFamily: 'var(--font-body)',
+  fontWeight: 600,
+  fontSize: '13px',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  color: tokens.color.neutral300,
+  textDecoration: 'none',
+  borderBottom: `1px solid ${alpha(tokens.color.neutral300, 0.4)}`,
+  paddingBottom: '4px',
+  alignSelf: 'flex-start',
+  transition: 'color 200ms, border-color 200ms',
+  '&:hover': {
+    color: tokens.color.neutral0,
+    borderColor: tokens.color.neutral0,
+  },
+});
+
 // ═══════════════════════════════════════════════════════════════════
 // Component
 // ═══════════════════════════════════════════════════════════════════
@@ -224,7 +257,6 @@ const CardImage = styled('img')({
 export default function LabSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -232,10 +264,6 @@ export default function LabSection() {
     if (!section || !track) return;
 
     const ctx = gsap.context(() => {
-      // ── Same horizontal-scroll technique as the reference file ────────
-      // getScrollAmount / paused tween / ScrollTrigger pin+scrub with an
-      // `end` computed from that same amount — identical structure, just
-      // applied to the gallery track instead of giant text.
       const getScrollAmount = () => -(track.scrollWidth - window.innerWidth);
 
       const tween = gsap.to(track, {
@@ -252,18 +280,6 @@ export default function LabSection() {
         animation: tween,
         scrub: 1,
         invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          // Text panel fades + lifts slightly over the first slice of
-          // scroll progress, then stays hidden — matches the second
-          // screenshot, where the gallery has taken the full width.
-          const t = Math.min(1, self.progress / TEXT_FADE_END);
-          const el = textRef.current;
-          if (el) {
-            el.style.opacity = String(1 - t);
-            el.style.transform = `translateY(${-t * 24}px)`;
-            el.style.pointerEvents = t > 0.9 ? 'none' : '';
-          }
-        },
       });
     }, section);
 
@@ -275,19 +291,20 @@ export default function LabSection() {
       <StickyFrame>
         <GridBackground />
 
-        <TextPanel ref={textRef}>
-          <Eyebrow>Creative Lab — Design in Motion</Eyebrow>
-          <Heading>Where ideas become experiences.</Heading>
-          <SubCopy>
-            We explore motion, interaction, branding, AI, product design and
-            immersive digital experiences to shape the future of creative work.
-          </SubCopy>
-        </TextPanel>
-
         <GalleryTrack ref={trackRef}>
-          <LeadSpacer />
+
+          {/* TextPanel is the first horizontal item — scrolls with the track */}
+          <TextPanel>
+            <Eyebrow>Creative Lab — Design in Motion</Eyebrow>
+            <Heading>Where ideas become experiences.</Heading>
+            <SubCopy>
+              We explore motion, interaction, branding, AI, product design and
+              immersive digital experiences to shape the future of creative work.
+            </SubCopy>
+          </TextPanel>
+
           {EXPERIMENTS.map((item) => (
-            <CardWrap key={item.id} offsety={item.offsetY}>
+            <CardWrap key={item.id} offsety={item.offsetY ?? 0}>
               <CardLabel>{item.code} · {item.status}</CardLabel>
               <CardImage
                 src={item.image}
@@ -297,6 +314,16 @@ export default function LabSection() {
               />
             </CardWrap>
           ))}
+
+          {/* Closing column — enters after the last card */}
+          <ClosingColumn>
+            <ClosingHeading>We never stop exploring.</ClosingHeading>
+            <ClosingSubCopy>
+              Innovation is not a department. It&rsquo;s our mindset.
+            </ClosingSubCopy>
+            <ClosingCta href="#contact">Explore More &rarr;</ClosingCta>
+          </ClosingColumn>
+
         </GalleryTrack>
 
       </StickyFrame>

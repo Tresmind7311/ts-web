@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 
 import CurvedProjectsCanvasRenderer from './CurvedProjectsCanvas';
+import { tokens } from '@/theme/theme';
 
 export interface Project {
     title: string;
@@ -19,19 +20,19 @@ interface CurvedProjectsContinuousProps {
     sectionLabel?: string;
 }
 
-const LEADING_BUFFER_COUNT  = 2;
-const LOOP_CENTER_COUNT     = 2;
+const LEADING_BUFFER_COUNT = 2;
+const LOOP_CENTER_COUNT = 2;
 const LOOKAHEAD_BUFFER_COUNT = 2;
-const SCROLL_PER_CARD_VH    = 1.15;
+const SCROLL_PER_CARD_VH = 1.15;
 
 const Section = styled('section')({
     position: 'relative',
     width: '100%',
     height: '100svh',
     overflow: 'hidden',
-    background: '#fff',
+    background: tokens.color.neutral0,
     isolation: 'isolate',
-
+    paddingTop: '50px',
     '@media (prefers-reduced-motion: reduce)': {
         height: 'auto',
         padding: '60px 0',
@@ -43,7 +44,6 @@ const Heading = styled('h2')({
     zIndex: 3,
     margin: 0,
     padding: 'clamp(24px, 5svh, 56px) 20px 0',
-    color: '#000',
     fontFamily: 'var(--font-display)',
     fontSize: 'clamp(36px, 5.2vw, 64px)',
     fontWeight: 600,
@@ -51,6 +51,15 @@ const Heading = styled('h2')({
     letterSpacing: '-0.03em',
     textAlign: 'center',
     pointerEvents: 'none',
+    background: `linear-gradient(
+            90deg,
+            ${tokens.color.uv800} 0%,
+            ${tokens.color.uv300} 58%,
+            ${tokens.color.uv300} 100%
+        )`,
+    backgroundClip: 'text',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
 
     '@media (prefers-reduced-motion: reduce)': {
         paddingTop: 0,
@@ -199,21 +208,21 @@ export default function CurvedProjectsContinuous({
     }, [projects, projectCount, leadingBufferCount]);
 
     const startIndex = leadingBufferCount;
-    const endIndex   =
+    const endIndex =
         projectCount > 1
             ? startIndex + projectCount + LOOP_CENTER_COUNT - 1
             : 0;
     const scrollSteps = Math.max(endIndex - startIndex, 0);
 
     const sectionRef = useRef<HTMLElement>(null);
-    const canvasRef  = useRef<HTMLCanvasElement>(null);
-    const trackRef   = useRef<HTMLDivElement>(null);
-    const cardRefs   = useRef<(HTMLAnchorElement | null)[]>([]);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const trackRef = useRef<HTMLDivElement>(null);
+    const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
     useEffect(() => {
         const section = sectionRef.current;
-        const canvas  = canvasRef.current;
-        const track   = trackRef.current;
+        const canvas = canvasRef.current;
+        const track = trackRef.current;
         cardRefs.current.length = loopedProjects.length;
 
         if (!section || !canvas || !track || projectCount === 0) return;
@@ -222,12 +231,12 @@ export default function CurvedProjectsContinuous({
         const renderer = new CurvedProjectsCanvasRenderer({
             canvas,
             track,
-            cards:    cardRefs.current,
+            cards: cardRefs.current,
             projects: loopedProjects,
         });
 
-        let currentIndex    = startIndex;
-        let resizeFrame     = 0;
+        let currentIndex = startIndex;
+        let resizeFrame = 0;
         let refreshFrameOne = 0;
         let refreshFrameTwo = 0;
 
