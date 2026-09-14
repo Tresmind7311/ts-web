@@ -10,10 +10,11 @@ import theme, { tokens } from '@/theme/theme';
 import { SecondaryButton } from '@/components/common/Button';
 
 // ─── Frame configuration ──────────────────────────────────────────
-const FRAME_COUNT = 120;
+const FRAME_COUNT = 197;
+const MOBILE_FRAME_COUNT = 180;
 
 const DESKTOP_FRAMES = generateFrameUrls(
-    '/frames/hero/desktop/hero_d_{n}.webp',
+    '/frames/hero/desktop-landscape/hero_d_{n}.webp',
     1,
     FRAME_COUNT,
     5,
@@ -21,7 +22,13 @@ const DESKTOP_FRAMES = generateFrameUrls(
 
 // Every 2nd desktop frame → 60 frames for mobile.
 // Same source files, no new assets required.
-const MOBILE_FRAMES = DESKTOP_FRAMES.filter((_, i) => i % 2 === 0);
+// const MOBILE_FRAMES = DESKTOP_FRAMES.filter((_, i) => i % 2 === 0);
+const MOBILE_FRAMES = generateFrameUrls(
+    '/frames/hero/mobile/hero_m_{n}.webp',
+    1,
+    FRAME_COUNT,
+    5,
+);
 
 const SCROLL_HEIGHT = '300vh';
 
