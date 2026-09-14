@@ -29,10 +29,14 @@ const Section = styled('section')({
     position: 'relative',
     width: '100%',
     height: '100svh',
+    boxSizing: 'border-box',
     overflow: 'hidden',
     background: tokens.color.neutral0,
     isolation: 'isolate',
-    paddingTop: '40px',
+
+    // Runtime value is updated from the real heading position/height.
+    '--portfolio-track-top': 'clamp(180px, 25svh, 280px)',
+
     '@media (prefers-reduced-motion: reduce)': {
         height: 'auto',
         padding: '60px 0',
@@ -40,10 +44,14 @@ const Section = styled('section')({
 });
 
 const Heading = styled('h2')({
-    position: 'relative',
+    position: 'absolute',
+    top: 'clamp(84px, 12svh, 128px)',
+    left: 0,
+    width: '100%',
     zIndex: 3,
+    boxSizing: 'border-box',
     margin: 0,
-    padding: 'clamp(24px, 5svh, 56px) 20px 0',
+    padding: '0 20px',
     fontFamily: 'var(--font-display)',
     fontSize: 'clamp(36px, 5.2vw, 64px)',
     fontWeight: 700,
@@ -61,6 +69,10 @@ const Heading = styled('h2')({
     WebkitTextFillColor: 'transparent',
 
     '@media (prefers-reduced-motion: reduce)': {
+        position: 'relative',
+        top: 'auto',
+        left: 'auto',
+        width: 'auto',
         paddingTop: 0,
         marginBottom: '32px',
     },
@@ -95,7 +107,7 @@ const DomStage = styled('div')({
 
 const DomTrack = styled('div')({
     position: 'absolute',
-    top: '17svh',
+    top: 'var(--portfolio-track-top)',
     left: 0,
     display: 'flex',
     gap: '8.75vw',
@@ -103,12 +115,10 @@ const DomTrack = styled('div')({
     pointerEvents: 'none',
 
     '@media (max-width: 1100px)': {
-        top: '18svh',
         gap: '8vw',
     },
 
     '@media (max-width: 767px)': {
-        top: '22svh',
         gap: '10vw',
     },
 
@@ -214,17 +224,19 @@ export default function CurvedProjectsContinuous({
     const scrollSteps = Math.max(endIndex - startIndex, 0);
 
     const sectionRef = useRef<HTMLElement>(null);
+    const headingRef = useRef<HTMLHeadingElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
     const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
     useEffect(() => {
         const section = sectionRef.current;
+        const heading = headingRef.current;
         const canvas = canvasRef.current;
         const track = trackRef.current;
         cardRefs.current.length = loopedProjects.length;
 
-        if (!section || !canvas || !track || projectCount === 0) return;
+        if (!section || !heading || !canvas || !track || projectCount === 0) return;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         const renderer = new CurvedProjectsCanvasRenderer({
@@ -239,10 +251,69 @@ export default function CurvedProjectsContinuous({
         let refreshFrameOne = 0;
         let refreshFrameTwo = 0;
 
+        const clampNumber = (value: number, min: number, max: number) =>
+            Math.min(Math.max(value, min), max);
+
+        /**
+         * Finds top fixed/sticky site chrome so portfolio title never sits
+         * underneath navbar. data-site-header/data-navbar are preferred when
+         * present; generic header/nav selectors are safe fallbacks.
+         */
+        const getTopChromeBottom = () => {
+            const candidates = Array.from(
+                document.querySelectorAll<HTMLElement>(
+                    '[data-site-header], [data-navbar], .MuiAppBar-root, header, nav',
+                ),
+            );
+
+            return candidates.reduce((bottom, element) => {
+                if (section.contains(element)) return bottom;
+
+                const style = window.getComputedStyle(element);
+                if (style.position !== 'fixed' && style.position !== 'sticky') {
+                    return bottom;
+                }
+
+                const rect = element.getBoundingClientRect();
+                const touchesViewportTop = rect.top <= 2 && rect.bottom > 0;
+
+                return touchesViewportTop
+                    ? Math.max(bottom, rect.bottom)
+                    : bottom;
+            }, 0);
+        };
+
+        /**
+         * Vertical layout is based on real rendered heading dimensions instead
+         * of hard-coded svh values. This keeps heading below navbar and keeps
+         * cards below heading on desktop, laptop, tablet, mobile and landscape.
+         */
+        const syncVerticalLayout = () => {
+            const viewportHeight = window.innerHeight;
+            const navBottom = getTopChromeBottom();
+            const headingGap = clampNumber(viewportHeight * 0.022, 12, 24);
+            const cardsGap = clampNumber(viewportHeight * 0.04, 24, 48);
+
+            const headingTop = Math.ceil(navBottom + headingGap);
+            heading.style.top = `${headingTop}px`;
+
+            const trackTop = Math.ceil(
+                headingTop + heading.offsetHeight + cardsGap,
+            );
+
+            section.style.setProperty(
+                '--portfolio-track-top',
+                `${trackTop}px`,
+            );
+        };
+
         const resize = (width: number, height: number) => {
             renderer.resize(width, height);
             renderer.render(currentIndex);
         };
+
+        // Set vertical positions before renderer caches track.offsetTop.
+        syncVerticalLayout();
 
         /* One-time initial sizing from getBoundingClientRect (layout is stable at mount). */
         const initialRect = section.getBoundingClientRect();
@@ -253,7 +324,10 @@ export default function CurvedProjectsContinuous({
             if (!entry) return;
             const { width, height } = entry.contentRect;
             window.cancelAnimationFrame(resizeFrame);
-            resizeFrame = window.requestAnimationFrame(() => resize(width, height));
+            resizeFrame = window.requestAnimationFrame(() => {
+                syncVerticalLayout();
+                resize(width, height);
+            });
         });
         resizeObserver.observe(section);
 
@@ -280,6 +354,7 @@ export default function CurvedProjectsContinuous({
                 },
                 onRefresh: (self) => {
                     currentIndex = startIndex + self.progress * scrollSteps;
+                    syncVerticalLayout();
                     /* getBoundingClientRect is acceptable here — onRefresh implies a layout pass already happened */
                     const rect = section.getBoundingClientRect();
                     resize(rect.width, rect.height);
@@ -322,7 +397,7 @@ export default function CurvedProjectsContinuous({
 
     return (
         <Section ref={sectionRef} aria-label={sectionLabel}>
-            <Heading>Our Portfolio</Heading>
+            <Heading ref={headingRef}>Our Portfolio</Heading>
             <CanvasLayer ref={canvasRef} aria-hidden="true" />
 
             <DomStage>

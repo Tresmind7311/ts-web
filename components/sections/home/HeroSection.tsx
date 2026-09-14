@@ -257,10 +257,10 @@ export default function HeroSection() {
                     </CtaButton> */}
                     <SecondaryButton
                         sx={{
-                            maxWidth: '12vw',
+                            maxWidth: '18vw',
 
                             [theme.breakpoints.down('md')]: {
-                                maxWidth: '18vw',
+                                maxWidth: '20vw',
                             },
 
                             [theme.breakpoints.down('sm')]: {
