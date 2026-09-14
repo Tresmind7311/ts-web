@@ -11,6 +11,7 @@ import ServiceContentCard, {
     type ServiceContentCardItem,
 } from './ServiceContentCard';
 import { tokens } from '@/theme/theme';
+import Heading from '@/components/common/Heading';
 
 interface ServiceCardsSectionProps {
     id?: string;
@@ -93,28 +94,28 @@ const Eyebrow = styled(Typography)({
     opacity: 0.9,
 });
 
-const Heading = styled(Typography)(({ theme }) => ({
-    marginTop: 'var(--heading-margin-top)',
-    fontFamily: tokens.font.display,
-    fontSize: 'clamp(38px, 4vw, 58px)',
-    fontWeight: 700,
-    lineHeight: 1,
-    letterSpacing: '-0.045em',
-    color: tokens.color.neutral0,
+// const Heading = styled(Typography)(({ theme }) => ({
+//     marginTop: 'var(--heading-margin-top)',
+//     fontFamily: tokens.font.display,
+//     fontSize: 'clamp(38px, 4vw, 58px)',
+//     fontWeight: 700,
+//     lineHeight: 1,
+//     letterSpacing: '-0.045em',
+//     color: tokens.color.neutral0,
 
-    [theme.breakpoints.down('sm')]: {
-        fontSize: '36px',
-    },
-}));
+//     [theme.breakpoints.down('sm')]: {
+//         fontSize: '36px',
+//     },
+// }));
 
 const Intro = styled(Typography)({
     maxWidth: '620px',
     margin: '16px auto 0',
-    fontFamily: tokens.font.body,
-    fontSize: '16px',
+    fontFamily: tokens.font.heroBody,
+    fontSize: '20px',
     fontWeight: 400,
-    lineHeight: 1.55,
-    color: 'rgba(255,255,255,0.70)',
+    lineHeight: 1.4,
+    color: 'rgba(255, 255, 255, 0.65)',
 });
 
 const Grid = styled(Box)(({ theme }) => ({
@@ -231,7 +232,12 @@ export default function ServiceCardsSection({
 
                     <Heading
                         id={id}
-                        component="h2"
+                        variant="h2"
+                        gradient={false}
+                        sx={{
+                            color: tokens.color.neutral0,
+                            fontWeight: '500'
+                        }}
                         style={
                             {
                                 '--heading-margin-top': eyebrow
@@ -280,6 +286,8 @@ export default function ServiceCardsSection({
                 {canExpand ? (
                     <ButtonWrap>
                         <SecondaryButton
+                            textColor="#FFFFFF"
+                            borderColor="#FFFFFF"
                             onClick={() => setExpanded(true)}
                         >
                             See more

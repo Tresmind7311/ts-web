@@ -16,6 +16,7 @@ import { keyframes, styled } from '@mui/material/styles';
 
 import type { ServiceProcessData } from '@/data/services/types';
 import { tokens } from '@/theme/theme';
+import Heading from '@/components/common/Heading';
 
 interface ServiceProcessProps {
     data: ServiceProcessData;
@@ -143,28 +144,28 @@ const Header = styled(Container)({
     textAlign: 'center',
 });
 
-const Heading = styled(Typography)(({ theme }) => ({
-    maxWidth: '680px',
-    margin: '0 auto',
-    fontFamily: tokens.font.display,
-    fontSize: 'clamp(42px, 4vw, 60px)',
-    fontWeight: 600,
-    lineHeight: 1.02,
-    letterSpacing: '-0.045em',
+// const Heading = styled(Typography)(({ theme }) => ({
+//     maxWidth: '680px',
+//     margin: '0 auto',
+//     fontFamily: tokens.font.display,
+//     fontSize: 'clamp(42px, 4vw, 60px)',
+//     fontWeight: 600,
+//     lineHeight: 1.02,
+//     letterSpacing: '-0.045em',
 
-    background: `linear-gradient(
-        150deg,
-        ${tokens.color.uv800} 20%,
-        ${tokens.color.uv300} 80%
-    )`,
-    backgroundClip: 'text',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
+//     background: `linear-gradient(
+//         150deg,
+//         ${tokens.color.uv800} 20%,
+//         ${tokens.color.uv300} 80%
+//     )`,
+//     backgroundClip: 'text',
+//     WebkitBackgroundClip: 'text',
+//     WebkitTextFillColor: 'transparent',
 
-    [theme.breakpoints.down('sm')]: {
-        fontSize: 'clamp(36px, 10vw, 46px)',
-    },
-}));
+//     [theme.breakpoints.down('sm')]: {
+//         fontSize: 'clamp(36px, 10vw, 46px)',
+//     },
+// }));
 
 const Intro = styled(Typography)(({ theme }) => ({
     maxWidth: '850px',
@@ -664,7 +665,11 @@ export default function ServiceProcess({
             <Header maxWidth="lg">
                 <Heading
                     id="service-process-heading"
-                    component="h2"
+                    variant="h2"
+                    sx={{
+                        maxWidth: '580px',
+                        margin: '0 auto',
+                    }}
                 >
                     {data.title}
                 </Heading>

@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import { PrimaryButton, SecondaryButton } from '@/components/common/Button';
 import { tokens } from '@/theme/theme';
 import type { ServiceHeroData } from '@/data/services/types';
+import Heading from '@/components/common/Heading';
 
 interface ServiceHeroProps {
     data: ServiceHeroData;
@@ -185,10 +186,9 @@ export default function ServiceHero({ data }: ServiceHeroProps) {
                         </Eyebrow>
                     ) : null}
 
-                    <Title component="h1">
+                    <Heading variant="h1">
                         {data.title}
-                    </Title>
-
+                    </Heading>
                     <Description component="p">
                         {data.description}
                     </Description>

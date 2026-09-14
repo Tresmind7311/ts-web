@@ -12,6 +12,7 @@ import { projectList } from '@/data/projects';
 import { ProjectCategory } from '@/data/projects/types';
 import { Container } from '@mui/material';
 import { tokens } from '@/theme/theme';
+import Heading from '@/components/common/Heading';
 
 /* ─── layout ──────────────────────────────────────────────── */
 
@@ -93,15 +94,15 @@ const ArrowCircle = styled(Box)(({ theme }) => ({
 
 /* ─── heading ─────────────────────────────────────────────── */
 
-const Heading = styled(Typography)(({ theme }) => ({
-  fontWeight: 800,
-  fontSize: '2.4rem',
-  lineHeight: 1.1,
-  '& span': { color: theme.palette.primary.main },
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '1.8rem',
-  },
-}));
+// const Heading = styled(Typography)(({ theme }) => ({
+//   fontWeight: 800,
+//   fontSize: '2.4rem',
+//   lineHeight: 1.1,
+//   '& span': { color: theme.palette.primary.main },
+//   [theme.breakpoints.down('sm')]: {
+//     fontSize: '1.8rem',
+//   },
+// }));
 
 /* ─── component ────────────────────────────────────────────── */
 

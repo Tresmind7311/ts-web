@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { SecondaryButton } from '@/components/common/Button';
 import { tokens } from '@/theme/theme';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import Heading from '@/components/common/Heading';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -44,33 +45,33 @@ const Section = styled(Box)(({ theme }) => ({
     },
 }));
 
-const Heading = styled('h2')({
-    position: 'relative',
-    zIndex: 3,
-    margin: 0,
-    padding: 'clamp(24px, 5svh, 56px) 20px 0',
-    color: tokens.color.ink900,
-     fontFamily: 'var(--font-display)',
-    fontSize: 'clamp(36px, 5.2vw, 64px)',
-    fontWeight: 700,    
-    lineHeight: 1.1,
-    letterSpacing: '-0.03em',
-    textAlign: 'center',
-    pointerEvents: 'none',
-    paddingBottom: '75px',
-    background: `linear-gradient(
-        150deg,
-        ${tokens.color.uv800} 20%,
-        ${tokens.color.uv300} 80%
-    )`,
-    backgroundClip: 'text',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    '@media (prefers-reduced-motion: reduce)': {
-        paddingTop: 0,
-        marginBottom: '32px',
-    },
-});
+// const Heading = styled('h2')({
+//     position: 'relative',
+//     zIndex: 3,
+//     margin: 0,
+//     padding: 'clamp(24px, 5svh, 56px) 20px 0',
+//     color: tokens.color.ink900,
+//      fontFamily: 'var(--font-display)',
+//     fontSize: 'clamp(36px, 5.2vw, 64px)',
+//     fontWeight: 700,    
+//     lineHeight: 1.1,
+//     letterSpacing: '-0.03em',
+//     textAlign: 'center',
+//     pointerEvents: 'none',
+//     paddingBottom: '75px',
+//     background: `linear-gradient(
+//         150deg,
+//         ${tokens.color.uv800} 20%,
+//         ${tokens.color.uv300} 80%
+//     )`,
+//     backgroundClip: 'text',
+//     WebkitBackgroundClip: 'text',
+//     WebkitTextFillColor: 'transparent',
+//     '@media (prefers-reduced-motion: reduce)': {
+//         paddingTop: 0,
+//         marginBottom: '32px',
+//     },
+// });
 
 const List = styled(Box)({
     width: '100%',
@@ -257,7 +258,18 @@ export default function TestimonialsSection({ testimonials, initialCount = 4 }: 
 
     return (
         <Section ref={sectionRef} id="testimonials">
-            <Heading>
+            <Heading variant='h2'
+                sx={{
+                    padding: 'clamp(24px, 5svh, 56px) 20px 0',
+                    paddingBottom: '75px',
+                    position: 'relative',
+                    zIndex: '3',
+                    margin: '0',
+                    '@media (prefers-reduced-motion: reduce)': {
+                        paddingTop: 0,
+                        marginBottom: '32px',
+                    },
+                }}>
                 Good Work. Better Words.
             </Heading>
             <List onMouseLeave={() => setHoverActiveId(null)}>

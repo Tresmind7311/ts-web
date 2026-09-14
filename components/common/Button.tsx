@@ -33,7 +33,7 @@ export interface AppButtonProps extends ButtonProps {
     hoverBorderEnd?: string;
 }
 
-export interface SecondaryButtonProps extends AppButtonProps {}
+export interface SecondaryButtonProps extends AppButtonProps { }
 
 const primaryGradient = `linear-gradient(
         150deg,
@@ -79,7 +79,7 @@ function buttonStyles(
     props: AppButtonProps,
     primary: boolean,
 ): CSSObject {
-    const text = props.textColor ?? (primary ? tokens.color.neutral0 : '#343434');
+    const text = props.textColor ?? (primary ? tokens.color.neutral0 : '#194876');
     const border = props.borderColor ?? (primary ? 'transparent' : '#071463');
     const start = props.gradientBorderStart ?? props.hoverBorderStart ?? '#071463';
     const end = props.gradientBorderEnd ?? props.hoverBorderEnd ?? '#0DB0DC';
@@ -129,8 +129,8 @@ function buttonStyles(
         padding: '12px 24px',
         border: `2px solid ${border}`,
         borderRadius: '10px',
-        fontFamily: tokens.font.body,
-        fontSize: 'clamp(16px, 0.9vw, 18px)',
+        fontFamily: tokens.font.heroBody,
+        fontSize: '20px',
         fontWeight: 500,
         lineHeight: 1,
         textTransform: 'none',
@@ -204,7 +204,13 @@ function buttonStyles(
             },
             '&.Mui-focusVisible': { outlineColor: 'Highlight' },
         },
-        [theme.breakpoints.down('sm')]: { width: '100%' },
+        [theme.breakpoints.down('sm')]: {
+            width: '100%',
+            fontSize: '17px',
+        },
+        [theme.breakpoints.down('md')]: {
+            fontSize: '17px',
+        },
     };
 }
 

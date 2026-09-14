@@ -142,8 +142,8 @@ const ImageWrap = styled(Box)({
 });
 
 const ShowcaseImage = styled(Image)({
-    objectFit: 'cover',
-    objectPosition: 'center bottom',
+    // objectFit: 'cover',
+    // objectPosition: 'center bottom',
 });
 
 export default function ServiceShowcaseCard({

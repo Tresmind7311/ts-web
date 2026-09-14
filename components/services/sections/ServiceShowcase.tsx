@@ -10,6 +10,7 @@ import { keyframes, styled } from '@mui/material/styles';
 
 import type { ServiceShowcaseData } from '@/data/services/types';
 import { tokens } from '@/theme/theme';
+import Heading from '@/components/common/Heading';
 
 interface ServiceShowcaseProps {
     data: ServiceShowcaseData;
@@ -265,36 +266,36 @@ const ContentContainer = styled(Container)(({ theme }) => ({
     },
 }));
 
-const Heading = styled(Typography)(({ theme }) => ({
-    width: 'min(100%, 700px)',
-    margin: '0 auto',
-    fontFamily: tokens.font.display,
-    fontSize: 'clamp(42px, 3.6vw, 58px)',
-    fontWeight: 700,
-    lineHeight: 1.1,
-    letterSpacing: '-0.045em',
+// const Heading = styled(Typography)(({ theme }) => ({
+//     width: 'min(100%, 700px)',
+//     margin: '0 auto',
+//     fontFamily: tokens.font.display,
+//     fontSize: 'clamp(42px, 3.6vw, 58px)',
+//     fontWeight: 700,
+//     lineHeight: 1.1,
+//     letterSpacing: '-0.045em',
 
-    background: `linear-gradient(
-        90deg,
-        ${tokens.color.uv800} 0%,
-        ${tokens.color.uv500} 56%,
-        ${tokens.color.uv300} 100%
-    )`,
-    backgroundClip: 'text',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    color: 'transparent',
+//     background: `linear-gradient(
+//         90deg,
+//         ${tokens.color.uv800} 0%,
+//         ${tokens.color.uv500} 56%,
+//         ${tokens.color.uv300} 100%
+//     )`,
+//     backgroundClip: 'text',
+//     WebkitBackgroundClip: 'text',
+//     WebkitTextFillColor: 'transparent',
+//     color: 'transparent',
 
-    [theme.breakpoints.down('md')]: {
-        width: 'min(100%, 620px)',
-        fontSize: 'clamp(38px, 7vw, 52px)',
-    },
+//     [theme.breakpoints.down('md')]: {
+//         width: 'min(100%, 620px)',
+//         fontSize: 'clamp(38px, 7vw, 52px)',
+//     },
 
-    [theme.breakpoints.down('sm')]: {
-        fontSize: 'clamp(32px, 9.5vw, 42px)',
-        lineHeight: 1.08,
-    },
-}));
+//     [theme.breakpoints.down('sm')]: {
+//         fontSize: 'clamp(32px, 9.5vw, 42px)',
+//         lineHeight: 1.08,
+//     },
+// }));
 
 const Description = styled(Typography)(({ theme }) => ({
     maxWidth: '620px',
@@ -432,7 +433,11 @@ export default function ServiceShowcase({
             >
                 <Heading
                     id="service-showcase-heading"
-                    component="h2"
+                    variant="h2"
+                    sx={{
+                        width: 'min(100%, 700px)',
+                        margin: '0 auto',
+                    }}
                 >
                     {data.title}
                 </Heading>
