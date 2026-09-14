@@ -67,6 +67,10 @@ const Heading = styled('h2')({
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
+    '@media (prefers-reduced-motion: reduce)': {
+        paddingTop: 0,
+        marginBottom: '32px',
+    },
 });
 
 const List = styled(Box)({
@@ -85,11 +89,6 @@ const Row = styled('span', {
     opacity: active ? 1 : 0.32,
     transition:
         'filter 480ms cubic-bezier(0.16,1,0.3,1), opacity 480ms cubic-bezier(0.16,1,0.3,1)',
-    '@media (prefers-reduced-motion: reduce)': {
-        filter: 'none',
-        opacity: 1,
-        transition: 'none',
-    },
 }));
 
 const Avatar = styled('img')({
@@ -122,9 +121,6 @@ const RevealWrap = styled('span', {
     display: 'inline',
     opacity: show ? 1 : 0,
     transition: 'opacity 500ms cubic-bezier(0.16,1,0.3,1)',
-    '@media (prefers-reduced-motion: reduce)': {
-        transition: 'none',
-    },
 }));
 
 const ButtonWrap = styled(Box)({
@@ -140,9 +136,6 @@ const Chevron = styled('span', {
     transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
     transition: `transform ${tokens.motion.base} ${tokens.motion.ease}`,
     fontSize: '12px',
-    '@media (prefers-reduced-motion: reduce)': {
-        transition: 'none',
-    },
 }));
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -169,10 +162,7 @@ export default function TestimonialsSection({ testimonials, initialCount = 4 }: 
 
         const mm = gsap.matchMedia();
 
-        mm.add(
-            '(min-width: 900px) and (prefers-reduced-motion: no-preference), ' +
-            '(min-width: 900px) and (hover: hover) and (pointer: fine)',
-            () => {
+        mm.add('(min-width: 900px)', () => {
             const getCount = () =>
                 expandedRef.current ? testimonials.length : initialCount;
 
@@ -201,7 +191,7 @@ export default function TestimonialsSection({ testimonials, initialCount = 4 }: 
                 end: () => `+=${getScrollDistance()}`,
                 pin: true,
                 pinSpacing: true,
-                refreshPriority: 10,
+                refreshPriority: 0,
                 invalidateOnRefresh: true,
                 anticipatePin: 1,
                 onUpdate: ({ progress }) => setActiveFromProgress(progress),
@@ -214,46 +204,28 @@ export default function TestimonialsSection({ testimonials, initialCount = 4 }: 
                 },
             });
 
-                return () => { trigger.kill(); };
-            },
-        );
+            return () => { trigger.kill(); };
+        });
 
-        mm.add(
-            '(max-width: 899px) and (prefers-reduced-motion: no-preference)',
-            () => {
-                const trigger = ScrollTrigger.create({
-                    trigger: section,
-                    start: 'top 75%',
-                    end: 'bottom 25%',
-                    refreshPriority: 10,
-                    invalidateOnRefresh: true,
-                    onUpdate: ({ progress }) => {
-                        const count = expandedRef.current
-                            ? testimonials.length
-                            : initialCount;
-                        const index = Math.min(
-                            Math.floor(Math.min(progress, 0.999999) * count),
-                            count - 1,
-                        );
-                        setScrollActiveId(testimonials[index].id);
-                    },
-                });
+        mm.add('(max-width: 899px)', () => {
+            const trigger = ScrollTrigger.create({
+                trigger: section,
+                start: 'top 75%',
+                end: 'bottom 25%',
+                refreshPriority: 0,
+                invalidateOnRefresh: true,
+                onUpdate: ({ progress }) => {
+                    const count = expandedRef.current ? testimonials.length : initialCount;
+                    const index = Math.min(
+                        Math.floor(Math.min(progress, 0.999999) * count),
+                        count - 1,
+                    );
+                    setScrollActiveId(testimonials[index].id);
+                },
+            });
 
-                return () => { trigger.kill(); };
-            },
-        );
-
-        mm.add(
-            '(prefers-reduced-motion: reduce) and (hover: none) and (pointer: coarse), ' +
-            '(max-width: 899px) and (prefers-reduced-motion: reduce)',
-            () => {
-                // No pin exists on mobile. The trigger only changes the active
-                // testimonial, so reduced-motion users can safely receive a
-                // static list without attaching work to native iOS scrolling.
-                setHoverActiveId(null);
-                setScrollActiveId(testimonials[0].id);
-            },
-        );
+            return () => { trigger.kill(); };
+        });
 
         return () => { mm.revert(); };
     }, [testimonials, initialCount]);

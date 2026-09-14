@@ -16,18 +16,11 @@ import DotGlobeReferenceCanvasRenderer, {
     type LabelBinding,
 } from "./DotGlobeReferenceCanvas";
 import styles from "./DotGlobeReference.module.css";
-import { PrimaryButton } from "../common/Button";
 
-// Timing controls: scroll distances in viewport-height equivalents, not seconds.
-const CONTACT_FADE_IN_VH = 70;
-const CONTACT_HOLD_VH = 260; // Increase this to keep the complete content visible longer.
-const CONTACT_FADE_OUT_VH = 90;
-const CONTACT_SCROLL_DISTANCE_VH =
-    CONTACT_FADE_IN_VH + CONTACT_HOLD_VH + CONTACT_FADE_OUT_VH;
+// Contact intro, then the original globe timeline stretched from 430 to 650vh.
+const CONTACT_SCROLL_DISTANCE_VH = 220;
 const ANIMATION_SCROLL_DISTANCE_VH = 650;
-const GLOBE_END_HOLD_VH = 70;
-const SECTION_SCROLL_DISTANCE_VH =
-    CONTACT_SCROLL_DISTANCE_VH + ANIMATION_SCROLL_DISTANCE_VH + GLOBE_END_HOLD_VH;
+const SECTION_SCROLL_DISTANCE_VH = 940;
 const GLOBE_INTERACTION_PROGRESS = 0.90;
 
 const LOCATIONS: EarthLocation[] = [
@@ -85,7 +78,6 @@ export default function DotGlobeReferenceSection({
     const finalRef = useRef<HTMLDivElement>(null);
     const introRef = useRef<HTMLDivElement>(null);
     const ctaRef = useRef<HTMLDivElement>(null);
-    const stripRef = useRef<HTMLDivElement>(null);
     const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
 
     const orbitRef = useRef({
@@ -155,7 +147,6 @@ export default function DotGlobeReferenceSection({
                     previousReducedMotion === motionQuery.matches) return;
                 previousContactProgress = progress;
                 previousReducedMotion = motionQuery.matches;
-                reveal(stripRef.current, progress);
                 reveal(introRef.current, (progress - 0.12) / 0.35, 18);
                 itemRefs.current.forEach((element, index) => {
                     reveal(element, (progress - 0.30 - index * 0.12) / 0.25, 8);
@@ -206,14 +197,15 @@ export default function DotGlobeReferenceSection({
             const animationProgress = distance <= CONTACT_SCROLL_DISTANCE_VH
                 ? DOT_FLOW_END_PROGRESS * Math.max(0, distance / CONTACT_SCROLL_DISTANCE_VH)
                 : DOT_FLOW_END_PROGRESS + (1 - DOT_FLOW_END_PROGRESS) *
-                Math.max(0, Math.min(
-                    (distance - CONTACT_SCROLL_DISTANCE_VH) / ANIMATION_SCROLL_DISTANCE_VH,
-                    1,
-                ));
-            // Reveal, hold, then hide before the globe starts forming.
+                  Math.max(0, Math.min(
+                      (distance - CONTACT_SCROLL_DISTANCE_VH) / ANIMATION_SCROLL_DISTANCE_VH,
+                      1,
+                  ));
+            // Intro: stagger in over 70vh, hold until 150vh, then fade out
+            // before globe formation begins at 220vh. The center stays empty.
             renderer.setContactProgress(Math.max(0, Math.min(
-                distance / CONTACT_FADE_IN_VH,
-                (CONTACT_SCROLL_DISTANCE_VH - distance) / CONTACT_FADE_OUT_VH,
+                distance / 70,
+                (CONTACT_SCROLL_DISTANCE_VH - distance) / 70,
                 1,
             )));
             progressRef.current = animationProgress;
@@ -339,7 +331,7 @@ export default function DotGlobeReferenceSection({
                     Math.min(
                         0.72,
                         orbitRef.current.targetPitch +
-                        deltaY * 0.0038,
+                            deltaY * 0.0038,
                     ),
                 );
 
@@ -355,13 +347,13 @@ export default function DotGlobeReferenceSection({
             const normalizedX =
                 ((event.clientX - rect.left) /
                     Math.max(rect.width, 1)) *
-                2 -
+                    2 -
                 1;
             const normalizedY =
                 1 -
                 ((event.clientY - rect.top) /
                     Math.max(rect.height, 1)) *
-                2;
+                    2;
 
             renderer.setPointer(
                 normalizedX,
@@ -486,8 +478,10 @@ export default function DotGlobeReferenceSection({
             <div ref={finalRef} className={styles.finalContact}>
                 <div className={styles.finalLeft}>
                     <div ref={introRef} className={styles.finalReveal}>
+                        <p className={styles.eyebrow}>LET&apos;S BUILD</p>
                         <h2 className={styles.finalHeading}>
-                            What&apos;s Next Together.
+                            What&apos;s Next<br />
+                            <span>Together.</span>
                         </h2>
                         <p className={styles.finalDescription}>
                             Have a project in mind or simply want to say hello?
@@ -495,17 +489,18 @@ export default function DotGlobeReferenceSection({
                         </p>
                     </div>
                     <div ref={ctaRef} className={`${styles.finalReveal} ${styles.finalCta}`}>
-                        <PrimaryButton href="#contact">
-                            Start Your Project
-                        </PrimaryButton>
+                        {contactCta ?? (
+                            <a className={styles.ctaFallback} href={`mailto:${emailAddress}`}>
+                                Get In Touch <span aria-hidden="true">↗</span>
+                            </a>
+                        )}
                     </div>
-
                 </div>
-                <div ref={stripRef} className={`${styles.finalReveal} ${styles.finalRight}`}>
+                <div className={styles.finalRight}>
                     {[
-                        { label: "Our Location", value: locationText, href: undefined, icon: "location" },
-                        { label: "Call Us", value: phoneNumber, href: `tel:${phoneNumber.replace(/[^+\d]/g, "")}`, icon: "phone" },
-                        { label: "Email Us", value: emailAddress, href: `mailto:${emailAddress}`, icon: "email" },
+                        { label: "Phone", value: phoneNumber, href: `tel:${phoneNumber.replace(/[^+\d]/g, "")}`, icon: "phone" },
+                        { label: "Email", value: emailAddress, href: `mailto:${emailAddress}`, icon: "email" },
+                        { label: "Location", value: locationText, href: undefined, icon: "location" },
                     ].map((item, index) => (
                         <div
                             key={item.label}
