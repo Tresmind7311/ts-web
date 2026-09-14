@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+
 import { SecondaryButton } from '@/components/common/Button';
 import { tokens } from '@/theme/theme';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
@@ -45,34 +46,6 @@ const Section = styled(Box)(({ theme }) => ({
     },
 }));
 
-// const Heading = styled('h2')({
-//     position: 'relative',
-//     zIndex: 3,
-//     margin: 0,
-//     padding: 'clamp(24px, 5svh, 56px) 20px 0',
-//     color: tokens.color.ink900,
-//      fontFamily: 'var(--font-display)',
-//     fontSize: 'clamp(36px, 5.2vw, 64px)',
-//     fontWeight: 700,    
-//     lineHeight: 1.1,
-//     letterSpacing: '-0.03em',
-//     textAlign: 'center',
-//     pointerEvents: 'none',
-//     paddingBottom: '75px',
-//     background: `linear-gradient(
-//         150deg,
-//         ${tokens.color.uv800} 20%,
-//         ${tokens.color.uv300} 80%
-//     )`,
-//     backgroundClip: 'text',
-//     WebkitBackgroundClip: 'text',
-//     WebkitTextFillColor: 'transparent',
-//     '@media (prefers-reduced-motion: reduce)': {
-//         paddingTop: 0,
-//         marginBottom: '32px',
-//     },
-// });
-
 const List = styled(Box)({
     width: '100%',
     maxWidth: '1120px',
@@ -110,6 +83,7 @@ const QuoteText = styled('span')(({ theme }) => ({
     letterSpacing: '-0.01em',
     color: tokens.color.ink900,
     textWrap: 'pretty' as any,
+
     [theme.breakpoints.down('md')]: {
         fontSize: '18px',
     },
@@ -140,7 +114,10 @@ const Chevron = styled('span', {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function TestimonialsSection({ testimonials, initialCount = 4 }: Props) {
+export default function TestimonialsSection({
+    testimonials,
+    initialCount = 4,
+}: Props) {
     const sectionRef = useRef<HTMLElement>(null);
     const expandedRef = useRef(false);
 
@@ -148,7 +125,9 @@ export default function TestimonialsSection({ testimonials, initialCount = 4 }: 
     const [revealed, setRevealed] = useState(false);
 
     const [hoverActiveId, setHoverActiveId] = useState<number | null>(null);
-    const [scrollActiveId, setScrollActiveId] = useState<number>(testimonials[0].id);
+    const [scrollActiveId, setScrollActiveId] = useState<number>(
+        testimonials[0]?.id ?? 0,
+    );
 
     const activeId = hoverActiveId ?? scrollActiveId;
 
@@ -158,33 +137,47 @@ export default function TestimonialsSection({ testimonials, initialCount = 4 }: 
 
     useEffect(() => {
         const section = sectionRef.current;
-        if (!section) return;
+
+        if (!section || testimonials.length === 0) {
+            return;
+        }
 
         const mm = gsap.matchMedia();
 
+        const getCount = () =>
+            expandedRef.current
+                ? testimonials.length
+                : Math.min(initialCount, testimonials.length);
+
+        const setActiveFromProgress = (progress: number) => {
+            const count = getCount();
+
+            if (count <= 0) {
+                return;
+            }
+
+            const index = Math.min(
+                Math.floor(Math.min(progress, 0.999999) * count),
+                count - 1,
+            );
+
+            setScrollActiveId(testimonials[index].id);
+        };
+
+        const getScrollDistance = () => {
+            const count = getCount();
+
+            return Math.round(
+                Math.max(
+                    window.innerHeight * 1.9,
+                    count * window.innerHeight * 0.48,
+                ),
+            );
+        };
+
+        // ── Desktop ───────────────────────────────────────────────────────────
+        // Existing desktop pin/scroll behaviour remains unchanged.
         mm.add('(min-width: 900px)', () => {
-            const getCount = () =>
-                expandedRef.current ? testimonials.length : initialCount;
-
-            const getScrollDistance = () => {
-                const count = getCount();
-                return Math.round(
-                    Math.max(
-                        window.innerHeight * 1.9,
-                        count * window.innerHeight * 0.48,
-                    ),
-                );
-            };
-
-            const setActiveFromProgress = (progress: number) => {
-                const count = getCount();
-                const index = Math.min(
-                    Math.floor(Math.min(progress, 0.999999) * count),
-                    count - 1,
-                );
-                setScrollActiveId(testimonials[index].id);
-            };
-
             const trigger = ScrollTrigger.create({
                 trigger: section,
                 start: 'top top',
@@ -194,53 +187,145 @@ export default function TestimonialsSection({ testimonials, initialCount = 4 }: 
                 refreshPriority: 0,
                 invalidateOnRefresh: true,
                 anticipatePin: 1,
-                onUpdate: ({ progress }) => setActiveFromProgress(progress),
-                onRefresh: ({ progress }) => setActiveFromProgress(progress),
-                onEnter: () => setActiveFromProgress(0),
-                onLeaveBack: () => setScrollActiveId(testimonials[0].id),
+
+                onUpdate: ({ progress }) => {
+                    setActiveFromProgress(progress);
+                },
+
+                onRefresh: ({ progress }) => {
+                    setActiveFromProgress(progress);
+                },
+
+                onEnter: () => {
+                    setActiveFromProgress(0);
+                },
+
+                onLeaveBack: () => {
+                    setScrollActiveId(testimonials[0].id);
+                },
+
                 onLeave: () => {
                     const count = getCount();
-                    setScrollActiveId(testimonials[count - 1].id);
+
+                    if (count > 0) {
+                        setScrollActiveId(testimonials[count - 1].id);
+                    }
                 },
             });
 
-            return () => { trigger.kill(); };
+            return () => {
+                trigger.kill();
+            };
         });
 
-        mm.add('(max-width: 899px)', () => {
-            const trigger = ScrollTrigger.create({
-                trigger: section,
-                start: 'top 75%',
-                end: 'bottom 25%',
-                refreshPriority: 0,
-                invalidateOnRefresh: true,
-                onUpdate: ({ progress }) => {
-                    const count = expandedRef.current ? testimonials.length : initialCount;
-                    const index = Math.min(
-                        Math.floor(Math.min(progress, 0.999999) * count),
-                        count - 1,
-                    );
-                    setScrollActiveId(testimonials[index].id);
-                },
-            });
+        // ── Mobile / tablet — normal motion ───────────────────────────────────
+        // This is the original mobile behaviour. Nothing changed here.
+        mm.add(
+            '(max-width: 899px) and (prefers-reduced-motion: no-preference)',
+            () => {
+                const trigger = ScrollTrigger.create({
+                    trigger: section,
+                    start: 'top 75%',
+                    end: 'bottom 25%',
+                    refreshPriority: 0,
+                    invalidateOnRefresh: true,
 
-            return () => { trigger.kill(); };
-        });
+                    onUpdate: ({ progress }) => {
+                        setActiveFromProgress(progress);
+                    },
+                });
 
-        return () => { mm.revert(); };
+                return () => {
+                    trigger.kill();
+                };
+            },
+        );
+
+        // ── Mobile / tablet — iOS Reduce Motion ON ────────────────────────────
+        // Safari can stop behaving correctly when reduced motion changes how
+        // fixed/sticky elements are composed. Isolate that case and use
+        // ScrollTrigger's transform-based pinning instead of fixed pinning.
+        mm.add(
+            '(max-width: 899px) and (prefers-reduced-motion: reduce)',
+            () => {
+                const trigger = ScrollTrigger.create({
+                    trigger: section,
+                    start: 'top top',
+                    end: () => `+=${getScrollDistance()}`,
+
+                    pin: true,
+                    pinType: 'transform',
+                    pinSpacing: true,
+                    anticipatePin: 1,
+
+                    refreshPriority: 0,
+                    invalidateOnRefresh: true,
+
+                    onUpdate: ({ progress }) => {
+                        setActiveFromProgress(progress);
+                    },
+
+                    onRefresh: ({ progress }) => {
+                        setActiveFromProgress(progress);
+                    },
+
+                    onEnter: () => {
+                        setActiveFromProgress(0);
+                    },
+
+                    onEnterBack: ({ progress }) => {
+                        setActiveFromProgress(progress);
+                    },
+
+                    onLeaveBack: () => {
+                        setScrollActiveId(testimonials[0].id);
+                    },
+
+                    onLeave: () => {
+                        const count = getCount();
+
+                        if (count > 0) {
+                            setScrollActiveId(testimonials[count - 1].id);
+                        }
+                    },
+                });
+
+                // iOS Safari can settle viewport/browser-chrome dimensions one
+                // frame after ScrollTrigger creates the pin. Re-measure once.
+                const refreshFrame = window.requestAnimationFrame(() => {
+                    ScrollTrigger.refresh();
+                });
+
+                return () => {
+                    window.cancelAnimationFrame(refreshFrame);
+                    trigger.kill();
+                };
+            },
+        );
+
+        return () => {
+            mm.revert();
+        };
     }, [testimonials, initialCount]);
 
     const extra = testimonials.slice(initialCount);
 
     const handleExpand = () => {
         const next = !expanded;
+
         setExpanded(next);
+
         if (next) {
-            requestAnimationFrame(() => setRevealed(true));
+            requestAnimationFrame(() => {
+                setRevealed(true);
+            });
         } else {
             setRevealed(false);
         }
-        setTimeout(() => { ScrollTrigger.refresh(); }, 520);
+
+        setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 520);
     };
 
     const renderTestimonial = (item: Testimonial) => (
@@ -251,37 +336,55 @@ export default function TestimonialsSection({ testimonials, initialCount = 4 }: 
             onClick={() => setHoverActiveId(item.id)}
             aria-label={`${item.name}, ${item.title}`}
         >
-            <Avatar src={item.avatar} alt="" aria-hidden="true" draggable={false} />
+            <Avatar
+                src={item.avatar}
+                alt=""
+                aria-hidden="true"
+                draggable={false}
+            />
+
             <QuoteText>{item.quote} </QuoteText>
         </Row>
     );
 
     return (
         <Section ref={sectionRef} id="testimonials">
-            <Heading variant='h2'
+            <Heading
+                variant="h2"
                 sx={{
                     padding: 'clamp(24px, 5svh, 56px) 20px 0',
                     paddingBottom: '75px',
                     position: 'relative',
-                    zIndex: '3',
-                    margin: '0',
+                    zIndex: 3,
+                    margin: 0,
+
                     '@media (prefers-reduced-motion: reduce)': {
                         paddingTop: 0,
                         marginBottom: '32px',
                     },
-                }}>
+                }}
+            >
                 Good Work. Better Words.
             </Heading>
+
             <List onMouseLeave={() => setHoverActiveId(null)}>
-                {testimonials.slice(0, initialCount).map(renderTestimonial)}
+                {testimonials
+                    .slice(0, initialCount)
+                    .map(renderTestimonial)}
+
                 {expanded && (
                     <RevealWrap show={revealed}>
                         {extra.map(renderTestimonial)}
                     </RevealWrap>
                 )}
             </List>
+
             <ButtonWrap>
-                <SecondaryButton type="button" onClick={handleExpand} aria-expanded={expanded}>
+                <SecondaryButton
+                    type="button"
+                    onClick={handleExpand}
+                    aria-expanded={expanded}
+                >
                     {expanded ? 'Show less' : 'Read testimonials'}
                     <Chevron open={expanded}>▾</Chevron>
                 </SecondaryButton>
