@@ -91,7 +91,7 @@ const ROUTES: GlobeRoute[] = [
 
 const VISUAL_COLORS = {
     uv600: "#0DB0DC",
-    uv500: "#0783FC",
+    uv500: "#071463",
     uv300: "#0DB0DC",
 };
 

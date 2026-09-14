@@ -16,6 +16,7 @@ import DotGlobeReferenceCanvasRenderer, {
     type LabelBinding,
 } from "./DotGlobeReferenceCanvas";
 import styles from "./DotGlobeReference.module.css";
+import { PrimaryButton } from "../common/Button";
 
 // Scroll distances in viewport-height equivalents (not seconds).
 const CONTACT_FADE_IN_VH = 70;
@@ -493,12 +494,15 @@ export default function DotGlobeReferenceSection({
                             We&apos;re always open to discussing new ideas, products, and opportunities.
                         </p>
                     </div>
-                    <div ref={ctaRef} className={`${styles.finalReveal} ${styles.finalCta}`}>
-                        {contactCta ?? (
-                            <a className={styles.ctaFallback} href={`mailto:${emailAddress}`}>
-                                Get in Touch
-                            </a>
-                        )}
+                    <div
+                        ref={ctaRef}
+                        className={`${styles.finalReveal} ${styles.finalCta}`}
+                    >
+                        <PrimaryButton href="#contact" sx={{
+                            fontSize:'18px'
+                        }}>
+                            Get in Touch
+                        </PrimaryButton>
                     </div>
                 </div>
                 <div ref={stripRef} className={`${styles.finalReveal} ${styles.finalRight}`}>

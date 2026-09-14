@@ -59,11 +59,10 @@ const Heading = styled('h2')({
     pointerEvents: 'none',
     paddingBottom: '75px',
     background: `linear-gradient(
-            90deg,
-            ${tokens.color.uv800} 0%,
-            ${tokens.color.uv300} 58%,
-            ${tokens.color.uv300} 100%
-        )`,
+        150deg,
+        ${tokens.color.uv800} 20%,
+        ${tokens.color.uv300} 80%
+    )`,
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',

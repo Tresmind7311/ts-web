@@ -52,11 +52,10 @@ const Heading = styled('h2')({
     textAlign: 'center',
     pointerEvents: 'none',
     background: `linear-gradient(
-            90deg,
-            ${tokens.color.uv800} 0%,
-            ${tokens.color.uv300} 58%,
-            ${tokens.color.uv300} 100%
-        )`,
+        150deg,
+        ${tokens.color.uv800} 20%,
+        ${tokens.color.uv300} 80%
+    )`,
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
@@ -240,15 +239,6 @@ export default function CurvedProjectsContinuous({
         let refreshFrameOne = 0;
         let refreshFrameTwo = 0;
 
-        /*
-         * PERF: resize uses dimensions from ResizeObserver entry.contentRect —
-         * no getBoundingClientRect() (which forces a synchronous layout reflow).
-         *
-         * PERF: renderer.setContent() removed from the resize path.
-         * setContent() triggers loadImages() on every resize even though the
-         * project list never changes during a viewport resize.  Content only
-         * changes when the effect re-runs due to a new loopedProjects value.
-         */
         const resize = (width: number, height: number) => {
             renderer.resize(width, height);
             renderer.render(currentIndex);

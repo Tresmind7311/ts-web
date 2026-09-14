@@ -36,11 +36,10 @@ export interface AppButtonProps extends ButtonProps {
 export interface SecondaryButtonProps extends AppButtonProps {}
 
 const primaryGradient = `linear-gradient(
-    100deg,
-    ${tokens.color.uv800} 0%,
-    ${tokens.color.uv500} 62%,
-    ${tokens.color.uv300} 100%
-)`;
+        150deg,
+        ${tokens.color.uv800} 20%,
+        ${tokens.color.uv300} 80%
+    )`;
 
 const borderRotate = keyframes`
     from { --button-border-angle: 0deg; }
@@ -131,13 +130,13 @@ function buttonStyles(
         border: `2px solid ${border}`,
         borderRadius: '10px',
         fontFamily: tokens.font.body,
-        fontSize: 'clamp(14px, 0.8vw, 18px)',
-        fontWeight: 600,
+        fontSize: 'clamp(16px, 0.9vw, 18px)',
+        fontWeight: 500,
         lineHeight: 1,
         textTransform: 'none',
         color: text,
         background: `${fill} padding-box`,
-        boxShadow: 'var(--button-rest-shadow)',
+        // boxShadow: 'var(--button-rest-shadow)',
         WebkitTapHighlightColor: 'transparent',
         transition: 'transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1), color 180ms ease, box-shadow 180ms ease',
 

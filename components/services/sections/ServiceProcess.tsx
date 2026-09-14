@@ -153,10 +153,9 @@ const Heading = styled(Typography)(({ theme }) => ({
     letterSpacing: '-0.045em',
 
     background: `linear-gradient(
-        90deg,
-        ${tokens.color.uv800} 0%,
-        ${tokens.color.uv300} 58%,
-        ${tokens.color.uv300} 100%
+        150deg,
+        ${tokens.color.uv800} 20%,
+        ${tokens.color.uv300} 80%
     )`,
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
@@ -213,10 +212,9 @@ const StepNumber = styled(Box)({
     color: tokens.color.neutral0,
 
     background: `linear-gradient(
-        135deg,
-        ${tokens.color.uv800} 5%,
-        ${tokens.color.uv500} 58%,
-        ${tokens.color.uv300} 100%
+        150deg,
+        ${tokens.color.uv800} 20%,
+        ${tokens.color.uv300} 80%
     )`,
 
     animation: `${numberPop} 650ms ${tokens.motion.ease} both`,

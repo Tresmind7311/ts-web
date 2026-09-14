@@ -11,6 +11,7 @@ import ProjectFilters from './ProjectFilters';
 import { projectList } from '@/data/projects';
 import { ProjectCategory } from '@/data/projects/types';
 import { Container } from '@mui/material';
+import { tokens } from '@/theme/theme';
 
 /* ─── layout ──────────────────────────────────────────────── */
 
@@ -56,7 +57,11 @@ const CtaCard = styled(Link)(({ theme }) => ({
   justifyContent: 'center',
   padding: '36px',
   borderRadius: '16px',
-  background: 'linear-gradient(135deg, #0d1b5e 0%, #1565C0 100%)',
+  background: `linear-gradient(
+        150deg,
+        ${tokens.color.uv800} 20%,
+        ${tokens.color.uv300} 80%
+    )`,
   textDecoration: 'none',
   aspectRatio: '16 / 10',
   position: 'relative',

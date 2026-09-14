@@ -63,10 +63,9 @@ const Title = styled(Typography)(({ theme }) => ({
     letterSpacing: '-0.045em',
     textTransform: 'uppercase',
     background: `linear-gradient(
-        90deg,
-        ${tokens.color.uv800} 0%,
-        ${tokens.color.uv500} 58%,
-        ${tokens.color.uv300} 100%
+        150deg,
+        ${tokens.color.uv800} 20%,
+        ${tokens.color.uv300} 80%
     )`,
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
