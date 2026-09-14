@@ -17,10 +17,11 @@ import { tokens } from '@/theme/theme';
    FRAME CONFIG
 ============================================ */
 
-const FRAME_COUNT = 357;
+const FRAME_COUNT = 238;
+const MOBILE_FRAME_COUNT = 154;
 
 const DESKTOP_FRAMES = generateFrameUrls(
-    '/frames/Stats-section/desktop/stats_d_{n}.webp',
+    '/frames/Stats-section/desktop-stats/stats_d_{n}.webp',
     1,
     FRAME_COUNT,
     5,
@@ -28,7 +29,13 @@ const DESKTOP_FRAMES = generateFrameUrls(
 
 // Every 6th desktop frame → ~60 frames for mobile.
 // Same source files, no new assets required.
-const MOBILE_FRAMES = DESKTOP_FRAMES.filter((_, i) => i % 6 === 0);
+// const MOBILE_FRAMES = DESKTOP_FRAMES.filter((_, i) => i % 6 === 0);
+const MOBILE_FRAMES = generateFrameUrls(
+    '/frames/Stats-section/mobile/stats_d_{n}.webp',
+    1,
+    MOBILE_FRAME_COUNT,
+    5,
+);
 
 const SCROLL_HEIGHT = '600vh';
 

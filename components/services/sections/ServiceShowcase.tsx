@@ -1,6 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import {
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+    type CSSProperties,
+} from 'react';
 import Image from 'next/image';
 
 import Box from '@mui/material/Box';
@@ -16,18 +22,10 @@ interface ServiceShowcaseProps {
     data: ServiceShowcaseData;
 }
 
-const imageReveal = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(-38px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
-
+/*
+ * Content animation intentionally preserved.
+ * Only collage/image-card animations have been removed.
+ */
 const contentReveal = keyframes`
     from {
         opacity: 0;
@@ -57,6 +55,11 @@ const Section = styled(Box)(({ theme }) => ({
     },
 }));
 
+/*
+ * Reference collage is almost full viewport width.
+ * maxWidth is disabled on the JSX Container below so MUI's lg max-width
+ * no longer compresses the collage.
+ */
 const CollageViewport = styled(Container)(({ theme }) => ({
     position: 'relative',
     width: '100%',
@@ -120,14 +123,14 @@ const TopFade = styled(Box)(({ theme }) => ({
     height: '105px',
     pointerEvents: 'none',
     background: `
-    linear-gradient(
-        180deg,
-        ${tokens.color.neutral0} 0%,
-        rgba(255, 255, 255, 0.82) 20%,
-        rgba(255, 255, 255, 0.38) 58%,
-        rgba(255, 255, 255, 0) 100%
-    )
-`,
+        linear-gradient(
+            180deg,
+            ${tokens.color.neutral0} 0%,
+            rgba(255, 255, 255, 0.82) 20%,
+            rgba(255, 255, 255, 0.38) 58%,
+            rgba(255, 255, 255, 0) 100%
+        )
+    `,
 
     [theme.breakpoints.down('md')]: {
         height: '85px',
@@ -138,27 +141,38 @@ const TopFade = styled(Box)(({ theme }) => ({
     },
 }));
 
+/*
+ * Desktop reference geometry:
+ * - 9 columns
+ * - ~167px cards around a 1729px viewport
+ * - ~11px gaps
+ * - collage spans ~92% of viewport, capped near reference width
+ * - enough height for the two-card outer columns to continue beside heading
+ */
 const CollageStage = styled(Box)(({ theme }) => ({
     position: 'relative',
     display: 'grid',
-    gridTemplateColumns: 'repeat(9, 136px)',
-    justifyContent: 'center',
+    gridTemplateColumns: 'repeat(9, minmax(0, 1fr))',
     alignItems: 'start',
-    gap: '12px',
-    width: '100%',
-    height: '445px',
-    paddingInline: '6px',
+    gap: '11px',
+    width: '92vw',
+    maxWidth: '1590px',
+    height: '616px',
+    margin: '0 auto',
     overflow: 'hidden',
 
     [theme.breakpoints.down('lg')]: {
+        width: '94vw',
         gap: '10px',
-        height: '410px',
+        height: '560px',
     },
 
     [theme.breakpoints.down('md')]: {
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
+        width: '100%',
+        maxWidth: 'none',
         gap: '12px',
         height: '340px',
         paddingInline: '18px',
@@ -180,13 +194,17 @@ const CollageStage = styled(Box)(({ theme }) => ({
     },
 }));
 
+/*
+ * No translateY offsets.
+ * Reference columns all begin on the same top baseline.
+ * Vertical variation comes from placeholder height, not column movement.
+ */
 const Column = styled(Box)(({ theme }) => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     minWidth: 0,
     gap: '11px',
-    transform: 'translateY(var(--column-offset))',
 
     [theme.breakpoints.down('md')]: {
         flex: '0 0 122px',
@@ -199,14 +217,21 @@ const Column = styled(Box)(({ theme }) => ({
     },
 }));
 
+/*
+ * #BFBFBF is the requested placeholder colour.
+ * Reference uses it very softly over white, so opacity stays intentionally low.
+ *
+ * Each column supplies a different aspect-ratio to reproduce the varying
+ * placeholder heights visible in the reference.
+ */
 const PlaceholderCard = styled(Box)(({ theme }) => ({
     position: 'relative',
     flexShrink: 0,
     width: '100%',
-    aspectRatio: '0.82',
-    borderRadius: '18px',
+    aspectRatio: 'var(--placeholder-aspect)',
+    borderRadius: '20px',
     backgroundColor: '#BFBFBF',
-    opacity: 0.16,
+    opacity: 0.1,
     pointerEvents: 'none',
 
     [theme.breakpoints.down('sm')]: {
@@ -214,29 +239,22 @@ const PlaceholderCard = styled(Box)(({ theme }) => ({
     },
 }));
 
+/*
+ * Static cards: no opacity reveal, keyframes, delay or transform animation.
+ * 0.79 width/height ratio matches the taller reference cards.
+ */
 const ImageCard = styled(Box)(({ theme }) => ({
     position: 'relative',
     flexShrink: 0,
     width: '100%',
-    aspectRatio: '0.82',
+    aspectRatio: '0.79 / 1',
     overflow: 'hidden',
-    borderRadius: '18px',
+    borderRadius: '20px',
     backgroundColor: tokens.color.neutral100,
-    opacity: 0,
-
-    '&[data-visible="true"]': {
-        animation: `${imageReveal} 700ms ${tokens.motion.ease} forwards`,
-        animationDelay: 'var(--image-delay)',
-    },
+    opacity: 1,
 
     [theme.breakpoints.down('sm')]: {
         borderRadius: '15px',
-    },
-
-    '@media (prefers-reduced-motion: reduce)': {
-        opacity: 1,
-        animation: 'none !important',
-        transform: 'none',
     },
 }));
 
@@ -245,10 +263,15 @@ const CardImage = styled(Image)({
     objectPosition: 'center',
 });
 
+/*
+ * Desktop stage is intentionally taller than the original.
+ * Negative top margin lets outer collage columns continue downward beside
+ * the centered copy, matching the reference composition.
+ */
 const ContentContainer = styled(Container)(({ theme }) => ({
     position: 'relative',
     zIndex: 25,
-    marginTop: '50px',
+    marginTop: 'clamp(-105px, -6vw, -82px)',
     textAlign: 'center',
     opacity: 0,
 
@@ -265,37 +288,6 @@ const ContentContainer = styled(Container)(({ theme }) => ({
         animation: 'none !important',
     },
 }));
-
-// const Heading = styled(Typography)(({ theme }) => ({
-//     width: 'min(100%, 700px)',
-//     margin: '0 auto',
-//     fontFamily: tokens.font.display,
-//     fontSize: 'clamp(42px, 3.6vw, 58px)',
-//     fontWeight: 700,
-//     lineHeight: 1.1,
-//     letterSpacing: '-0.045em',
-
-//     background: `linear-gradient(
-//         90deg,
-//         ${tokens.color.uv800} 0%,
-//         ${tokens.color.uv500} 56%,
-//         ${tokens.color.uv300} 100%
-//     )`,
-//     backgroundClip: 'text',
-//     WebkitBackgroundClip: 'text',
-//     WebkitTextFillColor: 'transparent',
-//     color: 'transparent',
-
-//     [theme.breakpoints.down('md')]: {
-//         width: 'min(100%, 620px)',
-//         fontSize: 'clamp(38px, 7vw, 52px)',
-//     },
-
-//     [theme.breakpoints.down('sm')]: {
-//         fontSize: 'clamp(32px, 9.5vw, 42px)',
-//         lineHeight: 1.08,
-//     },
-// }));
 
 const Description = styled(Typography)(({ theme }) => ({
     maxWidth: '620px',
@@ -318,24 +310,48 @@ const Description = styled(Typography)(({ theme }) => ({
     },
 }));
 
-/*
- * Desktop Figma composition.
- * Values intentionally alternate columns vertically.
- */
-const COLUMN_OFFSETS = [
-    '158px',
-    '-44px',
-    '68px',
-    '-38px',
-    '148px',
-    '-42px',
-    '158px',
-    '-36px',
-    '164px',
-];
+interface CollageColumnLayout {
+    /*
+     * CSS aspect-ratio = width / height.
+     * Lower value => taller placeholder.
+     */
+    placeholderAspect: number;
+    imageIndexes: number[];
+}
 
-const COLUMN_STAGGER = 160;
-const IMAGE_STAGGER = 90;
+/*
+ * Reference composition, left -> right.
+ *
+ * Image pool order is based on first unique occurrence in data.columns.
+ * With the supplied/current data this resolves to:
+ *   0 = purple/blue product image
+ *   1 = food/AI image
+ *   2 = cyan/mobile image
+ *
+ * This produces:
+ *   C1  placeholder + image 0 + image 1
+ *   C2  short placeholder + image 1 + image 2
+ *   C3  tall placeholder + image 0
+ *   C4  short placeholder + image 2
+ *   C5  medium placeholder + image 0
+ *   C6  short placeholder + image 1
+ *   C7  tall placeholder + image 0
+ *   C8  short placeholder + image 2 + image 1
+ *   C9  medium/tall placeholder + image 1 + image 0
+ *
+ * Placeholder ratios were matched to the supplied reference screenshot.
+ */
+const COLLAGE_LAYOUT: CollageColumnLayout[] = [
+    { placeholderAspect: 0.98, imageIndexes: [0, 1] },
+    { placeholderAspect: 1.65, imageIndexes: [1, 2] },
+    { placeholderAspect: 0.88, imageIndexes: [0] },
+    { placeholderAspect: 1.52, imageIndexes: [2] },
+    { placeholderAspect: 1.04, imageIndexes: [0] },
+    { placeholderAspect: 1.52, imageIndexes: [1] },
+    { placeholderAspect: 0.88, imageIndexes: [0] },
+    { placeholderAspect: 1.66, imageIndexes: [2, 1] },
+    { placeholderAspect: 0.96, imageIndexes: [1, 0] },
+];
 
 export default function ServiceShowcase({
     data,
@@ -343,6 +359,32 @@ export default function ServiceShowcase({
     const sectionRef = useRef<HTMLElement | null>(null);
     const [inView, setInView] = useState(false);
 
+    /*
+     * Build a stable pool of unique images while preserving their first
+     * appearance order from existing data.
+     *
+     * Existing data API is preserved; no service data structure change needed.
+     */
+    const imagePool = useMemo(() => {
+        const images = data.columns.flatMap((column) => column.images);
+        const seen = new Set<string>();
+
+        return images.filter((image) => {
+            const key = String(image.src);
+
+            if (seen.has(key)) {
+                return false;
+            }
+
+            seen.add(key);
+            return true;
+        });
+    }, [data.columns]);
+
+    /*
+     * Kept only for existing heading/description reveal.
+     * Image cards no longer depend on IntersectionObserver.
+     */
     useEffect(() => {
         const section = sectionRef.current;
 
@@ -382,42 +424,40 @@ export default function ServiceShowcase({
                 <TopFade aria-hidden="true" />
 
                 <CollageStage>
-                    {data.columns.map((column, columnIndex) => (
+                    {COLLAGE_LAYOUT.map((column, columnIndex) => (
                         <Column
                             key={columnIndex}
                             style={
                                 {
-                                    '--column-offset':
-                                        COLUMN_OFFSETS[columnIndex] ?? '0px',
-                                } as React.CSSProperties
+                                    '--placeholder-aspect':
+                                        String(column.placeholderAspect),
+                                } as CSSProperties
                             }
                         >
-                            {column.placeholder ? (
-                                <PlaceholderCard aria-hidden="true" />
-                            ) : null}
+                            <PlaceholderCard aria-hidden="true" />
 
-                            {column.images.map((image, imageIndex) => {
-                                const delay =
-                                    columnIndex * COLUMN_STAGGER +
-                                    imageIndex * IMAGE_STAGGER;
+                            {column.imageIndexes.map((imageIndex, imagePosition) => {
+                                if (imagePool.length === 0) {
+                                    return null;
+                                }
+
+                                const image =
+                                    imagePool[imageIndex % imagePool.length];
 
                                 return (
                                     <ImageCard
-                                        key={`${image.src}-${columnIndex}-${imageIndex}`}
-                                        data-visible={
-                                            inView ? 'true' : 'false'
-                                        }
-                                        style={
-                                            {
-                                                '--image-delay': `${delay}ms`,
-                                            } as React.CSSProperties
-                                        }
+                                        key={`${String(image.src)}-${columnIndex}-${imagePosition}`}
                                     >
                                         <CardImage
                                             src={image.src}
                                             alt={image.alt}
                                             fill
-                                            sizes="(max-width: 600px) 102px, (max-width: 960px) 122px, 130px"
+                                            sizes="
+                                                (max-width: 600px) 102px,
+                                                (max-width: 960px) 122px,
+                                                (max-width: 1400px) 10vw,
+                                                167px
+                                            "
                                         />
                                     </ImageCard>
                                 );
