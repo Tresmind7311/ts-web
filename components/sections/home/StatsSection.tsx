@@ -379,9 +379,9 @@ export default function StatsSection() {
                Sequential: first on screen.
                C2 starts as this nears exit.
             ---------------------------- */
-            const SAT_ENTRY = 0.35;
-            const SAT_CENTER = 0.48;
-            const SAT_EXIT = 0.58;
+            const SAT_ENTRY = 0.355;
+            const SAT_CENTER = 0.485;
+            const SAT_EXIT = 0.635;
 
             const satOpacity = stageOpacity(
                 p, SAT_ENTRY, SAT_ENTRY + 0.03, SAT_EXIT - 0.03, SAT_EXIT,
@@ -393,7 +393,9 @@ export default function StatsSection() {
 
             setCounterStage(counter1, satOpacity, satY);
 
-            const satCounter = rangeProgress(p, SAT_ENTRY + 0.05, SAT_CENTER + 0.04);
+            // Reference video shows final value as soon as stat becomes visible.
+            // Complete count-up while stage is still off-screen.
+            const satCounter = rangeProgress(p, SAT_ENTRY - 0.05, SAT_ENTRY);
             if (satisfactionNumberRef.current) {
                 satisfactionNumberRef.current.textContent =
                     String(Math.round(STATS.satisfaction * satCounter));
@@ -402,12 +404,11 @@ export default function StatsSection() {
             /* ----------------------------
                04 COUNTER 2 — RIGHT
                Projects (150+)
-               Enters as C1 nears exit (0.52).
-               C3 starts as this nears exit.
+               Starts entering while C1 is moving out.
             ---------------------------- */
-            const PROJ_ENTRY = 0.52;
-            const PROJ_CENTER = 0.65;
-            const PROJ_EXIT = 0.75;
+            const PROJ_ENTRY = 0.545;
+            const PROJ_CENTER = 0.655;
+            const PROJ_EXIT = 0.765;
 
             const projOpacity = stageOpacity(
                 p, PROJ_ENTRY, PROJ_ENTRY + 0.03, PROJ_EXIT - 0.03, PROJ_EXIT,
@@ -419,7 +420,7 @@ export default function StatsSection() {
 
             setCounterStage(counter2, projOpacity, projY);
 
-            const projCounter = rangeProgress(p, PROJ_ENTRY + 0.05, PROJ_CENTER + 0.04);
+            const projCounter = rangeProgress(p, PROJ_ENTRY - 0.05, PROJ_ENTRY);
             if (projectsNumberRef.current) {
                 projectsNumberRef.current.textContent =
                     String(Math.round(STATS.projects * projCounter));
@@ -428,12 +429,11 @@ export default function StatsSection() {
             /* ----------------------------
                05 COUNTER 3 — LEFT
                Countries (12+)
-               Enters as C2 nears exit (0.69).
-               Last counter — exits at 0.98.
+               Starts entering while C2 is moving out.
             ---------------------------- */
-            const CTRY_ENTRY = 0.69;
-            const CTRY_CENTER = 0.82;
-            const CTRY_EXIT = 0.98;
+            const CTRY_ENTRY = 0.67;
+            const CTRY_CENTER = 0.78;
+            const CTRY_EXIT = 0.89;
 
             const ctryOpacity = stageOpacity(
                 p, CTRY_ENTRY, CTRY_ENTRY + 0.03, CTRY_EXIT - 0.03, CTRY_EXIT,
@@ -445,7 +445,7 @@ export default function StatsSection() {
 
             setCounterStage(counter3, ctryOpacity, ctryY);
 
-            const ctryCounter = rangeProgress(p, CTRY_ENTRY + 0.05, CTRY_CENTER + 0.04);
+            const ctryCounter = rangeProgress(p, CTRY_ENTRY - 0.05, CTRY_ENTRY);
             if (countriesNumberRef.current) {
                 countriesNumberRef.current.textContent =
                     String(Math.round(STATS.countries * ctryCounter));
