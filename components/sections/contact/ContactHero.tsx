@@ -38,24 +38,24 @@ const CONTACT_ITEMS = [
 const HeroSection = styled(Box)(({ theme }) => ({
     position: 'relative',
     width: '100%',
-    minHeight: 'calc(100svh - var(--nav-height, 72px))',
-    marginTop: 'var(--nav-height, 72px)',
+    // minHeight: 'calc(100svh - var(--nav-height, 72px))',
+    marginTop: '-60px',
     overflow: 'hidden',
     backgroundColor: tokens.color.neutral0,
     backgroundImage: "url('/images/contact-hero-background.jpg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center top',
-    padding: 'clamp(92px, 9vw, 132px) 0 clamp(72px, 7vw, 104px)',
+    padding: 'clamp(282px, 14vw, 322px) 0 clamp(172px, 9vw, 204px)',
 
     [theme.breakpoints.down('md')]: {
         minHeight: 'auto',
-        padding: '72px 0 80px',
+        padding: '172px 0 80px',
         backgroundPosition: 'center top',
     },
 
     [theme.breakpoints.down('sm')]: {
-        padding: '48px 0 64px',
+        padding: '178px 0 64px',
         backgroundPosition: '38% top',
     },
 }));
@@ -431,7 +431,7 @@ export default function ContactHero() {
             component="section"
             aria-labelledby="contact-hero-heading"
         >
-            <HeroContainer maxWidth="lg">
+            <HeroContainer maxWidth="xl">
                 <IntroColumn>
                     <HeroHeading
                         id="contact-hero-heading"
