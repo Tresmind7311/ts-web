@@ -280,7 +280,7 @@ export default function HeroSection() {
                         gradientBorderEnd="#0DB0DC"
                         hoverBackgroundColor="transparent"
 
-                        href="#contact"
+                        href="contact"
                     >
                         Start a project&nbsp;&nbsp;→
                     </SecondaryButton>
