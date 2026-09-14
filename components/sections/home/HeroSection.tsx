@@ -26,7 +26,7 @@ const DESKTOP_FRAMES = generateFrameUrls(
 const MOBILE_FRAMES = generateFrameUrls(
     '/frames/hero/mobile/hero_m_{n}.webp',
     1,
-    FRAME_COUNT,
+    MOBILE_FRAME_COUNT,
     5,
 );
 

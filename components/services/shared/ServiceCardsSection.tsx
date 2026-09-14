@@ -224,7 +224,7 @@ export default function ServiceCardsSection({
                 } as React.CSSProperties
             }
         >
-            <SectionContainer maxWidth="xl">
+            <SectionContainer maxWidth={false}>
                 <Header>
                     {eyebrow ? (
                         <Eyebrow component="p">{eyebrow}</Eyebrow>
