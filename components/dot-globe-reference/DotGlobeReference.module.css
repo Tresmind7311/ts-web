@@ -1,10 +1,57 @@
+/*
+ * CSS mirror of tokens.color from the supplied theme file.
+ * CSS cannot import a TypeScript object; update these values when theme colors change.
+ * Variables are scoped to this section. Future components can import this module
+ * and apply styles.themeColors to their wrapper to reuse the same palette.
+ * Avoid :root in this CSS Module: global-only selectors fail Next.js pure mode.
+ */
+.section,
+.themeColors {
+    --color-uv100: #DBD6FD;
+    --color-uv300: #0DB0DC;
+    --color-uv500: #0783FC;
+    --color-uv600: #0DB0DC;
+    --color-uv800: #071463;
+    --color-neutral0: #FFFFFF;
+    --color-neutral50: #F6F5F2;
+    --color-neutral100: #EFEFEB;
+    --color-neutral200: #DDDBD5;
+    --color-neutral300: #C7C5BE;
+    --color-neutral400: #AEACB0;
+    --color-neutral500: #8A8A93;
+    --color-neutral600: #6B6B75;
+    --color-neutral700: #4A4A55;
+    --color-textmuted800: #525252;
+    --color-ink900: #12121A;
+    --color-transparent0: #ffffff00;
+    --color-coral100: #FFE1D8;
+    --color-coral500: #FF6B4D;
+    --color-coral600: #E85534;
+    --color-mint100: #D3F8EC;
+    --color-mint500: #2BD9A0;
+    --color-mint600: #1CB882;
+    --color-borderSubtle: #E4E2DC;
+    --color-borderDefault: #C7C5BE;
+
+    /* RGB channels for alpha variants. Keep paired with their hex tokens above. */
+    --color-neutral0-rgb: 255, 255, 255;
+    --color-neutral50-rgb: 246, 245, 242;
+    --color-ink900-rgb: 18, 18, 26;
+    --color-uv500-rgb: 7, 131, 252;
+    --color-uv600-rgb: 13, 176, 220;
+    --color-uv100-rgb: 219, 214, 253;
+
+    /* Strip-only setting: increase/decrease for stronger/weaker background blur. */
+    --contact-strip-blur: 14px;
+}
+
 .section {
     position: relative;
     width: 100%;
     height: 100vh;
     min-height: 100svh;
     overflow: hidden;
-    background: #F6F5F2;
+    background: var(--color-neutral50);
     isolation: isolate;
     touch-action: pan-y;
     user-select: none;
@@ -34,8 +81,8 @@
     z-index: 2;
     pointer-events: none;
     background: radial-gradient(circle at 50% 48%,
-            rgba(255, 255, 255, 0) 60%,
-            rgba(255, 255, 255, 0.18) 100%);
+            rgba(var(--color-neutral0-rgb), 0) 60%,
+            rgba(var(--color-neutral0-rgb), 0.18) 100%);
 }
 
 .labelLayer {
@@ -63,7 +110,7 @@
     align-items: center;
     width: max-content;
     min-width: 142px;
-    color: #11191f;
+    color: var(--color-ink900);
     font-family: inherit;
     line-height: 1.22;
 }
@@ -73,10 +120,10 @@
     flex-direction: column;
     gap: 1px;
     padding: 7px 9px 8px;
-    background: rgba(246, 245, 242, 0.78);
+    background: rgba(var(--color-neutral50-rgb), 0.78);
     backdrop-filter: blur(7px);
     -webkit-backdrop-filter: blur(7px);
-    box-shadow: 0 3px 16px rgba(65, 88, 105, 0.07);
+    box-shadow: 0 3px 16px rgba(var(--color-ink900-rgb), 0.07);
     white-space: nowrap;
 }
 
@@ -100,7 +147,7 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: rgba(7, 131, 252, 0.72);
+    background: rgba(var(--color-uv500-rgb), 0.72);
     transform: translateY(-50%);
 }
 
@@ -172,7 +219,7 @@
 
 /* Intro contact composition. Globe retains its original full-size position. */
 .section {
-    color: var(--contact-text, #071463);
+    color: var(--contact-text, var(--color-uv800));
 }
 
 /* Keep the existing location annotations, without glass styling. */
@@ -186,24 +233,20 @@
     position: absolute;
     inset: 0;
     z-index: 4;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 0.9fr);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    column-gap: clamp(20px, 3vw, 64px);
-    padding: clamp(24px, 5vw, 88px);
+    gap: clamp(40px, 10vh, 112px);
+    padding: clamp(24px, 5vh, 60px) clamp(24px, 6vw, 120px);
+    box-sizing: border-box;
     pointer-events: none;
-    color: var(--contact-text, #071463);
+    color: var(--contact-text, var(--color-uv800));
 }
 
 .finalLeft {
-    grid-column: 1;
-    min-width: 0;
-}
-
-.finalRight {
-    grid-column: 3;
-    display: grid;
-    gap: 30px;
+    width: 100%;
+    text-align: center;
     min-width: 0;
 }
 
@@ -212,93 +255,103 @@
     visibility: hidden;
 }
 
-.eyebrow {
-    margin: 0 0 22px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.24em;
-}
-
 .finalHeading {
+    display: inline-block;
+    max-width: 100%;
     margin: 0;
     font-family: inherit;
-    font-size: clamp(34px, 4vw, 68px);
-    font-weight: 800;
-    /* line-height: 1.04; */
-    letter-spacing: -0.055em;
-
-    background: linear-gradient(90deg,
-            #071463 0%,
-            #0DB0DC 58%,
-            #0DB0DC 100%);
-
+    font-size: clamp(36px, 5.8vw, 112px);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.045em;
+    color: var(--color-uv800);
+    background: linear-gradient(90deg, var(--color-uv800) 0%, var(--color-uv300) 78%, var(--color-uv300) 100%);
     background-clip: text;
     -webkit-background-clip: text;
-
-    color: transparent;
     -webkit-text-fill-color: transparent;
 }
 
 .finalDescription {
-    margin: 24px 0 0;
-    max-width: 36ch;
-    font-size: clamp(13px, 1.05vw, 16px);
-    line-height: 1.75;
-    color: #12121A;
+    margin: clamp(20px, 3vh, 38px) auto 0;
+    max-width: 66ch;
+    font-size: clamp(15px, 1.65vw, 28px);
+    line-height: 1.55;
+    color: var(--contact-muted, var(--color-ink900));
+    text-wrap: pretty;
 }
 
 .finalCta {
-    margin-top: 28px;
+    margin: clamp(24px, 4vh, 44px) auto 0;
     pointer-events: auto;
     width: fit-content;
 }
 
-/* .ctaFallback {
+.ctaFallback {
     display: inline-flex;
     align-items: center;
-    gap: 24px;
-    padding: 12px 0;
-    border-bottom: 1px solid currentColor;
-    color: inherit;
-    font-size: 14px;
+    justify-content: center;
+    min-height: 48px;
+    box-sizing: border-box;
+    padding: 16px 32px;
+    border-radius: 14px;
+    background: var(--color-uv800);
+    color: var(--color-neutral0);
+    font-size: clamp(16px, 1.6vw, 24px);
+    line-height: 1.3;
     font-weight: 600;
     text-decoration: none;
-} */
+}
+
+.ctaFallback:hover {
+    background: var(--color-uv800);
+}
+
+.finalRight {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(20px, 3vw, 56px);
+    width: 100%;
+    max-width: 1440px;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: clamp(24px, 3vw, 44px);
+    border: 1px solid rgba(var(--color-uv600-rgb), 0.65);
+    border-radius: 18px;
+    background: rgba(var(--color-uv100-rgb), 0.72);
+}
 
 .contactItem {
     display: flex;
-    align-items: flex-start;
-    gap: 16px;
+    align-items: center;
+    gap: clamp(14px, 1.6vw, 28px);
     min-width: 0;
 }
 
 .contactIcon {
-    width: 23px;
-    height: 23px;
-    flex: 0 0 23px;
-    color: #0783FC;
-    margin-top: 3px;
+    width: clamp(28px, 3vw, 48px);
+    height: clamp(28px, 3vw, 48px);
+    flex-shrink: 0;
+    color: var(--color-uv500);
 }
 
 .contactItemText {
     display: grid;
     gap: 8px;
     min-width: 0;
-    font-size: clamp(13px, 1.15vw, 17px);
-    line-height: 1.45;
+    font-size: clamp(13px, 1.2vw, 20px);
+    line-height: 1.5;
+    color: var(--color-ink900);
 }
 
 .itemLabel {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    font-size: clamp(16px, 1.5vw, 24px);
+    font-weight: 650;
+    color: var(--contact-text, var(--color-uv800));
 }
 
 .contactItemText a,
 .contactItemText>span:last-child {
     color: inherit;
-    font-weight: 500;
     overflow-wrap: anywhere;
 }
 
@@ -316,180 +369,168 @@
 
 .finalContact a:focus-visible,
 .finalContact button:focus-visible {
-    outline: 2px solid #0783FC;
+    outline: 2px solid var(--color-uv500);
     outline-offset: 5px;
 }
 
-@media (min-width: 768px) and (max-width: 1100px) {
+@media (max-width: 900px) {
     .finalContact {
-        padding: 32px;
-        column-gap: 18px;
-        grid-template-columns: 1fr 0.9fr 0.9fr;
+        padding-inline: 28px;
+        gap: 44px;
     }
 
-    .finalHeading {
-        font-size: 40px;
+    .finalRight {
+        padding: 24px 18px;
+        gap: 18px;
     }
 
     .contactItem {
         gap: 10px;
     }
 
-    .finalRight {
-        gap: 24px;
-    }
-}
-
-@media (max-width: 767px) {
-    .finalContact {
-        grid-template-columns: minmax(0, 1fr);
-        grid-template-rows: auto minmax(100px, 1fr) auto;
-        align-items: start;
-        gap: 0;
-        padding: max(24px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom));
-    }
-
-    .finalLeft {
-        grid-column: 1;
-        grid-row: 1;
-    }
-
-    .finalRight {
-        grid-column: 1;
-        grid-row: 3;
-        gap: 12px;
-    }
-
-    .eyebrow {
-        margin-bottom: 12px;
-        font-size: 10px;
-    }
-
-    .finalHeading {
-        font-size: clamp(34px, 9vw, 48px);
-    }
-
-    .finalDescription {
-        margin-top: 14px;
-        font-size: 12px;
-        line-height: 1.6;
-        max-width: 46ch;
-    }
-
-    .finalCta {
-        margin-top: 14px;
-    }
-
-    .contactItem {
-        gap: 12px;
-    }
-
     .contactIcon {
-        width: 20px;
-        height: 20px;
-        flex-basis: 20px;
+        width: 28px;
+        height: 28px;
     }
 
     .contactItemText {
-        gap: 2px;
-        font-size: 13px;
+        font-size: 12px;
     }
 
     .itemLabel {
-        font-size: 9px;
+        font-size: 15px;
     }
 }
 
-@media (max-width: 767px) and (max-height: 720px) {
+@media (max-width: 600px) {
     .finalContact {
-        padding: 18px 20px;
-        grid-template-rows: auto minmax(60px, 1fr) auto;
+        padding: max(22px, env(safe-area-inset-top)) 22px max(22px, env(safe-area-inset-bottom));
+        gap: 32px;
     }
 
     .finalHeading {
-        font-size: 32px;
+        font-size: clamp(34px, 9vw, 52px);
     }
 
     .finalDescription {
-        font-size: 11px;
-        margin-top: 10px;
-    }
-
-    .eyebrow {
-        margin-bottom: 8px;
+        font-size: 14px;
+        margin-top: 18px;
     }
 
     .finalCta {
-        margin-top: 8px;
+        margin-top: 22px;
     }
 
     .finalRight {
-        gap: 8px;
-    }
-
-    .contactItemText {
-        font-size: 12px;
-    }
-}
-
-@media (max-height: 500px) and (min-width: 600px) {
-    .finalContact {
-        grid-template-columns: 1fr 0.75fr 1fr;
-        grid-template-rows: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         padding: 20px;
-        column-gap: 16px;
-        align-items: center;
-    }
-
-    .finalLeft {
-        grid-column: 1;
-        grid-row: 1;
-    }
-
-    .finalRight {
-        grid-column: 3;
-        grid-row: 1;
-        gap: 14px;
-    }
-
-    .finalHeading {
-        font-size: 30px;
-    }
-
-    .finalDescription {
-        font-size: 11px;
-        margin-top: 12px;
-    }
-
-    .eyebrow {
-        margin-bottom: 10px;
-    }
-
-    .finalCta {
-        margin-top: 12px;
+        gap: 18px;
+        border-radius: 14px;
     }
 
     .contactItem {
-        gap: 8px;
+        gap: 16px;
     }
 
     .contactItemText {
-        font-size: 11px;
+        font-size: 13px;
+        gap: 2px;
+    }
+
+    .itemLabel {
+        font-size: 16px;
     }
 }
 
-@media (min-width: 768px) and (max-width: 900px) and (min-height: 501px) {
+@media (max-width: 600px) and (max-height: 700px) {
     .finalContact {
-        grid-template-columns: 1fr 1.15fr 1fr;
-        column-gap: 14px;
-        padding: 24px;
+        gap: 20px;
+        padding: 16px 20px;
     }
 
     .finalHeading {
         font-size: 32px;
     }
 
+    .finalDescription {
+        font-size: 12px;
+        line-height: 1.45;
+        margin-top: 12px;
+    }
+
+    .finalCta {
+        margin-top: 16px;
+    }
+
+    .ctaFallback {
+        padding: 12px 24px;
+    }
+
+    .finalRight {
+        padding: 14px 18px;
+        gap: 12px;
+    }
+
     .contactItemText {
         font-size: 12px;
+    }
+
+    .itemLabel {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 601px) and (max-height: 500px) {
+    .finalContact {
+        padding: 16px 24px;
+        gap: 22px;
+    }
+
+    .finalHeading {
+        font-size: 34px;
+    }
+
+    .finalDescription {
+        font-size: 12px;
+        margin-top: 10px;
+        max-width: 75ch;
+    }
+
+    .finalCta {
+        margin-top: 14px;
+    }
+
+    .ctaFallback {
+        padding: 10px 24px;
+        font-size: 16px;
+        min-height: 44px;
+    }
+
+    .finalRight {
+        padding: 16px;
+        gap: 16px;
+    }
+}
+
+@media (forced-colors: active) {
+    .finalHeading {
+        background: none;
+        -webkit-text-fill-color: CanvasText;
+        color: CanvasText;
+    }
+
+    .ctaFallback {
+        border: 1px solid ButtonText;
+    }
+}
+
+/* Blur the moving dots behind the strip; text/icons remain sharp.
+ * More translucent fill lets the blur show. The base fill above is the fallback.
+ */
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .finalRight {
+        background: rgba(var(--color-neutral0-rgb), 0.28);
+        -webkit-backdrop-filter: blur(var(--contact-strip-blur));
+        backdrop-filter: blur(var(--contact-strip-blur));
     }
 }

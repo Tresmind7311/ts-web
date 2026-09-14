@@ -26,7 +26,7 @@ const NavRoot = styled('header')<{ scrolled: number; visible: number }>(({ scrol
     left: 0,
     right: 0,
     zIndex: 1000,
-    height: 'var(--nav-height, 72px)',
+    // height: 'var(--nav-height, 120px)',
     display: 'flex',
     alignItems: 'center',
     padding: '10px 24px',
@@ -38,11 +38,6 @@ const NavRoot = styled('header')<{ scrolled: number; visible: number }>(({ scrol
         : 'transparent',
     backdropFilter: scrolled ? 'blur(12px) saturate(1.4)' : 'none',
     WebkitBackdropFilter: scrolled ? 'blur(12px) saturate(1.4)' : 'none',
-    // boxShadow: scrolled ? `0 1px 0 ${tokens.color.borderSubtle}` : 'none',
-    // ── Hero reveal-gate ────────────────────────────────────────────
-    // Hidden until HeroSection's canvas sequence reaches its final
-    // frame (see hero-complete-change listener below). Hides again
-    // if the user scrolls back out of that state.
     opacity: visible ? 1 : 0,
     pointerEvents: visible ? 'auto' : 'none',
 }));
@@ -137,7 +132,7 @@ const DrawerInner = styled(Box)(() => ({
 }));
 
 const DrawerHeader = styled(Box)(() => ({
-    height: 'var(--nav-height, 72px)',
+    height: 'var(--nav-height, 120px)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',

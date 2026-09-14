@@ -46,7 +46,7 @@ const Heading = styled('h2')({
     padding: 'clamp(24px, 5svh, 56px) 20px 0',
     fontFamily: 'var(--font-display)',
     fontSize: 'clamp(36px, 5.2vw, 64px)',
-    fontWeight: 600,
+    fontWeight: 700,
     lineHeight: 1.1,
     letterSpacing: '-0.03em',
     textAlign: 'center',
