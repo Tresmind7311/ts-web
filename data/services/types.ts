@@ -59,7 +59,7 @@ export interface ServiceData {
     seo: ServiceSeoData;
     hero: ServiceHeroData;
     listing: ServiceListingData;
-
+    ecosystem?: ServiceEcosystemData;
     showcase?: ServiceShowcaseData;
     capabilities?: ServiceCapabilitiesData;
 }
@@ -78,4 +78,12 @@ export interface ServiceShowcaseData {
     description: string;
     placeholder?: boolean;
     columns: ServiceShowcaseColumn[];
+}
+
+export interface ServiceEcosystemData {
+    title: string;
+    description: string;
+    flow: string;
+    closingText: string;
+    backgroundImage: string;
 }

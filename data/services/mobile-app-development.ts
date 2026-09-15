@@ -273,4 +273,19 @@ export const mobileAppDevelopmentService: ServiceData = {
             },
         ],
     },
+    ecosystem: {
+        title: 'More Than Just a Mobile Interface',
+
+        description:
+            'A successful mobile application is more than what users see on their screens. We connect the complete product ecosystem — from the mobile interface and APIs to backend infrastructure, databases, and third-party services.',
+
+        flow:
+            'Mobile App → APIs → Backend → Database → Integrations',
+
+        closingText:
+            'Every layer works together to create one seamless experience.',
+
+        backgroundImage:
+            '/images/services/mobile-app-development/mobile-ecosystem.jpg',
+    },
 };

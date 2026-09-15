@@ -1,16 +1,28 @@
 'use client';
 
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+
+import DesignServicesOutlinedIcon from '@mui/icons-material/DesignServicesOutlined';
+import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
+import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import ManageSearchOutlinedIcon from '@mui/icons-material/ManageSearchOutlined';
+
+import type { SvgIconComponent } from '@mui/icons-material';
 import { ProjectCategory } from '@/data/projects/types';
 
-const ALL_CATEGORIES: ProjectCategory[] = ['Design', 'Development', 'Digital Marketing', 'SEO'];
+const ALL_CATEGORIES: ProjectCategory[] = [
+  'Design',
+  'Development',
+  'Digital Marketing',
+  'SEO',
+];
 
-const CATEGORY_ICONS: Record<ProjectCategory, string> = {
-  Design: '✦',
-  Development: '⬡',
-  'Digital Marketing': '◈',
-  SEO: '◎',
+const CATEGORY_ICONS: Record<ProjectCategory, SvgIconComponent> = {
+  Design: DesignServicesOutlinedIcon,
+  Development: LanguageOutlinedIcon,
+  'Digital Marketing': CampaignOutlinedIcon,
+  SEO: ManageSearchOutlinedIcon,
 };
 
 const FilterWrap = styled(Box)({
@@ -19,22 +31,53 @@ const FilterWrap = styled(Box)({
   gap: '10px',
 });
 
-const Pill = styled('button')<{ active: boolean }>(({ theme, active }) => ({
+const ACTIVE_COLOR = '#071463';
+
+const Pill = styled('button', {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active: boolean }>(({ theme, active }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: '6px',
-  padding: '8px 18px',
-  borderRadius: '999px',
-  border: `1.5px solid ${active ? theme.palette.primary.main : 'rgba(0,0,0,0.18)'}`,
-  background: active ? theme.palette.primary.main : 'transparent',
-  color: active ? '#fff' : theme.palette.text.primary,
-  fontSize: '0.85rem',
+  justifyContent: 'center',
+  gap: '12px',
+
+  padding: '14px 28px',
+  borderRadius: '22px',
+
+  border: `2px solid ${active
+      ? ACTIVE_COLOR
+      : 'rgba(7, 20, 99, 0.25)'
+    }`,
+
+  background: 'transparent',
+
+  color: active
+    ? ACTIVE_COLOR
+    : 'rgba(7, 20, 99, 0.32)',
+
+  fontSize: '1rem',
   fontWeight: 500,
+  fontFamily: 'inherit',
+
   cursor: 'pointer',
-  transition: 'all 0.2s ease',
+
+  transition:
+    'border-color 200ms ease, color 200ms ease, background-color 200ms ease',
+
+  '& .MuiSvgIcon-root': {
+    width: '26px',
+    height: '26px',
+    flexShrink: 0,
+  },
+
   '&:hover': {
-    borderColor: theme.palette.primary.main,
-    color: active ? '#fff' : theme.palette.primary.main,
+    borderColor: ACTIVE_COLOR,
+    color: ACTIVE_COLOR,
+  },
+
+  '&:focus-visible': {
+    outline: `2px solid ${ACTIVE_COLOR}`,
+    outlineOffset: '3px',
   },
 }));
 
@@ -43,7 +86,10 @@ interface Props {
   onChange: (cats: ProjectCategory[]) => void;
 }
 
-export default function ProjectFilters({ active, onChange }: Props) {
+export default function ProjectFilters({
+  active,
+  onChange,
+}: Props) {
   function toggle(cat: ProjectCategory) {
     if (active.includes(cat)) {
       onChange(active.filter((c) => c !== cat));
@@ -54,12 +100,23 @@ export default function ProjectFilters({ active, onChange }: Props) {
 
   return (
     <FilterWrap>
-      {ALL_CATEGORIES.map((cat) => (
-        <Pill key={cat} active={active.includes(cat)} onClick={() => toggle(cat)}>
-          <span style={{ fontSize: '0.7rem' }}>{CATEGORY_ICONS[cat]}</span>
-          {cat}
-        </Pill>
-      ))}
+      {ALL_CATEGORIES.map((cat) => {
+        const Icon = CATEGORY_ICONS[cat];
+        const isActive = active.includes(cat);
+
+        return (
+          <Pill
+            key={cat}
+            type="button"
+            active={isActive}
+            onClick={() => toggle(cat)}
+            aria-pressed={isActive}
+          >
+            <Icon aria-hidden="true" />
+            <span>{cat}</span>
+          </Pill>
+        );
+      })}
     </FilterWrap>
   );
 }

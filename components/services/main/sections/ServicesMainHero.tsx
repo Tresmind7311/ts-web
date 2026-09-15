@@ -32,16 +32,16 @@ const HeroContainer = styled(Container)(({ theme }) => ({
     justifyContent: 'center',
     width: '100%',
     paddingTop: 'clamp(72px, 7vw, 108px)',
-    paddingBottom: 'clamp(120px, 11vw, 170px)',
+    // paddingBottom: 'clamp(120px, 11vw, 170px)',
 
     [theme.breakpoints.down('md')]: {
         paddingTop: '72px',
-        paddingBottom: '120px',
+        // paddingBottom: '120px',
     },
 
     [theme.breakpoints.down('sm')]: {
         paddingTop: '58px',
-        paddingBottom: '96px',
+        // paddingBottom: '96px',
     },
 }));
 
