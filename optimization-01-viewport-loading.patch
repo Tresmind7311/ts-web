@@ -1,0 +1,476 @@
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@ -1,87 +1,11 @@
+-'use client';
+-import dynamic from 'next/dynamic';
+-import HeroSection from "@/components/sections/home/HeroSection";
+-import ServicesBanner from "@/components/common/ServicesBanner/ServicesBanner";
+-import { homeTestimonials } from "@/data/testimonials/home";
+-
+-// Below-fold sections — dynamically imported so their JS is excluded
+-// from the initial bundle and only fetched when needed.
+-// ssr: false because all sections use browser-only APIs
+-// (GSAP, ScrollTrigger, canvas, WebGL, window).
+-const AnimationSection = dynamic(
+-    () => import('@/components/sections/home/Animationsection'),
+-    { ssr: false },
+-);
+-
+-const StatsSection = dynamic(
+-    () => import('@/components/sections/home/StatsSection'),
+-    { ssr: false },
+-);
+-
+-const CurvedProjectsContinuous = dynamic(
+-    () => import('@/components/curved-projects-continuous/CurvedProjectsContinuous'),
+-    { ssr: false },
+-);
+-
+-const ServicesOverviewSection = dynamic(
+-    () => import('@/components/sections/home/ServicesOverviewSection'),
+-    { ssr: false },
+-);
+-
+-const TestimonialsSection = dynamic(
+-    () => import('@/components/sections/home/TestimonialsSection'),
+-    { ssr: false },
+-);
+-
+-const LabSection = dynamic(
+-    () => import('@/components/sections/home/Labsection'),
+-    { ssr: false },
+-);
+-
+-const DotGlobeReferenceSection = dynamic(
+-    () => import('@/components/dot-globe-reference/DotGlobeReferenceSection'),
+-    { ssr: false },
+-);
+-
+-const projects = [
+-    {
+-        title: "Project One",
+-        image: "/projects/project-01.jpg",
+-        href: "/projects/project-one",
+-    },
+-    {
+-        title: "Project Two",
+-        image: "/projects/project-02.jpg",
+-        href: "/projects/project-two",
+-    },
+-    {
+-        title: "Project Three",
+-        image: "/projects/project-03.jpg",
+-        href: "/projects/project-three",
+-    },
+-    {
+-        title: "Project Four",
+-        image: "/projects/project-04.jpg",
+-        href: "/projects/project-four",
+-    },
+-    {
+-        title: "Project Five",
+-        image: "/projects/project-05.jpg",
+-        href: "/projects/project-five",
+-    },
+-];
++import HeroSection from '@/components/sections/home/HeroSection';
++import DeferredHomeSections from '@/components/sections/home/DeferredHomeSections';
+ 
+ export default function HomePage() {
+     return (
+         <main>
+             <HeroSection />
+-            <StatsSection />
+-            <AnimationSection />
+-            <ServicesOverviewSection />
+-            <CurvedProjectsContinuous projects={projects} />
+-            <TestimonialsSection testimonials={homeTestimonials} />
+-            <LabSection />
+-            <DotGlobeReferenceSection />
++            <DeferredHomeSections />
+         </main>
+     );
+ }
+--- /dev/null
++++ b/components/sections/home/DeferredHomeSections.tsx
+@@ -0,0 +1,303 @@
++'use client';
++
++import {
++    useEffect,
++    useLayoutEffect,
++    useRef,
++    useState,
++    type ComponentType,
++} from 'react';
++
++import { ScrollTrigger } from '@/lib/gsap';
++
++import styles from './DeferredHomeSections.module.css';
++
++type SectionLoader = () => Promise<ComponentType>;
++
++type DeferredSectionProps = {
++    loader: SectionLoader;
++    reserveClassName: string;
++    anchorId?: string;
++    rootMargin?: string;
++};
++
++const LOAD_AHEAD_ROOT_MARGIN = '100% 0px';
++
++const PROJECTS = [
++    {
++        title: 'Project One',
++        image: '/projects/project-01.jpg',
++        href: '/projects/project-one',
++    },
++    {
++        title: 'Project Two',
++        image: '/projects/project-02.jpg',
++        href: '/projects/project-two',
++    },
++    {
++        title: 'Project Three',
++        image: '/projects/project-03.jpg',
++        href: '/projects/project-three',
++    },
++    {
++        title: 'Project Four',
++        image: '/projects/project-04.jpg',
++        href: '/projects/project-four',
++    },
++    {
++        title: 'Project Five',
++        image: '/projects/project-05.jpg',
++        href: '/projects/project-five',
++    },
++];
++
++const loadStatsSection: SectionLoader = async () => {
++    const { default: StatsSection } = await import('./StatsSection');
++
++    return function LoadedStatsSection() {
++        return <StatsSection />;
++    };
++};
++
++const loadAnimationSection: SectionLoader = async () => {
++    const { default: AnimationSection } = await import('./Animationsection');
++
++    return function LoadedAnimationSection() {
++        return <AnimationSection />;
++    };
++};
++
++const loadServicesOverviewSection: SectionLoader = async () => {
++    const { default: ServicesOverviewSection } = await import('./ServicesOverviewSection');
++
++    return function LoadedServicesOverviewSection() {
++        return <ServicesOverviewSection />;
++    };
++};
++
++const loadCurvedProjectsSection: SectionLoader = async () => {
++    const { default: CurvedProjectsContinuous } = await import(
++        '@/components/curved-projects-continuous/CurvedProjectsContinuous'
++    );
++
++    return function LoadedCurvedProjectsSection() {
++        return <CurvedProjectsContinuous projects={PROJECTS} />;
++    };
++};
++
++const loadTestimonialsSection: SectionLoader = async () => {
++    const [{ default: TestimonialsSection }, { homeTestimonials }] = await Promise.all([
++        import('./TestimonialsSection'),
++        import('@/data/testimonials/home'),
++    ]);
++
++    return function LoadedTestimonialsSection() {
++        return <TestimonialsSection testimonials={homeTestimonials} />;
++    };
++};
++
++const loadLabSection: SectionLoader = async () => {
++    const { default: LabSection } = await import('./Labsection');
++
++    return function LoadedLabSection() {
++        return <LabSection />;
++    };
++};
++
++const loadDotGlobeSection: SectionLoader = async () => {
++    const { default: DotGlobeReferenceSection } = await import(
++        '@/components/dot-globe-reference/DotGlobeReferenceSection'
++    );
++
++    return function LoadedDotGlobeSection() {
++        return <DotGlobeReferenceSection />;
++    };
++};
++
++function DeferredSection({
++    loader,
++    reserveClassName,
++    anchorId,
++    rootMargin = LOAD_AHEAD_ROOT_MARGIN,
++}: DeferredSectionProps) {
++    const slotRef = useRef<HTMLDivElement>(null);
++    const requestStartedRef = useRef(false);
++
++    const [LoadedSection, setLoadedSection] = useState<ComponentType | null>(null);
++    const [geometrySettled, setGeometrySettled] = useState(false);
++
++    useEffect(() => {
++        const slot = slotRef.current;
++
++        if (!slot) {
++            return;
++        }
++
++        let cancelled = false;
++        let retryTimer = 0;
++        let observer: IntersectionObserver | null = null;
++
++        const requestSection = async () => {
++            if (cancelled || requestStartedRef.current) {
++                return;
++            }
++
++            requestStartedRef.current = true;
++
++            try {
++                const Section = await loader();
++
++                if (cancelled) {
++                    return;
++                }
++
++                setLoadedSection(() => Section);
++                observer?.disconnect();
++            } catch (error) {
++                requestStartedRef.current = false;
++                console.error('Deferred homepage section failed to load.', error);
++
++                if (!cancelled) {
++                    retryTimer = window.setTimeout(() => {
++                        const rect = slot.getBoundingClientRect();
++                        const retryDistance = window.innerHeight * 2;
++
++                        if (
++                            rect.top <= retryDistance &&
++                            rect.bottom >= -window.innerHeight
++                        ) {
++                            void requestSection();
++                        }
++                    }, 1500);
++                }
++            }
++        };
++
++        if (!('IntersectionObserver' in window)) {
++            void requestSection();
++
++            return () => {
++                cancelled = true;
++                window.clearTimeout(retryTimer);
++            };
++        }
++
++        observer = new IntersectionObserver(
++            ([entry]) => {
++                if (entry?.isIntersecting) {
++                    void requestSection();
++                }
++            },
++            {
++                root: null,
++                rootMargin,
++                threshold: 0,
++            },
++        );
++
++        observer.observe(slot);
++
++        return () => {
++            cancelled = true;
++            observer?.disconnect();
++            window.clearTimeout(retryTimer);
++        };
++    }, [loader, rootMargin]);
++
++    useLayoutEffect(() => {
++        if (!LoadedSection) {
++            return;
++        }
++
++        let frameOne = 0;
++        let frameTwo = 0;
++        let frameThree = 0;
++        let refreshFrame = 0;
++
++        // Keep the reserved scroll span for a few frames while the loaded
++        // section creates its ScrollTrigger pin/spacer. This prevents the page
++        // from collapsing between module resolution and animation setup.
++        frameOne = window.requestAnimationFrame(() => {
++            frameTwo = window.requestAnimationFrame(() => {
++                frameThree = window.requestAnimationFrame(() => {
++                    setGeometrySettled(true);
++
++                    refreshFrame = window.requestAnimationFrame(() => {
++                        ScrollTrigger.refresh();
++                    });
++                });
++            });
++        });
++
++        return () => {
++            window.cancelAnimationFrame(frameOne);
++            window.cancelAnimationFrame(frameTwo);
++            window.cancelAnimationFrame(frameThree);
++            window.cancelAnimationFrame(refreshFrame);
++        };
++    }, [LoadedSection]);
++
++    const className = [
++        styles.slot,
++        geometrySettled ? '' : reserveClassName,
++    ]
++        .filter(Boolean)
++        .join(' ');
++
++    return (
++        <div
++            ref={slotRef}
++            id={LoadedSection ? undefined : anchorId}
++            className={className}
++            data-deferred-home-section={anchorId ?? 'section'}
++        >
++            {LoadedSection ? <LoadedSection /> : null}
++        </div>
++    );
++}
++
++export default function DeferredHomeSections() {
++    return (
++        <>
++            <DeferredSection
++                loader={loadStatsSection}
++                reserveClassName={styles.statsReserve}
++                anchorId="news"
++            />
++
++            <DeferredSection
++                loader={loadAnimationSection}
++                reserveClassName={styles.animationReserve}
++                anchorId="services"
++            />
++
++            <DeferredSection
++                loader={loadServicesOverviewSection}
++                reserveClassName={styles.servicesOverviewReserve}
++                anchorId="services-v2"
++            />
++
++            <DeferredSection
++                loader={loadCurvedProjectsSection}
++                reserveClassName={styles.portfolioReserve}
++            />
++
++            <DeferredSection
++                loader={loadTestimonialsSection}
++                reserveClassName={styles.testimonialsReserve}
++                anchorId="testimonials"
++            />
++
++            <DeferredSection
++                loader={loadLabSection}
++                reserveClassName={styles.labReserve}
++                anchorId="lab"
++            />
++
++            <DeferredSection
++                loader={loadDotGlobeSection}
++                reserveClassName={styles.globeReserve}
++            />
++        </>
++    );
++}
+--- /dev/null
++++ b/components/sections/home/DeferredHomeSections.module.css
+@@ -0,0 +1,74 @@
++.slot {
++    width: 100%;
++    min-width: 0;
++}
++
++/* StatsSection owns an exact 600vh scroll container. */
++.statsReserve {
++    min-height: 600vh;
++}
++
++/* 100vh sticky viewport + 5 reel transitions × 760px. */
++.animationReserve {
++    min-height: calc(100vh + 3800px);
++}
++
++/* 100vh section + 3.5 viewport heights of ScrollTrigger pin distance. */
++.servicesOverviewReserve {
++    min-height: 450vh;
++}
++
++/* 100svh section + 6 project steps × 1.15 viewport heights. */
++.portfolioReserve {
++    min-height: calc(100svh + 690vh);
++}
++
++/* Desktop: 100vh section + max(190vh, 4 × 48vh) pin distance. */
++.testimonialsReserve {
++    min-height: 292vh;
++}
++
++/*
++ * Lab pin distance is track.scrollWidth - viewport width.
++ * Track width = text panel + closing panel + card widths/margins (3910px).
++ */
++.labReserve {
++    min-height: calc(
++        100vh +
++        clamp(320px, 38vw, 520px) +
++        clamp(480px, 50vw, 720px) +
++        3910px -
++        100vw
++    );
++}
++
++/* 100svh section + 1140svh-equivalent pin distance. */
++.globeReserve {
++    min-height: 1240svh;
++}
++
++/* ServicesOverview intentionally disables its pin for reduced motion. */
++@media (prefers-reduced-motion: reduce) {
++    .servicesOverviewReserve {
++        min-height: 100vh;
++    }
++
++    /* Portfolio becomes a normal horizontally scrollable DOM row. */
++    .portfolioReserve {
++        min-height: 100svh;
++    }
++}
++
++/* Testimonials is not pinned on normal-motion tablet/mobile. */
++@media (max-width: 899px) and (prefers-reduced-motion: no-preference) {
++    .testimonialsReserve {
++        min-height: 100svh;
++    }
++}
++
++/* Reduced-motion tablet/mobile keeps Testimonials' transform-based pin. */
++@media (max-width: 899px) and (prefers-reduced-motion: reduce) {
++    .testimonialsReserve {
++        min-height: calc(100svh + 192vh);
++    }
++}

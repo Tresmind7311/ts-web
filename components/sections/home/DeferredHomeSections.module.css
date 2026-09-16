@@ -1,0 +1,74 @@
+.slot {
+    width: 100%;
+    min-width: 0;
+}
+
+/* StatsSection owns an exact 600vh scroll container. */
+.statsReserve {
+    min-height: 600vh;
+}
+
+/* 100vh sticky viewport + 5 reel transitions × 760px. */
+.animationReserve {
+    min-height: calc(100vh + 3800px);
+}
+
+/* 100vh section + 3.5 viewport heights of ScrollTrigger pin distance. */
+.servicesOverviewReserve {
+    min-height: 450vh;
+}
+
+/* 100svh section + 6 project steps × 1.15 viewport heights. */
+.portfolioReserve {
+    min-height: calc(100svh + 690vh);
+}
+
+/* Desktop: 100vh section + max(190vh, 4 × 48vh) pin distance. */
+.testimonialsReserve {
+    min-height: 292vh;
+}
+
+/*
+ * Lab pin distance is track.scrollWidth - viewport width.
+ * Track width = text panel + closing panel + card widths/margins (3910px).
+ */
+.labReserve {
+    min-height: calc(
+        100vh +
+        clamp(320px, 38vw, 520px) +
+        clamp(480px, 50vw, 720px) +
+        3910px -
+        100vw
+    );
+}
+
+/* 100svh section + 1140svh-equivalent pin distance. */
+.globeReserve {
+    min-height: 1240svh;
+}
+
+/* ServicesOverview intentionally disables its pin for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+    .servicesOverviewReserve {
+        min-height: 100vh;
+    }
+
+    /* Portfolio becomes a normal horizontally scrollable DOM row. */
+    .portfolioReserve {
+        min-height: 100svh;
+    }
+}
+
+/* Testimonials is not pinned on normal-motion tablet/mobile. */
+@media (max-width: 899px) and (prefers-reduced-motion: no-preference) {
+    .testimonialsReserve {
+        min-height: 100svh;
+    }
+}
+
+/* Reduced-motion tablet/mobile keeps Testimonials' transform-based pin. */
+@media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+    .testimonialsReserve {
+        min-height: calc(100svh + 192vh);
+    }
+}
