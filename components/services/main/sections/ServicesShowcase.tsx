@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import Box from '@mui/material/Box';
 import { keyframes, styled } from '@mui/material/styles';
 
@@ -40,7 +40,7 @@ const Section = styled(Box)(({ theme }) => ({
 
     [theme.breakpoints.down('md')]: {
         marginTop: '-54px',
-        padding: '0 16px 24px',
+        padding: '0 16px 0px',
     },
 }));
 
@@ -68,7 +68,7 @@ const Track = styled(Box)(({ theme }) => ({
         minHeight: 0,
         overflowX: 'auto',
         overflowY: 'visible',
-        padding: '10px 2px 26px',
+        padding: '10px 2px 0px',
         scrollSnapType: 'x mandatory',
         WebkitOverflowScrolling: 'touch',
         scrollbarWidth: 'none',
@@ -140,6 +140,19 @@ export default function ServicesShowcase({
                     </Item>
                 ))}
             </Track>
+            <Image
+                src="/images/fade.png"
+                alt=""
+                width={1920}
+                height={1080}
+                style={{
+                    width: '100%',
+                    height: 'auto',
+                    position: 'absolute',
+                    bottom: '0',
+                    zIndex: '1'
+                }}
+            />
         </Section>
     );
 }

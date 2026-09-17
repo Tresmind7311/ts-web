@@ -84,8 +84,8 @@ const Header = styled(Box)({
 });
 
 const Eyebrow = styled(Typography)({
-    fontFamily: tokens.font.body,
-    fontSize: '12px',
+    fontFamily: tokens.font.display,
+    fontSize: '20px',
     fontWeight: 600,
     lineHeight: 1,
     letterSpacing: '0.08em',
@@ -224,7 +224,7 @@ export default function ServiceCardsSection({
                 } as React.CSSProperties
             }
         >
-            <SectionContainer maxWidth={false}>
+            <SectionContainer maxWidth='xl'>
                 <Header>
                     {eyebrow ? (
                         <Eyebrow component="p">{eyebrow}</Eyebrow>

@@ -27,6 +27,8 @@ const Section = styled(Box)(({ theme }) => ({
 const Inner = styled(Container)(({ theme }) => ({
   // maxWidth: '1200px',
   // margin: '0 auto',
+  paddingLeft: 0,
+  paddingRight: 0,
 }));
 
 const Header = styled(Box)(({ theme }) => ({
@@ -74,6 +76,10 @@ const CtaCard = styled(Link)(({ theme }) => ({
   },
   '&:hover .cta-arrow': {
     transform: 'translateX(6px)',
+  },
+  [theme.breakpoints.down('sm')]: {
+    minHeight: '400px',
+    width: '100%',
   },
 }));
 
@@ -148,9 +154,10 @@ export default function FeaturedProjects() {
           <CtaCard href="/projects">
             <Typography
               variant="h4"
-              sx={{ color: '#fff', fontWeight: 600, lineHeight: 1.2,
-                fontSize:'55px'
-               }}
+              sx={{
+                color: '#fff', fontWeight: 600, lineHeight: 1.2,
+                fontSize: '55px'
+              }}
             >
               See Our <br></br>More Projects
             </Typography>

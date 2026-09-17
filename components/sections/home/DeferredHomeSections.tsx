@@ -283,16 +283,16 @@ export default function DeferredHomeSections() {
             />
 
             <DeferredSection
+                loader={loadLabSection}
+                reserveClassName={styles.labReserve}
+                anchorId="lab"
+            />
+            <DeferredSection
                 loader={loadTestimonialsSection}
                 reserveClassName={styles.testimonialsReserve}
                 anchorId="testimonials"
             />
 
-            <DeferredSection
-                loader={loadLabSection}
-                reserveClassName={styles.labReserve}
-                anchorId="lab"
-            />
 
             <DeferredSection
                 loader={loadDotGlobeSection}
