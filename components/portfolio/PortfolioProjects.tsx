@@ -237,13 +237,13 @@ const Card = styled(Link)(({ theme }) => ({
     display: 'block',
     minWidth: 0,
     height: '284px',
-
     color: 'inherit',
     textDecoration: 'none',
-
-    border: `1px solid ${tokens.color.uv300}`,
     borderRadius: '20px',
-    background: tokens.color.neutral0,
+    backgroundImage: 'url("/images/Portfolio/card-bg.png")',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '100% 100%',
 
     overflow: 'hidden',
     isolation: 'isolate',
@@ -328,7 +328,7 @@ const Content = styled(Box)(({ theme }) => ({
     justifyContent: 'center',
 
     padding: '52px 29px 28px',
-    background: tokens.color.neutral0,
+    background: 'transparent',
 
     transition: `
         top 360ms ${tokens.motion.ease},
