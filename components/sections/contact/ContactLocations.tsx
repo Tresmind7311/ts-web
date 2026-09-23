@@ -12,20 +12,27 @@ const Section = styled(Box)(({ theme }) => ({
     width: '100%',
     overflow: 'hidden',
     backgroundColor: tokens.color.neutral0,
+
+    [theme.breakpoints.down('sm')]: {
+        paddingBottom: 0,
+    },
 }));
 
 const MapFrame = styled(Box)(({ theme }) => ({
     position: 'relative',
     width: '100%',
-    aspectRatio: '1440 / 811',
+    aspectRatio: '2.6 / 1',
     overflow: 'hidden',
+    borderRadius: '16px 16px 0 0',
 
     [theme.breakpoints.down('md')]: {
-        aspectRatio: '16 / 10',
+        aspectRatio: '16 / 8',
+        borderRadius: '14px 14px 0 0',
     },
 
     [theme.breakpoints.down('sm')]: {
         aspectRatio: '4 / 3',
+        borderRadius: '12px 12px 0 0',
     },
 }));
 
@@ -34,10 +41,6 @@ const MapImage = styled(Image)(({ theme }) => ({
     objectPosition: 'center',
 
     [theme.breakpoints.down('sm')]: {
-        /*
-         * Keeps main center marker visible while allowing
-         * outer map to crop naturally on narrow screens.
-         */
         objectPosition: '48% center',
     },
 }));
@@ -45,6 +48,7 @@ const MapImage = styled(Image)(({ theme }) => ({
 export default function ContactLocations() {
     return (
         <Section
+            id="contact-locations"
             component="section"
             aria-label="Our locations"
         >
