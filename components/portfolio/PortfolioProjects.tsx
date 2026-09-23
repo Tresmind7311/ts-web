@@ -170,9 +170,7 @@ const FilterButton = styled('button', {
         )`
         : 'transparent',
 
-    color: active
-        ? tokens.color.neutral0
-        : tokens.color.ink900,
+    color: active ? tokens.color.neutral0 : tokens.color.ink900,
 
     fontFamily: tokens.font.body,
     fontSize: '16px',
@@ -277,6 +275,8 @@ const Card = styled(Link)(({ theme }) => ({
     [theme.breakpoints.down('sm')]: {
         height: 'auto',
         minHeight: 0,
+        backgroundImage: 'none',
+        backgroundColor: tokens.color.neutral0,
     },
 }));
 
@@ -336,11 +336,22 @@ const Content = styled(Box)(({ theme }) => ({
         padding 360ms ${tokens.motion.ease}
     `,
 
-    '.portfolio-project-card:hover &, .portfolio-project-card:focus-visible &': {
-        top: '98px',
-        justifyContent: 'flex-start',
-        paddingTop: '78px',
-        borderRadius: '20px 20px 0 0',
+    [theme.breakpoints.up('sm')]: {
+        '@media (hover: hover) and (pointer: fine)': {
+            '.portfolio-project-card:hover &': {
+                top: '98px',
+                justifyContent: 'flex-start',
+                paddingTop: '78px',
+                borderRadius: '20px 20px 0 0',
+            },
+        },
+
+        '.portfolio-project-card:focus-visible &': {
+            top: '98px',
+            justifyContent: 'flex-start',
+            paddingTop: '78px',
+            borderRadius: '20px 20px 0 0',
+        },
     },
 
     '@media (hover: none)': {
@@ -350,7 +361,8 @@ const Content = styled(Box)(({ theme }) => ({
     },
 
     [theme.breakpoints.down('sm')]: {
-        padding: '44px 24px 26px',
+        padding: '24px 24px 26px',
+        minHeight: '100%',
     },
 }));
 
@@ -491,7 +503,9 @@ const LearnMore = styled(Box)(({ theme }) => ({
         opacity: 1,
         transform: 'none',
 
-        fontSize: '17px',
+        '& > span': {
+            display: 'none',
+        },
     },
 }));
 
