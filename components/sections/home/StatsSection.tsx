@@ -440,7 +440,7 @@ export default function StatsSection() {
             ---------------------------- */
             const CTRY_ENTRY = 0.67;
             const CTRY_CENTER = 0.78;
-            const CTRY_EXIT = 0.89;
+            const CTRY_EXIT = 1;
 
             const ctryOpacity = stageOpacity(
                 p, CTRY_ENTRY, CTRY_ENTRY + 0.03, CTRY_EXIT - 0.03, CTRY_EXIT,
@@ -464,7 +464,7 @@ export default function StatsSection() {
             const scrollable = container.offsetHeight - window.innerHeight;
 
             const hasStarted = rect.top <= 0;
-            const hasEnded = rect.bottom <= 0;
+            const hasEnded = rect.bottom <= window.innerHeight;
             const active = hasStarted && !hasEnded;
 
             frame.style.visibility = active ? 'visible' : 'hidden';
