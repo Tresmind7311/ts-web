@@ -279,6 +279,8 @@ export default function LabSection() {
         pin: true,
         animation: tween,
         scrub: 1,
+        // Restore Lab pin spacing before the following Services pin (priority 30).
+        refreshPriority: 31,
         invalidateOnRefresh: true,
       });
     }, section);
