@@ -13,10 +13,10 @@
     min-height: calc(100vh + 3800px);
 }
 
-/* Mobile uses an unpinned row: card height plus its vertical gutters. */
+/* Mobile uses a compact, unpinned row; content can grow beyond this minimum. */
 @media (max-width: 899.95px) {
     .animationReserve {
-        min-height: max(100svh, calc(clamp(410px, 68vh, 500px) + 180px));
+        min-height: clamp(540px, 75svh, 640px);
     }
 }
 

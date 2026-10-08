@@ -81,9 +81,11 @@ const StickyContent = styled(Box)(({ theme }) => ({
     isolation: 'isolate',
     [theme.breakpoints.down('md')]: {
         height: 'auto',
-        minHeight: 'max(100svh, calc(clamp(410px, 68vh, 500px) + 180px))',
+        minHeight: 'clamp(540px, 75svh, 640px)',
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        paddingTop: '32px',
         touchAction: 'auto',
     },
 }));
@@ -138,16 +140,16 @@ const CarouselScene = styled(Box)(({ theme }) => ({
         inset: 'auto',
         width: '100%',
         display: 'flex',
-        alignItems: 'center',
-        gap: '16px',
-        padding: '80px max(8vw, calc((100vw - 520px) / 2)) 100px',
+        alignItems: 'stretch',
+        gap: '12px',
+        padding: '24px max(24px, calc((100vw - 420px) / 2)) 32px',
         boxSizing: 'border-box',
         overflowX: 'auto',
         overflowY: 'hidden',
         scrollbarWidth: 'none',
         '&::-webkit-scrollbar': { display: 'none' },
         scrollSnapType: 'x mandatory',
-        scrollPaddingInline: 'max(8vw, calc((100vw - 520px) / 2))',
+        scrollPaddingInline: 'max(24px, calc((100vw - 420px) / 2))',
         scrollBehavior: 'smooth',
         overscrollBehaviorX: 'contain',
         touchAction: 'auto',
@@ -191,16 +193,18 @@ const CarouselCard = styled(Box)(({ theme }) => ({
         scrollSnapAlign: 'center',
         transformStyle: 'flat',
         willChange: 'auto',
-        width: 'min(84vw, 520px)',
-        height: 'min(68vh, 500px)',
-        minHeight: '410px',
-        // Match the desktop side-card treatment without changing snap geometry.
-        opacity: 0.84,
-        transform: `perspective(1400px) rotateY(${DESKTOP_CARD_ROTATION_Y}deg) translateZ(-${DESKTOP_CARD_DEPTH}px) scale(0.975)`,
-        '&:has(~ .is-active)': {
-            transform: `perspective(1400px) rotateY(-${DESKTOP_CARD_ROTATION_Y}deg) translateZ(-${DESKTOP_CARD_DEPTH}px) scale(0.975)`,
+        width: 'min(calc(100vw - 48px), 420px)',
+        height: 'auto',
+        minHeight: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: '20px',
+        opacity: 1,
+        transform: 'none',
+        boxShadow: `0 10px 28px ${alpha(tokens.color.ink900, 0.08)}`,
+        '&.is-active': {
+            boxShadow: `0 12px 32px ${alpha(tokens.color.ink900, 0.10)}`,
         },
-        '&.is-active': { opacity: 1, transform: 'none' },
     },
 }));
 
@@ -212,7 +216,11 @@ const CardImageWrapper = styled(Box)(({ theme }) => ({
     background: alpha(tokens.color.ink900, 0.035),
 
     [theme.breakpoints.down('md')]: {
-        margin: '18px 18px 14px',
+        height: 'auto',
+        aspectRatio: '16 / 10',
+        flexShrink: 0,
+        margin: '16px 16px 14px',
+        borderRadius: '12px',
     },
 }));
 
@@ -231,7 +239,8 @@ const CardContent = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
 
     [theme.breakpoints.down('md')]: {
-        padding: '0 20px 22px',
+        flex: 1,
+        padding: '0 20px 24px',
     },
 }));
 
@@ -251,7 +260,8 @@ const CardNumber = styled(Typography)(({ theme }) => ({
     lineHeight: 1,
 
     [theme.breakpoints.down('md')]: {
-        fontSize: '11px',
+        fontSize: '12px',
+        color: alpha(tokens.color.ink900, 0.65),
     },
 }));
 
@@ -271,8 +281,9 @@ const CardHeading = styled(Typography)(({ theme }) => ({
     letterSpacing: '-0.025em',
 
     [theme.breakpoints.down('md')]: {
-        marginTop: '18px',
-        fontSize: 'clamp(24px, 7vw, 32px)',
+        marginTop: '14px',
+        fontSize: 'clamp(22px, 5.5vw, 28px)',
+        lineHeight: 1.2,
     },
 }));
 
@@ -286,7 +297,9 @@ const CardDescription = styled(Typography)(({ theme }) => ({
 
     [theme.breakpoints.down('md')]: {
         marginTop: '12px',
-        fontSize: '14px',
+        fontSize: '15px',
+        lineHeight: 1.6,
+        color: alpha(tokens.color.ink900, 0.72),
     },
 }));
 
@@ -298,12 +311,19 @@ const SectionCounter = styled(Box)(({ theme }) => ({
     pointerEvents: 'none',
 
     [theme.breakpoints.down('md')]: {
-        left: '22px',
-        bottom: '24px',
+        position: 'relative',
+        left: 'auto',
+        bottom: 'auto',
+        order: -1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '16px',
+        padding: '0 max(24px, calc((100vw - 420px) / 2))',
     },
 }));
 
-const CounterLabel = styled(Typography)({
+const CounterLabel = styled(Typography)(({ theme }) => ({
     margin: 0,
     color: alpha(tokens.color.ink900, 0.8),
     fontFamily: 'var(--font-body)',
@@ -312,9 +332,10 @@ const CounterLabel = styled(Typography)({
     lineHeight: 1,
     letterSpacing: '0.14em',
     textTransform: 'uppercase',
-});
+    [theme.breakpoints.down('md')]: { fontSize: '18px' },
+}));
 
-const CounterValue = styled(Box)({
+const CounterValue = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'baseline',
     gap: '5px',
@@ -323,7 +344,8 @@ const CounterValue = styled(Box)({
     fontFamily: 'var(--font-body)',
     fontSize: '13px',
     lineHeight: 1,
-});
+    [theme.breakpoints.down('md')]: { marginTop: 0 },
+}));
 
 const CounterCurrent = styled('span')({
     fontWeight: 600,
