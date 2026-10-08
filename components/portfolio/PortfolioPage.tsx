@@ -15,9 +15,9 @@ export default function PortfolioPage() {
             <PortfolioAbout />
             <PortfolioNumbersBehindSuccess />
             <PortfolioProjects />
-            <PortfolioSolution />
-            <PortfolioRecentWorks />
-            <PortfolioProcess />
+            {/* <PortfolioSolution /> */}
+            {/* <PortfolioRecentWorks /> */}
+            {/* <PortfolioProcess /> */}
             <TestimonialsSection testimonials={serviceTestimonials} />
         </main>
     );
