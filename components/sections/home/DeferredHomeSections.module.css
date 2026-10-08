@@ -13,6 +13,13 @@
     min-height: calc(100vh + 3800px);
 }
 
+/* Mobile uses an unpinned row: card height plus its vertical gutters. */
+@media (max-width: 899.95px) {
+    .animationReserve {
+        min-height: max(100svh, calc(clamp(410px, 68vh, 500px) + 180px));
+    }
+}
+
 /* 100vh section + 3.5 viewport heights of ScrollTrigger pin distance. */
 .servicesOverviewReserve {
     min-height: 450vh;

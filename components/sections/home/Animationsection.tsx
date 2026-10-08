@@ -69,7 +69,7 @@ const SectionWrapper = styled(Box)({
     userSelect: 'none',
 });
 
-const StickyContent = styled(Box)({
+const StickyContent = styled(Box)(({ theme }) => ({
     position: 'relative',
     width: '100%',
     height: '100vh',
@@ -79,7 +79,14 @@ const StickyContent = styled(Box)({
     cursor: 'default',
     touchAction: 'pan-y',
     isolation: 'isolate',
-});
+    [theme.breakpoints.down('md')]: {
+        height: 'auto',
+        minHeight: 'max(100svh, calc(clamp(410px, 68vh, 500px) + 180px))',
+        display: 'flex',
+        alignItems: 'center',
+        touchAction: 'auto',
+    },
+}));
 
 const GridBackground = styled(Box)({
     position: 'absolute',
@@ -127,8 +134,26 @@ const CarouselScene = styled(Box)(({ theme }) => ({
     overflow: 'visible',
 
     [theme.breakpoints.down('md')]: {
-        perspective: '1000px',
-        perspectiveOrigin: '50% 46%',
+        position: 'relative',
+        inset: 'auto',
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px',
+        padding: '80px max(8vw, calc((100vw - 520px) / 2)) 100px',
+        boxSizing: 'border-box',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        scrollbarWidth: 'none',
+        '&::-webkit-scrollbar': { display: 'none' },
+        scrollSnapType: 'x mandatory',
+        scrollPaddingInline: 'max(8vw, calc((100vw - 520px) / 2))',
+        scrollBehavior: 'smooth',
+        overscrollBehaviorX: 'contain',
+        touchAction: 'auto',
+        perspective: 'none',
+        transformStyle: 'flat',
+        '@media (prefers-reduced-motion: reduce)': { scrollBehavior: 'auto' },
     },
 }));
 
@@ -159,11 +184,23 @@ const CarouselCard = styled(Box)(({ theme }) => ({
     },
 
     [theme.breakpoints.down('md')]: {
-        top: '56%',
+        position: 'relative',
+        left: 'auto',
+        top: 'auto',
+        flexShrink: 0,
+        scrollSnapAlign: 'center',
+        transformStyle: 'flat',
+        willChange: 'auto',
         width: 'min(84vw, 520px)',
         height: 'min(68vh, 500px)',
         minHeight: '410px',
-        borderRadius: '18px',
+        // Match the desktop side-card treatment without changing snap geometry.
+        opacity: 0.84,
+        transform: `perspective(1400px) rotateY(${DESKTOP_CARD_ROTATION_Y}deg) translateZ(-${DESKTOP_CARD_DEPTH}px) scale(0.975)`,
+        '&:has(~ .is-active)': {
+            transform: `perspective(1400px) rotateY(-${DESKTOP_CARD_ROTATION_Y}deg) translateZ(-${DESKTOP_CARD_DEPTH}px) scale(0.975)`,
+        },
+        '&.is-active': { opacity: 1, transform: 'none' },
     },
 }));
 
@@ -175,9 +212,7 @@ const CardImageWrapper = styled(Box)(({ theme }) => ({
     background: alpha(tokens.color.ink900, 0.035),
 
     [theme.breakpoints.down('md')]: {
-        height: '47%',
         margin: '18px 18px 14px',
-        borderRadius: '12px',
     },
 }));
 
@@ -264,7 +299,7 @@ const SectionCounter = styled(Box)(({ theme }) => ({
 
     [theme.breakpoints.down('md')]: {
         left: '22px',
-        bottom: '72px',
+        bottom: '24px',
     },
 }));
 
@@ -396,6 +431,7 @@ function getCardTransform(relative: number, viewportWidth: number) {
 export default function AnimationSection() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const stickyRef = useRef<HTMLDivElement>(null);
+    const carouselRef = useRef<HTMLDivElement>(null);
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const currentCounterRef = useRef<HTMLSpanElement>(null);
     const prevActiveRef = useRef(-1);
@@ -496,125 +532,170 @@ export default function AnimationSection() {
     useEffect(() => {
         const section = sectionRef.current;
         const sticky = stickyRef.current;
+        const carousel = carouselRef.current;
+        if (!section || !sticky || !carousel) return;
 
-        if (!section || !sticky) {
-            return;
-        }
-
-        renderFrame(0);
-
-        const scrollLength =
-            SCROLL_PER_STEP * (REEL_CARDS.length - 1);
-
-        const ctx = gsap.context(() => {
-            ScrollTrigger.create({
-                trigger: section,
-                pin: sticky,
-                start: 'top top',
-                end: `+=${scrollLength}`,
-                pinSpacing: true,
-                scrub: SCRUB_LAG,
-                refreshPriority: 30,
-                invalidateOnRefresh: true,
-
-                onUpdate(self) {
-                    renderFrame(self.progress * 100);
-                },
-
-                onRefresh(self) {
-                    renderFrame(self.progress * 100);
-                },
-
-                onLeave() {
-                    renderFrame(100);
-                },
-
-                onLeaveBack() {
-                    renderFrame(0);
-                },
+        const resetCards = () => {
+            cardRefs.current.forEach(card => {
+                if (!card) return;
+                ['transform', 'opacity', 'z-index', 'visibility', 'pointer-events']
+                    .forEach(property => card.style.removeProperty(property));
+                card.classList.remove('is-active');
             });
-        }, section);
-
-        // Horizontal drag translates to the same vertical page scroll that
-        // drives ScrollTrigger. One progress source keeps drag + wheel synced.
-        let isDragging = false;
-        let lastX = 0;
-
-        const onDown = (clientX: number) => {
-            isDragging = true;
-            lastX = clientX;
+            prevActiveRef.current = -1;
         };
+        const media = gsap.matchMedia();
+        media.add('(min-width: 900px)', () => {
+            resetCards();
+            renderFrame(0);
 
-        const onMove = (clientX: number) => {
-            if (!isDragging) {
-                return;
-            }
+            const scrollLength =
+                SCROLL_PER_STEP * (REEL_CARDS.length - 1);
 
-            const deltaX = clientX - lastX;
-            lastX = clientX;
+            const ctx = gsap.context(() => {
+                ScrollTrigger.create({
+                    trigger: section,
+                    pin: sticky,
+                    start: 'top top',
+                    end: `+=${scrollLength}`,
+                    pinSpacing: true,
+                    scrub: SCRUB_LAG,
+                    refreshPriority: 30,
+                    invalidateOnRefresh: true,
 
-            window.scrollBy(
-                0,
-                -deltaX * DRAG_SCROLL_MULTIPLIER,
-            );
-        };
+                    onUpdate(self) {
+                        renderFrame(self.progress * 100);
+                    },
 
-        const onUp = () => {
-            isDragging = false;
-        };
+                    onRefresh(self) {
+                        renderFrame(self.progress * 100);
+                    },
 
-        const onMouseDown = (event: MouseEvent) => {
-            onDown(event.clientX);
-        };
+                    onLeave() {
+                        renderFrame(100);
+                    },
 
-        const onMouseMove = (event: MouseEvent) => {
-            onMove(event.clientX);
-        };
+                    onLeaveBack() {
+                        renderFrame(0);
+                    },
+                });
+            }, section);
 
-        const onTouchStart = (event: TouchEvent) => {
-            const touch = event.touches[0];
+            // Horizontal drag translates to the same vertical page scroll that
+            // drives ScrollTrigger. One progress source keeps drag + wheel synced.
+            let isDragging = false;
+            let lastX = 0;
 
-            if (touch) {
-                onDown(touch.clientX);
-            }
-        };
+            const onDown = (clientX: number) => {
+                isDragging = true;
+                lastX = clientX;
+            };
 
-        const onTouchMove = (event: TouchEvent) => {
-            const touch = event.touches[0];
+            const onMove = (clientX: number) => {
+                if (!isDragging) {
+                    return;
+                }
 
-            if (touch) {
-                onMove(touch.clientX);
-            }
-        };
+                const deltaX = clientX - lastX;
+                lastX = clientX;
 
-        sticky.addEventListener('mousedown', onMouseDown);
-        sticky.addEventListener('touchstart', onTouchStart, {
-            passive: true,
+                window.scrollBy(
+                    0,
+                    -deltaX * DRAG_SCROLL_MULTIPLIER,
+                );
+            };
+
+            const onUp = () => {
+                isDragging = false;
+            };
+
+            const onMouseDown = (event: MouseEvent) => {
+                onDown(event.clientX);
+            };
+
+            const onMouseMove = (event: MouseEvent) => {
+                onMove(event.clientX);
+            };
+
+            const onTouchStart = (event: TouchEvent) => {
+                const touch = event.touches[0];
+
+                if (touch) {
+                    onDown(touch.clientX);
+                }
+            };
+
+            const onTouchMove = (event: TouchEvent) => {
+                const touch = event.touches[0];
+
+                if (touch) {
+                    onMove(touch.clientX);
+                }
+            };
+
+            sticky.addEventListener('mousedown', onMouseDown);
+            sticky.addEventListener('touchstart', onTouchStart, {
+                passive: true,
+            });
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onUp);
+            document.addEventListener('touchmove', onTouchMove, {
+                passive: true,
+            });
+            document.addEventListener('touchend', onUp);
+            window.addEventListener('blur', onUp);
+
+            return () => {
+                ctx.revert();
+
+                sticky.removeEventListener('mousedown', onMouseDown);
+                sticky.removeEventListener('touchstart', onTouchStart);
+
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onUp);
+                document.removeEventListener('touchmove', onTouchMove);
+                document.removeEventListener('touchend', onUp);
+                window.removeEventListener('blur', onUp);
+            };
+
         });
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onUp);
-        document.addEventListener('touchmove', onTouchMove, {
-            passive: true,
+        media.add('(max-width: 899.95px)', () => {
+            resetCards();
+            carousel.setAttribute('data-lenis-prevent-touch', '');
+            const updateCounter = () => {
+                const center = carousel.scrollLeft + carousel.clientWidth / 2;
+                let closest = 0;
+                let distance = Infinity;
+                cardRefs.current.forEach((card, index) => {
+                    if (!card) return;
+                    const delta = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+                    if (delta < distance) { distance = delta; closest = index; }
+                });
+                cardRefs.current.forEach((card, index) => {
+                    card?.classList.toggle('is-active', index === closest);
+                });
+                if (currentCounterRef.current) {
+                    currentCounterRef.current.textContent = REEL_CARDS[closest].number;
+                }
+            };
+            updateCounter();
+            carousel.addEventListener('scroll', updateCounter, { passive: true });
+            window.addEventListener('resize', updateCounter);
+            return () => {
+                carousel.removeAttribute('data-lenis-prevent-touch');
+                carousel.removeEventListener('scroll', updateCounter);
+                window.removeEventListener('resize', updateCounter);
+                resetCards();
+            };
         });
-        document.addEventListener('touchend', onUp);
-        window.addEventListener('blur', onUp);
-
-        return () => {
-            ctx.revert();
-
-            sticky.removeEventListener('mousedown', onMouseDown);
-            sticky.removeEventListener('touchstart', onTouchStart);
-
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onUp);
-            document.removeEventListener('touchmove', onTouchMove);
-            document.removeEventListener('touchend', onUp);
-            window.removeEventListener('blur', onUp);
-        };
+        return () => { media.revert(); resetCards(); };
     }, [renderFrame]);
 
     const scrollToCard = useCallback((index: number) => {
+        // Mobile cards are browsed by the browser's native horizontal scrolling.
+        if (window.matchMedia('(max-width: 899.95px)').matches) return;
+
         const section = sectionRef.current;
 
         if (!section || REEL_CARDS.length <= 1) {
@@ -645,12 +726,12 @@ export default function AnimationSection() {
             <StickyContent ref={stickyRef}>
                 <GridBackground />
 
-                <CarouselScene>
+                <CarouselScene ref={carouselRef} role="region" aria-label="Services carousel" tabIndex={0}>
                     {REEL_CARDS.map((card, index) => (
                         <CarouselCard
                             key={card.number}
                             ref={(element) => {
-                                cardRefs.current[index] = element;
+                                cardRefs.current[index] = element as HTMLDivElement | null;
                             }}
                             onClick={() => {
                                 scrollToCard(index);
