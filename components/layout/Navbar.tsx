@@ -10,9 +10,9 @@ import { tokens } from '@/theme/theme';
 
 // ─── Nav data ─────────────────────────────────────────────────────
 const NAV_LINKS = [
-    { label: 'Work', href: '/#work' },
+    { label: 'Home', href: '/' },
     { label: 'Services', href: '/services' },
-    { label: 'Studio', href: '/#studio' },
+    { label: 'Portfolio', href: '/portfolio' },
     { label: 'Contact', href: '/contact' },
 ];
 

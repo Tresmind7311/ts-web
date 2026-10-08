@@ -1,4 +1,5 @@
 import PortfolioHero from './PortfolioHero';
+import PortfolioAbout from './PortfolioAbout';
 import PortfolioProjects from './PortfolioProjects';
 import PortfolioSolution from './PortfolioSolution';
 import PortfolioRecentWorks from './PortfolioRecentWorks';
@@ -10,6 +11,7 @@ export default function PortfolioPage() {
     return (
         <main>
             <PortfolioHero />
+            <PortfolioAbout />
             <PortfolioProjects />
             <PortfolioSolution />
             <PortfolioRecentWorks />
