@@ -277,12 +277,6 @@ const StatNumber = styled('div')(({ theme }) => ({
     lineHeight: 0.78,
     letterSpacing: '-0.065em',
     color: tokens.color.neutral0,
-    // textShadow: [
-    //     `0 0 8px ${alpha(tokens.color.neutral50, 0.35)}`,
-    //     `0 0 20px ${alpha(tokens.color.neutral50, 0.28)}`,
-    //     `0 0 42px ${alpha(tokens.color.neutral50, 0.18)}`,
-    //     `0 0 70px ${alpha(tokens.color.neutral50, 0.10)}`,
-    // ].join(', '),
     [theme.breakpoints.down('md')]: {
         fontSize: 'clamp(88px, 27vw, 150px)',
     },
@@ -465,10 +459,15 @@ export default function StatsSection() {
 
             const hasStarted = rect.top <= 0;
             const hasEnded = rect.bottom <= window.innerHeight;
-            const active = hasStarted && !hasEnded;
+            const visible = hasStarted && rect.bottom > 0;
 
-            frame.style.visibility = active ? 'visible' : 'hidden';
-            frame.style.pointerEvents = active ? '' : 'none';
+            // Keep the completed frame in the final viewport of the container.
+            // Recompute from geometry so reverse scroll and jumps restore fixed mode.
+            frame.style.position = hasEnded ? 'absolute' : 'fixed';
+            frame.style.top = hasEnded ? 'auto' : '0px';
+            frame.style.bottom = hasEnded ? '0px' : 'auto';
+            frame.style.visibility = visible ? 'visible' : 'hidden';
+            frame.style.pointerEvents = visible ? '' : 'none';
 
             if (scrollable <= 0) return;
 
