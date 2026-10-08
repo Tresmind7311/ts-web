@@ -181,11 +181,13 @@ const Pill = styled('span')(({ theme }) => ({
 export default function PortfolioNumbersBehindSuccess() {
     const sectionRef = useRef<HTMLElement>(null);
     const fieldRef = useRef<HTMLDivElement>(null);
+    const flowRef = useRef<HTMLDivElement>(null);
+    const playback = useRef({ phase: 'ready' as 'ready' | 'playing' | 'complete', progress: 0, direction: 1 });
 
     // Fixed per-pill variation is generated once, never in refresh callbacks.
     const variation = useRef(PILLS.map((_, index) => ({
-        start: ((index * 37 + 11) % 71) / 100,
-        duration: 0.72 + ((index * 19 + 7) % 29) / 100,
+        start: index * 0.17 + ((index * 37 + 11) % 23) / 100,
+        duration: 1.35 + ((index * 19 + 7) % 29) / 100,
         rotation: ((index * 23 + 5) % 31) - 15,
         x: ((index * 17 + 3) % 41) - 20,
     })));
@@ -193,77 +195,178 @@ export default function PortfolioNumbersBehindSuccess() {
     useLayoutEffect(() => {
         const section = sectionRef.current;
         const field = fieldRef.current;
-        if (!section || !field) return;
+        const flow = flowRef.current;
+        if (!section || !field || !flow) return;
 
         const media = gsap.matchMedia();
         media.add({
             reduced: '(prefers-reduced-motion: reduce)',
-            desktop: '(min-width: 960px) and (min-height: 650px)',
+            desktop: '(min-width: 960px)',
+            tall: '(min-height: 650px)',
             animated: '(prefers-reduced-motion: no-preference)',
         }, (context) => {
-            if (context.conditions?.reduced) return;
-            const desktop = Boolean(context.conditions?.desktop);
             const pills = Array.from(section.querySelectorAll<HTMLElement>('[data-numbers-pill]'));
             const content = section.querySelectorAll<HTMLElement>('[data-numbers-reveal]');
-            const dropDistance = (pill: HTMLElement) => field.offsetTop + (pill.parentElement?.offsetTop ?? 0) + pill.offsetHeight;
-
-            gsap.set(content, { autoAlpha: 0 });
-            gsap.set(pills, { autoAlpha: 0 });
-            const timeline = gsap.timeline();
-            pills.forEach((pill, index) => {
-                const seed = variation.current[index];
-                const finalAngle = window.innerWidth >= 960 ? PILLS[index].angle : 0;
-                timeline.fromTo(pill, {
-                    autoAlpha: 0,
-                    y: () => desktop ? -dropDistance(pill) : -48,
-                    x: desktop ? seed.x : 0,
-                    rotation: finalAngle + (desktop ? seed.rotation : 0),
-                }, {
-                    autoAlpha: 1,
-                    y: 0,
-                    x: 0,
-                    rotation: finalAngle,
-                    duration: desktop ? seed.duration : 0.4,
-                    ease: desktop ? 'bounce.out' : 'power2.out',
-                }, desktop ? seed.start : index * 0.05);
-            });
-
-            // The reveal starts at the actual end of the last pill's settle.
-            timeline.fromTo(content, { autoAlpha: 0, y: desktop ? 20 : 10 }, {
-                autoAlpha: 1, y: 0, duration: 0.55, stagger: 0.1, ease: 'power2.out',
-            }, timeline.duration());
-            const revealDuration = timeline.duration();
-            if (desktop) {
-                // Keep the completed layout visible for the last 20% of pin travel.
-                timeline.to({}, { duration: revealDuration / 4 });
+            const visible = () => {
+                const rect = flow.getBoundingClientRect();
+                return rect.bottom > 0 && rect.top < window.innerHeight;
+            };
+            const finalAngle = (index: number) => window.innerWidth >= 960 ? PILLS[index].angle : 0;
+            const showFinal = () => {
+                gsap.set(content, { autoAlpha: 1, y: 0 });
+                gsap.set(pills, { autoAlpha: 1, x: 0, y: 0, rotation: finalAngle });
+            };
+            if (context.conditions?.reduced) {
+                showFinal();
+                playback.current = { phase: 'complete', progress: 1, direction: 1 };
+                return;
             }
 
-            ScrollTrigger.create({
-                trigger: section,
-                animation: timeline,
-                start: desktop ? () => section.offsetHeight > window.innerHeight ? 'bottom bottom' : 'top top' : 'top bottom',
-                end: desktop ? () => '+=' + Math.ceil(Math.max(...pills.map(dropDistance)) + window.innerHeight * 0.85) : 'top 15%',
-                pin: desktop,
-                pinSpacing: desktop,
-                scrub: true,
-                anticipatePin: desktop ? 1 : 0,
-                invalidateOnRefresh: true,
+            const desktop = Boolean(context.conditions?.desktop && context.conditions?.tall);
+            const state = playback.current;
+            let direction = state.direction;
+            let holding = false;
+            let releasing = false;
+            let releaseTween: gsap.core.Tween | undefined;
+            const dropDistance = (pill: HTMLElement) => field.offsetTop + (pill.parentElement?.offsetTop ?? 0) + pill.offsetHeight;
+            const initialPills = {
+                autoAlpha: 0,
+                y: (_index: number, pill: HTMLElement) => desktop ? -dropDistance(pill) : -64,
+                x: (index: number) => desktop ? variation.current[index].x : 0,
+                rotation: (index: number) => finalAngle(index) + (desktop ? variation.current[index].rotation : 0),
+            };
+
+            // Measure against the normal-flow wrapper, never the temporarily held frame.
+            // Its height is exactly the existing section height, with no pin travel added.
+            const updateHold = () => {
+                const rect = flow.getBoundingClientRect();
+                section.style.width = rect.width + 'px';
+                const height = section.offsetHeight;
+                flow.style.height = height + 'px';
+                const edge = direction > 0 ? Math.min(0, window.innerHeight - height) : Math.max(0, window.innerHeight - height);
+                const top = direction > 0 ? Math.max(rect.top, edge) : Math.min(rect.top, edge);
+                section.style.top = top + 'px';
+                section.style.left = rect.left + 'px';
+                if (rect.bottom <= 0 || rect.top >= window.innerHeight) resetOffscreen();
+            };
+            const hold = () => {
+                holding = true;
+                flow.style.height = section.offsetHeight + 'px';
+                section.style.position = 'fixed';
+                section.style.zIndex = '2';
+                updateHold();
+                gsap.ticker.add(updateHold);
+            };
+            const clearHold = () => {
+                holding = false;
+                gsap.ticker.remove(updateHold);
+                section.style.removeProperty('position');
+                section.style.removeProperty('top');
+                section.style.removeProperty('left');
+                section.style.removeProperty('width');
+                section.style.removeProperty('z-index');
+                flow.style.removeProperty('height');
+            };
+            const timeline = gsap.timeline({ paused: true });
+            const resetOffscreen = () => {
+                const rect = section.getBoundingClientRect();
+                if (visible() || (rect.bottom > 0 && rect.top < window.innerHeight)) return;
+                releaseTween?.kill();
+                releasing = false;
+                clearHold();
+                timeline.pause(0, true);
+                gsap.set(content, { autoAlpha: 0, y: desktop ? 20 : 10 });
+                gsap.set(pills, initialPills);
+                state.phase = 'ready';
+                state.progress = 0;
+            };
+            const release = () => {
+                state.phase = 'complete';
+                state.progress = 1;
+                if (!holding) return;
+                const heldTop = section.getBoundingClientRect().top;
+                clearHold();
+                const offset = heldTop - section.getBoundingClientRect().top;
+                // Preserve the painted position on release, then return to normal flow.
+                releasing = true;
+                gsap.set(section, { y: offset });
+                releaseTween = gsap.to(section, {
+                    y: 0, duration: 0.35, ease: 'power2.out',
+                    onComplete: () => {
+                        gsap.set(section, { clearProps: 'transform' });
+                        releasing = false;
+                        resetOffscreen();
+                    },
+                });
+            };
+
+            // Set starting values once; future fromTo tweens must not immediately
+            // re-hide content during entry, refresh, or a responsive rebuild.
+            gsap.set(content, { autoAlpha: 0, y: desktop ? 20 : 10 });
+            gsap.set(pills, initialPills);
+            pills.forEach((pill, index) => {
+                const seed = variation.current[index];
+                timeline.to(pill, {
+                    autoAlpha: 1, y: 0, x: 0, rotation: finalAngle(index),
+                    duration: desktop ? seed.duration : 0.85 + (seed.duration - 1.35),
+                    ease: 'power2.inOut',
+                }, desktop ? seed.start : seed.start * 0.65);
             });
+            timeline.to(content, {
+                autoAlpha: 1, y: 0, duration: 0.55, stagger: 0.1, ease: 'power2.out',
+            }, timeline.duration());
+            timeline.eventCallback('onComplete', release);
+
+            if (state.phase === 'playing') {
+                // A resize must preserve playback even if normal flow has scrolled away.
+                timeline.progress(state.progress, true);
+                hold();
+                timeline.play();
+            } else if (!visible()) {
+                state.phase = 'complete';
+                resetOffscreen();
+            } else if (state.phase === 'complete') {
+                timeline.progress(1, true);
+                showFinal();
+            }
+
+            const enter = (entryDirection: number) => {
+                if (!visible() || state.phase !== 'ready' || releasing) return;
+                direction = entryDirection;
+                state.direction = entryDirection;
+                state.phase = 'playing';
+                hold();
+                timeline.play(0);
+            };
+            ScrollTrigger.create({
+                trigger: flow,
+                start: 'top bottom',
+                end: 'bottom top',
+                onEnter: () => enter(1),
+                onEnterBack: () => enter(-1),
+                onLeave: resetOffscreen,
+                onLeaveBack: resetOffscreen,
+            });
+            // Includes a section already visible on initial load or a breakpoint change.
+            if (visible()) enter(1);
 
             let refreshFrame = 0;
-            let previousWidth = section.clientWidth;
+            let previousWidth = flow.clientWidth;
             const observer = new ResizeObserver(() => {
-                // Ignore pin-height writes and iOS browser-toolbar height changes.
-                if (section.clientWidth === previousWidth) return;
-                previousWidth = section.clientWidth;
+                if (flow.clientWidth === previousWidth) return;
+                previousWidth = flow.clientWidth;
                 cancelAnimationFrame(refreshFrame);
                 refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh());
             });
-            observer.observe(section);
+            observer.observe(flow);
             let active = true;
             document.fonts.ready.then(() => { if (active) ScrollTrigger.refresh(); });
             return () => {
                 active = false;
+                state.progress = timeline.progress();
+                if (releasing) state.phase = 'complete';
+                releaseTween?.kill();
+                clearHold();
                 observer.disconnect();
                 cancelAnimationFrame(refreshFrame);
             };
@@ -272,34 +375,36 @@ export default function PortfolioNumbersBehindSuccess() {
     }, []);
 
     return (
-        <Section id="portfolio-numbers" ref={sectionRef} aria-labelledby="portfolio-numbers-heading">
-            <noscript><style>{'#portfolio-numbers [data-numbers-reveal], #portfolio-numbers [data-numbers-pill] { visibility: visible !important; }'}</style></noscript>
-            <Inner>
-                <Header>
-                    <Title id="portfolio-numbers-heading" variant="h2" gradient={false} data-numbers-reveal>The Numbers<br />Behind Success</Title>
-                    <div data-numbers-reveal>
-                        <Intro>Strategy, creativity, and growth -the engine for every bold idea.</Intro>
-                        <PrimaryButton component="a" href="/contact" backgroundColor={tokens.color.uv300} textColor="#000" sx={{ fontSize: 18, minHeight: 52, padding: '12px 15px' }}>
-                            Get Started&nbsp;<span aria-hidden="true">→</span>
-                        </PrimaryButton>
-                    </div>
-                </Header>
-                <Stats>
-                    <Stat data-numbers-reveal><Number>500K<span>Users</span></Number><StatDescription className="plans">We offer flexible, custom-fit plans designed to meet the unique needs and budget of your team</StatDescription></Stat>
-                    <Stat data-numbers-reveal><Number>98<span>%</span></Number><StatDescription className="quality">Our commitment to quality shines through near 98.05%</StatDescription></Stat>
-                    <Stat data-numbers-reveal><Number>23<span>K</span></Number><StatDescription className="growth">Organic growth brings in twenty-three thousand signup</StatDescription></Stat>
-                </Stats>
-            </Inner>
-            <PillField ref={fieldRef} aria-label="Agency qualities">
-                {PILLS.map(pill => (
-                    <PillSlot key={pill.text} style={{
-                        '--pill-x': pill.x + '%', '--pill-y': pill.y + 'px', '--pill-width': pill.width + '%',
-                        '--pill-fill': pill.fill, '--pill-color': pill.color, '--pill-angle': pill.angle + 'deg',
-                    } as React.CSSProperties}>
-                        <Pill data-numbers-pill>{pill.text}</Pill>
-                    </PillSlot>
-                ))}
-            </PillField>
-        </Section>
+        <div ref={flowRef}>
+            <Section id="portfolio-numbers" ref={sectionRef} aria-labelledby="portfolio-numbers-heading">
+                <noscript><style>{'#portfolio-numbers [data-numbers-reveal], #portfolio-numbers [data-numbers-pill] { visibility: visible !important; }'}</style></noscript>
+                <Inner>
+                    <Header>
+                        <Title id="portfolio-numbers-heading" variant="h2" gradient={false} data-numbers-reveal>The Numbers<br />Behind Success</Title>
+                        <div data-numbers-reveal>
+                            <Intro>Strategy, creativity, and growth -the engine for every bold idea.</Intro>
+                            <PrimaryButton component="a" href="/contact" backgroundColor={tokens.color.uv300} textColor="#000" sx={{ fontSize: 18, minHeight: 52, padding: '12px 15px' }}>
+                                Get Started&nbsp;<span aria-hidden="true">→</span>
+                            </PrimaryButton>
+                        </div>
+                    </Header>
+                    <Stats>
+                        <Stat data-numbers-reveal><Number>500K<span>Users</span></Number><StatDescription className="plans">We offer flexible, custom-fit plans designed to meet the unique needs and budget of your team</StatDescription></Stat>
+                        <Stat data-numbers-reveal><Number>98<span>%</span></Number><StatDescription className="quality">Our commitment to quality shines through near 98.05%</StatDescription></Stat>
+                        <Stat data-numbers-reveal><Number>23<span>K</span></Number><StatDescription className="growth">Organic growth brings in twenty-three thousand signup</StatDescription></Stat>
+                    </Stats>
+                </Inner>
+                <PillField ref={fieldRef} aria-label="Agency qualities">
+                    {PILLS.map(pill => (
+                        <PillSlot key={pill.text} style={{
+                            '--pill-x': pill.x + '%', '--pill-y': pill.y + 'px', '--pill-width': pill.width + '%',
+                            '--pill-fill': pill.fill, '--pill-color': pill.color, '--pill-angle': pill.angle + 'deg',
+                        } as React.CSSProperties}>
+                            <Pill data-numbers-pill>{pill.text}</Pill>
+                        </PillSlot>
+                    ))}
+                </PillField>
+            </Section>
+        </div>
     );
 }
