@@ -40,6 +40,7 @@ function drawContain(
 // ─── component ────────────────────────────────────────────────────────────────
 
 const MAX_CONCURRENT_LOADS = 8;
+const MAX_BACKGROUND_LOADS = 6;
 const PRELOAD_AHEAD_VIEWPORTS = 1.5;
 const FRAME_RETRY_LIMIT = 2;
 const FRAME_RETRY_BASE_DELAY_MS = 500;
@@ -150,12 +151,14 @@ export default function ImageSequenceCanvas({
 
         let cancelled = false;
         let inFlight = 0;
+        let backgroundInFlight = 0;
         let backgroundEnabled = false;
         let backgroundCursor = 0;
 
         const requested = new Set<number>();
-        const priorityQueue: number[] = [];
-        const priorityQueued = new Set<number>();
+        let priorityQueue: number[] = [0, 1, 2];
+        const retryQueue: number[] = [];
+        const retryQueued = new Set<number>();
         const retryCounts = new Map<number, number>();
         const failedFrames = new Set<number>();
         const retryTimers = new Set<number>();
@@ -167,21 +170,28 @@ export default function ImageSequenceCanvas({
         const isValidIndex = (index: number) =>
             index >= 0 && index < frames.length;
 
-        function enqueuePriority(index: number) {
+        function requestTarget(index: number) {
             if (cancelled || !isValidIndex(index)) return;
-            if (loadedRef.current.has(index) || requested.has(index)) return;
-            if (failedFrames.has(index) || priorityQueued.has(index)) return;
-
-            priorityQueue.push(index);
-            priorityQueued.add(index);
+            // Replace stale demand, including on direction changes and when the
+            // new target is already loaded. Active requests finish normally.
+            priorityQueue = [index, index - 1, index + 1].filter(candidate =>
+                isValidIndex(candidate) && !loadedRef.current.has(candidate)
+                && !requested.has(candidate) && !failedFrames.has(candidate));
             pump();
         }
 
         function nextBackgroundIndex() {
+            while (retryQueue.length) {
+                const index = retryQueue.shift()!;
+                retryQueued.delete(index);
+                if (loadedRef.current.has(index) || requested.has(index) || failedFrames.has(index)) continue;
+                return index;
+            }
+            if (!backgroundEnabled) return -1;
             while (backgroundCursor < frames.length) {
                 const index = backgroundCursor++;
                 if (loadedRef.current.has(index) || requested.has(index)) continue;
-                if (failedFrames.has(index) || priorityQueued.has(index)) continue;
+                if (failedFrames.has(index)) continue;
                 return index;
             }
             return -1;
@@ -199,7 +209,14 @@ export default function ImageSequenceCanvas({
 
             const timer = window.setTimeout(() => {
                 retryTimers.delete(timer);
-                if (!cancelled) enqueuePriority(index);
+                if (!cancelled && !loadedRef.current.has(index) && !requested.has(index)
+                    && !failedFrames.has(index) && !retryQueued.has(index)) {
+                    // Retries must not restore obsolete scroll demand or consume
+                    // the two slots reserved for the current target.
+                    retryQueue.push(index);
+                    retryQueued.add(index);
+                    pump();
+                }
             }, FRAME_RETRY_BASE_DELAY_MS * nextRetry);
 
             retryTimers.add(timer);
@@ -211,6 +228,7 @@ export default function ImageSequenceCanvas({
 
             requested.add(index);
             inFlight++;
+            if (!highPriority) backgroundInFlight++;
 
             const img = new Image();
             img.decoding = 'async';
@@ -230,6 +248,7 @@ export default function ImageSequenceCanvas({
 
                 requested.delete(index);
                 inFlight = Math.max(0, inFlight - 1);
+                if (!highPriority) backgroundInFlight = Math.max(0, backgroundInFlight - 1);
 
                 if (loaded) {
                     loadedRef.current.add(index);
@@ -261,14 +280,14 @@ export default function ImageSequenceCanvas({
 
                 while (priorityQueue.length) {
                     const candidate = priorityQueue.shift()!;
-                    priorityQueued.delete(candidate);
-                    if (loadedRef.current.has(candidate) || requested.has(candidate)) continue;
+                    if (loadedRef.current.has(candidate) || requested.has(candidate) || failedFrames.has(candidate)) continue;
                     index = candidate;
                     highPriority = true;
                     break;
                 }
 
-                if (index < 0 && backgroundEnabled) {
+                if (index < 0 && backgroundInFlight < MAX_BACKGROUND_LOADS
+                    && (backgroundEnabled || retryQueue.length)) {
                     index = nextBackgroundIndex();
                 }
 
@@ -279,13 +298,11 @@ export default function ImageSequenceCanvas({
 
         // Expose demand-loading to the render loop. Fast scrolling can jump far
         // ahead of sequential preload, so the exact target gets loaded next.
-        requestFrameRef.current = enqueuePriority;
+        requestFrameRef.current = requestTarget;
 
         // Tiny eager warm-up: guarantees an initial drawable frame without
         // downloading the whole sequence while the user is still in the hero.
-        enqueuePriority(0);
-        enqueuePriority(1);
-        enqueuePriority(2);
+        pump();
 
         const preloadMarginPx = Math.max(800, Math.round(window.innerHeight * PRELOAD_AHEAD_VIEWPORTS));
         const io = new IntersectionObserver(
@@ -303,6 +320,9 @@ export default function ImageSequenceCanvas({
 
         return () => {
             cancelled = true;
+            priorityQueue = [];
+            retryQueue.length = 0;
+            retryQueued.clear();
             requestFrameRef.current = () => {};
             io.disconnect();
             retryTimers.forEach((timer) => window.clearTimeout(timer));
@@ -384,6 +404,8 @@ export default function ImageSequenceCanvas({
                 frames.length - 1,
                 Math.max(0, Math.round(progress * (frames.length - 1))),
             );
+            // Keep demand current even when this frame is already available.
+            requestFrameRef.current(frameIdx);
 
             // ── Nearest-frame fallback ────────────────────────────────────────
             // When the exact target frame hasn't loaded yet, walk outward in
@@ -394,12 +416,6 @@ export default function ImageSequenceCanvas({
             // -1 so the next tick redraws with the correct frame automatically.
             let drawIdx = frameIdx;
             if (!loadedRef.current.has(frameIdx)) {
-                // Do not wait for sequential preload to catch up with fast scroll.
-                // Promote the exact target plus immediate neighbours.
-                requestFrameRef.current(frameIdx);
-                requestFrameRef.current(frameIdx - 1);
-                requestFrameRef.current(frameIdx + 1);
-
                 let found = false;
                 for (let delta = 1; delta < frames.length; delta++) {
                     const lo = frameIdx - delta;
