@@ -95,25 +95,41 @@ export default function PortfolioRecentWorks() {
         const media = gsap.matchMedia();
         let frame = 0;
 
-        media.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference) and (pointer: fine)', () => {
+        media.add('(min-width: 960px) and (prefers-reduced-motion: no-preference) and (pointer: fine)', () => {
             let active = true;
             let context: gsap.Context | undefined;
             const rebuild = () => {
                 context?.revert();
                 const navbarHeight = parseFloat(getComputedStyle(document.documentElement)
                     .getPropertyValue('--navbar-measured-height')) || 88;
-                const top = navbarHeight + 16;
-                const lastOffset = top + (cards.length - 1) * 15;
-                const height = Math.max(...cards.map(card => card.offsetHeight));
-                // Normal flow on short viewports keeps every image and metadata row reachable.
-                if (lastOffset + height + 16 > window.innerHeight) {
-                    ScrollTrigger.refresh();
-                    return;
-                }
+                const naturalHeight = Math.max(...cards.map(card => card.offsetHeight));
+                const compact = navbarHeight + 16 + (cards.length - 1) * 15
+                    + naturalHeight + 16 > window.innerHeight;
+                const top = navbarHeight + (compact ? 8 : 16);
+                const stagger = compact ? 10 : 15;
+                const lastOffset = top + (cards.length - 1) * stagger;
+                let fits = true;
                 context = gsap.context(() => {
+                    if (compact) {
+                        // Measure the real metadata height, including any wrapped text.
+                        const rows = cards.map(card => card.lastElementChild as HTMLElement);
+                        gsap.set(rows, { minHeight: 64 });
+                        const metadataHeight = Math.max(...rows.map(row => row.offsetHeight));
+                        const imageHeight = Math.floor(window.innerHeight - lastOffset - metadataHeight - 16);
+                        if (imageHeight < 220) { fits = false; return; }
+                        const images = cards.map(card => card.firstElementChild as HTMLElement);
+                        gsap.set(images, {
+                            height: (_, image: HTMLElement) => Math.min(image.offsetHeight, imageHeight),
+                        });
+                    }
+                    // Keep the fit guard: unusually short windows still use normal flow.
+                    if (lastOffset + Math.max(...cards.map(card => card.offsetHeight)) + 16 > window.innerHeight) {
+                        fits = false;
+                        return;
+                    }
                     gsap.set(stack, { paddingBottom: 80 });
                     slots.forEach((slot, index) => {
-                        const offset = top + index * 15;
+                        const offset = top + index * stagger;
                         ScrollTrigger.create({
                             trigger: slot, start: () => `top ${offset}px`,
                             endTrigger: stack,
@@ -133,6 +149,7 @@ export default function PortfolioRecentWorks() {
                         }
                     });
                 }, section);
+                if (!fits) context.revert();
                 ScrollTrigger.refresh();
             };
             const schedule = () => {
