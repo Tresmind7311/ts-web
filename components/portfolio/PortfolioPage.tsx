@@ -16,7 +16,7 @@ export default function PortfolioPage() {
             <PortfolioNumbersBehindSuccess />
             <PortfolioProjects />
             {/* <PortfolioSolution /> */}
-            {/* <PortfolioRecentWorks /> */}
+            <PortfolioRecentWorks />
             {/* <PortfolioProcess /> */}
             <TestimonialsSection testimonials={serviceTestimonials} />
         </main>

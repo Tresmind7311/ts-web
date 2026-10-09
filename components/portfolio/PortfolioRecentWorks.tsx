@@ -1,658 +1,182 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import SouthIcon from '@mui/icons-material/South';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { keyframes, styled } from '@mui/material/styles';
-
+import Link from 'next/link';
+import { styled } from '@mui/material/styles';
+import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { tokens } from '@/theme/theme';
 
-interface RecentWork {
-    id: string;
-    title: string;
-    image: string;
-}
-
-const RECENT_WORKS: RecentWork[] = [
-    {
-        id: 'follow-up-system',
-        title: 'Turning New Leads Into a Follow-Up System.',
-        image: '/images/Portfolio/carousel-card-1.jpg',
-    },
-    {
-        id: 'ai-assistant',
-        title: 'An AI Assistant That Handles the First Conversation.',
-        image: '/images/Portfolio/carousel-card-2.jpg',
-    },
-    {
-        id: 'connected-tools',
-        title: 'Connecting the Tools Your Business Already Uses.',
-        image: '/images/Portfolio/carousel-card-3.jpg',
-    },
-    {
-        id: 'workflow',
-        title: 'Replacing Up With A Workflow',
-        image: '/images/Portfolio/carousel-card-4.jpg',
-    },
+const WORKS = [
+    { title: 'Market Motion', date: 'September - 2024', dateTime: '2024-09' },
+    { title: 'Market Magnet', date: 'March - 2020', dateTime: '2020-03' },
+    { title: 'Growth Engine', date: 'June - 2022', dateTime: '2022-06' },
+    { title: 'Tidal Strategy', date: 'September - 2025', dateTime: '2025-09' },
 ];
 
-const slideNext = keyframes`
-    from {
-        opacity: 0.75;
-        transform: translateX(28px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-`;
-
-const slidePrevious = keyframes`
-    from {
-        opacity: 0.75;
-        transform: translateX(-28px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-`;
-
 const Section = styled('section')(({ theme }) => ({
-    overflow: 'hidden',
-    background: '#eff8fc',
-    padding: '48px 40px 96px',
-
-    [theme.breakpoints.down('md')]: {
-        padding: '44px 24px 80px',
-    },
-
-    [theme.breakpoints.down('sm')]: {
-        padding: '40px 0 64px',
-    },
+    background: '#f2fcff',
+    padding: '63px 40px 40px',
+    [theme.breakpoints.down('md')]: { padding: '40px 24px' },
+    [theme.breakpoints.down('sm')]: { padding: '24px 16px' },
 }));
 
-const Inner = styled(Box)(({ theme }) => ({
-    width: '100%',
-    maxWidth: '1280px',
+const Content = styled('div')(({ theme }) => ({
+    maxWidth: 1360,
     margin: '0 auto',
-
-    [theme.breakpoints.down('sm')]: {
-        paddingLeft: '20px',
-    },
-}));
-
-const Header = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-    marginBottom: '28px',
-
-    [theme.breakpoints.down('sm')]: {
-        paddingRight: '20px',
-        marginBottom: '22px',
-    },
-}));
-
-const HeaderLabel = styled(Typography)({
-    fontFamily: tokens.font.body,
-    fontSize: '18px',
-    fontWeight: 400,
-    lineHeight: 1,
-    color: '#454545',
-});
-
-const DownIcon = styled(Box)({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    width: '22px',
-    height: '22px',
-
-    border: '2px solid #454545',
-    borderRadius: '50%',
-
-    color: '#454545',
-
-    '& svg': {
-        fontSize: '15px',
-    },
-});
-
-const CarouselViewport = styled(Box)({
-    width: '100%',
-    overflow: 'hidden',
-    touchAction: 'pan-y',
-    userSelect: 'none',
-});
-
-const Track = styled(Box, {
-    shouldForwardProp: (prop) => prop !== 'direction',
-})<{ direction: 1 | -1 }>(({ theme, direction }) => ({
-    display: 'flex',
-    alignItems: 'flex-start',
-
-    width: 'max-content',
-    gap: '16px',
-    paddingRight: '24px',
-
-    animation: `${direction === 1
-            ? slideNext
-            : slidePrevious
-        } 360ms ${tokens.motion.ease}`,
-
-    [theme.breakpoints.down('sm')]: {
-        gap: '14px',
-        paddingRight: '20px',
-    },
-
-    '@media (prefers-reduced-motion: reduce)': {
-        animation: 'none',
-    },
-}));
-
-const WorkCard = styled(Box, {
-    shouldForwardProp: (prop) => prop !== 'featured',
-})<{ featured: boolean }>(({ theme, featured }) => ({
-    position: 'relative',
-    flex: '0 0 auto',
-
-    width: featured ? '584px' : '306px',
-    height: featured ? '380px' : '200px',
-
-    overflow: 'hidden',
-
-    border: `1px solid ${tokens.color.uv500}`,
-    borderRadius: featured ? '20px' : '14px',
-
-    background: '#111',
-
-    transition: `
-        width 360ms ${tokens.motion.ease},
-        height 360ms ${tokens.motion.ease},
-        border-radius 360ms ${tokens.motion.ease}
-    `,
-
-    [theme.breakpoints.down('lg')]: {
-        width: featured ? '520px' : '290px',
-    },
-
-    [theme.breakpoints.down('md')]: {
-        width: featured ? '460px' : '280px',
-        height: featured ? '330px' : '190px',
-    },
-
-    [theme.breakpoints.down('sm')]: {
-        width: featured
-            ? 'calc(100vw - 56px)'
-            : 'calc(76vw - 20px)',
-
-        maxWidth: featured
-            ? '420px'
-            : '310px',
-
-        height: featured
-            ? '290px'
-            : '210px',
-
-        borderRadius: '16px',
-    },
-
-    '@media (prefers-reduced-motion: reduce)': {
-        transition: 'none',
-    },
-}));
-
-const Media = styled(Box)({
-    position: 'absolute',
-    inset: 0,
-
-    '&::after': {
-        content: '""',
-
-        position: 'absolute',
-        zIndex: 1,
-        inset: 0,
-
-        background:
-            'linear-gradient(180deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.38) 100%)',
-
-        pointerEvents: 'none',
-    },
-});
-
-const CardTitle = styled(Typography, {
-    shouldForwardProp: (prop) => prop !== 'featured',
-})<{ featured: boolean }>(({ theme, featured }) => ({
-    position: 'absolute',
-    zIndex: 2,
-
-    top: featured ? '30px' : '16px',
-    left: featured ? '24px' : '14px',
-
-    maxWidth: featured
-        ? '310px'
-        : '220px',
-
-    fontFamily: tokens.font.display,
-    fontSize: featured ? '28px' : '15px',
-    fontWeight: 700,
-    lineHeight: featured ? 1.22 : 1.08,
-    letterSpacing: '-0.035em',
-
-    color: tokens.color.neutral0,
-
-    transition: `
-        top 360ms ${tokens.motion.ease},
-        left 360ms ${tokens.motion.ease},
-        font-size 360ms ${tokens.motion.ease}
-    `,
-
-    [theme.breakpoints.down('md')]: {
-        fontSize: featured
-            ? '25px'
-            : '14px',
-    },
-
-    [theme.breakpoints.down('sm')]: {
-        top: '20px',
-        left: '18px',
-
-        maxWidth: featured
-            ? '250px'
-            : '220px',
-
-        fontSize: featured
-            ? '23px'
-            : '16px',
-    },
-
-    '@media (prefers-reduced-motion: reduce)': {
-        transition: 'none',
-    },
-}));
-
-const CardArrow = styled(Box, {
-    shouldForwardProp: (prop) => prop !== 'featured',
-})<{ featured: boolean }>(({ theme, featured }) => ({
-    position: 'absolute',
-    zIndex: 2,
-
-    left: featured ? '24px' : '14px',
-    bottom: featured ? '28px' : '14px',
-
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    width: featured ? '62px' : '34px',
-    height: featured ? '62px' : '34px',
-
-    borderRadius: '50%',
-
+    padding: '0 40px 50px',
     background: tokens.color.neutral0,
-    color: '#111',
-
-    transition: `
-        width 360ms ${tokens.motion.ease},
-        height 360ms ${tokens.motion.ease},
-        left 360ms ${tokens.motion.ease},
-        bottom 360ms ${tokens.motion.ease}
-    `,
-
-    '& svg': {
-        fontSize: featured
-            ? '38px'
-            : '22px',
-
-        transition: `font-size 360ms ${tokens.motion.ease}`,
-    },
-
-    [theme.breakpoints.down('sm')]: {
-        left: '18px',
-        bottom: '18px',
-
-        width: featured
-            ? '48px'
-            : '40px',
-
-        height: featured
-            ? '48px'
-            : '40px',
-
-        '& svg': {
-            fontSize: featured
-                ? '30px'
-                : '25px',
-        },
-    },
-
-    '@media (prefers-reduced-motion: reduce)': {
-        transition: 'none',
-
-        '& svg': {
-            transition: 'none',
-        },
-    },
+    [theme.breakpoints.down('md')]: { padding: '0 24px 36px' },
+    [theme.breakpoints.down('sm')]: { padding: '0 16px 28px' },
 }));
 
-const Controls = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-
-    gap: '10px',
-    marginTop: '20px',
-
-    [theme.breakpoints.down('sm')]: {
-        paddingRight: '20px',
-        marginTop: '22px',
-    },
-}));
-
-const NavButton = styled('button')({
-    display: 'flex',
-    flex: '0 0 auto',
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    width: '42px',
-    height: '42px',
-
-    padding: 0,
-    border: 0,
-    borderRadius: '50%',
-
-    background: tokens.color.uv500,
-    color: tokens.color.neutral0,
-
-    cursor: 'pointer',
-
-    transition: `
-        transform ${tokens.motion.base} ${tokens.motion.ease},
-        background-color ${tokens.motion.base} ${tokens.motion.ease}
-    `,
-
-    '&:hover': {
-        transform: 'translateY(-1px)',
-        background: tokens.color.uv300,
-    },
-
-    '&:active': {
-        transform: 'translateY(1px)',
-    },
-
-    '& svg': {
-        fontSize: '27px',
-    },
-
-    '&:focus-visible': {
-        outline: `2px solid ${tokens.color.uv800}`,
-        outlineOffset: '3px',
-    },
-
-    '@media (prefers-reduced-motion: reduce)': {
-        transition: 'none',
-
-        '&:hover, &:active': {
-            transform: 'none',
-        },
-    },
-});
-
-const ProgressTrack = styled(Box)(({ theme }) => ({
+const Stack = styled('div')({ position: 'relative' });
+const CardSlot = styled('div')({ position: 'relative', perspective: 1000 });
+const Card = styled('article')({
     position: 'relative',
-
-    width: '340px',
-    height: '3px',
-
-    marginLeft: '12px',
+    background: tokens.color.neutral0,
+    transformOrigin: 'top center',
+    transformStyle: 'preserve-3d',
+});
+const Media = styled('div')(({ theme }) => ({
+    position: 'relative',
+    aspectRatio: '1280 / 610',
     overflow: 'hidden',
-
-    background: '#aeb7ba',
-
+    borderRadius: 20,
+    [theme.breakpoints.down('sm')]: { borderRadius: 14 },
+}));
+const Metadata = styled('div')(({ theme }) => ({
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    gap: 24, minHeight: 90,
+    color: '#161c1c', fontFamily: tokens.font.body,
+    '& h3': { margin: 0, fontSize: 22.8, fontWeight: 600, lineHeight: 1.24 },
+    '& time': { color: '#78828d', fontSize: 17.1, lineHeight: 1.4 },
     [theme.breakpoints.down('md')]: {
-        width: '280px',
+        gap: 16, minHeight: 90,
+        '& h3': { fontSize: 20 }, '& time': { fontSize: 15 },
     },
-
     [theme.breakpoints.down('sm')]: {
-        width: '100%',
-        maxWidth: '180px',
-        marginLeft: '4px',
+        gap: 12, minHeight: 108,
+        '& h3': { fontSize: 17 }, '& time': { fontSize: 13 },
     },
 }));
-
-const ProgressIndicator = styled(Box)({
-    position: 'absolute',
-
-    top: 0,
-    bottom: 0,
-    left: 0,
-
-    width: `${100 / RECENT_WORKS.length}%`,
-
-    background: tokens.color.uv500,
-
-    transition: `transform 360ms ${tokens.motion.ease}`,
-
-    '@media (prefers-reduced-motion: reduce)': {
-        transition: 'none',
-    },
+const Identity = styled('div')(({ theme }) => ({
+    display: 'flex', alignItems: 'center', gap: 38,
+    [theme.breakpoints.down('md')]: { gap: 20 },
+    [theme.breakpoints.down('sm')]: { flexDirection: 'column', alignItems: 'flex-start', gap: 6 },
+}));
+const ProjectLink = styled(Link)(({ theme }) => ({
+    display: 'inline-flex', alignItems: 'center', gap: 16,
+    flexShrink: 0, minHeight: 44,
+    color: 'inherit', fontSize: 17.1, fontWeight: 500, textDecoration: 'none',
+    '& span:first-of-type': { textDecoration: 'underline', textUnderlineOffset: 4 },
+    '&:focus-visible': { outline: `2px solid ${tokens.color.uv300}`, outlineOffset: 4 },
+    [theme.breakpoints.down('sm')]: { fontSize: 13, gap: 8 },
+}));
+const BottomAction = styled('div')({ display: 'flex', justifyContent: 'center' });
+const WorksLink = styled(Link)({
+    display: 'inline-flex', alignItems: 'center', gap: 8,
+    minHeight: 51, padding: '12px 19px', borderRadius: 9,
+    background: '#22c5eb', color: '#05252f',
+    fontFamily: tokens.font.body, fontSize: 18, fontWeight: 500, textDecoration: 'none',
+    '&:focus-visible': { outline: `2px solid ${tokens.color.uv800}`, outlineOffset: 4 },
 });
-
-function wrapIndex(index: number) {
-    return (
-        (index + RECENT_WORKS.length) %
-        RECENT_WORKS.length
-    );
-}
 
 export default function PortfolioRecentWorks() {
-    const [activeIndex, setActiveIndex] =
-        useState(0);
+    const sectionRef = useRef<HTMLElement>(null);
+    const stackRef = useRef<HTMLDivElement>(null);
 
-    const [direction, setDirection] =
-        useState<1 | -1>(1);
+    useEffect(() => {
+        const section = sectionRef.current;
+        const stack = stackRef.current;
+        if (!section || !stack) return;
+        const slots = Array.from(stack.querySelectorAll<HTMLElement>('[data-work-slot]'));
+        const cards = Array.from(stack.querySelectorAll<HTMLElement>('article'));
+        const media = gsap.matchMedia();
+        let frame = 0;
 
-    const pointerStartX = useRef<number | null>(
-        null,
-    );
-
-    const orderedWorks = useMemo(
-        () =>
-            RECENT_WORKS.map(
-                (_, offset) =>
-                    RECENT_WORKS[
-                    wrapIndex(
-                        activeIndex + offset,
-                    )
-                    ],
-            ),
-        [activeIndex],
-    );
-
-    function changeProject(
-        nextDirection: 1 | -1,
-    ) {
-        setDirection(nextDirection);
-
-        setActiveIndex((current) =>
-            wrapIndex(
-                current + nextDirection,
-            ),
-        );
-    }
-
-    function handlePointerDown(
-        event: React.PointerEvent<HTMLDivElement>,
-    ) {
-        pointerStartX.current =
-            event.clientX;
-    }
-
-    function handlePointerUp(
-        event: React.PointerEvent<HTMLDivElement>,
-    ) {
-        const start =
-            pointerStartX.current;
-
-        pointerStartX.current = null;
-
-        if (start === null) {
-            return;
-        }
-
-        const distance =
-            event.clientX - start;
-
-        if (Math.abs(distance) < 50) {
-            return;
-        }
-
-        changeProject(
-            distance < 0 ? 1 : -1,
-        );
-    }
-
-    function handlePointerCancel() {
-        pointerStartX.current = null;
-    }
+        media.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference) and (pointer: fine)', () => {
+            let active = true;
+            let context: gsap.Context | undefined;
+            const rebuild = () => {
+                context?.revert();
+                const navbarHeight = parseFloat(getComputedStyle(document.documentElement)
+                    .getPropertyValue('--navbar-measured-height')) || 88;
+                const top = navbarHeight + 16;
+                const lastOffset = top + (cards.length - 1) * 15;
+                const height = Math.max(...cards.map(card => card.offsetHeight));
+                // Normal flow on short viewports keeps every image and metadata row reachable.
+                if (lastOffset + height + 16 > window.innerHeight) {
+                    ScrollTrigger.refresh();
+                    return;
+                }
+                context = gsap.context(() => {
+                    gsap.set(stack, { paddingBottom: 80 });
+                    slots.forEach((slot, index) => {
+                        const offset = top + index * 15;
+                        ScrollTrigger.create({
+                            trigger: slot, start: () => `top ${offset}px`,
+                            endTrigger: stack,
+                            // All cards release together after the final card's full metadata is visible.
+                            end: () => `bottom ${lastOffset + cards[cards.length - 1].offsetHeight}px`,
+                            pin: slot, pinSpacing: false, invalidateOnRefresh: true,
+                        });
+                        if (index < cards.length - 1) {
+                            gsap.to(cards[index], {
+                                scale: 0.9 + index * 0.025, rotationX: -8, ease: 'none',
+                                scrollTrigger: {
+                                    trigger: slot, start: () => `top ${offset}px`,
+                                    endTrigger: slots[index + 1], end: () => `top ${offset + 100}px`,
+                                    scrub: true, invalidateOnRefresh: true,
+                                },
+                            });
+                        }
+                    });
+                }, section);
+                ScrollTrigger.refresh();
+            };
+            const schedule = () => {
+                cancelAnimationFrame(frame);
+                frame = requestAnimationFrame(rebuild);
+            };
+            rebuild();
+            window.addEventListener('resize', schedule);
+            document.fonts.ready.then(() => { if (active) schedule(); });
+            return () => {
+                active = false;
+                window.removeEventListener('resize', schedule);
+                cancelAnimationFrame(frame);
+                context?.revert();
+            };
+        });
+        return () => { cancelAnimationFrame(frame); media.revert(); };
+    }, []);
 
     return (
-        <Section>
-            <Inner>
-                <Header>
-                    <HeaderLabel>
-                        Recent Works
-                    </HeaderLabel>
-
-                    <DownIcon aria-hidden="true">
-                        <SouthIcon />
-                    </DownIcon>
-                </Header>
-
-                <CarouselViewport
-                    onPointerDown={
-                        handlePointerDown
-                    }
-                    onPointerUp={handlePointerUp}
-                    onPointerCancel={
-                        handlePointerCancel
-                    }
-                >
-                    <Track
-                        key={activeIndex}
-                        direction={direction}
-                    >
-                        {orderedWorks.map(
-                            (work, index) => {
-                                const featured =
-                                    index === 0;
-
-                                return (
-                                    <WorkCard
-                                        key={
-                                            work.id
-                                        }
-                                        component="article"
-                                        featured={
-                                            featured
-                                        }
-                                    >
-                                        <Media>
-                                            <Image
-                                                src={
-                                                    work.image
-                                                }
-                                                alt={
-                                                    work.title
-                                                }
-                                                fill
-                                                priority={
-                                                    featured
-                                                }
-                                                sizes={
-                                                    featured
-                                                        ? '(max-width: 639px) calc(100vw - 56px), 584px'
-                                                        : '(max-width: 639px) 76vw, 306px'
-                                                }
-                                                style={{
-                                                    objectFit:
-                                                        'cover',
-                                                }}
-                                                draggable={
-                                                    false
-                                                }
-                                            />
-                                        </Media>
-
-                                        <CardTitle
-                                            featured={
-                                                featured
-                                            }
-                                        >
-                                            {
-                                                work.title
-                                            }
-                                        </CardTitle>
-
-                                        <CardArrow
-                                            featured={
-                                                featured
-                                            }
-                                            aria-hidden="true"
-                                        >
-                                            <ArrowForwardIcon />
-                                        </CardArrow>
-                                    </WorkCard>
-                                );
-                            },
-                        )}
-                    </Track>
-                </CarouselViewport>
-
-                <Controls>
-                    <NavButton
-                        type="button"
-                        aria-label="Previous work"
-                        onClick={() =>
-                            changeProject(-1)
-                        }
-                    >
-                        <ArrowBackIcon />
-                    </NavButton>
-
-                    <NavButton
-                        type="button"
-                        aria-label="Next work"
-                        onClick={() =>
-                            changeProject(1)
-                        }
-                    >
-                        <ArrowForwardIcon />
-                    </NavButton>
-
-                    <ProgressTrack
-                        aria-hidden="true"
-                    >
-                        <ProgressIndicator
-                            style={{
-                                transform: `translateX(${activeIndex *
-                                    100
-                                    }%)`,
-                            }}
-                        />
-                    </ProgressTrack>
-                </Controls>
-            </Inner>
+        <Section ref={sectionRef} aria-label="Our Best Works">
+            <Content>
+                <Stack ref={stackRef}>
+                    {WORKS.map((work, index) => (
+                        <CardSlot data-work-slot key={work.title} style={{ zIndex: index + 1 }}>
+                            <Card>
+                                <Media>
+                                    <Image src={`/images/Portfolio/our-work/our-work-${index + 1}.png`}
+                                        alt={`${work.title} project`} fill
+                                        sizes="(max-width: 639px) calc(100vw - 64px), (max-width: 959px) calc(100vw - 96px), (max-width: 1439px) calc(100vw - 160px), 1280px"
+                                        style={{ objectFit: 'cover' }} />
+                                </Media>
+                                <Metadata>
+                                    <Identity><h3>{work.title}</h3><time dateTime={work.dateTime}>{work.date}</time></Identity>
+                                    <ProjectLink href="#" aria-label={`View ${work.title} project`}>
+                                        <span>View Project</span><span aria-hidden="true">→</span>
+                                    </ProjectLink>
+                                </Metadata>
+                            </Card>
+                        </CardSlot>
+                    ))}
+                </Stack>
+                <BottomAction><WorksLink href="#">View Works <span aria-hidden="true">→</span></WorksLink></BottomAction>
+            </Content>
         </Section>
     );
 }
