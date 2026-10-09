@@ -30,6 +30,55 @@ const Content = styled('div')(({ theme }) => ({
     [theme.breakpoints.down('sm')]: { padding: '0 16px 28px' },
 }));
 
+const Heading = styled('h2')(({ theme }) => ({
+    margin: '0 auto clamp(40px, 4.1vw, 57px)',
+    paddingTop: 'clamp(32px, 8.5vw, 118px)',
+    color: '#333437',
+    fontFamily: tokens.font.display,
+    fontSize: 'clamp(64px, 11.5vw, 160px)',
+    fontWeight: 700,
+    lineHeight: 1.275,
+    letterSpacing: '-0.065em',
+    textAlign: 'center',
+    '& > span': { display: 'block' },
+    '& .work-heading-image': {
+        position: 'relative',
+        display: 'inline-block',
+        width: 0,
+        height: '1em',
+        marginInline: 0,
+        overflow: 'hidden',
+        verticalAlign: 'middle',
+        letterSpacing: 0,
+        borderRadius: '0.125em',
+        transition: `width 600ms ${tokens.motion.ease}, margin 600ms ${tokens.motion.ease}`,
+        '& img': {
+            position: 'absolute',
+            inset: 0,
+            width: '2.18em',
+            height: '1em',
+            objectFit: 'cover',
+            opacity: 0,
+            transform: 'scale(0.92)',
+            transition: `opacity 600ms ${tokens.motion.ease}, transform 600ms ${tokens.motion.ease}`,
+        },
+    },
+    '@media (hover: hover) and (pointer: fine)': {
+        '&:hover .work-heading-image': {
+            width: '2.18em',
+            marginInline: '0.12em',
+            '& img': { opacity: 1, transform: 'scale(1)' },
+        },
+    },
+    '@media (prefers-reduced-motion: reduce)': {
+        '& .work-heading-image, & .work-heading-image img': { transition: 'none' },
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 'clamp(36px, 11.5vw, 64px)',
+        lineHeight: 1.2,
+    },
+}));
+
 const Stack = styled('div')({ position: 'relative' });
 const CardSlot = styled('div')({ position: 'relative', perspective: 1000 });
 const Card = styled('article')({
@@ -171,6 +220,13 @@ export default function PortfolioRecentWorks() {
 
     return (
         <Section ref={sectionRef} aria-label="Our Best Works">
+            <Heading aria-label="OUR BEST WORKS">
+                <span aria-hidden="true">OUR BEST</span>
+                <span aria-hidden="true">WOR<span className="work-heading-image">
+                    <Image src="/images/Portfolio/Work-Animated.png" alt="" width={350} height={160}
+                        sizes="(max-width: 1390px) 25vw, 350px" loading="eager" />
+                </span>KS</span>
+            </Heading>
             <Content>
                 <Stack ref={stackRef}>
                     {WORKS.map((work, index) => (

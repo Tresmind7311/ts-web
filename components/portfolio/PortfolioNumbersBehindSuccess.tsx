@@ -77,7 +77,8 @@ const Stats = styled('div')(({ theme }) => ({
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1.88fr) repeat(2, minmax(0, 1fr))',
     gap: 20,
-    marginTop: 64,
+    marginTop: 80,
+    marginBottom: 80,
     [COMPACT_DESKTOP]: { marginTop: 24 },
     [theme.breakpoints.down('md')]: {
         gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
@@ -133,7 +134,7 @@ const PillField = styled('div')(({ theme }) => ({
     position: 'relative',
     width: '100%',
     maxWidth: 1440,
-    height: 292,
+    height: 342,
     margin: '0 auto',
     [COMPACT_DESKTOP]: { height: 224 },
     [theme.breakpoints.down('md')]: {

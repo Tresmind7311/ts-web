@@ -49,7 +49,7 @@ const PROJECTS: PortfolioProject[] = [
         description:
             'A feature-rich fitness tracking app with real-time workouts, progress analytics, and personal insights.',
         category: 'Mobile Apps',
-        href: '/portfolio/fittrack',
+        href: '#',
         image: '/images/Portfolio/FitTrack.jpg',
     },
     {
@@ -59,7 +59,7 @@ const PROJECTS: PortfolioProject[] = [
         description:
             'A secure analytics platform that helps businesses visualize financial data and make informed decisions.',
         category: 'SaaS Platforms',
-        href: '/portfolio/findash',
+        href: '#',
         image: '/images/Portfolio/FinDash.jpg',
     },
     {
@@ -69,7 +69,7 @@ const PROJECTS: PortfolioProject[] = [
         description:
             'An elegant e-commerce experience built for home decor with a focus on usability and seamless shopping.',
         category: 'Web Applications',
-        href: '/portfolio/cozyliving',
+        href: '#',
         image: '/images/Portfolio/CozyLiving.jpg',
     },
     {
@@ -79,7 +79,7 @@ const PROJECTS: PortfolioProject[] = [
         description:
             'An AI-powered content generation platform that helps users create, edit, and optimize content.',
         category: 'SaaS Platforms',
-        href: '/portfolio/writemate-ai',
+        href: '#',
         image: '/images/Portfolio/WriteMate-AI.jpg',
     },
     {
@@ -89,7 +89,7 @@ const PROJECTS: PortfolioProject[] = [
         description:
             'A fast and intuitive food delivery app with real-time tracking, multiple payment options, and simple ordering.',
         category: 'Mobile Apps',
-        href: '/portfolio/quickbite',
+        href: '#',
         image: '/images/Portfolio/QuickBite.jpg',
     },
     {
@@ -99,7 +99,7 @@ const PROJECTS: PortfolioProject[] = [
         description:
             'A learning platform offering courses, certificates, and progress tracking for students and professionals.',
         category: 'Web Applications',
-        href: '/portfolio/skillbridge',
+        href: '#',
         image: '/images/Portfolio/SkillBridge.jpg',
     },
 ];
@@ -606,6 +606,7 @@ export default function PortfolioProjects() {
                                 <Card
                                     key={project.id}
                                     href={project.href}
+                                    prefetch={project.href === '#' ? false : undefined}
                                     className="portfolio-project-card"
                                     style={{ order }}
                                 >
