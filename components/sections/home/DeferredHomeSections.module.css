@@ -67,14 +67,14 @@
 }
 
 /* Testimonials is not pinned on normal-motion tablet/mobile. */
-@media (max-width: 899px) and (prefers-reduced-motion: no-preference) {
+@media (max-width: 959.95px) and (prefers-reduced-motion: no-preference) {
     .testimonialsReserve {
         min-height: 100svh;
     }
 }
 
 /* Reduced-motion tablet/mobile keeps Testimonials' transform-based pin. */
-@media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+@media (max-width: 959.95px) and (prefers-reduced-motion: reduce) {
     .testimonialsReserve {
         min-height: calc(100svh + 192vh);
     }

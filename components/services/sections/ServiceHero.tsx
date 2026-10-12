@@ -55,8 +55,7 @@ const HeroContainer = styled(Container)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
         gridTemplateColumns: '1fr',
         gap: '28px',
-        paddingTop: '72px',
-        paddingBottom: '54px',
+        padding: '64px 24px',
     },
 
     [theme.breakpoints.down('sm')]: {

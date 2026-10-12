@@ -177,7 +177,7 @@ export default function TestimonialsSection({
 
         // ── Desktop ───────────────────────────────────────────────────────────
         // Existing desktop pin/scroll behaviour remains unchanged.
-        mm.add('(min-width: 900px)', () => {
+        mm.add('(min-width: 960px)', () => {
             const trigger = ScrollTrigger.create({
                 trigger: section,
                 start: 'top top',
@@ -221,7 +221,7 @@ export default function TestimonialsSection({
         // ── Mobile / tablet — normal motion ───────────────────────────────────
         // This is the original mobile behaviour. Nothing changed here.
         mm.add(
-            '(max-width: 899px) and (prefers-reduced-motion: no-preference)',
+            '(max-width: 959.95px) and (prefers-reduced-motion: no-preference)',
             () => {
                 const trigger = ScrollTrigger.create({
                     trigger: section,
@@ -246,7 +246,7 @@ export default function TestimonialsSection({
         // fixed/sticky elements are composed. Isolate that case and use
         // ScrollTrigger's transform-based pinning instead of fixed pinning.
         mm.add(
-            '(max-width: 899px) and (prefers-reduced-motion: reduce)',
+            '(max-width: 959.95px) and (prefers-reduced-motion: reduce)',
             () => {
                 const trigger = ScrollTrigger.create({
                     trigger: section,

@@ -156,7 +156,7 @@ const CollageStage = styled(Box)(({ theme }) => ({
     alignItems: 'start',
     gap: '11px',
     width: '92vw',
-    maxWidth: '1590px',
+    maxWidth: '1290px',
     height: '616px',
     margin: '0 auto',
     overflow: 'hidden',
@@ -341,17 +341,20 @@ interface CollageColumnLayout {
  *
  * Placeholder ratios were matched to the supplied reference screenshot.
  */
+
 const COLLAGE_LAYOUT: CollageColumnLayout[] = [
     { placeholderAspect: 0.98, imageIndexes: [0, 1] },
-    { placeholderAspect: 1.65, imageIndexes: [1, 2] },
-    { placeholderAspect: 0.88, imageIndexes: [0] },
-    { placeholderAspect: 1.52, imageIndexes: [2] },
-    { placeholderAspect: 1.04, imageIndexes: [0] },
-    { placeholderAspect: 1.52, imageIndexes: [1] },
-    { placeholderAspect: 0.88, imageIndexes: [0] },
-    { placeholderAspect: 1.66, imageIndexes: [2, 1] },
-    { placeholderAspect: 0.96, imageIndexes: [1, 0] },
+    { placeholderAspect: 1.65, imageIndexes: [2, 3] },
+    { placeholderAspect: 0.88, imageIndexes: [4] },
+    { placeholderAspect: 1.52, imageIndexes: [5] },
+    { placeholderAspect: 1.04, imageIndexes: [6] },
+    { placeholderAspect: 1.52, imageIndexes: [7] },
+    { placeholderAspect: 0.88, imageIndexes: [8] },
+    { placeholderAspect: 1.66, imageIndexes: [9, 10] },
+    { placeholderAspect: 0.96, imageIndexes: [11, 12] },
+    { placeholderAspect: 0.96, imageIndexes: [13, 0] },
 ];
+
 
 export default function ServiceShowcase({
     data,

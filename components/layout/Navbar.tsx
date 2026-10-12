@@ -15,6 +15,14 @@ const NAV_LINKS = [
     { label: 'Portfolio', href: '/portfolio' },
     { label: 'Contact', href: '/contact' },
 ];
+const SERVICE_LINKS = [
+    { label: 'Mobile App Development', href: '/services/mobile-app-development' },
+    { label: 'AI Development', href: '/services/ai-development' },
+    { label: 'Software Development', href: '/services/software-development' },
+    { label: 'Web Development', href: '/services/web-development' },
+    { label: 'Graphic Designing', href: '/services/graphic-designing' },
+    { label: 'Cloud Consulting', href: '/services/cloud-consulting' },
+];
 
 // ═══════════════════════════════════════════════════════════════════
 // Styled components
@@ -119,6 +127,52 @@ const NavLink = styled('a')(() => ({
         fontWeight: 600,
     },
 }));
+const ServicesNavItem = styled(Box)({
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+
+    '&:hover .services-dropdown, &:focus-within .services-dropdown': {
+        opacity: 1,
+        visibility: 'visible',
+        pointerEvents: 'auto',
+        transform: 'translateY(0)',
+    },
+});
+
+const ServicesDropdown = styled(Box)({
+    position: 'absolute',
+    top: '100%',
+    left: '-20px',
+    width: '260px',
+    padding: '10px',
+    borderRadius: '14px',
+    backgroundColor: '#fff',
+    boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
+    opacity: 0,
+    visibility: 'hidden',
+    pointerEvents: 'none',
+    transform: 'translateY(8px)',
+    transition: 'opacity 200ms ease, transform 200ms ease, visibility 200ms',
+    zIndex: 10,
+});
+
+const ServicesDropdownLink = styled('a')({
+    display: 'block',
+    padding: '12px 14px',
+    borderRadius: '8px',
+    fontFamily: 'var(--font-body)',
+    fontSize: '14px',
+    fontWeight: 500,
+    color: '#121343',
+    textDecoration: 'none',
+    transition: 'background 200ms ease, color 200ms ease',
+
+    '&:hover, &:focus-visible': {
+        backgroundColor: 'rgba(4, 182, 216, 0.08)',
+        color: '#071463',
+    },
+});
 
 const QuoteLink = styled('a')(({ theme }) => ({
     display: 'none',
@@ -458,49 +512,72 @@ export default function Navbar() {
     };
 
     const closeDrawer = useCallback(() => setDrawerOpen(false), []);
+    const [servicesOpen, setServicesOpen] = useState(false);
 
     return (
         <>
             <NavSpace ref={spaceRef} reserve={pathname !== '/' ? 1 : 0}>
-            <NavRoot ref={headerRef} scrolled={scrolled ? 1 : 0} visible={navVisible ? 1 : 0} dark={darkBackdrop ? 1 : 0} role="banner" inert={!navVisible}>
-                <NavInner maxWidth="xl">
+                <NavRoot ref={headerRef} scrolled={scrolled ? 1 : 0} visible={navVisible ? 1 : 0} dark={darkBackdrop ? 1 : 0} role="banner" inert={!navVisible}>
+                    <NavInner maxWidth="xl">
 
-                    {/* Logo */}
-                    <LogoLink href="/" aria-label="Tresmind — home">
-                        <LogoMark />
-                    </LogoLink>
+                        {/* Logo */}
+                        <LogoLink href="/" aria-label="Tresmind — home">
+                            <LogoMark />
+                        </LogoLink>
 
-                    {/* Desktop nav */}
-                    <DesktopNav aria-label="Main navigation">
-                        {NAV_LINKS.map(link => (
-                            <NavLink
-                                key={link.label}
-                                href={link.href}
-                                className={isLinkActive(link.href) ? 'active' : ''}
-                            >
-                                {link.label}
-                            </NavLink>
-                        ))}
-                    </DesktopNav>
+                        {/* Desktop nav */}
+                        <DesktopNav aria-label="Main navigation">
+                            {NAV_LINKS.map(link =>
+                                link.href === '/services' ? (
+                                    <ServicesNavItem key={link.label}>
+                                        <NavLink
+                                            href={link.href}
+                                            className={isLinkActive(link.href) ? 'active' : ''}
+                                        >
+                                            {link.label}
+                                        </NavLink>
 
-                    <QuoteLink href="/contact">Get a Quote</QuoteLink>
+                                        <ServicesDropdown className="services-dropdown">
+                                            {SERVICE_LINKS.map(service => (
+                                                <ServicesDropdownLink
+                                                    key={service.href}
+                                                    href={service.href}
+                                                >
+                                                    {service.label}
+                                                </ServicesDropdownLink>
+                                            ))}
+                                        </ServicesDropdown>
+                                    </ServicesNavItem>
+                                ) : (
+                                    <NavLink
+                                        key={link.label}
+                                        href={link.href}
+                                        className={isLinkActive(link.href) ? 'active' : ''}
+                                    >
+                                        {link.label}
+                                    </NavLink>
+                                )
+                            )}
+                        </DesktopNav>
 
-                    {/* Mobile hamburger */}
-                    <HamburgerBtn
-                        onClick={() => setDrawerOpen(o => !o)}
-                        aria-label={drawerOpen ? 'Close menu' : 'Open menu'}
-                        aria-expanded={drawerOpen}
-                        disableRipple
-                    >
-                        <HamburgerBox>
-                            <HamLine open={drawerOpen ? 1 : 0} pos="top" />
-                            <HamLine open={drawerOpen ? 1 : 0} pos="mid" />
-                            <HamLine open={drawerOpen ? 1 : 0} pos="bot" />
-                        </HamburgerBox>
-                    </HamburgerBtn>
+                        <QuoteLink href="/contact">Get a Quote</QuoteLink>
 
-                </NavInner>
-            </NavRoot>
+                        {/* Mobile hamburger */}
+                        <HamburgerBtn
+                            onClick={() => setDrawerOpen(o => !o)}
+                            aria-label={drawerOpen ? 'Close menu' : 'Open menu'}
+                            aria-expanded={drawerOpen}
+                            disableRipple
+                        >
+                            <HamburgerBox>
+                                <HamLine open={drawerOpen ? 1 : 0} pos="top" />
+                                <HamLine open={drawerOpen ? 1 : 0} pos="mid" />
+                                <HamLine open={drawerOpen ? 1 : 0} pos="bot" />
+                            </HamburgerBox>
+                        </HamburgerBtn>
+
+                    </NavInner>
+                </NavRoot>
             </NavSpace>
 
             {/* Full-screen mobile menu */}
@@ -530,11 +607,72 @@ export default function Navbar() {
                     </DrawerHeader>
 
                     <DrawerNav aria-label="Mobile navigation">
-                        {NAV_LINKS.map(link => (
-                            <DrawerLink key={link.label} href={link.href} onClick={closeDrawer}>
-                                {link.label}
-                            </DrawerLink>
-                        ))}
+                        {NAV_LINKS.map(link =>
+                            link.href === '/services' ? (
+                                <Box key={link.label}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <DrawerLink
+                                            href={link.href}
+                                            onClick={closeDrawer}
+                                            sx={{ flex: 1 }}
+                                        >
+                                            {link.label}
+                                        </DrawerLink>
+
+                                        <IconButton
+                                            onClick={() => setServicesOpen(open => !open)}
+                                            aria-label="Toggle services submenu"
+                                            aria-expanded={servicesOpen}
+                                            sx={{ color: tokens.color.ink900 }}
+                                        >
+                                            <Box
+                                                component="span"
+                                                sx={{
+                                                    fontSize: '24px',
+                                                    transform: servicesOpen
+                                                        ? 'rotate(180deg)'
+                                                        : 'rotate(0)',
+                                                    transition: 'transform 200ms ease',
+                                                }}
+                                            >
+                                                ⌄
+                                            </Box>
+                                        </IconButton>
+                                    </Box>
+
+                                    {servicesOpen && (
+                                        <Box sx={{ pl: 2, pb: 2 }}>
+                                            {SERVICE_LINKS.map(service => (
+                                                <Box
+                                                    key={service.href}
+                                                    component="a"
+                                                    href={service.href}
+                                                    onClick={closeDrawer}
+                                                    sx={{
+                                                        display: 'block',
+                                                        py: 1.25,
+                                                        fontFamily: 'var(--font-body)',
+                                                        fontSize: '16px',
+                                                        color: tokens.color.ink900,
+                                                        textDecoration: 'none',
+                                                    }}
+                                                >
+                                                    {service.label}
+                                                </Box>
+                                            ))}
+                                        </Box>
+                                    )}
+                                </Box>
+                            ) : (
+                                <DrawerLink
+                                    key={link.label}
+                                    href={link.href}
+                                    onClick={closeDrawer}
+                                >
+                                    {link.label}
+                                </DrawerLink>
+                            )
+                        )}
                     </DrawerNav>
 
                     <DrawerFooter>

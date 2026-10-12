@@ -1,17 +1,20 @@
+
 import type { ServiceData } from './types';
 
 export const softwareDevelopmentService: ServiceData = {
     slug: 'software-development',
     name: 'Software Development',
+
     seo: {
         title: 'Software Development Services | Tresmind',
         description:
-            'Build secure, scalable and maintainable software solutions with Tresmind, from product architecture and development through integration and long-term evolution.',
+            'We design and develop custom software that helps businesses organize information, simplify operations, and connect the tools their teams use every day.',
     },
+
     hero: {
         title: 'Software Development',
         description:
-            'Tresmind Solutions builds reliable software products around real business workflows. We combine thoughtful architecture, modern engineering and practical product thinking to create systems that scale with your organization.',
+            'We design and develop custom software that helps businesses organize information, simplify operations, and connect the tools their teams use every day.',
         primaryCta: {
             label: 'Start Your Project',
             href: '#contact',
@@ -21,10 +24,11 @@ export const softwareDevelopmentService: ServiceData = {
             href: '#contact',
         },
         image: {
-            src: '/images/services/software-development/hero-img.png',
+            src: '/images/services/software-development/hero-image.png',
             alt: 'Software development interface and engineering systems',
         },
     },
+
     listing: {
         shortDescription:
             'We create dependable software products and business systems with scalable architecture, clean integrations and maintainable engineering.',
@@ -38,68 +42,198 @@ export const softwareDevelopmentService: ServiceData = {
         },
         order: 3,
     },
+
+    showcase: {
+        title: 'Software Shaped Around Your Workflow',
+        description:
+            'From business tools to customer portals, we build software around the people, processes, and tasks that keep your business moving.',
+        columns: [
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-1.png',
+                        alt: 'Custom software development showcase',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-2.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-3.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-4.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-5.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-6.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-7.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-8.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-9.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-10.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-11.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-12.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/software-development/Software-DEVELOPMENT-13.png',
+                        alt: 'Business software applications',
+                    },
+                ],
+            },
+        ],
+    },
+
     capabilities: {
         eyebrow: 'Our Expertise',
         title: 'What We Build',
-        description:
-            'From native mobile applications to connected digital ecosystems, we build scalable experiences around real users and business goals.',
         initialVisibleCount: 4,
         items: [
             {
-                id: 'native-android-development',
-                title: 'Native Android Development',
+                id: 'custom-business-tools',
+                title: 'Custom Business Tools',
                 description:
-                    'High-performance Android applications built around intuitive experiences, maintainable architecture and long-term scalability.',
+                    'Purpose-built applications that simplify daily tasks and support the way your team works.',
                 image: {
-                    src: '/footer-bg.jpg',
-                    alt: 'Native Android development',
+                    src: '/images/services/software-development/what-we-build/Custom-Business-Tools.png',
+                    alt: 'Custom Business Tools',
                 },
             },
             {
-                id: 'cross-platform-applications',
-                title: 'Cross-Platform Applications',
+                id: 'dashboards-portals',
+                title: 'Dashboards & Portals',
                 description:
-                    'Consistent mobile experiences designed to work efficiently across multiple platforms while maintaining strong performance and usability.',
+                    'Clear interfaces where teams and customers can access information, manage activity, and take action.',
                 image: {
-                    src: '/footer-bg.jpg',
-                    alt: 'Cross-platform mobile application development',
+                    src: '/images/services/software-development/what-we-build/Dashboards-Portals.png',
+                    alt: 'Dashboards and Portals',
                 },
             },
             {
-                id: 'api-backend-integration',
-                title: 'API & Backend Integration',
+                id: 'workflow-systems',
+                title: 'Workflow Systems',
                 description:
-                    'Reliable mobile applications connected with APIs, backend systems, databases and third-party services.',
+                    'Connected tools that organize tasks, approvals, and handoffs across your business.',
                 image: {
-                    src: '/footer-bg.jpg',
-                    alt: 'API and backend integration',
+                    src: '/images/services/software-development/what-we-build/Workflow-Systems.png',
+                    alt: 'Workflow Systems',
                 },
             },
             {
-                id: 'ui-ux-driven-development',
-                title: 'UI/UX-Driven Development',
+                id: 'system-integrations',
+                title: 'System Integrations',
                 description:
-                    'User-focused mobile experiences where interface design, usability and engineering work together from the beginning.',
+                    'Connections between existing applications that keep information moving and reduce duplicate work.',
                 image: {
-                    src: '/footer-bg.jpg',
-                    alt: 'Mobile application UI and UX development',
+                    src: '/images/services/software-development/what-we-build/System-Integrations.png',
+                    alt: 'System Integrations',
                 },
             },
         ],
     },
-    ecosystem: {
-        title: 'More Than Just a Mobile Interface',
 
+    process: {
+        title: 'Our Development Process',
         description:
-            'A successful mobile application is more than what users see on their screens. We connect the complete product ecosystem — from the mobile interface and APIs to backend infrastructure, databases, and third-party services.',
+            'We understand how your business works, plan the right solution, and develop software around your practical needs.',
+        autoplayMs: 3500,
+        steps: [
+            {
+                id: 'requirements-discovery',
+                number: '01',
+                title: 'Requirements Discovery',
+                description:
+                    'We define your goals, users, current processes, and the problems your software needs to solve.',
+                backgroundImage: {
+                    src: '/images/services/software-development/Requirements-Discovery-bg.png',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/software-development/Requirements-Discovery.png',
+                    alt: 'Software requirements discovery',
+                },
+            },
+        ],
+    },
 
+    ecosystem: {
+        title: 'More Than Just a Dashboard',
+        description:
+            'Useful software connects what people see with what happens behind the scenes. We bring together the interface, business logic, integrations, and data so your team can move from information to action.',
         flow:
-            'Mobile App → APIs → Backend → Database → Integrations',
-
-        closingText:
-            'Every layer works together to create one seamless experience.',
-
-        backgroundImage:
-            '/images/services/mobile-app-development/mobile-ecosystem.jpg',
+            'Interface → Business Logic → Integrations → Data → Team',
+        closingText: '',
+        backgroundImage: '/images/services/ai-development/AI-Feature.jpg',
     },
 };
