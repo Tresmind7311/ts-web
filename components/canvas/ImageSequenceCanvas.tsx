@@ -253,8 +253,6 @@ export default function ImageSequenceCanvas({
                 if (loaded) {
                     loadedRef.current.add(index);
                     retryCounts.delete(index);
-                    // Redraw immediately when a better/exact frame becomes available.
-                    lastDrawnIdxRef.current = -1;
                 } else {
                     // A failed static-asset request must not permanently create a hole.
                     scheduleRetry(index);
@@ -412,8 +410,8 @@ export default function ImageSequenceCanvas({
             // both directions and draw the closest frame that is available.
             // This prevents the canvas from freezing on a stale frame while
             // batches are still loading (most visible on cold Netlify CDN).
-            // Once the target frame's onload fires, lastDrawnIdxRef resets to
-            // -1 so the next tick redraws with the correct frame automatically.
+            // A newly available exact/nearer frame changes drawIdx, so the next
+            // tick redraws automatically without invalidating unrelated loads.
             let drawIdx = frameIdx;
             if (!loadedRef.current.has(frameIdx)) {
                 let found = false;
