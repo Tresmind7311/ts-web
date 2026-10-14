@@ -224,6 +224,9 @@ export const aiDevelopmentService: ServiceData = {
         flow:
             'User Request → Relevant Data → AI Processing → Human Review → Action',
         closingText: '',
-        backgroundImage: '/images/services/ai-development/AI-Feature.jpg',
+        image: {
+            src: '/images/services/ai-development/AI-Feature.PNG',
+            alt: 'Connected AI feature ecosystem',
+        },
     },
 };

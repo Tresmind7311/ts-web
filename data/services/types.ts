@@ -85,5 +85,9 @@ export interface ServiceEcosystemData {
     description: string;
     flow: string;
     closingText: string;
-    backgroundImage: string;
+    backgroundColor?: string;
+    image: {
+        src: string;
+        alt: string;
+    };
 }

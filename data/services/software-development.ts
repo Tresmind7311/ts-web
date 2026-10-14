@@ -234,6 +234,9 @@ export const softwareDevelopmentService: ServiceData = {
         flow:
             'Interface → Business Logic → Integrations → Data → Team',
         closingText: '',
-        backgroundImage: '/images/services/ai-development/AI-Feature.jpg',
+        image: {
+            src: '/images/services/software-development/Dashboard.png',
+            alt: 'Connected software development ecosystem',
+        },
     },
 };

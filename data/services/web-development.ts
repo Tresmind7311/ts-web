@@ -219,6 +219,9 @@ export const webDevelopmentService: ServiceData = {
         flow:
             'User Experience → Content & CMS → Frontend & Backend → Integrations & Data → Hosting & Delivery',
         closingText: '',
-        backgroundImage: '/images/services/ai-development/AI-Feature.jpg',
+        image: {
+            src: '/images/services/web-development/web-development.png',
+            alt: 'Connected website ecosystem',
+        },
     },
 };

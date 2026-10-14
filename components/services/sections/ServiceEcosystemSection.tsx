@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -16,70 +17,61 @@ const Section = styled('section')(({ theme }) => ({
     position: 'relative',
     width: '100%',
     overflow: 'hidden',
-    backgroundColor: '#F3FDFF',
-
-    [theme.breakpoints.down('md')]: {
-        minHeight: 'auto',
-    },
-}));
-
-const Background = styled(Box)(({ theme }) => ({
-    position: 'relative',
-    width: '100%',
-    minHeight: 'clamp(620px, 52vw, 820px)',
-
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center center',
-    backgroundSize: 'cover',
-
-    display: 'flex',
-    alignItems: 'center',
-
-    [theme.breakpoints.down('md')]: {
-        minHeight: '720px',
-        alignItems: 'flex-start',
-        backgroundPosition: '65% center',
-    },
-
-    [theme.breakpoints.down('sm')]: {
-        minHeight: '760px',
-        backgroundPosition: '72% center',
-    },
+    backgroundColor: '#D9F3FF',
 }));
 
 const Content = styled(Box)(({ theme }) => ({
-    position: 'relative',
-    zIndex: 1,
-
     width: '100%',
     maxWidth: '1536px',
     margin: '0 auto',
-
+    minHeight: 'clamp(620px, 52vw, 820px)',
     paddingLeft: 'clamp(40px, 5.5vw, 88px)',
     paddingRight: 'clamp(40px, 5.5vw, 88px)',
+    display: 'grid',
+    gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
+    alignItems: 'center',
+    gap: 'clamp(32px, 5vw, 80px)',
 
     [theme.breakpoints.down('md')]: {
+        minHeight: 'auto',
         paddingTop: '64px',
+        paddingBottom: '64px',
         paddingLeft: '32px',
         paddingRight: '32px',
     },
 
     [theme.breakpoints.down('sm')]: {
+        gridTemplateColumns: 'minmax(0, 1fr)',
+        gap: '32px',
         paddingTop: '48px',
+        paddingBottom: '48px',
         paddingLeft: '20px',
         paddingRight: '20px',
     },
 }));
 
-const Copy = styled(Box)(({ theme }) => ({
-    width: 'min(47%, 650px)',
+const Copy = styled(Box)({
+    minWidth: 0,
+});
 
-    [theme.breakpoints.down('md')]: {
-        width: '55%',
+const Illustration = styled(Box)(({ theme }) => ({
+    width: '100%',
+    overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+
+    '& img': {
+        display: 'block',
+        width: '100%',
+        maxWidth: 'none',
+        flexShrink: 0,
+        objectFit: 'contain',
     },
 
     [theme.breakpoints.down('sm')]: {
-        width: '100%',
+        maxWidth: '560px',
+        margin: '0 auto',
     },
 }));
 
@@ -133,13 +125,8 @@ const ClosingText = styled(Typography)(({ theme }) => ({
 
 export default function ServiceEcosystemSection({ data }: Props) {
     return (
-        <Section aria-labelledby="service-ecosystem-heading">
-            <Background
-                sx={{
-                    backgroundImage: `url("${data.backgroundImage}")`,
-                }}
-            >
-                <Content>
+        <Section aria-labelledby="service-ecosystem-heading" sx={{ backgroundColor: data.backgroundColor ?? '#D9F3FF' }}>
+            <Content>
                     <Copy>
                         <Heading
                             id="service-ecosystem-heading"
@@ -163,8 +150,16 @@ export default function ServiceEcosystemSection({ data }: Props) {
                             {data.closingText}
                         </ClosingText>
                     </Copy>
-                </Content>
-            </Background>
+                <Illustration>
+                    <Image
+                        src={data.image.src}
+                        alt={data.image.alt}
+                        width={1440}
+                        height={756}
+                        sizes="(max-width: 600px) 200vw, 100vw"
+                    />
+                </Illustration>
+            </Content>
         </Section>
     );
 }

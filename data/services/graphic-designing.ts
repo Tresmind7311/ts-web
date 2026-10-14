@@ -175,6 +175,9 @@ export const graphicDesigningService: ServiceData = {
             'Effective design connects how your brand looks with what it needs to communicate. We bring together your message, visual identity, layout, and production needs so every asset works where your audience sees it.',
         flow: 'Brand & Message → Visual Identity → Layout & Imagery → Production → Audience',
         closingText: '',
-        backgroundImage: `${imageBase}/Visual.jpg`,
+        image: {
+            src: `${imageBase}/graphic-designing.png`,
+            alt: 'Connected visual design ecosystem',
+        },
     },
 };

@@ -174,6 +174,9 @@ export const cloudConsultingService: ServiceData = {
         flow:
             'Applications → Cloud Infrastructure → Data & Storage → Security & Recovery → Monitoring & Operations',
         closingText: '',
-        backgroundImage: '/images/services/cloud-consulting/Just-a-Server.jpg',
+        image: {
+            src: '/images/services/cloud-consulting/cloud-consulting.png',
+            alt: 'Cloud applications, infrastructure, storage, security, and monitoring connected in one ecosystem',
+        },
     },
 };
