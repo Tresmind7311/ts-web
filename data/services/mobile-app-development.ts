@@ -87,6 +87,7 @@ export const mobileAppDevelopmentService: ServiceData = {
             },
         ],
     },
+
     showcase: {
         title: 'Mobile Experiences Built Around People',
         description:
@@ -95,33 +96,12 @@ export const mobileAppDevelopmentService: ServiceData = {
             {
                 images: [
                     {
-                        src: '/images/services/mobile-app-development/show-case-01.jpg',
-                        alt: 'Mobile app interface showcase',
+                        src: '/images/services/mobile-app-development/mob-dev-1.png',
+                        alt: 'Mobile app development showcase 1',
                     },
                     {
-                        src: '/images/services/mobile-app-development/show-case-02.jpg',
-                        alt: 'Mobile app interface showcase',
-                    },
-                ],
-            },
-            {
-                placeholder: true,
-                images: [
-                    {
-                        src: '/images/services/mobile-app-development/show-case-03.jpg',
-                        alt: 'Mobile app interface showcase',
-                    },
-                    {
-                        src: '/images/services/mobile-app-development/show-case-01.jpg',
-                        alt: 'Mobile app interface showcase',
-                    },
-                ],
-            },
-            {
-                images: [
-                    {
-                        src: '/images/services/mobile-app-development/show-case-02.jpg',
-                        alt: 'Mobile app interface showcase',
+                        src: '/images/services/mobile-app-development/mob-dev-2.png',
+                        alt: 'Mobile app development showcase 2',
                     },
                 ],
             },
@@ -129,41 +109,20 @@ export const mobileAppDevelopmentService: ServiceData = {
                 placeholder: true,
                 images: [
                     {
-                        src: '/images/services/mobile-app-development/show-case-03.jpg',
-                        alt: 'Mobile app interface showcase',
+                        src: '/images/services/mobile-app-development/mob-dev-3.png',
+                        alt: 'Mobile app development showcase 3',
                     },
                     {
-                        src: '/images/services/mobile-app-development/show-case-01.jpg',
-                        alt: 'Mobile app interface showcase',
-                    },
-                ],
-            },
-            {
-                images: [
-                    {
-                        src: '/images/services/mobile-app-development/show-case-02.jpg',
-                        alt: 'Mobile app interface showcase',
-                    },
-                ],
-            },
-            {
-                placeholder: true,
-                images: [
-                    {
-                        src: '/images/services/mobile-app-development/show-case-03.jpg',
-                        alt: 'Mobile app interface showcase',
-                    },
-                    {
-                        src: '/images/services/mobile-app-development/show-case-01.jpg',
-                        alt: 'Mobile app interface showcase',
+                        src: '/images/services/mobile-app-development/mob-dev-4.png',
+                        alt: 'Mobile app development showcase 4',
                     },
                 ],
             },
             {
                 images: [
                     {
-                        src: '/images/services/mobile-app-development/show-case-02.jpg',
-                        alt: 'Mobile app interface showcase',
+                        src: '/images/services/mobile-app-development/mob-dev-5.png',
+                        alt: 'Mobile app development showcase 5',
                     },
                 ],
             },
@@ -171,25 +130,68 @@ export const mobileAppDevelopmentService: ServiceData = {
                 placeholder: true,
                 images: [
                     {
-                        src: '/images/services/mobile-app-development/show-case-03.jpg',
-                        alt: 'Mobile app interface showcase',
+                        src: '/images/services/mobile-app-development/mob-dev-6.png',
+                        alt: 'Mobile app development showcase 6',
                     },
                     {
-                        src: '/images/services/mobile-app-development/show-case-02.jpg',
-                        alt: 'Mobile app interface showcase',
+                        src: '/images/services/mobile-app-development/mob-dev-7.png',
+                        alt: 'Mobile app development showcase 7',
                     },
                 ],
             },
             {
                 images: [
                     {
-                        src: '/images/services/mobile-app-development/show-case-01.jpg',
-                        alt: 'Mobile app interface showcase',
+                        src: '/images/services/mobile-app-development/mob-dev-8.png',
+                        alt: 'Mobile app development showcase 8',
+                    },
+                ],
+            },
+            {
+                placeholder: true,
+                images: [
+                    {
+                        src: '/images/services/mobile-app-development/mob-dev-9.png',
+                        alt: 'Mobile app development showcase 9',
+                    },
+                    {
+                        src: '/images/services/mobile-app-development/mob-dev-10.png',
+                        alt: 'Mobile app development showcase 10',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/mobile-app-development/mob-dev-11.png',
+                        alt: 'Mobile app development showcase 11',
+                    },
+                ],
+            },
+            {
+                placeholder: true,
+                images: [
+                    {
+                        src: '/images/services/mobile-app-development/mob-dev-12.png',
+                        alt: 'Mobile app development showcase 12',
+                    },
+                    {
+                        src: '/images/services/mobile-app-development/mob-dev-13.png',
+                        alt: 'Mobile app development showcase 13',
+                    },
+                ],
+            },
+            {
+                images: [
+                    {
+                        src: '/images/services/mobile-app-development/mob-dev-1.png',
+                        alt: 'Mobile app development showcase 1',
                     },
                 ],
             },
         ],
     },
+
     process: {
         title: 'Our Development Process',
         description:

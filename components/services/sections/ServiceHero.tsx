@@ -28,6 +28,20 @@ const HeroSection = styled(Box)(({ theme }) => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     backgroundSize: 'cover',
+    '&::before': {
+        content: '""',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        height: '300px',
+        backgroundImage: 'url("/images/services/faded-img.png")',
+        backgroundPosition: 'center bottom',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        pointerEvents: 'none',
+        zIndex: 1,
+    },
 
     [theme.breakpoints.down('md')]: {
         minHeight: 'auto',
@@ -36,14 +50,13 @@ const HeroSection = styled(Box)(({ theme }) => ({
 
 const HeroContainer = styled(Container)(({ theme }) => ({
     position: 'relative',
-    zIndex: 1,
     width: '100%',
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 0.88fr) minmax(480px, 1.12fr)',
     alignItems: 'center',
     gap: 'clamp(24px, 4vw, 72px)',
     paddingTop: 'clamp(72px, 8vw, 112px)',
-    paddingBottom: 'clamp(72px, 8vw, 112px)',
+    paddingBottom: '0',
     paddingLeft: 0,
     paddingRight: 0,
 

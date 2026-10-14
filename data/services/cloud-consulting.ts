@@ -4,14 +4,14 @@ export const cloudConsultingService: ServiceData = {
     slug: 'cloud-consulting',
     name: 'Cloud Consulting',
     seo: {
-        title: 'Cloud Consulting Services | Tresmind',
+        title: 'Cloud Computing Services | Tresmind',
         description:
-            'Plan, modernize and optimize cloud infrastructure with Tresmind through practical architecture, migration and scalability guidance.',
+            'We plan, set up, and improve cloud environments that support your applications, organize your infrastructure, and help your business adapt as its needs change.',
     },
     hero: {
-        title: 'Cloud Consulting',
+        title: 'Cloud Computing',
         description:
-            'Tresmind Solutions helps teams design and evolve cloud infrastructure with performance, reliability and scale in mind. We support architecture planning, modernization and integration around your real operational requirements.',
+            'We plan, set up, and improve cloud environments that support your applications, organize your infrastructure, and help your business adapt as its needs change.',
         primaryCta: {
             label: 'Start Your Project',
             href: '#contact',
@@ -21,13 +21,13 @@ export const cloudConsultingService: ServiceData = {
             href: '#contact',
         },
         image: {
-            src: '/images/services/cloud-consulting/hero-img.png',
-            alt: 'Cloud infrastructure and connected server systems',
+            src: '/images/services/cloud-consulting/Cloud-computing-hero.png',
+            alt: 'Cloud computing infrastructure and services illustration',
         },
     },
     listing: {
         shortDescription:
-            'We help businesses plan, modernize and optimize cloud infrastructure for stronger reliability, scalability and operational efficiency.',
+            'We help businesses plan, set up, and improve cloud environments around their applications, infrastructure, and changing needs.',
         showcaseImage: {
             src: '/images/services/cloud-consulting/showcase-card.png',
             alt: 'Cloud consulting service illustration',
@@ -38,53 +38,142 @@ export const cloudConsultingService: ServiceData = {
         },
         order: 6,
     },
+    showcase: {
+        title: 'Cloud Solutions Built Around Your Business',
+        description:
+            'From moving existing systems to the cloud to improving how your applications run, we shape your cloud setup around your workloads, team, and business goals.',
+        columns: [
+            {
+                images: [
+                    { src: '/images/services/cloud-consulting/Cloud-computing-1.png', alt: 'Cloud computing showcase 1' },
+                    { src: '/images/services/cloud-consulting/Cloud-computing-2.png', alt: 'Cloud computing showcase 2' },
+                ]
+            },
+            {
+                placeholder: true, images: [
+                    { src: '/images/services/cloud-consulting/Cloud-computing-3.png', alt: 'Cloud computing showcase 3' },
+                    { src: '/images/services/cloud-consulting/Cloud-computing-4.png', alt: 'Cloud computing showcase 4' },
+                ]
+            },
+            {
+                images: [
+                    { src: '/images/services/cloud-consulting/Cloud-computing-5.png', alt: 'Cloud computing showcase 5' },
+                ]
+            },
+            {
+                placeholder: true, images: [
+                    { src: '/images/services/cloud-consulting/Cloud-computing-6.png', alt: 'Cloud computing showcase 6' },
+                    { src: '/images/services/cloud-consulting/Cloud-computing-7.png', alt: 'Cloud computing showcase 7' },
+                ]
+            },
+            {
+                images: [
+                    { src: '/images/services/cloud-consulting/Cloud-computing-8.png', alt: 'Cloud computing showcase 8' },
+                ]
+            },
+            {
+                placeholder: true, images: [
+                    { src: '/images/services/cloud-consulting/Cloud-computing-9.png', alt: 'Cloud computing showcase 9' },
+                    { src: '/images/services/cloud-consulting/Cloud-computing-10.png', alt: 'Cloud computing showcase 10' },
+                ]
+            },
+            {
+                images: [
+                    { src: '/images/services/cloud-consulting/Cloud-computing-11.png', alt: 'Cloud computing showcase 11' },
+                ]
+            },
+            {
+                placeholder: true, images: [
+                    { src: '/images/services/cloud-consulting/Cloud-computing-12.png', alt: 'Cloud computing showcase 12' },
+                    { src: '/images/services/cloud-consulting/Cloud-computing-13.png', alt: 'Cloud computing showcase 13' },
+                ]
+            },
+            {
+                images: [
+                    { src: '/images/services/cloud-consulting/Cloud-computing-1.png', alt: 'Cloud computing showcase 1' },
+                ]
+            },
+        ],
+    },
     capabilities: {
         eyebrow: 'Our Expertise',
         title: 'What We Build',
         description:
-            'From native mobile applications to connected digital ecosystems, we build scalable experiences around real users and business goals.',
+            'Cloud environments and improvements built around your applications, security, performance, and operational needs.',
         initialVisibleCount: 4,
         items: [
             {
-                id: 'native-android-development',
-                title: 'Native Android Development',
+                id: 'cloud-infrastructure',
+                title: 'Cloud Infrastructure',
                 description:
-                    'High-performance Android applications built around intuitive experiences, maintainable architecture and long-term scalability.',
+                    'Cloud environments configured around your applications, storage needs, and day-to-day operations.',
                 image: {
-                    src: '/footer-bg.jpg',
-                    alt: 'Native Android development',
+                    src: '/images/services/cloud-consulting/what-we-build/Cloud-Infrastructure.png',
+                    alt: 'Cloud infrastructure',
                 },
             },
             {
-                id: 'cross-platform-applications',
-                title: 'Cross-Platform Applications',
+                id: 'cloud-migration',
+                title: 'Cloud Migration',
                 description:
-                    'Consistent mobile experiences designed to work efficiently across multiple platforms while maintaining strong performance and usability.',
+                    'Planned transitions that move applications and data to the cloud while managing dependencies and disruption.',
                 image: {
-                    src: '/footer-bg.jpg',
-                    alt: 'Cross-platform mobile application development',
+                    src: '/images/services/cloud-consulting/what-we-build/Cloud-Migration.png',
+                    alt: 'Cloud migration',
                 },
             },
             {
-                id: 'api-backend-integration',
-                title: 'API & Backend Integration',
+                id: 'cloud-security-backup',
+                title: 'Cloud Security & Backup',
                 description:
-                    'Reliable mobile applications connected with APIs, backend systems, databases and third-party services.',
+                    'Access controls, backup plans, and recovery arrangements that help protect your systems and information.',
                 image: {
-                    src: '/footer-bg.jpg',
-                    alt: 'API and backend integration',
+                    src: '/images/services/cloud-consulting/what-we-build/Cloud-Security-Backup.png',
+                    alt: 'Cloud security and backup',
                 },
             },
             {
-                id: 'ui-ux-driven-development',
-                title: 'UI/UX-Driven Development',
+                id: 'cloud-optimization',
+                title: 'Cloud Optimization',
                 description:
-                    'User-focused mobile experiences where interface design, usability and engineering work together from the beginning.',
+                    'Reviews and improvements that align cloud resources, performance, and costs with how your business uses them.',
                 image: {
-                    src: '/footer-bg.jpg',
-                    alt: 'Mobile application UI and UX development',
+                    src: '/images/services/cloud-consulting/what-we-build/Cloud-Optimization.png',
+                    alt: 'Cloud optimization',
                 },
             },
         ],
+    },
+    process: {
+        title: 'Our Implementation Process',
+        description:
+            'We assess your current systems, plan the cloud environment, and prepare it for practical, ongoing use.',
+        autoplayMs: 3500,
+        steps: [
+            {
+                id: 'assessment-planning',
+                number: '01',
+                title: 'Assessment & Planning',
+                description:
+                    'We review your applications, infrastructure, and business needs to define the scope and priorities.',
+                backgroundImage: {
+                    src: '/images/services/cloud-consulting/process-bg.png',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/cloud-consulting/Cloud-Computing-process.png',
+                    alt: 'Cloud assessment and planning',
+                },
+            },
+        ],
+    },
+    ecosystem: {
+        title: 'More Than Just a Server',
+        description:
+            'A useful cloud environment connects the systems your business relies on. We bring together applications, infrastructure, data, security, and monitoring so your team can run and manage its services with a clear view of what happens behind the scenes.',
+        flow:
+            'Applications → Cloud Infrastructure → Data & Storage → Security & Recovery → Monitoring & Operations',
+        closingText: '',
+        backgroundImage: '/images/services/cloud-consulting/Just-a-Server.jpg',
     },
 };
