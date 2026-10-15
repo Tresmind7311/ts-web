@@ -288,7 +288,7 @@ export const mobileAppDevelopmentService: ServiceData = {
             'Every layer works together to create one seamless experience.',
 
         image: {
-            src: '/images/services/mobile-app-development/mobile-ecosystem.jpg',
+            src: '/images/services/mobile-app-development/mobile-ecosystem.png',
             alt: 'Connected mobile application ecosystem',
         },
     },

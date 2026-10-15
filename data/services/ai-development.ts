@@ -206,11 +206,41 @@ export const aiDevelopmentService: ServiceData = {
                 description:
                     'We identify the problem, available information, users, and outcome the tool should support.',
                 backgroundImage: {
-                    src: '/images/services/ai-development/what-we-build/AI-Assistants.png',
+                    src: '/images/services/ai-development/process-bg.png',
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/ai-development/hero-img.png',
+                    src: '/images/services/ai-development/Requirements-Discovery.png',
+                    alt: 'AI use case discovery',
+                },
+            },
+            {
+                id: 'use-case-discovery-02',
+                number: '02',
+                title: 'Use Case Discovery',
+                description:
+                    'We identify the problem, available information, users, and outcome the tool should support.',
+                backgroundImage: {
+                    src: '/images/services/ai-development/process-bg.png',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/ai-development/Requirements-Discovery.png',
+                    alt: 'AI use case discovery',
+                },
+            },
+            {
+                id: 'use-case-discovery-03',
+                number: '03',
+                title: 'Use Case Discovery',
+                description:
+                    'We identify the problem, available information, users, and outcome the tool should support.',
+                backgroundImage: {
+                    src: '/images/services/ai-development/process-bg.png',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/ai-development/Requirements-Discovery.png',
                     alt: 'AI use case discovery',
                 },
             },
