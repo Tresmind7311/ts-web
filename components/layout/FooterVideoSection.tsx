@@ -23,9 +23,17 @@ const SLOT_DURATION = 0.7;
 const LIFT_PX = 40;
 
 // ─── Copy ─────────────────────────────────────────────────────────────────────
-const NAV_LINKS = ['Work', 'Services', 'Lab', 'Testimonials', 'Contact'];
-const SOCIAL_LINKS = ['Twitter', 'LinkedIn', 'Dribbble'];
-const EMAIL = 'hello@tresmind.com';
+const NAV_LINKS = [
+    { label: 'Services', href: '/services' },
+    { label: 'Portfolio', href: '/portfolio' },
+    { label: 'Contact', href: '/contact' },
+];
+const SOCIAL_LINKS: { label: string; href?: string }[] = [
+    { label: 'Twitter' },
+    { label: 'LinkedIn' },
+    { label: 'Dribbble' },
+];
+const EMAIL = 'info@tresmind.com';
 const YEAR = new Date().getFullYear();
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
@@ -447,7 +455,7 @@ export default function FooterVideoSection() {
                     <InlineGifWrap>
                         <InlineGif
                             src={GIF_SRC}
-                            alt="Rotating crystal"
+                            alt=""
                             aria-hidden="true"
                             loading="lazy"
                         />
@@ -456,18 +464,18 @@ export default function FooterVideoSection() {
 
                 {/* Slot 1 — eyebrow */}
                 <AnimSlot ref={slot(1)}>
-                    <Eyebrow>Tresmind Studio</Eyebrow>
+                    <Eyebrow>Tresmind Solutions</Eyebrow>
                 </AnimSlot>
 
                 {/* Slot 2 — main headline */}
                 <AnimSlot ref={slot(2)} style={{ marginTop: '-4px' }}>
-                    <Headline>Let&rsquo;s build something extraordinary.</Headline>
+                    <Headline>Have a project in mind?</Headline>
                 </AnimSlot>
 
                 {/* Slot 3 — subtitle */}
                 <AnimSlot ref={slot(3)}>
                     <SubHead>
-                        We help ambitious brands transform ideas into unforgettable digital experiences.
+                        Tell us what you want to build. We work with businesses in the US, UK, Europe, Australia, the UAE and Saudi Arabia.
                     </SubHead>
                 </AnimSlot>
 
@@ -476,9 +484,9 @@ export default function FooterVideoSection() {
                     <ContactPanel>
                         <ContactIntro>
                             <ContactKicker>Get in touch</ContactKicker>
-                            <ContactTitle>Tell us what you&rsquo;re building.</ContactTitle>
+                            <ContactTitle>Tell us about your project</ContactTitle>
                             <ContactCopy>
-                                Share the idea, challenge, or next move. We&rsquo;ll take it from there.
+                                A few lines about your goals and timeline are enough to start.
                             </ContactCopy>
                         </ContactIntro>
 
@@ -509,7 +517,7 @@ export default function FooterVideoSection() {
                                 <FieldLabel>Project enquiry</FieldLabel>
                                 <MessageInput
                                     name="message"
-                                    placeholder="Tell us a little about the project, goals, or timeline..."
+                                    placeholder="What are you building, and by when?"
                                     rows={3}
                                     required
                                 />
@@ -517,7 +525,7 @@ export default function FooterVideoSection() {
 
                             <FormActions>
                                 <PrimaryButton type="submit">
-                                    Send enquiry ↗
+                                    Send enquiry
                                 </PrimaryButton>
                             </FormActions>
                         </QueryForm>
@@ -532,8 +540,8 @@ export default function FooterVideoSection() {
                 {/* Slot 6 — nav links */}
                 <AnimSlot ref={slot(6)}>
                     <NavRow aria-label="Footer navigation">
-                        {NAV_LINKS.map((label) => (
-                            <NavLink key={label} href={`#${label.toLowerCase()}`}>
+                        {NAV_LINKS.map(({ label, href }) => (
+                            <NavLink key={label} href={href}>
                                 {label}
                             </NavLink>
                         ))}
@@ -544,10 +552,10 @@ export default function FooterVideoSection() {
                 <AnimSlot ref={slot(7)}>
                     <BottomRow>
                         <BottomLink href={`mailto:${EMAIL}`}>{EMAIL}</BottomLink>
-                        {SOCIAL_LINKS.map((s) => (
-                            <BottomLink key={s} href="#">{s}</BottomLink>
-                        ))}
-                        <Copyright>© {YEAR} Tresmind. All rights reserved.</Copyright>
+                        {SOCIAL_LINKS.map(({ label, href }) => href ? (
+                            <BottomLink key={label} href={href}>{label}</BottomLink>
+                        ) : null)}
+                        <Copyright>© {YEAR} Tresmind Solutions. All rights reserved.</Copyright>
                     </BottomRow>
                 </AnimSlot>
 

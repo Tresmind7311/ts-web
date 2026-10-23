@@ -36,9 +36,17 @@ const SLOT_DURATION = 0.22;  // each slot takes 22 % of content phase
 const LIFT_PX = 40; // translateY starting offset (px)
 
 // ─── Copy ─────────────────────────────────────────────────────────────────────
-const NAV_LINKS = ['Work', 'Services', 'Lab', 'Testimonials', 'Contact'];
-const SOCIAL_LINKS = ['Twitter', 'LinkedIn', 'Dribbble'];
-const EMAIL = 'hello@tresmind.com';
+const NAV_LINKS = [
+    { label: 'Services', href: '/services' },
+    { label: 'Portfolio', href: '/portfolio' },
+    { label: 'Contact', href: '/contact' },
+];
+const SOCIAL_LINKS: { label: string; href?: string }[] = [
+    { label: 'Twitter' },
+    { label: 'LinkedIn' },
+    { label: 'Dribbble' },
+];
+const EMAIL = 'info@tresmind.com';
 const YEAR = new Date().getFullYear();
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
@@ -231,18 +239,18 @@ export default function FooterSection() {
 
                 {/* Slot 0 — eyebrow */}
                 <AnimSlot ref={slot(0)}>
-                    <Eyebrow>Tresmind Studio</Eyebrow>
+                    <Eyebrow>Tresmind Solutions</Eyebrow>
                 </AnimSlot>
 
                 {/* Slot 1 — main headline */}
                 <AnimSlot ref={slot(1)} style={{ marginTop: '-4px' }}>
-                    <Headline>Let&rsquo;s build something extraordinary.</Headline>
+                    <Headline>Have a project in mind?</Headline>
                 </AnimSlot>
 
                 {/* Slot 2 — subtitle */}
                 <AnimSlot ref={slot(2)}>
                     <SubHead>
-                        We help ambitious brands transform ideas into unforgettable digital experiences.
+                        Tell us what you want to build. We work with businesses in the US, UK, Europe, Australia, the UAE and Saudi Arabia.
                     </SubHead>
                 </AnimSlot>
 
@@ -254,8 +262,8 @@ export default function FooterSection() {
                 {/* Slot 4 — nav links */}
                 <AnimSlot ref={slot(4)}>
                     <NavRow aria-label="Footer navigation">
-                        {NAV_LINKS.map((label) => (
-                            <NavLink key={label} href={`#${label.toLowerCase()}`}>
+                        {NAV_LINKS.map(({ label, href }) => (
+                            <NavLink key={label} href={href}>
                                 {label}
                             </NavLink>
                         ))}
@@ -266,10 +274,10 @@ export default function FooterSection() {
                 <AnimSlot ref={slot(5)}>
                     <BottomRow>
                         <BottomLink href={`mailto:${EMAIL}`}>{EMAIL}</BottomLink>
-                        {SOCIAL_LINKS.map((s) => (
-                            <BottomLink key={s} href="#">{s}</BottomLink>
-                        ))}
-                        <Copyright>© {YEAR} Tresmind. All rights reserved.</Copyright>
+                        {SOCIAL_LINKS.map(({ label, href }) => href ? (
+                            <BottomLink key={label} href={href}>{label}</BottomLink>
+                        ) : null)}
+                        <Copyright>© {YEAR} Tresmind Solutions. All rights reserved.</Copyright>
                     </BottomRow>
                 </AnimSlot>
 

@@ -251,12 +251,11 @@ export default function HeroSection() {
                     </Eyebrow>
 
                     <Headline component={'h1' as React.ElementType}>
-                        Ideas,<br />refracted.
+                        Software, apps and AI, built to last
                     </Headline>
 
                     <SubCopy>
-                        We turn light into language — shaping brands, products, and
-                        digital experiences for those who see further.
+                        We design and build mobile apps, AI tools, custom software and websites for growing businesses in the US, UK, Europe, Australia and the Middle East.
                     </SubCopy>
 
                     {/* <CtaButton href="#contact">
@@ -280,7 +279,7 @@ export default function HeroSection() {
                         gradientBorderEnd="#0DB0DC"
                         hoverBackgroundColor="transparent"
 
-                        href="contact"
+                        href="/contact"
                     >
                         Start a project&nbsp;&nbsp;→
                     </SecondaryButton>

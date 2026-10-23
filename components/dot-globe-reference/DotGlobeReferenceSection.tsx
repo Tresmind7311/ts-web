@@ -70,7 +70,7 @@ export interface DotGlobeReferenceSectionProps {
 
 export default function DotGlobeReferenceSection({
     phoneNumber = "+44 20 7946 0958",
-    emailAddress = "contact@tresmind.com",
+    emailAddress = "info@tresmind.com",
     locationText = "London, United Kingdom",
     contactCta,
     textColor,

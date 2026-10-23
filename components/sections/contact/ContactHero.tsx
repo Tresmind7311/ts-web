@@ -22,9 +22,9 @@ const CONTACT_ITEMS = [
     },
     {
         label: 'Email Us',
-        value: 'hello@tresmind.com',
+        value: 'info@tresmind.com',
         action: 'We will reply soon',
-        href: 'mailto:hello@tresmind.com',
+        href: 'mailto:info@tresmind.com',
     },
     {
         label: 'Live Chat',

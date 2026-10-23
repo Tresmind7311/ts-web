@@ -20,7 +20,7 @@ const SERVICE_LINKS = [
     { label: 'AI Development', href: '/services/ai-development' },
     { label: 'Software Development', href: '/services/software-development' },
     { label: 'Web Development', href: '/services/web-development' },
-    { label: 'Graphic Designing', href: '/services/graphic-designing' },
+    { label: 'Graphic Design', href: '/services/graphic-designing' },
     { label: 'Cloud Consulting', href: '/services/cloud-consulting' },
 ];
 
