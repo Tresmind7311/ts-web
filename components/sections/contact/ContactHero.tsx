@@ -1,4 +1,5 @@
 'use client';
+import { useActionState } from 'react';
 import Image from 'next/image';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -7,29 +8,23 @@ import ContactLocations from './ContactLocations';
 import Heading from '@/components/common/Heading';
 import { PrimaryButton, SecondaryButton } from '@/components/common/Button';
 import { tokens } from '@/theme/theme';
+import { submitContactForm, type ContactFormState } from '@/app/contact/actions';
+
+const initialContactFormState: ContactFormState = { status: 'idle', message: '' };
 const CONTACT_ITEMS = [
     {
-        label: 'Our Location',
-        value: '123 street, 12\nTech City, USA',
-        action: 'View on Map',
-        href: '#contact-locations',
+        label: 'Markets we serve',
+        value: 'US · UK · Europe · Australia · UAE · Saudi Arabia',
+        href: '#contact-form',
     },
     {
-        label: 'Call Us',
-        value: '+1 (234) 567 8900',
-        action: 'Mon - Fri  (9AM to 6PM)',
-        href: 'tel:+12345678900',
-    },
-    {
-        label: 'Email Us',
+        label: 'Email us',
         value: 'info@tresmind.com',
-        action: 'We will reply soon',
         href: 'mailto:info@tresmind.com',
     },
     {
-        label: 'Live Chat',
-        value: 'Chat with our team',
-        action: 'Start Chat',
+        label: 'Book a call',
+        value: 'Use the contact form',
         href: '#contact-form',
     },
 ] as const;
@@ -70,8 +65,9 @@ const Actions = styled('div')(({ theme }) => ({
     }
 }));
 const ContactStrip = styled(Container)(({ theme }) => ({
-    display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 24, paddingTop: 28, paddingBottom: 48, [theme.breakpoints.down('md')]: {
-        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 28
+    display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 24, paddingTop: 28, paddingBottom: 48, [theme.breakpoints.down('md')]: {
+        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 28,
+        '& > :last-child': { gridColumn: '1 / -1' }
     }, [theme.breakpoints.down('sm')]: {
         gridTemplateColumns: '1fr', paddingInline: 24
     }
@@ -247,16 +243,19 @@ function LockIcon() {
     </svg>);
 }
 export default function ContactHero() {
+    const [formState, formAction, pending] = useActionState(submitContactForm, initialContactFormState);
+
     return (<>
         <HeroSection aria-labelledby="contact-hero-heading">
             <ContactLocations />
-            <HeroIntro><Eyebrow>LET’S CONNECT</Eyebrow><HeroHeading id="contact-hero-heading" variant="h1">FIND US HERE</HeroHeading><Description>Whether you’re nearby or reaching out from across the world, our team is always within reach. Explore where we’re based, drop us a message, and let’s start a conversation.</Description><Actions><PrimaryButton component="a" href="#contact-form">Start Your Project</PrimaryButton><SecondaryButton component="a" href="#contact-form">Schedule a Consultation</SecondaryButton></Actions></HeroIntro>
+            <HeroIntro><Eyebrow>Let&apos;s connect</Eyebrow><HeroHeading id="contact-hero-heading" variant="h1">Talk to our team</HeroHeading><Description>We work remotely with clients across the United States, United Kingdom, Europe, Australia, the UAE and Saudi Arabia. Send a message and we will arrange a call at a time that suits your time zone.</Description><Actions><PrimaryButton component="a" href="#contact-form">Start your project</PrimaryButton><SecondaryButton component="a" href="#contact-form">Book a consultation</SecondaryButton></Actions></HeroIntro>
             <ContactStrip maxWidth={false} sx={{
                 maxWidth: 1328
-            }}>{CONTACT_ITEMS.map(item => <ContactLink key={item.label} href={item.href} aria-label={item.label + ': ' + item.value + '. ' + item.action}><Image src="/images/send-icon.svg" alt="" width={48} height={48} /><span><strong>{item.label}</strong>{item.value.replace('\n', ' ')}</span></ContactLink>)}</ContactStrip>
-        </HeroSection><FormSection aria-labelledby="contact-form-heading">                    <FormCard id="contact-form" onSubmit={(event) => {
-            event.preventDefault();
-        }}>
+            }}>{CONTACT_ITEMS.map(item => <ContactLink key={item.label} href={item.href} aria-label={item.label + ': ' + item.value}><Image src="/images/send-icon.svg" alt="" width={48} height={48} /><span><strong>{item.label}</strong>{item.value}</span></ContactLink>)}</ContactStrip>
+        </HeroSection><FormSection aria-labelledby="contact-form-heading">                    <FormCard id="contact-form" action={formAction}>
+            <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clipPath: 'inset(50%)' }}>
+                <label>Website<input name="website" type="text" tabIndex={-1} autoComplete="off" /></label>
+            </div>
             <FormTitle id="contact-form-heading">
                 Send{' '}
                 <FormTitleGradient>
@@ -265,7 +264,7 @@ export default function ContactHero() {
             </FormTitle>
 
             <FormIntro>
-                We&apos;re here to help and answer any question you might have.
+                Tell us about your project.
             </FormIntro>
 
             <FormFields>
@@ -273,39 +272,39 @@ export default function ContactHero() {
                     <FieldIconWrap>
                         <UserIcon />
                     </FieldIconWrap>
-                    <FieldInput name="name" type="text" placeholder="Full Name" autoComplete="name" aria-label="Full Name" />
+                    <FieldInput name="name" type="text" placeholder="Full Name" autoComplete="name" aria-label="Full Name" required maxLength={120} />
                 </FieldControl>
 
                 <FieldControl>
                     <FieldIconWrap>
                         <UserIcon />
                     </FieldIconWrap>
-                    <FieldInput name="email" type="email" placeholder="Email Address" autoComplete="email" aria-label="Email Address" />
+                    <FieldInput name="email" type="email" placeholder="Work Email" autoComplete="email" aria-label="Work email" required maxLength={254} />
                 </FieldControl>
 
                 <FieldControl>
                     <FieldIconWrap>
                         <UserIcon />
                     </FieldIconWrap>
-                    <FieldInput name="phone" type="tel" placeholder="Phone Number" autoComplete="tel" aria-label="Phone Number" />
+                    <FieldInput name="phone" type="tel" placeholder="Phone (optional)" autoComplete="tel" aria-label="Phone (optional)" maxLength={40} />
                 </FieldControl>
 
                 <FieldControl>
                     <FieldIconWrap>
                         <UserIcon />
                     </FieldIconWrap>
-                    <FieldInput name="subject" type="text" placeholder="Subject" aria-label="Subject" />
+                    <FieldInput name="subject" type="text" placeholder="Subject" aria-label="Subject" required maxLength={160} />
                 </FieldControl>
 
                 <MessageControl>
                     <MessageIconWrap>
                         <UserIcon />
                     </MessageIconWrap>
-                    <MessageField name="message" placeholder="Tell us about your project" aria-label="Tell us about your project" />
+                    <MessageField name="message" placeholder="Tell us about your project" aria-label="Tell us about your project" required maxLength={5000} />
                 </MessageControl>
             </FormFields>
 
-            <PrimaryButton type="submit" sx={{
+            <PrimaryButton type="submit" disabled={pending} sx={{
                 width: '100%',
                 minHeight: {
                     xs: '54px', sm: '66px'
@@ -315,13 +314,17 @@ export default function ContactHero() {
                     xs: '18px', sm: '24px'
                 },
             }}>
-                Send Message
+                {pending ? 'Sending…' : 'Send message'}
             </PrimaryButton>
+
+            <p role={formState.status === 'error' ? 'alert' : 'status'} aria-live="polite">
+                {formState.message}
+            </p>
 
             <PrivacyText>
                 <LockIcon />
                 <span>
-                    We never share your information with anyone.
+                    We use your details only to reply to your enquiry.
                 </span>
             </PrivacyText>
         </FormCard>

@@ -49,7 +49,7 @@ const jetbrainsMono = JetBrains_Mono({
 //   themeColor: '#4F3DF5',
 // };
 export const viewport = {
-  themeColor: '#your-color-here',
+  themeColor: '#071463',
 }
 
 

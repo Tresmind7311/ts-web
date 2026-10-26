@@ -15,7 +15,7 @@ const Card = styled('div')(({ theme }) => ({
 export default function ContactProcess() {
     return <Card><Image src="/images/contact-faq-avatar.png" alt="" width={64} height={64} style={{
             borderRadius: '50%', objectFit: 'cover'
-        }}/><h3>Book a 15 min call</h3><p>If you have any questions, just book a 15-minute call with us before subscribing.</p><PrimaryButton component="a" href="#contact-form" sx={{
+        }}/><h3>Book a 15-minute call</h3><p>Not sure where to start? Book a short call and we will talk through your idea, no commitment.</p><PrimaryButton component="a" href="#contact-form" sx={{
             width: '100%', minHeight: 46, fontSize: 14
-        }}>Book a Free Call!</PrimaryButton></Card>;
+        }}>Book a free call</PrimaryButton></Card>;
 }

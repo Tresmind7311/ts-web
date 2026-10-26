@@ -4,30 +4,30 @@ export const cloudConsultingService: ServiceData = {
     slug: 'cloud-consulting',
     name: 'Cloud Consulting',
     seo: {
-        title: 'Cloud Computing Services | Tresmind',
+        title: 'Cloud Consulting Services | Migration & Security',
         description:
-            'We plan, set up, and improve cloud environments that support your applications, organize your infrastructure, and help your business adapt as its needs change.',
+            'Cloud consulting for growing businesses: infrastructure setup, cloud migration, security and backup, and cost optimisation, planned around your applications.',
     },
     hero: {
-        title: 'Cloud Computing',
+        title: 'Cloud consulting services',
         description:
-            'We plan, set up, and improve cloud environments that support your applications, organize your infrastructure, and help your business adapt as its needs change.',
+            'We plan, set up and improve cloud environments that keep your applications reliable, your data protected and your costs under control.',
         primaryCta: {
-            label: 'Start Your Project',
+            label: 'Start your project',
             href: '#contact',
         },
         secondaryCta: {
-            label: 'Schedule a Consultation',
+            label: 'Book a consultation',
             href: '#contact',
         },
         image: {
             src: '/images/services/cloud-consulting/Cloud-computing-hero.png',
-            alt: 'Cloud computing infrastructure and services illustration',
+            alt: 'Cloud infrastructure architecture diagram',
         },
     },
     listing: {
         shortDescription:
-            'We help businesses plan, set up, and improve cloud environments around their applications, infrastructure, and changing needs.',
+            'Cloud infrastructure, migration, security and cost optimization.',
         showcaseImage: {
             src: '/images/services/cloud-consulting/showcase-card.png',
             alt: 'Cloud consulting service illustration',
@@ -41,7 +41,7 @@ export const cloudConsultingService: ServiceData = {
     showcase: {
         title: 'Cloud Solutions Built Around Your Business',
         description:
-            'From moving existing systems to the cloud to improving how your applications run, we shape your cloud setup around your workloads, team, and business goals.',
+            'Whether you are moving to the cloud for the first time or improving an existing setup, we shape the environment around your workloads, team and goals.',
         columns: [
             {
                 images: [
@@ -97,7 +97,7 @@ export const cloudConsultingService: ServiceData = {
     },
     capabilities: {
         eyebrow: 'Our Expertise',
-        title: 'What We Build',
+        title: 'What we do',
         description:
             'Cloud environments and improvements built around your applications, security, performance, and operational needs.',
         initialVisibleCount: 4,
@@ -106,7 +106,7 @@ export const cloudConsultingService: ServiceData = {
                 id: 'cloud-infrastructure',
                 title: 'Cloud Infrastructure',
                 description:
-                    'Cloud environments configured around your applications, storage needs, and day-to-day operations.',
+                    'Environments configured for your applications, storage and day-to-day operations.',
                 image: {
                     src: '/images/services/cloud-consulting/what-we-build/Cloud-Infrastructure.png',
                     alt: 'Cloud infrastructure',
@@ -116,7 +116,7 @@ export const cloudConsultingService: ServiceData = {
                 id: 'cloud-migration',
                 title: 'Cloud Migration',
                 description:
-                    'Planned transitions that move applications and data to the cloud while managing dependencies and disruption.',
+                    'Planned moves of applications and data to the cloud with minimal disruption.',
                 image: {
                     src: '/images/services/cloud-consulting/what-we-build/Cloud-Migration.png',
                     alt: 'Cloud migration',
@@ -126,7 +126,7 @@ export const cloudConsultingService: ServiceData = {
                 id: 'cloud-security-backup',
                 title: 'Cloud Security & Backup',
                 description:
-                    'Access controls, backup plans, and recovery arrangements that help protect your systems and information.',
+                    'Access controls, backups and recovery plans that protect your systems.',
                 image: {
                     src: '/images/services/cloud-consulting/what-we-build/Cloud-Security-Backup.png',
                     alt: 'Cloud security and backup',
@@ -134,9 +134,9 @@ export const cloudConsultingService: ServiceData = {
             },
             {
                 id: 'cloud-optimization',
-                title: 'Cloud Optimization',
+                title: 'Cloud Optimisation',
                 description:
-                    'Reviews and improvements that align cloud resources, performance, and costs with how your business uses them.',
+                    'Reviews that align performance and spend with how you actually use the cloud.',
                 image: {
                     src: '/images/services/cloud-consulting/what-we-build/Cloud-Optimization.png',
                     alt: 'Cloud optimization',
@@ -145,7 +145,7 @@ export const cloudConsultingService: ServiceData = {
         ],
     },
     process: {
-        title: 'Our Implementation Process',
+        title: 'Our implementation process',
         description:
             'We assess your current systems, plan the cloud environment, and prepare it for practical, ongoing use.',
         autoplayMs: 3500,
@@ -153,9 +153,9 @@ export const cloudConsultingService: ServiceData = {
             {
                 id: 'assessment-planning',
                 number: '01',
-                title: 'Assessment & Planning',
+                title: 'Assessment & planning',
                 description:
-                    'We review your applications, infrastructure, and business needs to define the scope and priorities.',
+                    'Applications, infrastructure, scope and priorities.',
                 backgroundImage: {
                     src: '/images/services/cloud-consulting/process-bg.png',
                     alt: '',
@@ -165,12 +165,68 @@ export const cloudConsultingService: ServiceData = {
                     alt: 'Cloud assessment and planning',
                 },
             },
+            {
+                id: 'architecture-design',
+                number: '02',
+                title: 'Architecture design',
+                description: 'Plan the environment around workloads and data.',
+                backgroundImage: {
+                    src: '/images/services/cloud-consulting/process-bg.png',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/cloud-consulting/Cloud-Computing-process.png',
+                    alt: '',
+                },
+            },
+            {
+                id: 'setup-migration',
+                number: '03',
+                title: 'Setup or migration',
+                description: 'Configure infrastructure or move applications and data.',
+                backgroundImage: {
+                    src: '/images/services/cloud-consulting/process-bg.png',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/cloud-consulting/Cloud-Computing-process.png',
+                    alt: '',
+                },
+            },
+            {
+                id: 'security-testing',
+                number: '04',
+                title: 'Security & testing',
+                description: 'Review access, backups and application behaviour.',
+                backgroundImage: {
+                    src: '/images/services/cloud-consulting/process-bg.png',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/cloud-consulting/Cloud-Computing-process.png',
+                    alt: '',
+                },
+            },
+            {
+                id: 'handover-support',
+                number: '05',
+                title: 'Handover & ongoing support',
+                description: 'Documentation, handover and agreed next steps.',
+                backgroundImage: {
+                    src: '/images/services/cloud-consulting/process-bg.png',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/cloud-consulting/Cloud-Computing-process.png',
+                    alt: '',
+                },
+            },
         ],
     },
     ecosystem: {
         title: 'More Than Just a Server',
         description:
-            'A useful cloud environment connects the systems your business relies on. We bring together applications, infrastructure, data, security, and monitoring so your team can run and manage its services with a clear view of what happens behind the scenes.',
+            'A dependable cloud environment brings together applications, infrastructure, data, security and monitoring, so your team always knows what is running and why.',
         flow:
             'Applications → Cloud Infrastructure → Data & Storage → Security & Recovery → Monitoring & Operations',
         closingText: '',
@@ -178,5 +234,18 @@ export const cloudConsultingService: ServiceData = {
             src: '/images/services/cloud-consulting/cloud-consulting.png',
             alt: 'Cloud applications, infrastructure, storage, security, and monitoring connected in one ecosystem',
         },
+    },
+    faq: {
+        title: 'Cloud consulting FAQs',
+        items: [
+            {
+                question: 'Will migrating cause downtime?',
+                answer: 'We plan migrations to minimise disruption and agree on cut-over windows with you in advance.',
+            },
+            {
+                question: 'Can you reduce our cloud bill?',
+                answer: 'A cost review often finds unused or oversized resources. We report the findings before changing anything.',
+            },
+        ],
     },
 };

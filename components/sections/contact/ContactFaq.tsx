@@ -14,24 +14,26 @@ interface FaqItem {
 }
 const FAQS: FaqItem[] = [
     {
-        question: 'What does your agency specialize in?',
-        answer: 'We specialize in helping startups design, build, and scale AI-powered products. Our expertise includes AI strategy, UX/UI design, automation tools, and product development for SaaS, tech, and data-driven businesses.',
+        question: 'What does Tresmind specialise in?',
+        answer: 'We design and build mobile apps, AI tools, custom software and websites, supported by graphic design and cloud consulting.',
     },
     {
-        question: 'Do you work with early-stage startups?', answer: 'We help teams define their product, prioritize features, and build a roadmap that fits their goals and budget.'
+        question: 'Do you work with early-stage startups?', answer: 'Yes. We help founders define the product, prioritise features and plan a first release that fits their budget and timeline.'
     },
     {
-        question: 'How long does a typical project take?',
-        answer: 'Timelines depend on scope and complexity. After discovery, we provide a clear roadmap, milestones, and delivery schedule before work begins.',
+        question: 'How long does a typical project take?', answer: 'It depends on scope and complexity. After discovery we share a roadmap with milestones and a delivery schedule before work begins.',
     },
     {
-        question: 'Can you integrate AI into my existing product?', answer: 'We assess your existing product and workflows to identify practical AI integrations and a clear implementation plan.'
+        question: 'Can you integrate AI into my existing product?', answer: 'Yes. We review your product and workflows, identify practical AI use cases and agree on an implementation plan. See AI development.'
     },
     {
-        question: 'What do you need from me to get started?', answer: 'Share your goals, current challenges, timeline, and any existing product materials through the contact form.'
+        question: 'Which countries do you work with?', answer: 'Clients in the United States, United Kingdom, Europe, Australia, the UAE and Saudi Arabia. We work remotely and schedule calls across time zones.'
     },
     {
-        question: 'How do you ensure quality?', answer: 'We agree on milestones and review the design and implementation with you throughout the project.'
+        question: 'How much does a project cost?', answer: 'Every project is scoped individually. Share your goals through the form and we will send a proposal.'
+    },
+    {
+        question: 'How do you ensure quality?', answer: 'We agree on milestones, review designs and builds with you throughout, and test before every release.'
     },
 ];
 const Root = styled('section')(({ theme }) => ({

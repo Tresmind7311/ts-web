@@ -23,34 +23,6 @@ type DeferredSectionProps = {
 
 const LOAD_AHEAD_ROOT_MARGIN = '100% 0px';
 
-const PROJECTS = [
-    {
-        title: 'Project One',
-        image: '/projects/project-01.jpg',
-        href: '/projects/project-one',
-    },
-    {
-        title: 'Project Two',
-        image: '/projects/project-02.jpg',
-        href: '/projects/project-two',
-    },
-    {
-        title: 'Project Three',
-        image: '/projects/project-03.jpg',
-        href: '/projects/project-three',
-    },
-    {
-        title: 'Project Four',
-        image: '/projects/project-04.jpg',
-        href: '/projects/project-four',
-    },
-    {
-        title: 'Project Five',
-        image: '/projects/project-05.jpg',
-        href: '/projects/project-five',
-    },
-];
-
 const loadStatsSection: SectionLoader = async () => {
     const { default: StatsSection } = await import('./StatsSection');
 
@@ -72,27 +44,6 @@ const loadServicesOverviewSection: SectionLoader = async () => {
 
     return function LoadedServicesOverviewSection() {
         return <ServicesOverviewSection />;
-    };
-};
-
-const loadCurvedProjectsSection: SectionLoader = async () => {
-    const { default: CurvedProjectsContinuous } = await import(
-        '@/components/curved-projects-continuous/CurvedProjectsContinuous'
-    );
-
-    return function LoadedCurvedProjectsSection() {
-        return <CurvedProjectsContinuous projects={PROJECTS} />;
-    };
-};
-
-const loadTestimonialsSection: SectionLoader = async () => {
-    const [{ default: TestimonialsSection }, { homeTestimonials }] = await Promise.all([
-        import('./TestimonialsSection'),
-        import('@/data/testimonials/home'),
-    ]);
-
-    return function LoadedTestimonialsSection() {
-        return <TestimonialsSection testimonials={homeTestimonials} />;
     };
 };
 
@@ -282,18 +233,6 @@ export default function DeferredHomeSections() {
                 reserveClassName={styles.servicesOverviewReserve}
                 anchorId="services-v2"
             />
-
-            <DeferredSection
-                loader={loadCurvedProjectsSection}
-                reserveClassName={styles.portfolioReserve}
-            />
-
-            <DeferredSection
-                loader={loadTestimonialsSection}
-                reserveClassName={styles.testimonialsReserve}
-                anchorId="testimonials"
-            />
-
 
             <DeferredSection
                 loader={loadDotGlobeSection}

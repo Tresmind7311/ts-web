@@ -4,30 +4,30 @@ export const mobileAppDevelopmentService: ServiceData = {
     slug: 'mobile-app-development',
     name: 'Mobile App Development',
     seo: {
-        title: 'Mobile App Development Services | Tresmind',
+        title: 'Mobile App Development Services | Tresmind Solutions',
         description:
-            'Build fast, intuitive and scalable mobile applications with Tresmind. We create user-focused mobile experiences backed by thoughtful design and reliable engineering.',
+            'Android and cross-platform mobile app development, from UX design and API integration to launch and support, for startups and businesses worldwide.',
     },
     hero: {
-        title: 'Mobile App Development',
+        title: 'Mobile app development services',
         description:
-            'Tresmind Solutions creates powerful mobile experiences through strategy, product design and dependable engineering. We build intuitive applications designed around real users, business goals and long-term scalability.',
+            'We design and build Android and cross-platform apps that people enjoy using, with the APIs, backend and analytics to support your business as it grows.',
         primaryCta: {
-            label: 'Start Your Project',
+            label: 'Start your project',
             href: '#contact',
         },
         secondaryCta: {
-            label: 'Schedule a Consultation',
+            label: 'Book a consultation',
             href: '#contact',
         },
         image: {
             src: '/images/services/mobile-app-development/hero-img.png',
-            alt: 'Mobile application development interface displayed across connected devices',
+            alt: 'Mobile app screens designed by Tresmind',
         },
     },
     listing: {
         shortDescription:
-            'We design and develop intuitive mobile products that combine thoughtful user experience with reliable, scalable engineering.',
+            'Android and cross-platform apps with clean UX and reliable backends.',
         showcaseImage: {
             src: '/images/services/mobile-app-development/showcase-card.png',
             alt: 'Mobile app development service illustration',
@@ -49,40 +49,40 @@ export const mobileAppDevelopmentService: ServiceData = {
                 id: 'native-android-development',
                 title: 'Native Android Development',
                 description:
-                    'High-performance Android applications built around intuitive experiences, maintainable architecture and long-term scalability.',
+                    'Android apps built with modern tooling, clean architecture and attention to performance on a wide range of devices.',
                 image: {
                     src: '/images/services/mobile-app-development/Native-Android-Development.jpg',
-                    alt: 'Native Android development',
+                    alt: 'Android app development',
                 },
             },
             {
                 id: 'cross-platform-applications',
                 title: 'Cross-Platform Applications',
                 description:
-                    'Consistent mobile experiences designed to work efficiently across multiple platforms while maintaining strong performance and usability.',
+                    'One codebase for iOS and Android when speed to market matters, without compromising usability.',
                 image: {
                     src: '/images/services/mobile-app-development/Cross-Platform-Applications.jpg',
-                    alt: 'Cross-platform mobile application development',
+                    alt: 'Cross-platform app on iPhone and Android',
                 },
             },
             {
                 id: 'api-backend-integration',
                 title: 'API & Backend Integration',
                 description:
-                    'Reliable mobile applications connected with APIs, backend systems, databases and third-party services.',
+                    'Apps connected securely to your APIs, databases, payment providers and third-party services.',
                 image: {
                     src: '/images/services/mobile-app-development/API-Backend.jpg',
-                    alt: 'API and backend integration',
+                    alt: 'Mobile app connected to backend APIs',
                 },
             },
             {
                 id: 'ui-ux-driven-development',
-                title: 'UI/UX-Driven Development',
+                title: 'UX/UI-Led Development',
                 description:
-                    'User-focused mobile experiences where interface design, usability and engineering work together from the beginning.',
+                    'Design and engineering working together from the first wireframe, so what ships matches what was designed.',
                 image: {
                     src: '/images/services/mobile-app-development/UI-UX-Driven.jpg',
-                    alt: 'Mobile application UI and UX development',
+                    alt: 'Mobile UI design wireframes',
                 },
             },
         ],
@@ -91,7 +91,7 @@ export const mobileAppDevelopmentService: ServiceData = {
     showcase: {
         title: 'Mobile Experiences Built Around People',
         description:
-            'We build fast, intuitive mobile apps for consumers and enterprises, combining thoughtful design with solid engineering.',
+            'Good apps start with the people who use them. We combine user research, interface design and solid engineering so your app is fast, easy to use and ready to scale.',
         columns: [
             {
                 images: [
@@ -193,17 +193,17 @@ export const mobileAppDevelopmentService: ServiceData = {
     },
 
     process: {
-        title: 'Our Development Process',
+        title: 'Our app development process',
         description:
-            'Excellence Redefined: Unleashing Tailored Solutions for Your Success Journey.',
+            'A clear path from idea to app store, with reviews at every stage.',
         autoplayMs: 3500,
         steps: [
             {
                 id: 'discovery-planning',
                 number: '01',
-                title: 'Discovery & Planning',
+                title: 'Discovery & planning',
                 description:
-                    'Understanding your business goals, users, requirements and technical direction before development begins.',
+                    'goals, users, features and technical approach.',
                 backgroundImage: {
                     src: '/images/services/mobile-app-development/process-bg.jpg',
                     alt: '',
@@ -214,11 +214,11 @@ export const mobileAppDevelopmentService: ServiceData = {
                 },
             },
             {
-                id: 'architecture-design',
+                id: 'ux-ui-design',
                 number: '02',
-                title: 'Architecture & Design',
+                title: 'UX & UI design',
                 description:
-                    'Creating product architecture, user flows and interface systems designed around usability and scalability.',
+                    'wireframes, prototypes and visual design you can test.',
                 backgroundImage: {
                     src: '/images/services/mobile-app-development/process-bg.jpg',
                     alt: '',
@@ -231,9 +231,9 @@ export const mobileAppDevelopmentService: ServiceData = {
             {
                 id: 'development',
                 number: '03',
-                title: 'Development & Integration',
+                title: 'Development',
                 description:
-                    'Building reliable application features and connecting APIs, services and backend systems.',
+                    'app, backend and integrations built in short sprints.',
                 backgroundImage: {
                     src: '/images/services/mobile-app-development/process-bg.jpg',
                     alt: '',
@@ -246,9 +246,9 @@ export const mobileAppDevelopmentService: ServiceData = {
             {
                 id: 'testing',
                 number: '04',
-                title: 'Testing & Optimization',
+                title: 'Testing',
                 description:
-                    'Validating functionality, usability, compatibility and performance before release.',
+                    'functional, device and performance testing before release.',
                 backgroundImage: {
                     src: '/images/services/mobile-app-development/process-bg.jpg',
                     alt: '',
@@ -259,11 +259,11 @@ export const mobileAppDevelopmentService: ServiceData = {
                 },
             },
             {
-                id: 'deployment-support',
+                id: 'launch-support',
                 number: '05',
-                title: 'Deployment & Support',
+                title: 'Launch & support',
                 description:
-                    'Ensuring reliability, performance and continued product support after launch.',
+                    'store submission, monitoring and updates.',
                 backgroundImage: {
                     src: '/images/services/mobile-app-development/process-bg.jpg',
                     alt: '',
@@ -279,7 +279,7 @@ export const mobileAppDevelopmentService: ServiceData = {
         title: 'More Than Just a Mobile Interface',
 
         description:
-            'A successful mobile application is more than what users see on their screens. We connect the complete product ecosystem — from the mobile interface and APIs to backend infrastructure, databases, and third-party services.',
+            'The screen is only part of the product. We connect the app to the APIs, backend services, databases and integrations behind it, so every layer works together.',
 
         flow:
             'Mobile App → APIs → Backend → Database → Integrations',
@@ -291,5 +291,26 @@ export const mobileAppDevelopmentService: ServiceData = {
             src: '/images/services/mobile-app-development/mobile-ecosystem.png',
             alt: 'Connected mobile application ecosystem',
         },
+    },
+    faq: {
+        title: 'Mobile app development FAQs',
+        items: [
+            {
+                question: 'Do you build for iOS as well as Android?',
+                answer: 'Yes. We build native Android apps and cross-platform apps that run on both iOS and Android.',
+            },
+            {
+                question: 'How long does it take to build an app?',
+                answer: 'It depends on features and integrations. After discovery we share a timeline with milestones before work begins.',
+            },
+            {
+                question: 'Can you take over an existing app?',
+                answer: 'Yes. We start with a code and architecture review, then agree on a plan for fixes and new features.',
+            },
+            {
+                question: 'Do you help publish to the app stores?',
+                answer: 'Yes. We prepare store listings and handle submission and review.',
+            },
+        ],
     },
 };

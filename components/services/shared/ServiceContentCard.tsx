@@ -22,6 +22,7 @@ export interface ServiceContentCardItem {
 interface ServiceContentCardProps {
     item: ServiceContentCardItem;
     showTextLink?: boolean;
+    textLinkLabel?: string;
 }
 
 const ImageWrap = styled(Box)({
@@ -153,6 +154,7 @@ const CardArticle = styled(Box)(({ theme }) => ({
 function CardContents({
     item,
     showTextLink = false,
+    textLinkLabel = 'See more',
 }: ServiceContentCardProps) {
     return (
         <>
@@ -163,7 +165,7 @@ function CardContents({
             </Description>
 
             {showTextLink && item.href ? (
-                <SeeMore component="span">See more</SeeMore>
+                <SeeMore component="span">{textLinkLabel}</SeeMore>
             ) : null}
 
             <ImageWrap>
@@ -185,6 +187,7 @@ function CardContents({
 export default function ServiceContentCard({
     item,
     showTextLink = false,
+    textLinkLabel,
 }: ServiceContentCardProps) {
     if (item.href) {
         return (
@@ -192,6 +195,7 @@ export default function ServiceContentCard({
                 <CardContents
                     item={item}
                     showTextLink={showTextLink}
+                    textLinkLabel={textLinkLabel}
                 />
             </CardLink>
         );
@@ -202,6 +206,7 @@ export default function ServiceContentCard({
             <CardContents
                 item={item}
                 showTextLink={showTextLink}
+                textLinkLabel={textLinkLabel}
             />
         </CardArticle>
     );

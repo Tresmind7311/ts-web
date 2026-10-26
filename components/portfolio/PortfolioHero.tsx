@@ -7,6 +7,9 @@ import Heading from '@/components/common/Heading';
 import { PrimaryButton, SecondaryButton } from '@/components/common/Button';
 import { tokens } from '@/theme/theme';
 
+// Re-enable only after the client counts and countries are verified.
+const showVerifiedPortfolioStats = false;
+
 const Section = styled('section')({
     backgroundColor: '#eef8fc',
     backgroundImage: 'url("/images/services/Main/hero-background.jpg")',
@@ -64,7 +67,9 @@ const Actions = styled('div')(({ theme }) => ({
 
 const Cards = styled('div')(({ theme }) => ({
     display: 'grid',
-    gridTemplateColumns: '325fr 210fr 210fr 210fr 325fr',
+    gridTemplateColumns: showVerifiedPortfolioStats
+        ? '325fr 210fr 210fr 210fr 325fr'
+        : '325fr 210fr 210fr',
     alignItems: 'end',
     gap: 20,
     width: '100%',
@@ -184,20 +189,20 @@ export default function PortfolioHero() {
         <Section aria-labelledby="portfolio-hero-heading">
             <Content>
                 <HeroHeading id="portfolio-hero-heading" variant="h1" gradient={false}>
-                    Fueling the Next<br />Generation of Brands
+                    Work that ships, and works
                 </HeroHeading>
                 <Description>Powering bold ideas with strategy, creativity, and growth.</Description>
                 <Actions>
-                    <PrimaryButton component="a" href="/contact">Start Your Project</PrimaryButton>
-                    <SecondaryButton component="a" href="/contact">Schedule a Consultation</SecondaryButton>
+                    <PrimaryButton component="a" href="/contact">Start your project</PrimaryButton>
+                    <SecondaryButton component="a" href="/contact">Book a consultation</SecondaryButton>
                 </Actions>
             </Content>
             <Cards>
                 <ImageCard src="/images/Portfolio/Next-Generation.png" alt="Two colleagues reviewing ideas on a tablet" width={325} height={338} />
-                <ClientsCard />
-                <ImageCard src="/images/Portfolio/Transparent-Growth.png" alt="Trusted & Transparent Growth — shield and lock" width={210} height={211} />
-                <ImageCard src="/images/Portfolio/Trusted-Growth.png" alt="Trusted & Transparent Growth — rising growth chart" width={210} height={258} />
-                <GlobalCard />
+                {showVerifiedPortfolioStats ? <ClientsCard /> : null}
+                <ImageCard src="/images/Portfolio/Transparent-Growth.png" alt="" width={210} height={211} />
+                <ImageCard src="/images/Portfolio/Trusted-Growth.png" alt="" width={210} height={258} />
+                {showVerifiedPortfolioStats ? <GlobalCard /> : null}
             </Cards>
         </Section>
     );

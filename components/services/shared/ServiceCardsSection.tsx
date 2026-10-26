@@ -23,6 +23,7 @@ interface ServiceCardsSectionProps {
     expandable?: boolean;
     columns?: 3 | 4;
     showTextLink?: boolean;
+    textLinkLabel?: string;
     backgroundImage?: string;
     marginTop?: string;
 }
@@ -169,6 +170,7 @@ export default function ServiceCardsSection({
     expandable = false,
     columns = 3,
     showTextLink = false,
+    textLinkLabel,
     backgroundImage = '/footer-bg.jpg',
     marginTop = '4px',
 }: ServiceCardsSectionProps) {
@@ -278,6 +280,7 @@ export default function ServiceCardsSection({
                             <ServiceContentCard
                                 item={item}
                                 showTextLink={showTextLink}
+                                textLinkLabel={textLinkLabel}
                             />
                         </AnimatedCard>
                     ))}

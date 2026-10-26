@@ -150,10 +150,14 @@ export default function ServiceShowcaseCard({
     service,
     tilt,
 }: ServiceShowcaseCardProps) {
+    const displayName = service.slug === 'graphic-designing'
+        ? 'Graphic Design'
+        : service.name;
+
     return (
         <CardLink
             href={`/services/${service.slug}`}
-            aria-label={`View ${service.name}`}
+            aria-label={`View ${displayName}`}
             style={
                 {
                     '--card-tilt': `${tilt}deg`,
@@ -161,7 +165,7 @@ export default function ServiceShowcaseCard({
             }
         >
             <Header>
-                <Title component="h2">{service.name}</Title>
+                <Title component="h2">{displayName}</Title>
                 <Arrow aria-hidden="true">→</Arrow>
             </Header>
 

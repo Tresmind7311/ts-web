@@ -62,6 +62,29 @@ export interface ServiceData {
     ecosystem?: ServiceEcosystemData;
     showcase?: ServiceShowcaseData;
     capabilities?: ServiceCapabilitiesData;
+    process?: ServiceProcessData;
+    faq?: ServiceFaqData;
+}
+
+export interface ServiceProcessStep {
+    id: string;
+    number: string;
+    title: string;
+    description: string;
+    backgroundImage: { src: string; alt: string };
+    foregroundImage: { src: string; alt: string };
+}
+
+export interface ServiceProcessData {
+    title: string;
+    description: string;
+    autoplayMs?: number;
+    steps: ServiceProcessStep[];
+}
+
+export interface ServiceFaqData {
+    title: string;
+    items: Array<{ question: string; answer: string }>;
 }
 
 export interface ServiceShowcaseImage {

@@ -44,7 +44,9 @@ export default function WhatWeOffer({
         return [...featured, ...remaining].map(
             service => ({
                 id: service.slug,
-                title: service.name,
+                title: service.slug === 'graphic-designing'
+                    ? 'Graphic Design'
+                    : service.name,
                 description:
                     service.listing.shortDescription,
                 image: service.listing.offerImage,
@@ -58,12 +60,11 @@ export default function WhatWeOffer({
             id="what-we-offer-heading"
             eyebrow="Our Services"
             title="What We Offer"
-            description="Our services are designed to unlock your digital potential, enhance efficiency, and create lasting impact."
+            description="Six services that work on their own or together, so your app, website and infrastructure stay consistent."
             items={items}
-            initialVisibleCount={3}
-            expandable
             columns={3}
             showTextLink
+            textLinkLabel="Explore service"
         />
     );
 }

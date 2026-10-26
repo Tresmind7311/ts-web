@@ -5,7 +5,7 @@ import {
     useRef,
 } from 'react';
 
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
@@ -38,12 +38,6 @@ const MOBILE_FRAMES = generateFrameUrls(
 );
 
 const SCROLL_HEIGHT = '600vh';
-
-const STATS = {
-    satisfaction: 98,
-    projects: 150,
-    countries: 12,
-};
 
 /* ============================================
    HELPERS
@@ -262,47 +256,6 @@ const KeyFactsBody = styled(Body)({
     maxWidth: '600px',
 });
 
-const StatWrap = styled(Box)({
-    display: 'inline-flex',
-    flexDirection: 'column',
-});
-
-const StatNumber = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'flex-start',
-    fontFamily: 'var(--font-display)',
-    fontWeight: 700,
-    fontVariantNumeric: 'tabular-nums',
-    fontSize: 'clamp(118px, 15vw, 238px)',
-    lineHeight: 0.78,
-    letterSpacing: '-0.065em',
-    color: tokens.color.neutral0,
-    [theme.breakpoints.down('md')]: {
-        fontSize: 'clamp(88px, 27vw, 150px)',
-    },
-}));
-
-const Accent = styled('span')(({ theme }) => ({
-    marginLeft: '7px',
-    fontSize: '0.42em',
-    lineHeight: 1.1,
-    color: tokens.color.uv300,
-    [theme.breakpoints.down('md')]: {
-        marginLeft: '4px',
-    },
-}));
-
-const StatLabel = styled(Typography)({
-    marginTop: '34px',
-    fontFamily: 'var(--font-body)',
-    fontWeight: 700,
-    fontSize: '12px',
-    lineHeight: 1.2,
-    letterSpacing: '0.14em',
-    textTransform: 'uppercase',
-    color: alpha(tokens.color.neutral0, 0.48),
-});
-
 /* ============================================
    COMPONENT
 ============================================ */
@@ -315,10 +268,6 @@ export default function StatsSection() {
     const counter1Ref = useRef<HTMLDivElement>(null);
     const counter2Ref = useRef<HTMLDivElement>(null);
     const counter3Ref = useRef<HTMLDivElement>(null);
-
-    const satisfactionNumberRef = useRef<HTMLSpanElement>(null);
-    const projectsNumberRef = useRef<HTMLSpanElement>(null);
-    const countriesNumberRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
         const container = scrollRef.current;
@@ -375,9 +324,7 @@ export default function StatsSection() {
             setStage(keyFacts, keyFactsOpacity, (1 - keyFactsOpacity) * 30);
 
             /* ----------------------------
-               03 COUNTER 1 — LEFT
-               Satisfaction (98%)
-               Sequential: first on screen.
+               03 FORMER COUNTER STAGE — LEFT
                C2 starts as this nears exit.
             ---------------------------- */
             const SAT_ENTRY = 0.355;
@@ -394,17 +341,8 @@ export default function StatsSection() {
 
             setCounterStage(counter1, satOpacity, satY);
 
-            // Reference video shows final value as soon as stat becomes visible.
-            // Complete count-up while stage is still off-screen.
-            const satCounter = rangeProgress(p, SAT_ENTRY - 0.05, SAT_ENTRY);
-            if (satisfactionNumberRef.current) {
-                satisfactionNumberRef.current.textContent =
-                    String(Math.round(STATS.satisfaction * satCounter));
-            }
-
             /* ----------------------------
-               04 COUNTER 2 — RIGHT
-               Projects (150+)
+               04 FORMER COUNTER STAGE — RIGHT
                Starts entering while C1 is moving out.
             ---------------------------- */
             const PROJ_ENTRY = 0.545;
@@ -421,15 +359,8 @@ export default function StatsSection() {
 
             setCounterStage(counter2, projOpacity, projY);
 
-            const projCounter = rangeProgress(p, PROJ_ENTRY - 0.05, PROJ_ENTRY);
-            if (projectsNumberRef.current) {
-                projectsNumberRef.current.textContent =
-                    String(Math.round(STATS.projects * projCounter));
-            }
-
             /* ----------------------------
-               05 COUNTER 3 — LEFT
-               Countries (12+)
+               05 FORMER COUNTER STAGE — LEFT
                Starts entering while C2 is moving out.
             ---------------------------- */
             const CTRY_ENTRY = 0.67;
@@ -446,11 +377,6 @@ export default function StatsSection() {
 
             setCounterStage(counter3, ctryOpacity, ctryY);
 
-            const ctryCounter = rangeProgress(p, CTRY_ENTRY - 0.05, CTRY_ENTRY);
-            if (countriesNumberRef.current) {
-                countriesNumberRef.current.textContent =
-                    String(Math.round(STATS.countries * ctryCounter));
-            }
         };
 
         const onScroll = () => {
@@ -518,46 +444,17 @@ export default function StatsSection() {
 
                 <KeyFactsStage ref={keyFactsRef}>
                     <KeyFactsInner>
-                        <Eyebrow>Chapter 02 — In Numbers</Eyebrow>
-                        <KeyFactsHeadline>Key Facts</KeyFactsHeadline>
+                        <Eyebrow>Chapter 02 — What We Build</Eyebrow>
+                        <KeyFactsHeadline>Our Work</KeyFactsHeadline>
                         <KeyFactsBody>
-                            A decade of light, measured.
-                            What remains when the noise burns away.
+                            Mobile apps, AI tools, custom software and websites.
                         </KeyFactsBody>
                     </KeyFactsInner>
                 </KeyFactsStage>
 
-                <Counter1Stage ref={counter1Ref}>
-                    <StatWrap>
-                        <StatNumber>
-                            <span ref={satisfactionNumberRef}>0</span>
-                            <Accent>%</Accent>
-                        </StatNumber>
-                        <StatLabel>Client Satisfaction</StatLabel>
-                    </StatWrap>
-                </Counter1Stage>
-
-                <Counter2Stage ref={counter2Ref}>
-                    <StatWrap>
-                        <StatNumber>
-                            <span ref={projectsNumberRef}>0</span>
-                            <Accent>+</Accent>
-                        </StatNumber>
-                        <StatLabel sx={{ textAlign: 'right' }}>
-                            Projects Delivered
-                        </StatLabel>
-                    </StatWrap>
-                </Counter2Stage>
-
-                <Counter3Stage ref={counter3Ref}>
-                    <StatWrap>
-                        <StatNumber>
-                            <span ref={countriesNumberRef}>0</span>
-                            <Accent>+</Accent>
-                        </StatNumber>
-                        <StatLabel>Countries Served</StatLabel>
-                    </StatWrap>
-                </Counter3Stage>
+                <Counter1Stage ref={counter1Ref} />
+                <Counter2Stage ref={counter2Ref} />
+                <Counter3Stage ref={counter3Ref} />
 
             </FixedFrame>
         </ScrollContainer>

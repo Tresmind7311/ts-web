@@ -112,7 +112,7 @@ const ArrowCircle = styled(Box)(({ theme }) => ({
 
 /* ─── component ────────────────────────────────────────────── */
 
-export default function FeaturedProjects() {
+export default function FeaturedProjects({ servicesHubCopy = false }: { servicesHubCopy?: boolean }) {
   const [activeFilters, setActiveFilters] = useState<ProjectCategory[]>([]);
 
   const filtered = useMemo(() => {
@@ -139,8 +139,9 @@ export default function FeaturedProjects() {
             variant="body1"
             sx={{ color: 'text.secondary', lineHeight: 1.7, pt: { md: 0.5 } }}
           >
-            We design, build and support websites and apps for clients worldwide. We make
-            your business stand out.
+            {servicesHubCopy
+              ? 'A selection of work across apps, platforms and brands.'
+              : 'We design, build and support websites and apps for clients worldwide. We make your business stand out.'}
           </Typography>
         </Header>
 
@@ -159,15 +160,21 @@ export default function FeaturedProjects() {
                 fontSize: '55px'
               }}
             >
-              See Our <br></br>More Projects
+              {servicesHubCopy ? 'See more projects' : <>See Our <br></br>More Projects</>}
             </Typography>
             <Typography
               variant="body2"
               sx={{ color: 'rgba(255,255,255,0.7)', mt: 1.5, maxWidth: '240px' }}
             >
-              Lorem ipsum dolor sit amet consectetur. Mol estie duis enim id nunc tempor
-              feu a.
+              {servicesHubCopy
+                ? 'Browse the full portfolio of apps, platforms and design work.'
+                : 'Lorem ipsum dolor sit amet consectetur. Mol estie duis enim id nunc tempor feu a.'}
             </Typography>
+            {servicesHubCopy ? (
+              <Typography variant="body2" sx={{ color: '#fff', fontWeight: 600, mt: 2 }}>
+                View portfolio
+              </Typography>
+            ) : null}
             <ArrowCircle className="cta-arrow">
               <ArrowForwardIcon fontSize="small" />
             </ArrowCircle>

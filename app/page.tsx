@@ -7,6 +7,17 @@ export const metadata: Metadata = {
     title: 'Software & App Development Company | Tresmind Solutions',
     description:
         'Tresmind Solutions designs and builds mobile apps, AI tools, custom software and websites for businesses in the US, UK, Europe, Australia and the Gulf.',
+    alternates: {
+        canonical: 'https://tresmind.com/',
+    },
+    openGraph: {
+        type: 'website',
+        url: 'https://tresmind.com/',
+        title: 'Software & App Development Company | Tresmind Solutions',
+        description:
+            'Tresmind Solutions designs and builds mobile apps, AI tools, custom software and websites for businesses in the US, UK, Europe, Australia and the Gulf.',
+        siteName: 'Tresmind Solutions',
+    },
 };
 
 export default function HomePage() {

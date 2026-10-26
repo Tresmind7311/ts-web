@@ -2,9 +2,10 @@ import { Metadata } from 'next';
 import ProjectsPage from '@/components/projects/ProjectsPage';
 
 export const metadata: Metadata = {
-  title: 'Featured Projects — Tresmind',
+  title: 'Projects | Tresmind',
   description:
-    'We design, build and support websites and apps for clients worldwide. Explore our featured work.',
+    'Project case studies are currently unavailable.',
+  robots: { index: false },
 };
 
 export default function Page() {

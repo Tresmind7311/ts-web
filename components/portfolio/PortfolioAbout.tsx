@@ -132,7 +132,7 @@ export default function PortfolioAbout() {
                 <Intro>
                     <Title id="portfolio-about-heading" variant="h2" data-about-text>About Tresmind</Title>
                     <Description data-about-text>
-                        At Tresmind Solution, we believe marketing isn&apos;t about selling it&apos;s about connecting. We&apos;re a full-service marketing agency built to help brands grow with purpose and data-driven precision. From crafting compelling stories to executing campaigns that convert, we blend strategy to turn attention into action.
+                        Tresmind Solutions is a software and design studio. We help businesses plan, design and build digital products: mobile apps, web platforms, AI tools and custom software, supported by brand design and cloud expertise. We keep teams small, communication direct and progress visible at every stage.
                     </Description>
                 </Intro>
                 <Gallery>
@@ -143,10 +143,10 @@ export default function PortfolioAbout() {
                         <Photo data-about-image src="/images/Portfolio/portfolio-about-2.png" alt="Team members discussing ideas around a meeting table" width={442} height={358} sizes="(max-width: 639px) 100vw, (max-width: 959px) 50vw, 33vw" />
                     </ImageFrame>
                     <Callout>
-                        <CalloutTitle data-about-text>Our Bold and<br />Brilliant Thinkers</CalloutTitle>
+                        <CalloutTitle data-about-text>The people behind the work</CalloutTitle>
                         <div data-about-text>
                             <PrimaryButton component="a" href="/services" sx={{ minHeight: 52, borderRadius: '14px', fontSize: { xs: 20, md: 24 }, padding: '10px 30px' }}>
-                                Learn More&nbsp; <span aria-hidden="true">→</span>
+                                Our services&nbsp; <span aria-hidden="true">→</span>
                             </PrimaryButton>
                         </div>
                     </Callout>

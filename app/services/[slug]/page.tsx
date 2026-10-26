@@ -29,6 +29,16 @@ export async function generateMetadata({
     return {
         title: service.seo.title,
         description: service.seo.description,
+        alternates: {
+            canonical: `https://tresmind.com/services/${service.slug}`,
+        },
+        openGraph: {
+            type: 'website',
+            url: `https://tresmind.com/services/${service.slug}`,
+            title: service.seo.title,
+            description: service.seo.description,
+            siteName: 'Tresmind Solutions',
+        },
     };
 }
 

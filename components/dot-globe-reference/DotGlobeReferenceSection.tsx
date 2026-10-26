@@ -35,9 +35,7 @@ const LOCATIONS: EarthLocation[] = [
         id: "uk",
         title: "United Kingdom",
         lines: [
-            "London",
-            "Borton str. 88",
-            "+44 20 7946 0958",
+            "Market we serve",
         ],
         lat: 51.5074,
         lng: -0.1278,
@@ -45,11 +43,9 @@ const LOCATIONS: EarthLocation[] = [
     },
     {
         id: "usa",
-        title: "USA",
+        title: "United States",
         lines: [
-            "Los Angeles",
-            "Beverly Hills 05a",
-            "+1 213-555-0173",
+            "Market we serve",
         ],
         lat: 34.0522,
         lng: -118.2437,
@@ -69,9 +65,9 @@ export interface DotGlobeReferenceSectionProps {
 }
 
 export default function DotGlobeReferenceSection({
-    phoneNumber = "+44 20 7946 0958",
+    phoneNumber = "",
     emailAddress = "info@tresmind.com",
-    locationText = "London, United Kingdom",
+    locationText = "US · UK · Europe · Australia · UAE · Saudi Arabia",
     contactCta,
     textColor,
     mutedTextColor,
@@ -446,7 +442,7 @@ export default function DotGlobeReferenceSection({
             />
 
             <div className={styles.srOnly}>
-                <p>Phone: {phoneNumber}</p>
+                {phoneNumber ? <p>Phone: {phoneNumber}</p> : null}
                 <p>Email: {emailAddress}</p>
             </div>
 
@@ -507,9 +503,11 @@ export default function DotGlobeReferenceSection({
                 </div>
                 <div ref={stripRef} className={`${styles.finalReveal} ${styles.finalRight}`}>
                     {[
-                        { label: "Our Location", value: locationText, href: undefined, icon: "location" },
-                        { label: "Call Us", value: phoneNumber, href: `tel:${phoneNumber.replace(/[^+\d]/g, "")}`, icon: "phone" },
-                        { label: "Email Us", value: emailAddress, href: `mailto:${emailAddress}`, icon: "email" },
+                        { label: "Markets we serve", value: locationText, href: undefined, icon: "location" },
+                        phoneNumber
+                            ? { label: "Call us", value: phoneNumber, href: `tel:${phoneNumber.replace(/[^+\d]/g, "")}`, icon: "phone" }
+                            : { label: "Book a call", value: "Use the contact form", href: "#contact", icon: "phone" },
+                        { label: "Email us", value: emailAddress, href: `mailto:${emailAddress}`, icon: "email" },
                     ].map((item, index) => (
                         <div
                             key={item.label}

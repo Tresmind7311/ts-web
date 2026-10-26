@@ -6,32 +6,32 @@ export const aiDevelopmentService: ServiceData = {
     name: 'AI Development',
 
     seo: {
-        title: 'AI Development Services | Tresmind',
+        title: 'AI Development Services for Business | Tresmind',
         description:
-            'We design and build AI-powered tools that help businesses simplify tasks, use information more effectively, and create better digital experiences.',
+            'AI assistants, workflow automation, machine learning and AI integration, designed around real use cases and built to fit the tools your business already uses.',
     },
 
     hero: {
-        title: 'AI Development',
+        title: 'AI development services',
         description:
-            'We design and build AI-powered tools that help businesses simplify tasks, use information more effectively, and create better digital experiences.',
+            'We design and build practical AI tools (assistants, automations and integrations) that help your team save time and make better use of the information it already has.',
         primaryCta: {
-            label: 'Start Your Project',
+            label: 'Start your project',
             href: '#contact',
         },
         secondaryCta: {
-            label: 'Schedule a Consultation',
+            label: 'Book a consultation',
             href: '#contact',
         },
         image: {
             src: '/images/services/ai-development/hero-img.png',
-            alt: 'Artificial intelligence development interface representing intelligent digital products and automation',
+            alt: 'AI assistant and automation workflow interface',
         },
     },
 
     listing: {
         shortDescription:
-            'We build practical AI products, intelligent workflows and automation systems designed to solve real operational and product challenges.',
+            'Practical AI assistants, automation and integrations that fit real workflows.',
         showcaseImage: {
             src: '/images/services/ai-development/showcase-card.png',
             alt: 'Artificial intelligence development service illustration',
@@ -47,7 +47,7 @@ export const aiDevelopmentService: ServiceData = {
     showcase: {
         title: 'AI Experiences Built Around Real Needs',
         description:
-            'From helpful assistants to connected business tools, we turn focused AI ideas into experiences people can use in their everyday work.',
+            'We start with a specific problem, not a technology. From customer-support assistants to internal automation, we build AI features people actually use in their daily work.',
         columns: [
             {
                 images: [
@@ -154,7 +154,7 @@ export const aiDevelopmentService: ServiceData = {
                 id: 'ai-assistants',
                 title: 'AI Assistants',
                 description:
-                    'Conversational tools that help users find information, get support, and complete common tasks.',
+                    'Chat and voice assistants that answer questions, guide users and complete routine tasks, using your own content and data.',
                 image: {
                     src: '/images/services/ai-development/what-we-build/AI-Assistants.png',
                     alt: 'AI Assistants',
@@ -164,7 +164,7 @@ export const aiDevelopmentService: ServiceData = {
                 id: 'ai-powered-automation',
                 title: 'AI-Powered Automation',
                 description:
-                    'Connected workflows that handle repetitive steps and help teams focus on work that needs their attention.',
+                    'Workflows that handle repetitive steps such as sorting, summarising and routing, so people focus on decisions.',
                 image: {
                     src: '/images/services/ai-development/what-we-build/AI-Powered-Automation.png',
                     alt: 'AI-Powered Automation',
@@ -174,7 +174,7 @@ export const aiDevelopmentService: ServiceData = {
                 id: 'machine-learning-solutions',
                 title: 'Machine Learning Solutions',
                 description:
-                    'Data-driven tools designed to identify patterns and support more informed decisions.',
+                    'Models that find patterns in your data to support forecasting, classification and recommendations.',
                 image: {
                     src: '/images/services/ai-development/what-we-build/Machine-Learning-Solutions.png',
                     alt: 'Machine Learning Solutions',
@@ -184,7 +184,7 @@ export const aiDevelopmentService: ServiceData = {
                 id: 'ai-integration',
                 title: 'AI Integration',
                 description:
-                    'AI capabilities connected to the websites, applications, and business systems you already use.',
+                    'AI capabilities added to the websites, apps and business systems you already run.',
                 image: {
                     src: '/images/services/ai-development/what-we-build/AI-Integration.png',
                     alt: 'AI Integration',
@@ -194,17 +194,17 @@ export const aiDevelopmentService: ServiceData = {
     },
 
     process: {
-        title: 'Our Development Process',
+        title: 'Our AI development process',
         description:
-            'We start with a clear use case, then design, build, and evaluate the solution around the people who will use it.',
+            'Start with a clear use case, prove it works, then scale it.',
         autoplayMs: 3500,
         steps: [
             {
                 id: 'use-case-discovery',
                 number: '01',
-                title: 'Use Case Discovery',
+                title: 'Use-case discovery',
                 description:
-                    'We identify the problem, available information, users, and outcome the tool should support.',
+                    'problem, users, data and success measures.',
                 backgroundImage: {
                     src: '/images/services/ai-development/process-bg.png',
                     alt: '',
@@ -215,11 +215,11 @@ export const aiDevelopmentService: ServiceData = {
                 },
             },
             {
-                id: 'use-case-discovery-02',
+                id: 'prototype',
                 number: '02',
-                title: 'Use Case Discovery',
+                title: 'Prototype',
                 description:
-                    'We identify the problem, available information, users, and outcome the tool should support.',
+                    'a working proof of concept on real examples.',
                 backgroundImage: {
                     src: '/images/services/ai-development/process-bg.png',
                     alt: '',
@@ -230,11 +230,11 @@ export const aiDevelopmentService: ServiceData = {
                 },
             },
             {
-                id: 'use-case-discovery-03',
+                id: 'build-integrate',
                 number: '03',
-                title: 'Use Case Discovery',
+                title: 'Build & integrate',
                 description:
-                    'We identify the problem, available information, users, and outcome the tool should support.',
+                    'production-ready solution connected to your systems.',
                 backgroundImage: {
                     src: '/images/services/ai-development/process-bg.png',
                     alt: '',
@@ -242,6 +242,34 @@ export const aiDevelopmentService: ServiceData = {
                 foregroundImage: {
                     src: '/images/services/ai-development/Requirements-Discovery.png',
                     alt: 'AI use case discovery',
+                },
+            },
+            {
+                id: 'evaluate',
+                number: '04',
+                title: 'Evaluate',
+                description: 'accuracy, safety and human-review checks.',
+                backgroundImage: {
+                    src: '/images/services/ai-development/process-bg.png',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/ai-development/Requirements-Discovery.png',
+                    alt: '',
+                },
+            },
+            {
+                id: 'launch-improve',
+                number: '05',
+                title: 'Launch & improve',
+                description: 'monitoring and ongoing refinement.',
+                backgroundImage: {
+                    src: '/images/services/ai-development/process-bg.png',
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: '/images/services/ai-development/Requirements-Discovery.png',
+                    alt: '',
                 },
             },
         ],
@@ -250,7 +278,7 @@ export const aiDevelopmentService: ServiceData = {
     ecosystem: {
         title: 'More Than Just an AI Feature',
         description:
-            'An AI tool needs a clear place in the workflow. We connect the user experience, relevant information, AI processing, and human review so its output can lead to a useful next step.',
+            'AI is only useful when it fits the workflow. We connect the user request, the right data, the AI step and human review, so each output leads to a sensible next action.',
         flow:
             'User Request → Relevant Data → AI Processing → Human Review → Action',
         closingText: '',
@@ -258,5 +286,22 @@ export const aiDevelopmentService: ServiceData = {
             src: '/images/services/ai-development/AI-Feature.PNG',
             alt: 'Connected AI feature ecosystem',
         },
+    },
+    faq: {
+        title: 'AI development FAQs',
+        items: [
+            {
+                question: 'Can you add AI to our existing product?',
+                answer: 'Yes. We review your product and workflows, identify where AI adds value, and integrate it with a clear plan.',
+            },
+            {
+                question: 'Which AI models do you use?',
+                answer: 'We choose based on the task, data sensitivity and cost, and we explain the trade-offs before building.',
+            },
+            {
+                question: 'Do we need a lot of data to start?',
+                answer: 'Not always. Many assistants and automations work with your existing documents and systems.',
+            },
+        ],
     },
 };

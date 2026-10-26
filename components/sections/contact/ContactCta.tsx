@@ -126,7 +126,7 @@ export default function ContactCta() {
                 sm: '18px',
             },
         }}>
-                                Start a Conversation&nbsp;&nbsp;→
+                                Start a conversation&nbsp;&nbsp;<span aria-hidden="true">→</span>
                             </PrimaryButton>
                         </ButtonWrap>
                     </Content>

@@ -117,27 +117,27 @@ export default function ServicesMainHero() {
             <HeroContainer maxWidth="xl">
                 <Content>
                     <Title component="h1">
-                        Our Services
+                        Technology services, one team
                     </Title>
 
                     <Description component="p">
-                        We bring innovation, strategy, and technology together to build
-                        solutions that accelerate your business growth. Our services are
-                        designed to unlock your digital potential, enhance efficiency, and
-                        create lasting impact.
+                        From a first mobile app to a cloud migration, Tresmind Solutions
+                        plans, designs and builds the technology your business runs on.
+                        Pick a service below or tell us about your project and we will
+                        recommend the right mix.
                     </Description>
 
                     <Actions>
                         <PrimaryButton
                             href="#contact"
                         >
-                            Start Your Project
+                            Start your project
                         </PrimaryButton>
 
                         <SecondaryButton
                             href="#contact"
                         >
-                            Schedule a Consultation
+                            Book a consultation
                         </SecondaryButton>
                     </Actions>
                 </Content>

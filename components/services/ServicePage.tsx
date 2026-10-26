@@ -4,9 +4,8 @@ import ServiceCapabilities from './sections/ServiceCapabilities';
 import type { ServiceData } from '@/data/services/types';
 import ServiceShowcase from './sections/ServiceShowcase';
 import ServiceProcess from './sections/ServiceProcess';
-import TestimonialsSection from '../sections/home/TestimonialsSection';
-import { serviceTestimonials } from '@/data/testimonials/serviceTestimonials';
 import ServiceEcosystemSection from './sections/ServiceEcosystemSection';
+import ServiceFaq from './sections/ServiceFaq';
 
 interface ServicePageProps {
     service: ServiceData;
@@ -32,7 +31,7 @@ export default function ServicePage({
             {service.ecosystem && (
                 <ServiceEcosystemSection data={service.ecosystem} />
             )}
-            <TestimonialsSection testimonials={serviceTestimonials} />
+            {service.faq && <ServiceFaq data={service.faq} />}
         </main>
     );
 }

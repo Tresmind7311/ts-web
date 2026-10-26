@@ -1,9 +1,9 @@
 'use client';
 
 import {
+    useActionState,
     useEffect,
     useRef,
-    type FormEvent,
 } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import { gsap } from '@/lib/gsap';
@@ -11,6 +11,9 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 
 import { tokens } from '@/theme/theme';
 import { PrimaryButton } from '../common/Button';
+import { submitFooterForm, type ContactFormState } from '@/app/contact/actions';
+
+const initialContactFormState: ContactFormState = { status: 'idle', message: '' };
 
 // ─── Asset config ─────────────────────────────────────────────────────────────
 const GIF_SRC = '/rotating_crystal.gif';
@@ -27,6 +30,8 @@ const NAV_LINKS = [
     { label: 'Services', href: '/services' },
     { label: 'Portfolio', href: '/portfolio' },
     { label: 'Contact', href: '/contact' },
+    { label: 'Privacy Policy', href: '/privacy-policy' },
+    { label: 'Terms & Conditions', href: '/terms-and-conditions' },
 ];
 const SOCIAL_LINKS: { label: string; href?: string }[] = [
     { label: 'Twitter' },
@@ -380,6 +385,7 @@ const Copyright = styled('span')({
 export default function FooterVideoSection() {
     const sectionRef = useRef<HTMLElement>(null);
     const slotRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const [formState, formAction, pending] = useActionState(submitFooterForm, initialContactFormState);
 
     useEffect(() => {
         const section = sectionRef.current;
@@ -409,30 +415,6 @@ export default function FooterVideoSection() {
             entranceTimeline.kill();
         };
     }, []);
-
-    const handleQuerySubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        const formData = new FormData(event.currentTarget);
-        const name = String(formData.get('name') ?? '').trim();
-        const email = String(formData.get('email') ?? '').trim();
-        const message = String(formData.get('message') ?? '').trim();
-
-        const subject = encodeURIComponent(
-            `Project enquiry from ${name || 'website visitor'}`
-        );
-        const body = encodeURIComponent(
-            [
-                `Name: ${name}`,
-                `Email: ${email}`,
-                '',
-                'Project enquiry:',
-                message,
-            ].join('\n')
-        );
-
-        window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
-    };
 
     const slot = (i: number) => (el: HTMLDivElement | null) => {
         slotRefs.current[i] = el;
@@ -490,7 +472,10 @@ export default function FooterVideoSection() {
                             </ContactCopy>
                         </ContactIntro>
 
-                        <QueryForm onSubmit={handleQuerySubmit}>
+                        <QueryForm action={formAction}>
+                            <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clipPath: 'inset(50%)' }}>
+                                <label>Website<input name="website" type="text" tabIndex={-1} autoComplete="off" /></label>
+                            </div>
                             <Field>
                                 <FieldLabel>Name</FieldLabel>
                                 <TextInput
@@ -499,6 +484,7 @@ export default function FooterVideoSection() {
                                     placeholder="Your name"
                                     autoComplete="name"
                                     required
+                                    maxLength={120}
                                 />
                             </Field>
 
@@ -510,6 +496,7 @@ export default function FooterVideoSection() {
                                     placeholder="you@company.com"
                                     autoComplete="email"
                                     required
+                                    maxLength={254}
                                 />
                             </Field>
 
@@ -520,14 +507,20 @@ export default function FooterVideoSection() {
                                     placeholder="What are you building, and by when?"
                                     rows={3}
                                     required
+                                    maxLength={5000}
                                 />
                             </FieldFull>
 
                             <FormActions>
-                                <PrimaryButton type="submit">
-                                    Send enquiry
+                                <PrimaryButton type="submit" disabled={pending}>
+                                    {pending ? 'Sending…' : 'Send enquiry'}
                                 </PrimaryButton>
                             </FormActions>
+                            {formState.message && (
+                                <p role={formState.status === 'error' ? 'alert' : 'status'} aria-live="polite" style={{ gridColumn: '1 / -1' }}>
+                                    {formState.message}
+                                </p>
+                            )}
                         </QueryForm>
                     </ContactPanel>
                 </AnimSlot>

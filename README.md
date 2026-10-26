@@ -1,5 +1,21 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Contact form SMTP configuration
+
+Set these server-side environment variables for the `/contact` form. Do not prefix them with `NEXT_PUBLIC_`.
+
+| Variable | Format |
+| --- | --- |
+| `SMTP_HOST` | SMTP server hostname, for example `mail.example.com` |
+| `SMTP_PORT` | Integer port from 1 to 65535, for example `587` |
+| `SMTP_SECURE` | `true` for implicit TLS or `false` for required STARTTLS |
+| `SMTP_USER` | SMTP authentication username |
+| `SMTP_PASSWORD` | SMTP authentication password |
+| `CONTACT_EMAIL_FROM` | Verified sender email address |
+| `CONTACT_EMAIL_TO` | `info@tresmind.com` |
+
+The form reports a generic error and sends nothing if this configuration is missing or invalid. SMTP acceptance must be verified with the approved provider before claiming delivery.
+
 ## Getting Started
 
 First, run the development server:

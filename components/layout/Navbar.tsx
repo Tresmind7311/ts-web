@@ -272,24 +272,6 @@ const DrawerLink = styled('a')(() => ({
     '&:last-child': { borderBottom: 'none' },
 }));
 
-const DrawerFooter = styled(Box)(() => ({
-    display: 'flex',
-    alignItems: 'center',
-    gap: '20px',
-    paddingTop: '28px',
-}));
-
-const DrawerFooterLink = styled('a')(() => ({
-    fontFamily: 'var(--font-body)',
-    fontSize: '13px',
-    fontWeight: 500,
-    color: tokens.color.neutral500,
-    textDecoration: 'none',
-    letterSpacing: '0.01em',
-    transition: `color ${tokens.motion.fast} ${tokens.motion.ease}`,
-    '&:hover': { color: tokens.color.ink900 },
-}));
-
 
 import Image from 'next/image';
 import { Container } from '@mui/material';
@@ -304,7 +286,7 @@ function LogoMark() {
         >
             <Image
                 src="/TS-log.png"
-                alt="Tresmind"
+                alt="Tresmind logo"
                 width={80}
                 height={40}
                 style={{
@@ -674,12 +656,6 @@ export default function Navbar() {
                             )
                         )}
                     </DrawerNav>
-
-                    <DrawerFooter>
-                        <DrawerFooterLink href="#">Instagram</DrawerFooterLink>
-                        <DrawerFooterLink href="#">LinkedIn</DrawerFooterLink>
-                        <DrawerFooterLink href="#">Behance</DrawerFooterLink>
-                    </DrawerFooter>
 
                 </DrawerInner>
             </Drawer>

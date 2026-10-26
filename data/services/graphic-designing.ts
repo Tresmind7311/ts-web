@@ -6,30 +6,30 @@ export const graphicDesigningService: ServiceData = {
     slug: 'graphic-designing',
     name: 'Graphic Designing',
     seo: {
-        title: 'Graphic Designing Services | Tresmind',
+        title: 'Graphic Design Services | Branding & Print | Tresmind',
         description:
-            'We create visual designs that help businesses communicate clearly, present their brand consistently, and connect with their audience across print and digital platforms.',
+            'Brand identity, logos, marketing and social graphics, print and packaging design that keep your business consistent and recognisable on every channel.',
     },
     hero: {
-        title: 'Graphic Designing',
+        title: 'Graphic design services',
         description:
-            'We create visual designs that help businesses communicate clearly, present their brand consistently, and connect with their audience across print and digital platforms.',
+            'We create visual designs that help your business communicate clearly and look consistent, from your logo to your latest campaign.',
         primaryCta: {
-            label: 'Start Your Project',
+            label: 'Start your project',
             href: '#contact',
         },
         secondaryCta: {
-            label: 'Schedule a Consultation',
+            label: 'Book a consultation',
             href: '#contact',
         },
         image: {
             src: `${imageBase}/graphic-designing-hero.png`,
-            alt: 'Graphic designing creative workspace and visual assets',
+            alt: 'Brand identity and graphic design samples',
         },
     },
     listing: {
         shortDescription:
-            'We create visual designs that help businesses communicate clearly and present their brand consistently across print and digital platforms.',
+            'Brand identities, campaign graphics and print design that stay consistent everywhere.',
         showcaseImage: {
             src: `${imageBase}/showcase-card.png`,
             alt: 'Graphic designing service illustration',
@@ -43,7 +43,7 @@ export const graphicDesigningService: ServiceData = {
     showcase: {
         title: 'Visuals Built Around Your Brand',
         description:
-            'From brand identities to campaign graphics and printed materials, we turn your message into designs that fit your business and the places your audience sees it.',
+            'From brand identities to campaign graphics and printed materials, we turn your message into designs that fit your business and every place your audience sees it.',
         columns: [
             {
                 images: [
@@ -99,7 +99,7 @@ export const graphicDesigningService: ServiceData = {
     },
     capabilities: {
         eyebrow: 'Our Expertise',
-        title: 'What We Build',
+        title: 'What we design',
         description:
             'From brand identity to campaign graphics and print materials, we create designs that communicate your message clearly.',
         initialVisibleCount: 4,
@@ -108,7 +108,7 @@ export const graphicDesigningService: ServiceData = {
                 id: 'brand-identity',
                 title: 'Brand Identity',
                 description:
-                    'Logos, color palettes, typography, and guidelines that give your business a consistent visual identity.',
+                    'Logos, colour palettes, typography and brand guidelines.',
                 image: {
                     src: `${imageBase}/what-we-build/Brand-Identity.png`,
                     alt: 'Brand identity design',
@@ -118,7 +118,7 @@ export const graphicDesigningService: ServiceData = {
                 id: 'marketing-social-graphics',
                 title: 'Marketing & Social Graphics',
                 description:
-                    'Campaign visuals, social posts, ads, and banners that communicate your message across digital channels.',
+                    'Campaign visuals, social posts, ads and banners.',
                 image: {
                     src: `${imageBase}/what-we-build/Marketing-Social-Graphics.png`,
                     alt: 'Marketing and social graphics',
@@ -128,7 +128,7 @@ export const graphicDesigningService: ServiceData = {
                 id: 'print-packaging-design',
                 title: 'Print & Packaging Design',
                 description:
-                    'Brochures, business cards, labels, and packaging designed around your content and production requirements.',
+                    'Brochures, business cards, labels and packaging, ready for production.',
                 image: {
                     src: `${imageBase}/what-we-build/Print-Packaging-Design.png`,
                     alt: 'Print and packaging design',
@@ -138,7 +138,7 @@ export const graphicDesigningService: ServiceData = {
                 id: 'illustrations-custom-graphics',
                 title: 'Illustrations & Custom Graphics',
                 description:
-                    'Original illustrations, icons, and visual assets that explain ideas and add character to your brand.',
+                    'Original illustrations, icons and visual assets for your brand.',
                 image: {
                     src: `${imageBase}/what-we-build/Illustrations-Custom-Graphics.png`,
                     alt: 'Illustrations and custom graphics',
@@ -147,7 +147,7 @@ export const graphicDesigningService: ServiceData = {
         ],
     },
     process: {
-        title: 'Our Development Process',
+        title: 'Our design process',
         description:
             'We understand your message, explore a visual direction, and refine the designs for their intended use.',
         autoplayMs: 3500,
@@ -155,9 +155,9 @@ export const graphicDesigningService: ServiceData = {
             {
                 id: 'discovery-brief',
                 number: '01',
-                title: 'Discovery & Brief',
+                title: 'Discovery & brief',
                 description:
-                    'We define your goals, audience, brand style, and the formats your designs need to work in.',
+                    'Goals, audience, visual direction and intended use.',
                 backgroundImage: {
                     src: `${imageBase}/process-bg.png`,
                     alt: '',
@@ -167,17 +167,68 @@ export const graphicDesigningService: ServiceData = {
                     alt: 'Graphic design discovery and brief',
                 },
             },
+            {
+                id: 'concepts',
+                number: '02',
+                title: 'Concepts',
+                description: 'Visual directions to review against the brief.',
+                backgroundImage: {
+                    src: `${imageBase}/process-bg.png`,
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: `${imageBase}/process-img.png`,
+                    alt: '',
+                },
+            },
+            {
+                id: 'refinement',
+                number: '03',
+                title: 'Refinement',
+                description: 'Adjust the selected direction for its intended use.',
+                backgroundImage: {
+                    src: `${imageBase}/process-bg.png`,
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: `${imageBase}/process-img.png`,
+                    alt: '',
+                },
+            },
+            {
+                id: 'final-files-guidelines',
+                number: '04',
+                title: 'Final files & guidelines',
+                description: 'Prepare the agreed assets for handover.',
+                backgroundImage: {
+                    src: `${imageBase}/process-bg.png`,
+                    alt: '',
+                },
+                foregroundImage: {
+                    src: `${imageBase}/process-img.png`,
+                    alt: '',
+                },
+            },
         ],
     },
     ecosystem: {
         title: 'More Than Just a Visual',
         description:
-            'Effective design connects how your brand looks with what it needs to communicate. We bring together your message, visual identity, layout, and production needs so every asset works where your audience sees it.',
+            'Effective design connects how your brand looks with what it needs to say. We bring together your message, identity, layout and production needs, so every asset works where your audience sees it.',
         flow: 'Brand & Message → Visual Identity → Layout & Imagery → Production → Audience',
         closingText: '',
         image: {
             src: `${imageBase}/graphic-designing.png`,
             alt: 'Connected visual design ecosystem',
         },
+    },
+    faq: {
+        title: 'Graphic design FAQs',
+        items: [
+            {
+                question: 'Can you work with our existing brand?',
+                answer: 'Yes. We design within your current guidelines, or help refresh them.',
+            },
+        ],
     },
 };

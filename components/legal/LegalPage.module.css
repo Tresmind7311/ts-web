@@ -1,0 +1,68 @@
+.main {
+  background: var(--neutral-50);
+  color: var(--ink-900);
+  min-height: 100vh;
+  padding: clamp(112px, 13vw, 176px) 24px 96px;
+}
+
+.article {
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.article h1 {
+  margin: 0 0 16px;
+  font: var(--font-h1);
+  overflow-wrap: break-word;
+}
+
+.date {
+  margin: 0 0 48px;
+  color: var(--neutral-700);
+}
+
+.article section + section {
+  margin-top: 40px;
+}
+
+.article h2 {
+  margin: 0 0 16px;
+  font: var(--font-h4);
+}
+
+.article p {
+  margin: 0 0 16px;
+}
+
+.article ul {
+  margin: 0 0 16px;
+  padding-left: 24px;
+}
+
+.article li + li {
+  margin-top: 8px;
+}
+
+.article a {
+  color: var(--uv-800);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.article a:focus-visible {
+  outline: 2px solid var(--uv-800);
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .main {
+    padding: 112px 20px 72px;
+  }
+
+  .article {
+    font-size: 15px;
+  }
+}
