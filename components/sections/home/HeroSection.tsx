@@ -251,7 +251,7 @@ export default function HeroSection() {
                     </Eyebrow>
 
                     <Headline component={'h1' as React.ElementType}>
-                        Software, apps and AI, built to last
+                        Software, <br></br>apps and AI, <br></br>built to last
                     </Headline>
 
                     <SubCopy>
