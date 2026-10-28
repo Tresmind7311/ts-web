@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { serviceList } from '@/data/services';
 
 const origin = 'https://tresmind.com';
 
@@ -6,12 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return [
         '/',
         '/services',
-        '/services/mobile-app-development',
-        '/services/ai-development',
-        '/services/software-development',
-        '/services/web-development',
-        '/services/graphic-designing',
-        '/services/cloud-consulting',
+        ...serviceList.map((service) => `/services/${service.slug}`),
         '/portfolio',
         '/contact',
         '/privacy-policy',
