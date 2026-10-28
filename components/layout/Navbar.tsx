@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
 import { tokens } from '@/theme/theme';
+import { serviceMenuCategories } from '@/data/services/mega-menu-links';
 
 // ─── Nav data ─────────────────────────────────────────────────────
 const NAV_LINKS = [
@@ -15,14 +16,9 @@ const NAV_LINKS = [
     { label: 'Portfolio', href: '/portfolio' },
     { label: 'Contact', href: '/contact' },
 ];
-const SERVICE_LINKS = [
-    { label: 'Mobile App Development', href: '/services/mobile-app-development' },
-    { label: 'AI Development', href: '/services/ai-development' },
-    { label: 'Software Development', href: '/services/software-development' },
-    { label: 'Web Development', href: '/services/web-development' },
-    { label: 'Graphic Design', href: '/services/graphic-designing' },
-    { label: 'Cloud Consulting', href: '/services/cloud-consulting' },
-];
+const SERVICE_LINKS = serviceMenuCategories.flatMap((category) =>
+    category.services.map((service) => ({ label: service.name, href: `/services/${service.slug}` })),
+);
 
 // ═══════════════════════════════════════════════════════════════════
 // Styled components
@@ -127,7 +123,7 @@ const NavLink = styled('a')(() => ({
         fontWeight: 600,
     },
 }));
-const ServicesNavItem = styled(Box)({
+const ServicesNavItem = styled(Box)(({ theme }) => ({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
@@ -136,25 +132,136 @@ const ServicesNavItem = styled(Box)({
         opacity: 1,
         visibility: 'visible',
         pointerEvents: 'auto',
-        transform: 'translateY(0)',
+        transform: 'translate(-50%, 0)',
     },
-});
 
-const ServicesDropdown = styled(Box)({
+    [theme.breakpoints.down('md')]: {
+        display: 'none',
+    },
+}));
+
+const ServicesDropdown = styled(Box)(({ theme }) => ({
     position: 'absolute',
-    top: '100%',
-    left: '-20px',
-    width: '260px',
-    padding: '10px',
-    borderRadius: '14px',
-    backgroundColor: '#fff',
-    boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
+    top: 'calc(100% + 2px)',
+    left: '50%',
+    width: 'min(1080px, calc(100vw - 48px))',
+    padding: '22px 24px 18px',
+    border: '1px solid rgba(18, 19, 67, .08)',
+    borderRadius: '18px',
+    background: 'rgba(255,255,255,.98)',
+    boxShadow: '0 24px 70px rgba(12,20,60,.16)',
+    backdropFilter: 'blur(18px)',
+    color: '#121343',
     opacity: 0,
     visibility: 'hidden',
     pointerEvents: 'none',
-    transform: 'translateY(8px)',
-    transition: 'opacity 200ms ease, transform 200ms ease, visibility 200ms',
-    zIndex: 10,
+    transform: 'translate(-50%, 8px)',
+    transition: 'opacity 170ms ease, transform 170ms ease, visibility 170ms',
+    zIndex: 1200,
+    maxHeight: 'none',
+    overflow: 'visible',
+
+    [theme.breakpoints.down('md')]: {
+        display: 'none',
+    },
+}));
+
+const MegaMenuIntro = styled(Box)({
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    gap: '16px',
+    paddingBottom: '15px',
+    marginBottom: '17px',
+    borderBottom: '1px solid #e9edf5',
+});
+
+const MegaMenuGrid = styled(Box)(({ theme }) => ({
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+    gap: '19px 22px',
+
+    [theme.breakpoints.down('lg')]: {
+        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+        gap: '16px',
+    },
+}));
+
+const MegaMenuCategory = styled(Box)({
+    minWidth: 0,
+});
+
+const MegaMenuCategoryTitle = styled('a')({
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '5px',
+    marginBottom: '4px',
+    color: '#111832',
+    fontFamily: 'var(--font-body)',
+    fontSize: '12px',
+    fontWeight: 750,
+    lineHeight: 1.4,
+    textDecoration: 'none',
+    '&:hover': { color: '#078db5' },
+});
+
+const MegaMenuDescription = styled('p')({
+    margin: '0 0 7px',
+    color: '#788198',
+    fontFamily: 'var(--font-body)',
+    fontSize: '10px',
+    lineHeight: 1.45,
+});
+
+const MegaMenuLinks = styled(Box)({
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1px',
+});
+
+const ServicesDropdownLink = styled('a')({
+    display: 'block',
+    padding: '5px 7px',
+    marginLeft: '-7px',
+    borderRadius: '6px',
+    color: '#566078',
+    fontFamily: 'var(--font-body)',
+    fontSize: '10.5px',
+    fontWeight: 450,
+    lineHeight: 1.4,
+    textDecoration: 'none',
+    overflowWrap: 'anywhere',
+    transition: 'background 150ms ease, color 150ms ease',
+    '&:hover, &:focus-visible': {
+        backgroundColor: 'rgba(4, 182, 216, 0.09)',
+        color: '#071463',
+        outline: 'none',
+    },
+});
+
+const MegaMenuBottom = styled(Box)({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '12px',
+    marginTop: '16px',
+    paddingTop: '13px',
+    borderTop: '1px solid #e9edf5',
+    color: '#68738a',
+    fontFamily: 'var(--font-body)',
+    fontSize: '11px',
+    '& a': {
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '7px',
+        padding: '9px 13px',
+        borderRadius: '8px',
+        background: 'linear-gradient(100deg, #10136c 0%, #04b6d8 100%)',
+        color: '#fff',
+        fontWeight: 650,
+        textDecoration: 'none',
+        whiteSpace: 'nowrap',
+    },
 });
 
 const ServicesDropdownLink = styled('a')({
@@ -519,15 +626,41 @@ export default function Navbar() {
                                             {link.label}
                                         </NavLink>
 
-                                        <ServicesDropdown className="services-dropdown">
-                                            {SERVICE_LINKS.map(service => (
-                                                <ServicesDropdownLink
-                                                    key={service.href}
-                                                    href={service.href}
-                                                >
-                                                    {service.label}
-                                                </ServicesDropdownLink>
-                                            ))}
+                                        <ServicesDropdown className="services-dropdown" role="region" aria-label="Services mega menu">
+                                            <MegaMenuIntro>
+                                                <Box>
+                                                    <Box sx={{ color: '#078db5', fontSize: '10px', fontWeight: 750, letterSpacing: '.15em', textTransform: 'uppercase', mb: 0.6 }}>
+                                                        What we do
+                                                    </Box>
+                                                    <Box sx={{ color: '#111832', fontFamily: 'var(--font-display)', fontSize: '24px', fontWeight: 800, letterSpacing: '-.04em', lineHeight: 1.15 }}>
+                                                        Explore our services
+                                                    </Box>
+                                                </Box>
+                                                <Box sx={{ maxWidth: '310px', color: '#788198', fontSize: '11px', lineHeight: 1.6 }}>
+                                                    The expertise to design, build and grow your next digital product.
+                                                </Box>
+                                            </MegaMenuIntro>
+                                            <MegaMenuGrid>
+                                                {serviceMenuCategories.map(category => (
+                                                    <MegaMenuCategory key={category.title}>
+                                                        <MegaMenuCategoryTitle href={category.href}>
+                                                            {category.title} <span aria-hidden="true">↗</span>
+                                                        </MegaMenuCategoryTitle>
+                                                        <MegaMenuDescription>{category.description}</MegaMenuDescription>
+                                                        <MegaMenuLinks>
+                                                            {category.services.map(service => (
+                                                                <ServicesDropdownLink key={service.slug} href={`/services/${service.slug}`}>
+                                                                    {service.name}
+                                                                </ServicesDropdownLink>
+                                                            ))}
+                                                        </MegaMenuLinks>
+                                                    </MegaMenuCategory>
+                                                ))}
+                                            </MegaMenuGrid>
+                                            <MegaMenuBottom>
+                                                <span>Have a project in mind? Let’s make it happen.</span>
+                                                <a href="/contact">Talk to our team <span aria-hidden="true">→</span></a>
+                                            </MegaMenuBottom>
                                         </ServicesDropdown>
                                     </ServicesNavItem>
                                 ) : (
