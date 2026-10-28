@@ -27,3 +27,15 @@ export const serviceList = Object.values(services).sort(
 export function getServiceBySlug(slug: string): ServiceData | undefined {
     return services[slug as ServiceSlug];
 }
+
+
+export const featuredServiceList = serviceList.filter((service) =>
+    [
+        'mobile-app-development',
+        'ai-development',
+        'software-development',
+        'web-development',
+        'graphic-designing',
+        'cloud-consulting',
+    ].includes(service.slug),
+);
