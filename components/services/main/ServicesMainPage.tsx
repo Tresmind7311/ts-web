@@ -1,15 +1,17 @@
 import ServicesMainHero from './sections/ServicesMainHero';
 import ServicesShowcase from './sections/ServicesShowcase';
 
-import { serviceList } from '@/data/services';
+import { featuredServiceList } from '@/data/services';
+import MegaMenuServiceDirectory from './sections/MegaMenuServiceDirectory';
 import WhatWeOffer from './sections/WhatWeOffer';
 
 export default function ServicesMainPage() {
     return (
         <main>
             <ServicesMainHero />
-            <ServicesShowcase services={serviceList} />
-            <WhatWeOffer services={serviceList} />
+            <ServicesShowcase services={featuredServiceList} />
+            <WhatWeOffer services={featuredServiceList} />
+            <MegaMenuServiceDirectory />
         </main>
     );
 }
