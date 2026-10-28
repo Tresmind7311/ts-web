@@ -142,7 +142,7 @@ const ServicesNavItem = styled(Box)(({ theme }) => ({
 
 const ServicesDropdown = styled(Box)(({ theme }) => ({
     position: 'absolute',
-    top: 'calc(100% + 2px)',
+    top: 'calc(100% - 1px)',
     left: '50%',
     width: 'min(1080px, calc(100vw - 48px))',
     padding: '22px 24px 18px',
