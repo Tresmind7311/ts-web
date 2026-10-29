@@ -220,7 +220,7 @@ export const softwareDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery.png',
+                    src: '/images/services/software-development/Software-DEVELOPMENT-1.png',
                     alt: 'Software requirements discovery',
                 },
             },
@@ -234,7 +234,7 @@ export const softwareDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery.png',
+                    src: '/images/services/software-development/Software-DEVELOPMENT-2.png',
                     alt: '',
                 },
             },
@@ -248,7 +248,7 @@ export const softwareDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery.png',
+                    src: '/images/services/software-development/Software-DEVELOPMENT-3.png',
                     alt: '',
                 },
             },
@@ -262,7 +262,7 @@ export const softwareDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery.png',
+                    src: '/images/services/software-development/Software-DEVELOPMENT-4.png',
                     alt: '',
                 },
             },
@@ -276,7 +276,7 @@ export const softwareDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery.png',
+                    src: '/images/services/software-development/Software-DEVELOPMENT-5.png',
                     alt: '',
                 },
             },
