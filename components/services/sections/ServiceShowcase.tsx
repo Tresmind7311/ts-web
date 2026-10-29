@@ -352,7 +352,6 @@ const COLLAGE_LAYOUT: CollageColumnLayout[] = [
     { placeholderAspect: 0.88, imageIndexes: [8] },
     { placeholderAspect: 1.66, imageIndexes: [9, 10] },
     { placeholderAspect: 0.96, imageIndexes: [11, 12] },
-    { placeholderAspect: 0.96, imageIndexes: [13, 0] },
 ];
 
 
