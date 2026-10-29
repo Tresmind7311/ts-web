@@ -210,7 +210,7 @@ export const aiDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/ai-development/Requirements-Discovery.png',
+                    src: '/images/services/ai-development/ai-development-1.png',
                     alt: 'AI use case discovery',
                 },
             },
@@ -225,7 +225,7 @@ export const aiDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/ai-development/Requirements-Discovery.png',
+                    src: '/images/services/ai-development/ai-development-2.png',
                     alt: 'AI use case discovery',
                 },
             },
@@ -240,7 +240,7 @@ export const aiDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/ai-development/Requirements-Discovery.png',
+                    src: '/images/services/ai-development/ai-development-3.png',
                     alt: 'AI use case discovery',
                 },
             },
@@ -254,7 +254,7 @@ export const aiDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/ai-development/Requirements-Discovery.png',
+                    src: '/images/services/ai-development/ai-development-4.png',
                     alt: '',
                 },
             },
@@ -268,7 +268,7 @@ export const aiDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/ai-development/Requirements-Discovery.png',
+                    src: '/images/services/ai-development/ai-development-5.png',
                     alt: '',
                 },
             },
