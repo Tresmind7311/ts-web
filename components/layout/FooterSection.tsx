@@ -46,7 +46,7 @@ const SOCIAL_LINKS: { label: string; href?: string }[] = [
     { label: 'LinkedIn' },
     { label: 'Dribbble' },
 ];
-const EMAIL = 'info@tresmind.com';
+const EMAIL = 'hello@tresmind.com';
 const YEAR = new Date().getFullYear();
 
 // ─── Styles ───────────────────────────────────────────────────────────────────

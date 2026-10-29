@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
 import { tokens } from '@/theme/theme';
+import { serviceMenu } from '@/data/services/menu';
 
 // ─── Nav data ─────────────────────────────────────────────────────
 const NAV_LINKS = [
@@ -14,14 +15,6 @@ const NAV_LINKS = [
     { label: 'Services', href: '/services' },
     { label: 'Portfolio', href: '/portfolio' },
     { label: 'Contact', href: '/contact' },
-];
-const SERVICE_LINKS = [
-    { label: 'Mobile App Development', href: '/services/mobile-app-development' },
-    { label: 'AI Development', href: '/services/ai-development' },
-    { label: 'Software Development', href: '/services/software-development' },
-    { label: 'Web Development', href: '/services/web-development' },
-    { label: 'Graphic Design', href: '/services/graphic-designing' },
-    { label: 'Cloud Consulting', href: '/services/cloud-consulting' },
 ];
 
 // ═══════════════════════════════════════════════════════════════════
@@ -128,38 +121,27 @@ const NavLink = styled('a')(() => ({
     },
 }));
 const ServicesNavItem = styled(Box)({
-    position: 'relative',
     display: 'flex',
     alignItems: 'center',
-
-    '&:hover .services-dropdown, &:focus-within .services-dropdown': {
-        opacity: 1,
-        visibility: 'visible',
-        pointerEvents: 'auto',
-        transform: 'translateY(0)',
-    },
 });
 
 const ServicesDropdown = styled(Box)({
     position: 'absolute',
     top: '100%',
-    left: '-20px',
-    width: '260px',
-    padding: '10px',
-    borderRadius: '14px',
+    left: 0,
+    right: 0,
+    maxHeight: 'calc(100dvh - var(--navbar-height))',
+    overflowY: 'auto',
+    padding: 'clamp(24px, 3vw, 48px) clamp(24px, 4vw, 64px)',
     backgroundColor: '#fff',
     boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
-    opacity: 0,
-    visibility: 'hidden',
-    pointerEvents: 'none',
-    transform: 'translateY(8px)',
-    transition: 'opacity 200ms ease, transform 200ms ease, visibility 200ms',
+    color: '#121343',
     zIndex: 10,
 });
 
 const ServicesDropdownLink = styled('a')({
-    display: 'block',
-    padding: '12px 14px',
+    display: 'inline-block',
+    padding: '6px 0',
     borderRadius: '8px',
     fontFamily: 'var(--font-body)',
     fontSize: '14px',
@@ -172,7 +154,15 @@ const ServicesDropdownLink = styled('a')({
         backgroundColor: 'rgba(4, 182, 216, 0.08)',
         color: '#071463',
     },
+    '&:focus-visible': { outline: '2px solid #071463', outlineOffset: '2px' },
 });
+
+const menuHeadingGradient = {
+    background: `linear-gradient(90deg, ${tokens.color.uv800} 20%, ${tokens.color.uv300} 80%)`,
+    backgroundClip: 'text',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+};
 
 const QuoteLink = styled('a')(({ theme }) => ({
     display: 'none',
@@ -239,6 +229,7 @@ const DrawerInner = styled(Box)(() => ({
     display: 'flex',
     flexDirection: 'column',
     padding: '0 28px 48px',
+    overflowY: 'auto',
 }));
 
 const DrawerHeader = styled(Box)(() => ({
@@ -253,7 +244,8 @@ const DrawerNav = styled('nav')(() => ({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: '24px',
     gap: '0px',
 }));
 
@@ -362,6 +354,8 @@ export default function Navbar() {
 
     const [scrolled, setScrolled] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [megaOpen, setMegaOpen] = useState(false);
+    const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
     const [activeLink, setActiveLink] = useState('');
 
     // The homepage keeps its existing hero reveal gate.
@@ -493,13 +487,25 @@ export default function Navbar() {
         return false;
     };
 
-    const closeDrawer = useCallback(() => setDrawerOpen(false), []);
     const [servicesOpen, setServicesOpen] = useState(false);
+    const closeDrawer = useCallback(() => { setDrawerOpen(false); setServicesOpen(false); setExpandedCategory(null); }, []);
+
+    useEffect(() => {
+        if (!megaOpen) return;
+        const dismiss = (event: PointerEvent) => {
+            if (!headerRef.current?.contains(event.target as Node)) setMegaOpen(false);
+        };
+        document.addEventListener('pointerdown', dismiss);
+        return () => document.removeEventListener('pointerdown', dismiss);
+    }, [megaOpen]);
 
     return (
         <>
             <NavSpace ref={spaceRef} reserve={pathname !== '/' ? 1 : 0}>
-                <NavRoot ref={headerRef} scrolled={scrolled ? 1 : 0} visible={navVisible ? 1 : 0} dark={darkBackdrop ? 1 : 0} role="banner" inert={!navVisible}>
+                <NavRoot ref={headerRef} scrolled={scrolled ? 1 : 0} visible={navVisible ? 1 : 0} dark={darkBackdrop ? 1 : 0} role="banner" inert={!navVisible}
+                    onKeyDown={event => { if (event.key === 'Escape') { setMegaOpen(false); (headerRef.current?.querySelector('#services-trigger') as HTMLElement | null)?.focus(); } }}
+                    onMouseLeave={() => setMegaOpen(false)}
+                    onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setMegaOpen(false); }}>
                     <NavInner maxWidth="xl">
 
                         {/* Logo */}
@@ -511,36 +517,50 @@ export default function Navbar() {
                         <DesktopNav aria-label="Main navigation">
                             {NAV_LINKS.map(link =>
                                 link.href === '/services' ? (
-                                    <ServicesNavItem key={link.label}>
+                                    <ServicesNavItem key={link.label} onMouseEnter={() => setMegaOpen(true)} onFocus={event => { if (event.target.matches(':focus-visible')) setMegaOpen(true); }}>
                                         <NavLink
+                                            id="services-trigger"
                                             href={link.href}
                                             className={isLinkActive(link.href) ? 'active' : ''}
+                                            aria-expanded={megaOpen}
+                                            aria-controls="services-mega-menu"
+                                            onClick={() => setMegaOpen(false)}
                                         >
                                             {link.label}
                                         </NavLink>
-
-                                        <ServicesDropdown className="services-dropdown">
-                                            {SERVICE_LINKS.map(service => (
-                                                <ServicesDropdownLink
-                                                    key={service.href}
-                                                    href={service.href}
-                                                >
-                                                    {service.label}
-                                                </ServicesDropdownLink>
-                                            ))}
-                                        </ServicesDropdown>
                                     </ServicesNavItem>
                                 ) : (
                                     <NavLink
                                         key={link.label}
                                         href={link.href}
                                         className={isLinkActive(link.href) ? 'active' : ''}
+                                        onClick={() => setMegaOpen(false)}
                                     >
                                         {link.label}
                                     </NavLink>
                                 )
                             )}
                         </DesktopNav>
+
+                        {megaOpen && <ServicesDropdown id="services-mega-menu" onMouseEnter={() => setMegaOpen(true)}>
+                            <Box sx={{ maxWidth: '1600px', mx: 'auto', display: 'grid', gridTemplateColumns: 'minmax(180px, 0.9fr) minmax(0, 3fr)', gap: 'clamp(24px, 3vw, 56px)' }}>
+                                <Box>
+                                    <Box sx={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px, 2vw, 30px)', fontWeight: 700, mb: 2 }}>Build what comes next</Box>
+                                    <Box sx={{ color: '#596477', lineHeight: 1.6, maxWidth: 280 }}>Explore Tresmind services and find the right starting point for your project.</Box>
+                                    <ServicesDropdownLink href="/services" onClick={() => setMegaOpen(false)} sx={{ mt: 2, fontWeight: 600 }}>All services →</ServicesDropdownLink>
+                                </Box>
+                                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 'clamp(18px, 2.5vw, 44px)' }}>
+                                    {[0, 1, 2].map(column => <Box key={column}>
+                                        {serviceMenu.slice(column * 3, column * 3 + 3).map(category => <Box key={category.label} sx={{ pb: 2, mb: 2, borderBottom: '1px solid #dce3e9', '&:last-child': { borderBottom: 0 } }}>
+                                            {'href' in category ? <ServicesDropdownLink href={category.href} onClick={() => setMegaOpen(false)} sx={{ fontSize: 'clamp(15px, 1.15vw, 18px)', fontWeight: 700, ...menuHeadingGradient }}>{category.label}</ServicesDropdownLink> : <Box sx={{ display: 'inline-block', py: '6px', fontSize: 'clamp(15px, 1.15vw, 18px)', fontWeight: 700, ...menuHeadingGradient }}>{category.label}</Box>}
+                                            {category.children.map(child => typeof child === 'string'
+                                                ? <Box key={child} aria-disabled="true" title="Page coming soon" sx={{ py: '5px', pl: 1, color: '#697586', fontSize: '14px', lineHeight: 1.4 }}>› {child} <Box component="span" sx={{ fontSize: '11px', whiteSpace: 'nowrap' }}>(Coming soon)</Box></Box>
+                                                : <ServicesDropdownLink key={child.href} href={child.href} onClick={() => setMegaOpen(false)} sx={{ display: 'block', py: '5px', pl: 1, color: '#697586', fontWeight: 400 }}>› {child.label}</ServicesDropdownLink>)}
+                                        </Box>)}
+                                    </Box>)}
+                                </Box>
+                            </Box>
+                        </ServicesDropdown>}
 
                         <QuoteLink href="/contact">Get a Quote</QuoteLink>
 
@@ -605,7 +625,8 @@ export default function Navbar() {
                                             onClick={() => setServicesOpen(open => !open)}
                                             aria-label="Toggle services submenu"
                                             aria-expanded={servicesOpen}
-                                            sx={{ color: tokens.color.ink900 }}
+                                            aria-controls="mobile-services-submenu"
+                                            sx={{ color: tokens.color.ink900, minWidth: 44, minHeight: 44 }}
                                         >
                                             <Box
                                                 component="span"
@@ -623,25 +644,19 @@ export default function Navbar() {
                                     </Box>
 
                                     {servicesOpen && (
-                                        <Box sx={{ pl: 2, pb: 2 }}>
-                                            {SERVICE_LINKS.map(service => (
-                                                <Box
-                                                    key={service.href}
-                                                    component="a"
-                                                    href={service.href}
-                                                    onClick={closeDrawer}
-                                                    sx={{
-                                                        display: 'block',
-                                                        py: 1.25,
-                                                        fontFamily: 'var(--font-body)',
-                                                        fontSize: '16px',
-                                                        color: tokens.color.ink900,
-                                                        textDecoration: 'none',
-                                                    }}
-                                                >
-                                                    {service.label}
+                                        <Box id="mobile-services-submenu" sx={{ pl: 2, pb: 2 }}>
+                                            {serviceMenu.map(category => <Box key={category.label} sx={{ borderBottom: `1px solid ${tokens.color.borderSubtle}` }}>
+                                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                    {'href' in category ? <Box component="a" href={category.href} onClick={closeDrawer} sx={{ flex: 1, py: 1.5, color: tokens.color.ink900, textDecoration: 'none', fontWeight: 600, '&:focus-visible': { outline: '2px solid #071463' } }}>{category.label}</Box>
+                                                        : <Box sx={{ flex: 1, py: 1.5, color: tokens.color.ink900, fontWeight: 600 }}>{category.label}</Box>}
+                                                    {category.children.length > 0 && <IconButton aria-label={`Toggle ${category.label} sub-services`} aria-expanded={expandedCategory === category.label} aria-controls={`mobile-category-${serviceMenu.indexOf(category)}`} onClick={() => setExpandedCategory(current => current === category.label ? null : category.label)} sx={{ minWidth: 44, minHeight: 44, color: tokens.color.ink900 }}>⌄</IconButton>}
                                                 </Box>
-                                            ))}
+                                                {expandedCategory === category.label && <Box id={`mobile-category-${serviceMenu.indexOf(category)}`} sx={{ pl: 2, pb: 1 }}>
+                                                    {category.children.map(child => typeof child === 'string'
+                                                        ? <Box key={child} aria-disabled="true" sx={{ py: 1.25, color: '#697586', fontSize: '14px' }}>{child} (Coming soon)</Box>
+                                                        : <Box key={child.href} component="a" href={child.href} onClick={closeDrawer} sx={{ display: 'block', py: 1.25, color: tokens.color.ink900, fontSize: '14px', textDecoration: 'none', '&:focus-visible': { outline: '2px solid #071463' } }}>{child.label}</Box>)}
+                                                </Box>}
+                                            </Box>)}
                                         </Box>
                                     )}
                                 </Box>

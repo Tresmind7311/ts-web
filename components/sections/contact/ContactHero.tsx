@@ -19,8 +19,8 @@ const CONTACT_ITEMS = [
     },
     {
         label: 'Email us',
-        value: 'info@tresmind.com',
-        href: 'mailto:info@tresmind.com',
+        value: 'hello@tresmind.com',
+        href: 'mailto:hello@tresmind.com',
     },
     {
         label: 'Book a call',

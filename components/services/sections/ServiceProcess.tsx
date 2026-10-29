@@ -402,6 +402,14 @@ const BackgroundShade = styled(Box)({
     pointerEvents: 'none',
 });
 
+const FallbackBackground = styled(Box)({
+    position: 'absolute',
+    inset: 0,
+    borderRadius: 'inherit',
+    background: `linear-gradient(135deg, ${tokens.color.uv800} 0%, ${tokens.color.uv300} 100%)`,
+    opacity: 0.12,
+});
+
 const ForegroundWrap = styled(Box)(({ theme }) => ({
     position: 'absolute',
     zIndex: 3,
@@ -722,37 +730,43 @@ export default function ServiceProcess({
                                 }}
                             >
                                 <Card>
-                                    <BackgroundWrap>
-                                        <BackgroundImage
-                                            src={
-                                                step.backgroundImage
-                                                    .src
-                                            }
-                                            alt={
-                                                step.backgroundImage
-                                                    .alt
-                                            }
-                                            fill
-                                            sizes="(max-width: 600px) 78vw, (max-width: 960px) 360px, 455px"
-                                        />
+                                    {step.backgroundImage ? (
+                                        <BackgroundWrap>
+                                            <BackgroundImage
+                                                src={
+                                                    step.backgroundImage
+                                                        .src
+                                                }
+                                                alt={
+                                                    step.backgroundImage
+                                                        .alt
+                                                }
+                                                fill
+                                                sizes="(max-width: 600px) 78vw, (max-width: 960px) 360px, 455px"
+                                            />
 
-                                        <BackgroundShade />
-                                    </BackgroundWrap>
+                                            <BackgroundShade />
+                                        </BackgroundWrap>
+                                    ) : (
+                                        <FallbackBackground />
+                                    )}
 
-                                    <ForegroundWrap>
-                                        <ForegroundImage
-                                            src={
-                                                step.foregroundImage
-                                                    .src
-                                            }
-                                            alt={
-                                                step.foregroundImage
-                                                    .alt
-                                            }
-                                            fill
-                                            sizes="(max-width: 600px) 65vw, (max-width: 960px) 300px, 360px"
-                                        />
-                                    </ForegroundWrap>
+                                    {step.foregroundImage ? (
+                                        <ForegroundWrap>
+                                            <ForegroundImage
+                                                src={
+                                                    step.foregroundImage
+                                                        .src
+                                                }
+                                                alt={
+                                                    step.foregroundImage
+                                                        .alt
+                                                }
+                                                fill
+                                                sizes="(max-width: 600px) 65vw, (max-width: 960px) 300px, 360px"
+                                            />
+                                        </ForegroundWrap>
+                                    ) : null}
                                 </Card>
                             </Slide>
                         );

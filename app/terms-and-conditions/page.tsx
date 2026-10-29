@@ -54,7 +54,7 @@ export default function TermsAndConditionsPage() {
 
         <section aria-labelledby="claim-your-refund">
           <h2 id="claim-your-refund">CLAIM YOUR REFUND</h2>
-          <p>To request a refund, email <a href="mailto:info@tresmind.com">info@tresmind.com</a> with your order details and the reason for your request. We will review it and reply as soon as possible. If it is approved, we will process the refund through the original payment method.</p>
+          <p>To request a refund, email <a href="mailto:hello@tresmind.com">hello@tresmind.com</a> with your order details and the reason for your request. We will review it and reply as soon as possible. If it is approved, we will process the refund through the original payment method.</p>
         </section>
 
         <section aria-labelledby="ai-policy">

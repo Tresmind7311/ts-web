@@ -12,7 +12,7 @@ export interface ServiceContentCardItem {
     id: string;
     title: string;
     description: string;
-    image: {
+    image?: {
         src: string;
         alt: string;
     };
@@ -168,18 +168,18 @@ function CardContents({
                 <SeeMore component="span">{textLinkLabel}</SeeMore>
             ) : null}
 
-            <ImageWrap>
-                <CardImage
-                    src={item.image.src}
-                    alt={item.image.alt}
-                    fill
-                    sizes="(max-width: 959px) 90vw, 31vw"
-                />
+            {item.image ? (
+                <ImageWrap>
+                    <CardImage
+                        src={item.image.src}
+                        alt={item.image.alt}
+                        fill
+                        sizes="(max-width: 959px) 90vw, 31vw"
+                    />
 
-                {item.href ? (
-                    <Arrow aria-hidden="true">↗</Arrow>
-                ) : null}
-            </ImageWrap>
+                    {item.href ? <Arrow aria-hidden="true">↗</Arrow> : null}
+                </ImageWrap>
+            ) : null}
         </>
     );
 }

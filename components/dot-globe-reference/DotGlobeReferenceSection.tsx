@@ -66,7 +66,7 @@ export interface DotGlobeReferenceSectionProps {
 
 export default function DotGlobeReferenceSection({
     phoneNumber = "",
-    emailAddress = "info@tresmind.com",
+    emailAddress = "hello@tresmind.com",
     locationText = "US · UK · Europe · Australia · UAE · Saudi Arabia",
     contactCta,
     textColor,

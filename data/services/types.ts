@@ -38,7 +38,7 @@ export interface ServiceCapabilityItem {
     id: string;
     title: string;
     description: string;
-    image: {
+    image?: {
         src: string;
         alt: string;
     };
@@ -71,8 +71,8 @@ export interface ServiceProcessStep {
     number: string;
     title: string;
     description: string;
-    backgroundImage: { src: string; alt: string };
-    foregroundImage: { src: string; alt: string };
+    backgroundImage?: { src: string; alt: string };
+    foregroundImage?: { src: string; alt: string };
 }
 
 export interface ServiceProcessData {
