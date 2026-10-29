@@ -1,3 +1,5 @@
+'use client';
+
 import Typography from '@mui/material/Typography';
 import type { TypographyProps } from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
