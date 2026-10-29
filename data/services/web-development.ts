@@ -201,11 +201,11 @@ export const webDevelopmentService: ServiceData = {
                 description:
                     'goals, audience, content and features.',
                 backgroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery-bg.png',
+                    src: '/images/services/web-development/WEB-DEVELOPMENT-hero-img.png',
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery.png',
+                    src: '/images/services/web-development/web-dev-1.png',
                     alt: 'Software requirements discovery',
                 },
             },
@@ -215,11 +215,11 @@ export const webDevelopmentService: ServiceData = {
                 title: 'Design',
                 description: 'structure, wireframes and visual design.',
                 backgroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery-bg.png',
+                    src: '/images/services/web-development/WEB-DEVELOPMENT-hero-img.png',
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery.png',
+                    src: '/images/services/web-development/web-dev-2.png',
                     alt: '',
                 },
             },
@@ -229,11 +229,11 @@ export const webDevelopmentService: ServiceData = {
                 title: 'Development',
                 description: 'responsive front end and CMS or backend.',
                 backgroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery-bg.png',
+                    src: '/images/services/web-development/WEB-DEVELOPMENT-hero-img.png',
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery.png',
+                    src: '/images/services/web-development/web-dev-3.png',
                     alt: '',
                 },
             },
@@ -243,11 +243,11 @@ export const webDevelopmentService: ServiceData = {
                 title: 'Testing',
                 description: 'browsers, devices, speed and accessibility basics.',
                 backgroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery-bg.png',
+                    src: '/images/services/web-development/WEB-DEVELOPMENT-hero-img.png',
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery.png',
+                    src: '/images/services/web-development/web-dev-4.png',
                     alt: '',
                 },
             },
@@ -257,11 +257,11 @@ export const webDevelopmentService: ServiceData = {
                 title: 'Launch & care',
                 description: 'go-live, analytics and updates.',
                 backgroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery-bg.png',
+                    src: '/images/services/web-development/WEB-DEVELOPMENT-hero-img.png',
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/software-development/Requirements-Discovery.png',
+                    src: '/images/services/web-development/web-dev-5.png',
                     alt: '',
                 },
             },
