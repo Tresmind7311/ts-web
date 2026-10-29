@@ -88,6 +88,12 @@ export const mobileAppDevelopmentService: ServiceData = {
         ],
     },
 
+    technologyStack: {
+        title: "Mobile technology stack",
+        description: "Choose the right tools for native performance, cross-platform delivery and reliable app releases.",
+        items: ["React Native","Flutter","Swift / iOS","Kotlin / Android","REST & GraphQL APIs","Firebase","App Store & Google Play"],
+    },
+
     showcase: {
         title: 'Mobile Experiences Built Around People',
         description:
