@@ -60,6 +60,7 @@ export interface ServiceData {
     hero: ServiceHeroData;
     listing: ServiceListingData;
     ecosystem?: ServiceEcosystemData;
+    technologyStack?: { title: string; description: string; items: string[] };
     showcase?: ServiceShowcaseData;
     capabilities?: ServiceCapabilitiesData;
     process?: ServiceProcessData;
