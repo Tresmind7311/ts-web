@@ -8,7 +8,7 @@ import type { ServiceFaqData } from '@/data/services/types';
 import { tokens } from '@/theme/theme';
 
 const Section = styled('section')(({ theme }) => ({
-    padding: '80px 24px',
+    padding: 'clamp(52px, 6vw, 84px) 24px',
     backgroundColor: tokens.color.neutral0,
     [theme.breakpoints.down('sm')]: { padding: '56px 16px' },
 }));
@@ -16,13 +16,13 @@ const Section = styled('section')(({ theme }) => ({
 const Question = styled('summary')({
     cursor: 'pointer',
     fontWeight: 600,
-    fontSize: '20px',
-    lineHeight: 1.4,
+    fontSize: 'clamp(16px, 1.5vw, 20px)',
+    lineHeight: 1.45,
 });
 
 const Item = styled('details')({
     borderBottom: `1px solid ${tokens.color.neutral100}`,
-    padding: '20px 0',
+    padding: 'clamp(16px, 2vw, 22px) 0',
     '& p': { margin: '12px 0 0', lineHeight: 1.6 },
 });
 
