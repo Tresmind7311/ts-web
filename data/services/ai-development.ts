@@ -44,6 +44,12 @@ export const aiDevelopmentService: ServiceData = {
     },
 
 
+    technologyStack: {
+        title: "AI & machine learning stack",
+        description: "Practical AI technologies selected around your data, security requirements and product goals.",
+        items: ["Python","LLM APIs","Retrieval-augmented generation","Vector databases","Machine learning","Workflow automation","Model evaluation"],
+    },
+
     showcase: {
         title: 'AI Experiences Built Around Real Needs',
         description:
