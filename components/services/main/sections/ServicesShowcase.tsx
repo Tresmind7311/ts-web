@@ -121,25 +121,38 @@ export default function ServicesShowcase({
     services,
 }: ServicesShowcaseProps) {
     return (
+
         <Section component="section" aria-label="Service categories">
             <Track>
-                {services.map((service, index) => (
-                    <Item
-                        key={service.slug}
-                        style={
-                            {
-                                '--card-delay': `${80 + index * 130}ms`,
-                                '--card-offset': `${CARD_OFFSETS[index] ?? 0}px`,
-                            } as React.CSSProperties
-                        }
-                    >
-                        <ServiceShowcaseCard
-                            service={service}
-                            tilt={CARD_TILTS[index] ?? 0}
-                        />
-                    </Item>
-                ))}
+                {services
+                    .filter((service) =>
+                        [
+                            'mobile-app-development',
+                            'ai-development',
+                            'software-development',
+                            'web-development',
+                            'graphic-designing',
+                            'cloud-consulting',
+                        ].includes(service.slug)
+                    )
+                    .map((service, index) => (
+                        <Item
+                            key={service.slug}
+                            style={
+                                {
+                                    '--card-delay': `${80 + index * 130}ms`,
+                                    '--card-offset': `${CARD_OFFSETS[index] ?? 0}px`,
+                                } as React.CSSProperties
+                            }
+                        >
+                            <ServiceShowcaseCard
+                                service={service}
+                                tilt={CARD_TILTS[index] ?? 0}
+                            />
+                        </Item>
+                    ))}
             </Track>
+
             <Image
                 src="/images/fade.png"
                 alt=""
@@ -150,9 +163,10 @@ export default function ServicesShowcase({
                     height: 'auto',
                     position: 'absolute',
                     bottom: '0',
-                    zIndex: '1'
+                    zIndex: '1',
                 }}
             />
         </Section>
+
     );
 }
