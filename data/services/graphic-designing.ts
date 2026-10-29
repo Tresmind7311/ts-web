@@ -40,6 +40,12 @@ export const graphicDesigningService: ServiceData = {
         },
         order: 5,
     },
+    technologyStack: {
+        title: "Design tools & deliverables",
+        description: "A flexible design workflow that keeps visual systems consistent across digital and print touchpoints.",
+        items: ["Figma","Adobe Illustrator","Adobe Photoshop","Brand systems","UI design","Social media assets","Print-ready artwork"],
+    },
+
     showcase: {
         title: 'Visuals Built Around Your Brand',
         description:
