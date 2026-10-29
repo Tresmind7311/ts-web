@@ -44,6 +44,12 @@ export const webDevelopmentService: ServiceData = {
     },
 
 
+    technologyStack: {
+        title: "Web development technology stack",
+        description: "Modern frontend, backend and content platforms selected to fit your performance and publishing needs.",
+        items: ["Next.js","React","TypeScript","Node.js","WordPress / CMS","E-commerce integrations","SEO & analytics"],
+    },
+
     showcase: {
         title: 'Web Experiences Built Around Your Business',
         description:
