@@ -188,6 +188,7 @@ const makeService = (
             description: `A successful ${name.toLowerCase()} solution connects people, processes and technology instead of treating each part in isolation.`,
             flow: 'Discover → Plan → Design → Build → Validate → Improve',
             closingText: 'The result is a clearer delivery process, shared ownership and a foundation that can evolve with your business.',
+            image: { src: images[2] ?? image, alt: `${name} connected workflow illustration` },
         },
         faq: {
             title: `Frequently asked questions about ${name}`,
