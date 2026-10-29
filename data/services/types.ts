@@ -1,3 +1,5 @@
+import type { ChildPage } from './mobile-children';
+
 export interface ServiceHeroData {
     eyebrow?: string;
     title: string;
@@ -64,6 +66,11 @@ export interface ServiceData {
     capabilities?: ServiceCapabilitiesData;
     process?: ServiceProcessData;
     faq?: ServiceFaqData;
+    detail?: ChildPage & {
+        parentName: string;
+        parentPath: string;
+        related: { label: string; href: string }[];
+    };
 }
 
 export interface ServiceProcessStep {
@@ -106,10 +113,10 @@ export interface ServiceShowcaseData {
 export interface ServiceEcosystemData {
     title: string;
     description: string;
-    flow: string;
-    closingText: string;
+    flow?: string;
+    closingText?: string;
     backgroundColor?: string;
-    image: {
+    image?: {
         src: string;
         alt: string;
     };

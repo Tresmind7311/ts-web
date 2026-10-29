@@ -4,6 +4,7 @@ import { graphicDesigningService } from './graphic-designing';
 import { mobileAppDevelopmentService } from './mobile-app-development';
 import { softwareDevelopmentService } from './software-development';
 import { webDevelopmentService } from './web-development';
+import { staffAugmentationService, blockchainDevelopmentService, digitalMarketingService } from './new-parent-services';
 
 import type { ServiceData } from './types';
 
@@ -14,6 +15,9 @@ export const services = {
     [webDevelopmentService.slug]: webDevelopmentService,
     [graphicDesigningService.slug]: graphicDesigningService,
     [cloudConsultingService.slug]: cloudConsultingService,
+    [staffAugmentationService.slug]: staffAugmentationService,
+    [blockchainDevelopmentService.slug]: blockchainDevelopmentService,
+    [digitalMarketingService.slug]: digitalMarketingService,
 } satisfies Record<string, ServiceData>;
 
 export type ServiceSlug = keyof typeof services;

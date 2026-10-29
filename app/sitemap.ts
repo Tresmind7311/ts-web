@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { childServicePages } from '@/data/services/child-pages';
+import { staffAugmentationService, blockchainDevelopmentService, digitalMarketingService } from '@/data/services/new-parent-services';
 
 const origin = 'https://tresmind.com';
 
@@ -13,6 +14,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/services/web-development',
         '/services/graphic-designing',
         '/services/cloud-consulting',
+        `/services/${staffAugmentationService.slug}`,
+        `/services/${blockchainDevelopmentService.slug}`,
+        `/services/${digitalMarketingService.slug}`,
         '/portfolio',
         '/contact',
         '/privacy-policy',

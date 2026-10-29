@@ -1,5 +1,10 @@
 // Only published pages have destinations. Other proposed pages remain visible without links.
-export const serviceMenu = [
+type ServiceMenuCategory = (
+    | { label: string; href: string }
+    | { label: string }
+) & { children: readonly (string | { label: string; href: string })[] };
+
+export const serviceMenu: readonly ServiceMenuCategory[] = [
     { label: 'Mobile App Development', href: '/services/mobile-app-development', children: [
         { label: 'iOS App Development', href: '/services/mobile-app-development/ios-app-development' },
         { label: 'Android App Development', href: '/services/mobile-app-development/android-app-development' },
@@ -10,11 +15,33 @@ export const serviceMenu = [
         { label: 'CRM Solutions', href: '/services/software-development/crm-solutions' },
         { label: 'CMS Solutions', href: '/services/software-development/cms-solutions' },
     ] },
-    { label: 'Web Development', href: '/services/web-development', children: ['Ecommerce Website Development', 'Web Application Development'] },
-    { label: 'Artificial Intelligence', href: '/services/ai-development', children: ['Generative AI', 'Natural Language Processing', 'AI Agent Development'] },
-    { label: 'Cloud Services', href: '/services/cloud-consulting', children: ['Cloud Application Development', 'Cloud Migration', 'Cloud Support & Maintenance'] },
+    { label: 'Web Development', href: '/services/web-development', children: [
+        { label: 'Ecommerce Website Development', href: '/services/web-development/ecommerce-website-development' },
+        { label: 'Web Application Development', href: '/services/web-development/web-application-development' },
+    ] },
+    { label: 'Artificial Intelligence', href: '/services/ai-development', children: [
+        { label: 'Generative AI', href: '/services/ai-development/generative-ai' },
+        { label: 'Natural Language Processing', href: '/services/ai-development/natural-language-processing' },
+        { label: 'AI Agent Development', href: '/services/ai-development/ai-agent-development' },
+    ] },
+    { label: 'Cloud Services', href: '/services/cloud-consulting', children: [
+        { label: 'Cloud Application Development', href: '/services/cloud-consulting/cloud-application-development' },
+        { label: 'Cloud Migration', href: '/services/cloud-consulting/cloud-migration' },
+        { label: 'Cloud Support & Maintenance', href: '/services/cloud-consulting/cloud-support-and-maintenance' },
+    ] },
     { label: 'Graphic Design', href: '/services/graphic-designing', children: [] },
-    { label: 'Staff Augmentation', children: ['Hire MERN Stack Developers', 'Hire Node.js Developers'] },
-    { label: 'Blockchain Development', children: ['Metaverse Development', 'NFT Development'] },
-    { label: 'Digital Marketing Services', children: ['Search Engine Optimization', 'Answer Engine Optimization', 'Generative Engine Optimization', 'Social Media Marketing'] },
-] as const;
+    { label: 'Staff Augmentation', href: '/services/staff-augmentation', children: [
+        { label: 'Hire MERN Stack Developers', href: '/services/staff-augmentation/hire-mern-stack-developers' },
+        { label: 'Hire Node.js Developers', href: '/services/staff-augmentation/hire-nodejs-developers' },
+    ] },
+    { label: 'Blockchain Development', href: '/services/blockchain-development', children: [
+        { label: 'Metaverse Development', href: '/services/blockchain-development/metaverse-development' },
+        { label: 'NFT Development', href: '/services/blockchain-development/nft-development' },
+    ] },
+    { label: 'Digital Marketing Services', href: '/services/digital-marketing', children: [
+        { label: 'Search Engine Optimization', href: '/services/digital-marketing/search-engine-optimization' },
+        { label: 'Answer Engine Optimization', href: '/services/digital-marketing/answer-engine-optimization' },
+        { label: 'Generative Engine Optimization', href: '/services/digital-marketing/generative-engine-optimization' },
+        { label: 'Social Media Marketing', href: '/services/digital-marketing/social-media-marketing' },
+    ] },
+];

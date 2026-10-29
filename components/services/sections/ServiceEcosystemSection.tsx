@@ -75,6 +75,28 @@ const Illustration = styled(Box)(({ theme }) => ({
     },
 }));
 
+const FallbackIllustration = styled(Box)(({ theme }) => ({
+    position: 'relative',
+    width: '100%',
+    minHeight: 'clamp(300px, 32vw, 440px)',
+    overflow: 'hidden',
+    borderRadius: '28px',
+    background: `radial-gradient(circle at 75% 25%, ${tokens.color.neutral0}, transparent 55%), linear-gradient(140deg, #eafaff, #cbe5fa)`,
+    '&::before, &::after': {
+        content: '""',
+        position: 'absolute',
+        borderRadius: '24px',
+        background: tokens.color.neutral0,
+        boxShadow: tokens.shadow.md,
+    },
+    '&::before': { inset: '14% 28% 24% 10%' },
+    '&::after': {
+        inset: '30% 10% 12% 34%',
+        background: `linear-gradient(145deg, ${tokens.color.neutral0}, #e8f7fd)`,
+    },
+    [theme.breakpoints.down('sm')]: { minHeight: '280px' },
+}));
+
 const Description = styled(Typography)(({ theme }) => ({
     marginTop: '32px',
 
@@ -142,15 +164,11 @@ export default function ServiceEcosystemSection({ data }: Props) {
                             {data.description}
                         </Description>
 
-                        <Flow>
-                            {data.flow}
-                        </Flow>
+                        {data.flow && <Flow>{data.flow}</Flow>}
 
-                        <ClosingText>
-                            {data.closingText}
-                        </ClosingText>
+                        {data.closingText && <ClosingText>{data.closingText}</ClosingText>}
                     </Copy>
-                <Illustration>
+                {data.image ? <Illustration>
                     <Image
                         src={data.image.src}
                         alt={data.image.alt}
@@ -158,7 +176,7 @@ export default function ServiceEcosystemSection({ data }: Props) {
                         height={756}
                         sizes="(max-width: 600px) 200vw, 100vw"
                     />
-                </Illustration>
+                </Illustration> : <FallbackIllustration aria-hidden="true" />}
             </Content>
         </Section>
     );

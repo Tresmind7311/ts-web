@@ -5,13 +5,14 @@ import { styled } from '@mui/material/styles';
 
 import Heading from '@/components/common/Heading';
 import ServiceCapabilities from './sections/ServiceCapabilities';
+import ServiceEcosystemSection from './sections/ServiceEcosystemSection';
 import ServiceFaq from './sections/ServiceFaq';
 import ServiceProcess from './sections/ServiceProcess';
-import type { childServicePages } from '@/data/services/child-pages';
-import type { ServiceProcessData } from '@/data/services/types';
+import ServiceShowcase from './sections/ServiceShowcase';
+import type { ServiceData, ServiceProcessData } from '@/data/services/types';
 import { tokens } from '@/theme/theme';
 
-type ChildServicePage = (typeof childServicePages)[number];
+type ChildServicePage = NonNullable<ServiceData['detail']>;
 
 const containerStyles = {
     width: 'min(100% - 48px, 1200px)',
@@ -79,12 +80,94 @@ const Section = styled('section')({
 
 const WhiteSection = styled(Section)({ background: tokens.color.neutral0 });
 
+const ExplainerLayout = styled(Container)({
+    display: 'grid',
+    gridTemplateColumns: 'minmax(0, 1.05fr) minmax(0, 0.95fr)',
+    alignItems: 'center',
+    gap: 'clamp(40px, 6vw, 88px)',
+    '@media (max-width: 767px)': {
+        gridTemplateColumns: '1fr',
+        gap: '36px',
+    },
+});
+
+const ExplainerCopy = styled('div')({
+    '& h2': { maxWidth: '650px' },
+    '& p': { marginBottom: 0 },
+});
+
+const ExplainerVisual = styled('div')({
+    position: 'relative',
+    minHeight: 'clamp(280px, 32vw, 390px)',
+    overflow: 'hidden',
+    borderRadius: '28px',
+    background: `radial-gradient(circle at 78% 25%, #dff6fd 0%, transparent 45%), ${tokens.color.neutral0} url('/images/services/Main/hero-background.jpg') center / cover no-repeat`,
+    border: `1px solid ${tokens.color.neutral100}`,
+    '&::before': {
+        content: '""',
+        position: 'absolute',
+        inset: '14% 15% 19% 12%',
+        borderRadius: '24px',
+        background: tokens.color.neutral0,
+        boxShadow: '0 24px 60px rgba(16, 19, 108, 0.12)',
+    },
+    '&::after': {
+        content: '""',
+        position: 'absolute',
+        inset: '26% 8% 11% 31%',
+        borderRadius: '22px',
+        border: `1px solid ${tokens.color.neutral100}`,
+        background: 'linear-gradient(145deg, rgba(4, 182, 216, 0.14), rgba(16, 19, 108, 0.08))',
+        boxShadow: '0 16px 40px rgba(16, 19, 108, 0.08)',
+    },
+    '@media (max-width: 767px)': { minHeight: '280px' },
+});
+
 const Split = styled('div')({
     ...containerStyles,
-    display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '64px',
-    '@media (max-width: 599px)': {
-        ...containerStyles['@media (max-width: 599px)'],
-        gridTemplateColumns: '1fr', gap: '32px',
+    display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '24px',
+    '@media (max-width: 767px)': { gridTemplateColumns: '1fr' },
+    '@media (max-width: 599px)': containerStyles['@media (max-width: 599px)'],
+});
+
+const DetailCard = styled('div')(({ theme }) => ({
+    minWidth: 0,
+    padding: 'clamp(28px, 3vw, 44px)',
+    borderRadius: '24px',
+    border: `1px solid ${tokens.color.neutral100}`,
+    background: tokens.color.neutral0,
+    boxShadow: tokens.shadow.sm,
+    '& h2': { marginBottom: '20px' },
+    '& p': { marginBottom: '24px', color: tokens.color.neutral700 },
+    [theme.breakpoints.down('sm')]: { borderRadius: '20px' },
+}));
+
+const DetailList = styled('ul')({
+    '&&': { listStyle: 'none', padding: 0, margin: 0 },
+});
+
+const DetailItem = styled('li')({
+    '&&': {
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '14px',
+        margin: 0,
+        padding: '14px 0',
+    },
+    '&:not(:last-child)': { borderBottom: `1px solid ${tokens.color.neutral100}` },
+    '&::before': {
+        content: '"✓"',
+        display: 'grid',
+        flex: '0 0 22px',
+        placeItems: 'center',
+        width: '22px',
+        height: '22px',
+        marginTop: '3px',
+        borderRadius: '50%',
+        background: `linear-gradient(135deg, ${tokens.color.uv800}, #04b6d8)`,
+        color: tokens.color.neutral0,
+        fontSize: '13px',
+        lineHeight: 1,
     },
 });
 
@@ -111,7 +194,7 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                         <ol>
                             <li><Link href="/">Home</Link></li>
                             <li><Link href="/services">Services</Link></li>
-                            <li><Link href={page.parentPath}>{page.parentName}</Link></li>
+                            {page.parentPath !== '/services' && <li><Link href={page.parentPath}>{page.parentName}</Link></li>}
                             <li aria-current="page">{page.name}</li>
                         </ol>
                     </Breadcrumbs>
@@ -126,12 +209,13 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                 </Container>
             </Hero>
 
-            <Section aria-labelledby="child-intro">
-                <Container>
-                    <Heading id="child-intro" variant="h2">{page.introduction.title}</Heading>
-                    <Lead>{page.introduction.text}</Lead>
-                </Container>
-            </Section>
+            <ServiceShowcase data={{
+                title: page.introduction.title,
+                description: page.introduction.text,
+                columns: page.cards.flatMap(card => card.image
+                    ? [{ images: [{ src: card.image.src, alt: '' }] }]
+                    : []),
+            }} />
 
             <ServiceCapabilities data={{
                 eyebrow: 'Our Expertise',
@@ -147,23 +231,26 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
 
             <Section aria-labelledby="child-deliverables">
                 <Split>
-                    <div>
+                    <DetailCard>
                         <Heading id="child-deliverables" variant="h2">What you get</Heading>
                         <p>These are topics to define in the project scope; exact deliverables depend on the agreed work.</p>
-                        <ul>{page.deliverables.map(item => <li key={item}>{item}</li>)}</ul>
-                    </div>
-                    <div>
+                        <DetailList>{page.deliverables.map(item => <DetailItem key={item}>{item}</DetailItem>)}</DetailList>
+                    </DetailCard>
+                    <DetailCard>
                         <Heading id="child-use-cases" variant="h2">{page.useCases.title}</Heading>
-                        <ul>{page.useCases.items.map(item => <li key={item}>{item}</li>)}</ul>
-                    </div>
+                        <DetailList>{page.useCases.items.map(item => <DetailItem key={item}>{item}</DetailItem>)}</DetailList>
+                    </DetailCard>
                 </Split>
             </Section>
 
             <WhiteSection aria-labelledby="child-explainer">
-                <Container>
-                    <Heading id="child-explainer" variant="h2">{page.explainer.title}</Heading>
-                    <Lead>{page.explainer.text}</Lead>
-                </Container>
+                <ExplainerLayout>
+                    <ExplainerCopy>
+                        <Heading id="child-explainer" variant="h2">{page.explainer.title}</Heading>
+                        <Lead>{page.explainer.text}</Lead>
+                    </ExplainerCopy>
+                    <ExplainerVisual aria-hidden="true" />
+                </ExplainerLayout>
             </WhiteSection>
 
             <ServiceProcess
@@ -174,34 +261,38 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                         const isMobile =
                             page.parentPath ===
                             '/services/mobile-app-development';
+                        const hasProcessArt = ![
+                            '/services',
+                            '/services/staff-augmentation',
+                            '/services/blockchain-development',
+                            '/services/digital-marketing',
+                        ].includes(page.parentPath);
                         return {
                             id: `${page.slug}-process-${index}`,
                             number: String(index + 1).padStart(2, '0'),
                             title: step,
                             description: '',
-                            backgroundImage: {
+                            ...(hasProcessArt && { backgroundImage: {
                                 src: isMobile
                                     ? '/images/services/mobile-app-development/process-bg.jpg'
                                     : '/images/services/software-development/Requirements-Discovery-bg.png',
                                 alt: '',
-                            },
-                            foregroundImage: {
+                            } }),
+                            ...(hasProcessArt && { foregroundImage: {
                                 src: isMobile
                                     ? '/images/services/mobile-app-development/process-01.png'
                                     : '/images/services/software-development/Requirements-Discovery.png',
                                 alt: '',
-                            },
+                            } }),
                         };
                     }),
                 } satisfies ServiceProcessData}
             />
 
-            <WhiteSection aria-labelledby="child-why">
-                <Container>
-                    <Heading id="child-why" variant="h2">{page.why.title}</Heading>
-                    <Lead>{page.why.text}</Lead>
-                </Container>
-            </WhiteSection>
+            <ServiceEcosystemSection data={{
+                title: page.why.title,
+                description: page.why.text,
+            }} />
 
             <ServiceFaq data={page.faq} />
 

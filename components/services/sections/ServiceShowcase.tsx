@@ -420,7 +420,7 @@ export default function ServiceShowcase({
             component="section"
             aria-labelledby="service-showcase-heading"
         >
-            <CollageViewport
+            {imagePool.length > 0 && <CollageViewport
                 maxWidth="lg"
                 disableGutters
             >
@@ -468,11 +468,12 @@ export default function ServiceShowcase({
                         </Column>
                     ))}
                 </CollageStage>
-            </CollageViewport>
+            </CollageViewport>}
 
             <ContentContainer
                 maxWidth="lg"
                 data-visible={inView ? 'true' : 'false'}
+                sx={imagePool.length === 0 ? { marginTop: 0, paddingTop: 'clamp(64px, 7vw, 96px)' } : undefined}
             >
                 <Heading
                     id="service-showcase-heading"

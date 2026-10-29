@@ -6,6 +6,7 @@ import ServiceShowcase from './sections/ServiceShowcase';
 import ServiceProcess from './sections/ServiceProcess';
 import ServiceEcosystemSection from './sections/ServiceEcosystemSection';
 import ServiceFaq from './sections/ServiceFaq';
+import MobileChildPage from './MobileChildPage';
 
 interface ServicePageProps {
     service: ServiceData;
@@ -14,6 +15,8 @@ interface ServicePageProps {
 export default function ServicePage({
     service,
 }: ServicePageProps) {
+    if (service.detail) return <MobileChildPage page={service.detail} />;
+
     return (
         <main>
             <ServiceHero data={service.hero} />
