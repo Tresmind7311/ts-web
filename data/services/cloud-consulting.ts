@@ -38,6 +38,12 @@ export const cloudConsultingService: ServiceData = {
         },
         order: 6,
     },
+    technologyStack: {
+        title: "Cloud platforms & practices",
+        description: "Cloud architecture and operations focused on reliability, security, scaling and cost visibility.",
+        items: ["AWS","Microsoft Azure","Cloud migration","Identity & access","Monitoring","Backup & recovery","Cost optimization"],
+    },
+
     showcase: {
         title: 'Cloud Solutions Built Around Your Business',
         description:
