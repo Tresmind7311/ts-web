@@ -161,7 +161,7 @@ export const cloudConsultingService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/cloud-consulting/Cloud-Computing-process.png',
+                    src: '/images/services/cloud-consulting/Cloud-computing-1.png',
                     alt: 'Cloud assessment and planning',
                 },
             },
@@ -175,7 +175,7 @@ export const cloudConsultingService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/cloud-consulting/Cloud-Computing-process.png',
+                    src: '/images/services/cloud-consulting/Cloud-computing-2.png',
                     alt: '',
                 },
             },
@@ -189,7 +189,7 @@ export const cloudConsultingService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/cloud-consulting/Cloud-Computing-process.png',
+                    src: '/images/services/cloud-consulting/Cloud-computing-3.png',
                     alt: '',
                 },
             },
@@ -203,7 +203,7 @@ export const cloudConsultingService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/cloud-consulting/Cloud-Computing-process.png',
+                    src: '/images/services/cloud-consulting/Cloud-computing-4.png',
                     alt: '',
                 },
             },
@@ -217,7 +217,7 @@ export const cloudConsultingService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/cloud-consulting/Cloud-Computing-process.png',
+                    src: '/images/services/cloud-consulting/Cloud-computing-5.png',
                     alt: '',
                 },
             },
