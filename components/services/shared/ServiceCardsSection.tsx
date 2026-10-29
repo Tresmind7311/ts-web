@@ -45,7 +45,7 @@ const Section = styled(Box)(({ theme }) => ({
     overflow: 'hidden',
     width: '100%',
     marginTop: 'var(--section-margin-top)',
-    borderRadius: '58px 58px 0 0',
+    borderRadius: '36px 36px 0 0',
     backgroundImage: 'var(--section-background)',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -53,7 +53,7 @@ const Section = styled(Box)(({ theme }) => ({
     color: tokens.color.neutral0,
 
     [theme.breakpoints.down('md')]: {
-        borderRadius: '38px 38px 0 0',
+        borderRadius: '20px 20px 0 0',
     },
 
     [theme.breakpoints.down('sm')]: {
@@ -64,8 +64,8 @@ const Section = styled(Box)(({ theme }) => ({
 const SectionContainer = styled(Container)(({ theme }) => ({
     position: 'relative',
     zIndex: 1,
-    paddingTop: '76px',
-    paddingBottom: '72px',
+    paddingTop: 'clamp(48px, 5.5vw, 76px)',
+    paddingBottom: 'clamp(48px, 5.5vw, 72px)',
 
     [theme.breakpoints.down('md')]: {
         paddingTop: '60px',
@@ -86,9 +86,9 @@ const Header = styled(Box)({
 
 const Eyebrow = styled(Typography)({
     fontFamily: tokens.font.display,
-    fontSize: '20px',
-    fontWeight: 600,
-    lineHeight: 1,
+    fontSize: 'clamp(12px, 1.2vw, 16px)',
+    fontWeight: 700,
+    lineHeight: 1.3,
     letterSpacing: '0.08em',
     textTransform: 'uppercase',
     color: tokens.color.neutral0,
@@ -113,26 +113,27 @@ const Intro = styled(Typography)({
     maxWidth: '620px',
     margin: '16px auto 0',
     fontFamily: tokens.font.heroBody,
-    fontSize: '20px',
+    fontSize: 'clamp(15px, 1.25vw, 18px)',
     fontWeight: 400,
-    lineHeight: 1.4,
+    lineHeight: 1.65,
     color: 'rgba(255, 255, 255, 0.65)',
 });
 
 const Grid = styled(Box)(({ theme }) => ({
     display: 'grid',
     gridTemplateColumns: 'repeat(var(--section-columns), minmax(0, 1fr))',
-    gap: '24px',
-    marginTop: '42px',
+    gap: 'clamp(16px, 1.8vw, 24px)',
+    marginTop: 'clamp(26px, 3vw, 40px)',
 
     [theme.breakpoints.down('lg')]: {
         gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+        gap: '18px',
     },
 
     [theme.breakpoints.down('sm')]: {
         gridTemplateColumns: '1fr',
-        gap: '18px',
-        marginTop: '32px',
+        gap: '16px',
+        marginTop: '26px',
     },
 }));
 
