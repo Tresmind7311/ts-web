@@ -43,6 +43,12 @@ export const softwareDevelopmentService: ServiceData = {
         order: 3,
     },
 
+    technologyStack: {
+        title: "Software engineering stack",
+        description: "A maintainable engineering foundation for business applications, integrations and internal tools.",
+        items: ["TypeScript","React","Node.js","Python","REST APIs","SQL databases","Automated testing"],
+    },
+
     showcase: {
         title: 'Software Shaped Around Your Workflow',
         description:
