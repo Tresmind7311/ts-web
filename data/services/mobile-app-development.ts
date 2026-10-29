@@ -209,7 +209,7 @@ export const mobileAppDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/mobile-app-development/process-01.png',
+                    src: '/images/services/mobile-app-development/mob-dev-1.png',
                     alt: 'Discovery and planning process',
                 },
             },
@@ -224,7 +224,7 @@ export const mobileAppDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/mobile-app-development/process-01.png',
+                    src: '/images/services/mobile-app-development/mob-dev-2.png',
                     alt: 'Application architecture and design',
                 },
             },
@@ -239,7 +239,7 @@ export const mobileAppDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/mobile-app-development/process-01.png',
+                    src: '/images/services/mobile-app-development/mob-dev-3.png',
                     alt: 'Mobile application development',
                 },
             },
@@ -254,7 +254,7 @@ export const mobileAppDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/mobile-app-development/process-01.png',
+                    src: '/images/services/mobile-app-development/mob-dev-4.png',
                     alt: 'Application testing and optimization',
                 },
             },
@@ -269,7 +269,7 @@ export const mobileAppDevelopmentService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: '/images/services/mobile-app-development/process-01.png',
+                    src: '/images/services/mobile-app-development/mob-dev-5.png',
                     alt: 'Application deployment and support',
                 },
             },
