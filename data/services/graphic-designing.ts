@@ -169,7 +169,7 @@ export const graphicDesigningService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: `${imageBase}/process-img.png`,
+                    src: '/images/services/graphic-designing/graphic-designing-1.png',
                     alt: 'Graphic design discovery and brief',
                 },
             },
@@ -183,7 +183,7 @@ export const graphicDesigningService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: `${imageBase}/process-img.png`,
+                    src: '/images/services/graphic-designing/graphic-designing-2.png',
                     alt: '',
                 },
             },
@@ -197,7 +197,7 @@ export const graphicDesigningService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: `${imageBase}/process-img.png`,
+                    src: '/images/services/graphic-designing/graphic-designing-3.png',
                     alt: '',
                 },
             },
@@ -211,7 +211,7 @@ export const graphicDesigningService: ServiceData = {
                     alt: '',
                 },
                 foregroundImage: {
-                    src: `${imageBase}/process-img.png`,
+                    src: '/images/services/graphic-designing/graphic-designing-4.png',
                     alt: '',
                 },
             },
