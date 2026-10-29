@@ -21,7 +21,7 @@ const HeroSection = styled(Box)(({ theme }) => ({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    minHeight: 'clamp(680px, 82svh, 880px)',
+    minHeight: 'clamp(620px, 78svh, 800px)',
     width: '100%',
     overflow: 'hidden',
     backgroundImage: `url('${SERVICE_HERO_BACKGROUND}')`,
@@ -52,28 +52,28 @@ const HeroContainer = styled(Container)(({ theme }) => ({
     position: 'relative',
     width: '100%',
     display: 'grid',
-    gridTemplateColumns: 'minmax(0, 0.88fr) minmax(480px, 1.12fr)',
+    gridTemplateColumns: 'minmax(0, 0.9fr) minmax(0, 1.1fr)',
     alignItems: 'center',
     gap: 'clamp(24px, 4vw, 72px)',
-    paddingTop: 'clamp(72px, 8vw, 112px)',
-    paddingBottom: '0',
-    paddingLeft: 0,
-    paddingRight: 0,
+    paddingTop: 'clamp(88px, 9vw, 128px)',
+    paddingBottom: 'clamp(32px, 4vw, 60px)',
+    paddingLeft: 'clamp(24px, 3vw, 48px)',
+    paddingRight: 'clamp(24px, 3vw, 48px)',
 
     [theme.breakpoints.down('lg')]: {
-        gridTemplateColumns: 'minmax(0, 0.92fr) minmax(420px, 1.08fr)',
+        gridTemplateColumns: 'minmax(0, 0.92fr) minmax(0, 1.08fr)',
         gap: '22px',
     },
 
     [theme.breakpoints.down('md')]: {
         gridTemplateColumns: '1fr',
         gap: '28px',
-        padding: '64px 24px',
+        padding: '64px 24px 48px',
     },
 
     [theme.breakpoints.down('sm')]: {
-        paddingTop: '56px',
-        paddingBottom: '38px',
+        paddingTop: '48px',
+        paddingBottom: '32px',
     },
 }));
 
@@ -166,10 +166,10 @@ const Visual = styled(Box)(({ theme }) => ({
     position: 'relative',
     width: '100%',
     minWidth: 0,
-    height: 'clamp(470px, 48vw, 690px)',
+    height: 'clamp(390px, 43vw, 620px)',
 
     [theme.breakpoints.down('lg')]: {
-        height: 'clamp(430px, 48vw, 590px)',
+        height: 'clamp(360px, 42vw, 540px)',
     },
 
     [theme.breakpoints.down('md')]: {
