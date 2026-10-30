@@ -52,7 +52,7 @@ const TechnologyItem = styled(Box)({
 });
 
 const ContactSection = styled(Box)(({ theme }) => ({
-    padding: '90px 24px',
+    padding: 'clamp(64px, 7vw, 96px) 24px',
     color: '#fff',
     textAlign: 'center',
     background: 'linear-gradient(125deg, #071963 0%, #075db6 58%, #08a8d1 100%)',
@@ -123,7 +123,7 @@ export default function ServicePage({ service }: ServicePageProps) {
                     <Typography component="p" sx={{ mb: 1.5, fontSize: 12, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,.78)' }}>
                         Let’s build something useful
                     </Typography>
-                    <Typography id="service-contact-heading" component="h2" sx={{ fontSize: 'clamp(32px, 5vw, 58px)', lineHeight: 1.08, fontWeight: 800, letterSpacing: '-0.04em' }}>
+                    <Typography id="service-contact-heading" component="h2" sx={{ color: '#ffffff', WebkitTextFillColor: '#ffffff', background: 'none', fontFamily: tokens.font.display, fontSize: 'clamp(32px, 5vw, 58px)', lineHeight: 1.08, fontWeight: 800, letterSpacing: '-0.04em', m: 0 }}>
                         Ready to discuss your {service.name.toLowerCase()} project?
                     </Typography>
                     <Typography component="p" sx={{ maxWidth: 650, mx: 'auto', mt: 2, color: 'rgba(255,255,255,.82)', lineHeight: 1.7 }}>
