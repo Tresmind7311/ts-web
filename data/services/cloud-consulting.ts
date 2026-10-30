@@ -33,8 +33,8 @@ export const cloudConsultingService: ServiceData = {
             alt: 'Cloud consulting service illustration',
         },
         offerImage: {
-            src: '/images/services/cloud-consulting/offer-card.png',
-            alt: 'Cloud infrastructure and consulting',
+            src: '/images/services/cloud-consulting/Cloud-computing-hero.png',
+            alt: 'Cloud infrastructure, migration and security illustration',
         },
         order: 6,
     },

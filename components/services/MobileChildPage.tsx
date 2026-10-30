@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { styled } from '@mui/material/styles';
 
 import Heading from '@/components/common/Heading';
@@ -13,6 +14,78 @@ import type { ServiceData, ServiceProcessData } from '@/data/services/types';
 import { tokens } from '@/theme/theme';
 
 type ChildServicePage = NonNullable<ServiceData['detail']>;
+
+const processArtByParent: Record<string, {
+    backgroundImage: string;
+    foregroundImage: string;
+    foregroundAlt: string;
+    showcaseImages: { src: string; alt: string }[];
+    explainerImage: { src: string; alt: string };
+}> = {
+    '/services/mobile-app-development': {
+        backgroundImage: '/images/services/mobile-app-development/process-bg.jpg',
+        foregroundImage: '/images/services/mobile-app-development/process-01.png',
+        foregroundAlt: 'Mobile application development process',
+        showcaseImages: [1, 2, 3, 4, 5, 6].map((n) => ({ src: `/images/services/mobile-app-development/mob-dev-${n}.png`, alt: `Mobile app interface concept ${n}` })),
+        explainerImage: { src: '/images/services/mobile-app-development/API-Backend.jpg', alt: 'Mobile application connected to an API and backend' },
+    },
+    '/services/software-development': {
+        backgroundImage: '/images/services/software-development/Requirements-Discovery-bg.png',
+        foregroundImage: '/images/services/software-development/Requirements-Discovery.png',
+        foregroundAlt: 'Software requirements discovery',
+        showcaseImages: [1, 2, 3, 4, 5, 6].map((n) => ({ src: `/images/services/software-development/Software-DEVELOPMENT-${n}.png`, alt: `Software development concept ${n}` })),
+        explainerImage: { src: '/images/services/software-development/Dashboard.png', alt: 'Business software dashboard interface' },
+    },
+    '/services/web-development': {
+        backgroundImage: '/images/services/software-development/Requirements-Discovery-bg.png',
+        foregroundImage: '/images/services/software-development/Requirements-Discovery.png',
+        foregroundAlt: 'Website requirements discovery',
+        showcaseImages: [1, 2, 3, 4, 5, 6].map((n) => ({ src: `/images/services/web-development/web-dev-${n}.png`, alt: `Web development concept ${n}` })),
+        explainerImage: { src: '/images/services/web-development/WEB-DEVELOPMENT-hero-img.png', alt: 'Website and web application design' },
+    },
+    '/services/ai-development': {
+        backgroundImage: '/images/services/ai-development/process-bg.png',
+        foregroundImage: '/images/services/ai-development/Requirements-Discovery.png',
+        foregroundAlt: 'AI use case discovery',
+        showcaseImages: [1, 2, 3, 4, 5, 6].map((n) => ({ src: `/images/services/ai-development/ai-development-${n}.png`, alt: `AI development concept ${n}` })),
+        explainerImage: { src: '/images/services/ai-development/AI-Feature.png', alt: 'Artificial intelligence feature interface' },
+    },
+    '/services/cloud-consulting': {
+        backgroundImage: '/images/services/cloud-consulting/process-bg.png',
+        foregroundImage: '/images/services/cloud-consulting/Cloud-Computing-process.png',
+        foregroundAlt: 'Cloud consulting process',
+        showcaseImages: [1, 2, 3, 4, 5, 6].map((n) => ({ src: `/images/services/cloud-consulting/Cloud-computing-${n}.png`, alt: `Cloud computing concept ${n}` })),
+        explainerImage: { src: '/images/services/cloud-consulting/Cloud-computing-hero.png', alt: 'Cloud infrastructure architecture' },
+    },
+    '/services/graphic-designing': {
+        backgroundImage: '/images/services/graphic-designing/process-bg.png',
+        foregroundImage: '/images/services/graphic-designing/process-img.png',
+        foregroundAlt: 'Graphic design process',
+        showcaseImages: [1, 2, 3, 4, 5, 6].map((n) => ({ src: `/images/services/graphic-designing/graphic-designing-${n}.png`, alt: `Graphic design concept ${n}` })),
+        explainerImage: { src: '/images/services/graphic-designing/graphic-designing-hero.png', alt: 'Graphic design composition' },
+    },
+    '/services/staff-augmentation': {
+        backgroundImage: '/images/services/software-development/Requirements-Discovery-bg.png',
+        foregroundImage: '/images/services/software-development/Requirements-Discovery.png',
+        foregroundAlt: 'Team requirements and role discovery',
+        showcaseImages: [1, 2, 3, 4, 5, 6].map((n) => ({ src: `/images/services/software-development/Software-DEVELOPMENT-${n}.png`, alt: `Software team work concept ${n}` })),
+        explainerImage: { src: '/images/services/software-development/Dashboard.png', alt: 'Software team working with a business dashboard' },
+    },
+    '/services/blockchain-development': {
+        backgroundImage: '/images/services/ai-development/process-bg.png',
+        foregroundImage: '/images/services/ai-development/Requirements-Discovery.png',
+        foregroundAlt: 'Technology project requirements discovery',
+        showcaseImages: [1, 2, 3, 4, 5, 6].map((n) => ({ src: `/images/services/ai-development/ai-development-${n}.png`, alt: `Technology concept ${n}` })),
+        explainerImage: { src: '/images/services/ai-development/AI-Feature.png', alt: 'Digital technology interface concept' },
+    },
+    '/services/digital-marketing': {
+        backgroundImage: '/images/services/graphic-designing/process-bg.png',
+        foregroundImage: '/images/services/graphic-designing/process-img.png',
+        foregroundAlt: 'Digital content planning process',
+        showcaseImages: [1, 2, 3, 4, 5, 6].map((n) => ({ src: `/images/services/graphic-designing/graphic-designing-${n}.png`, alt: `Digital creative concept ${n}` })),
+        explainerImage: { src: '/images/services/graphic-designing/graphic-designing-hero.png', alt: 'Digital campaign creative design' },
+    },
+};
 
 const containerStyles = {
     width: 'min(100% - 48px, 1200px)',
@@ -120,6 +193,8 @@ const ExplainerVisual = styled('div')({
         background: 'linear-gradient(145deg, rgba(4, 182, 216, 0.14), rgba(16, 19, 108, 0.08))',
         boxShadow: '0 16px 40px rgba(16, 19, 108, 0.08)',
     },
+    '&:has(img)::before, &:has(img)::after': { display: 'none' },
+    '& img': { objectFit: 'cover' },
     '@media (max-width: 767px)': { minHeight: '280px' },
 });
 
@@ -186,6 +261,10 @@ const Related = styled('nav')({
 });
 
 export default function MobileChildPage({ page }: { page: ChildServicePage }) {
+    const processArt = processArtByParent[page.parentPath] ??
+        processArtByParent[`/services/${page.slug}`];
+    const showcaseImages = processArt?.showcaseImages ?? [];
+
     return (
         <Page>
             <Hero aria-labelledby="child-service-title">
@@ -212,9 +291,7 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
             <ServiceShowcase data={{
                 title: page.introduction.title,
                 description: page.introduction.text,
-                columns: page.cards.flatMap(card => card.image
-                    ? [{ images: [{ src: card.image.src, alt: '' }] }]
-                    : []),
+                columns: page.cards.map((card, index) => ({ images: [card.image ?? showcaseImages[index % Math.max(showcaseImages.length, 1)]].filter((image): image is NonNullable<typeof image> => Boolean(image)) })),
             }} />
 
             <ServiceCapabilities data={{
@@ -249,7 +326,9 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                         <Heading id="child-explainer" variant="h2">{page.explainer.title}</Heading>
                         <Lead>{page.explainer.text}</Lead>
                     </ExplainerCopy>
-                    <ExplainerVisual aria-hidden="true" />
+                    {processArt?.explainerImage ? <ExplainerVisual>
+                        <Image src={processArt.explainerImage.src} alt={processArt.explainerImage.alt} fill sizes="(max-width: 600px) 100vw, 50vw" />
+                    </ExplainerVisual> : <ExplainerVisual aria-hidden="true" />}
                 </ExplainerLayout>
             </WhiteSection>
 
@@ -258,31 +337,18 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                     title: 'Our process',
                     description: '',
                     steps: page.process.map((step, index) => {
-                        const isMobile =
-                            page.parentPath ===
-                            '/services/mobile-app-development';
-                        const hasProcessArt = ![
-                            '/services',
-                            '/services/staff-augmentation',
-                            '/services/blockchain-development',
-                            '/services/digital-marketing',
-                        ].includes(page.parentPath);
                         return {
                             id: `${page.slug}-process-${index}`,
                             number: String(index + 1).padStart(2, '0'),
                             title: step,
                             description: '',
-                            ...(hasProcessArt && { backgroundImage: {
-                                src: isMobile
-                                    ? '/images/services/mobile-app-development/process-bg.jpg'
-                                    : '/images/services/software-development/Requirements-Discovery-bg.png',
+                            ...(processArt && { backgroundImage: {
+                                src: processArt.backgroundImage,
                                 alt: '',
                             } }),
-                            ...(hasProcessArt && { foregroundImage: {
-                                src: isMobile
-                                    ? '/images/services/mobile-app-development/process-01.png'
-                                    : '/images/services/software-development/Requirements-Discovery.png',
-                                alt: '',
+                            ...(processArt && { foregroundImage: {
+                                src: processArt.foregroundImage,
+                                alt: processArt.foregroundAlt,
                             } }),
                         };
                     }),
@@ -292,6 +358,10 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
             <ServiceEcosystemSection data={{
                 title: page.why.title,
                 description: page.why.text,
+                ...(page.parentPath !== '/services' && { image: {
+                    src: '/images/services/mobile-app-development/mobile-ecosystem.png',
+                    alt: 'Mobile application, API and backend ecosystem illustration',
+                } }),
             }} />
 
             <ServiceFaq data={page.faq} />

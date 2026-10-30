@@ -2,7 +2,7 @@
     position: relative;
     min-height: clamp(430px, 42vw, 570px);
     overflow: hidden;
-    background-image: url('/images/services/main/hero-background.webp');
+    background-image: url('/images/services/Main/hero-background.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

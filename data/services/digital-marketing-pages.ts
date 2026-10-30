@@ -22,7 +22,7 @@ export const digitalMarketingParent: ChildPage = {
         { question: 'Do I need all four services?', answer: 'Choose the mix after reviewing your audience, goals and budget.' },
         { question: 'How long until we see results?', answer: 'Organic results can take months; set milestones after an audit of the starting position.' },
         { question: 'Do you guarantee first-page rankings?', answer: 'No provider controls search or AI rankings.' },
-        { question: 'Do you run paid ads?', answer: 'Paid social may be considered in the social plan. Google Ads management has not been confirmed.' },
+        { question: 'Do you run paid ads?', answer: 'Paid social can be considered in a social plan. Other ad services should be agreed separately.' },
         { question: 'Do you work with clients in different countries?', answer: 'Market requirements and language capability should be confirmed before a regional campaign is scoped.' },
     ] },
     closing: { title: 'Want to be found by the right buyers?', text: 'Start with an audit of search, AI answer and social visibility.' },
