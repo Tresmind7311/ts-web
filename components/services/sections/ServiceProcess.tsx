@@ -224,7 +224,7 @@ const StepNumber = styled(Box)({
 const CarouselViewport = styled(Box)(({ theme }) => ({
     position: 'relative',
     width: '100%',
-    height: 'clamp(260px, 29vw, 370px)',
+    height: 'clamp(280px, 31vw, 390px)',
     marginTop: 'clamp(26px, 3vw, 42px)',
 
     touchAction: 'pan-y',
@@ -253,10 +253,11 @@ const Slide = styled(Box)(({ theme }) => ({
     left: '50%',
     zIndex: 1,
 
-    width: 'min(34vw, 420px)',
-    height: 'min(22vw, 270px)',
+    width: 'min(32vw, 400px)',
+    height: 'min(21vw, 260px)',
 
     opacity: 0,
+    borderRadius: '22px',
 
     transform:
         'translateX(-50%) translateX(var(--slide-x)) scale(var(--slide-scale))',
@@ -279,18 +280,18 @@ const Slide = styled(Box)(({ theme }) => ({
     },
 
     '&[data-position="prev"]': {
-        '--slide-x': '-min(39vw, 490px)',
+        '--slide-x': '-min(43vw, 540px)',
         '--slide-scale': '0.72',
 
         zIndex: 4,
-        opacity: 1,
+        opacity: 0.62,
         filter: 'saturate(0.92)',
         cursor: 'pointer',
         opacity: 0.82,
     },
 
     '&[data-position="next"]': {
-        '--slide-x': 'min(39vw, 490px)',
+        '--slide-x': 'min(43vw, 540px)',
         '--slide-scale': '0.72',
 
         zIndex: 4,
@@ -318,8 +319,8 @@ const Slide = styled(Box)(({ theme }) => ({
     },
 
     [theme.breakpoints.down('lg')]: {
-        width: 'min(42vw, 390px)',
-        height: 'min(27vw, 250px)',
+        width: 'min(38vw, 360px)',
+        height: 'min(25vw, 240px)',
 
         '&[data-position="prev"]': {
             '--slide-x': '-min(36vw, 330px)',
@@ -331,8 +332,8 @@ const Slide = styled(Box)(({ theme }) => ({
     },
 
     [theme.breakpoints.down('md')]: {
-        width: 'min(48vw, 340px)',
-        height: '220px',
+        width: 'min(48vw, 320px)',
+        height: '210px',
 
         '&[data-position="prev"]': {
             '--slide-x': '-min(35vw, 250px)',
@@ -349,6 +350,7 @@ const Slide = styled(Box)(({ theme }) => ({
         width: 'min(78vw, 330px)',
         maxWidth: '330px',
         height: '210px',
+        borderRadius: '16px',
 
         '&[data-position="prev"]': {
             '--slide-x': '-72vw',
@@ -375,7 +377,8 @@ const Card = styled(Box)(({ theme }) => ({
     width: '100%',
     height: '100%',
     overflow: 'visible',
-    borderRadius: '18px',
+    borderRadius: '22px',
+    boxShadow: '0 18px 48px rgba(12, 36, 90, 0.12)',
 
     [theme.breakpoints.down('sm')]: {
         borderRadius: '15px',
@@ -410,6 +413,7 @@ const ForegroundWrap = styled(Box)(({ theme }) => ({
     left: '50%',
     bottom: '-4px',
 
+    display: 'none',
     width: '64%',
     height: '112%',
 
@@ -740,20 +744,7 @@ export default function ServiceProcess({
                                         <BackgroundShade />
                                     </BackgroundWrap>
 
-                                    <ForegroundWrap>
-                                        <ForegroundImage
-                                            src={
-                                                step.foregroundImage
-                                                    .src
-                                            }
-                                            alt={
-                                                step.foregroundImage
-                                                    .alt
-                                            }
-                                            fill
-                                            sizes="(max-width: 600px) 65vw, (max-width: 960px) 300px, 360px"
-                                        />
-                                    </ForegroundWrap>
+
                                 </Card>
                             </Slide>
                         );
