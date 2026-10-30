@@ -128,7 +128,7 @@ const Section = styled(Box)(({ theme }) => ({
     position: 'relative',
     width: '100%',
     overflow: 'hidden',
-    padding: 'clamp(64px, 7vw, 96px) 0 clamp(68px, 8vw, 112px)',
+    padding: 'clamp(42px, 5vw, 64px) 0 clamp(64px, 7vw, 88px)',
     backgroundColor: tokens.color.neutral0,
 
     [theme.breakpoints.down('md')]: {
@@ -185,7 +185,7 @@ const Intro = styled(Typography)(({ theme }) => ({
 
 const ProcessArea = styled(Container)(({ theme }) => ({
     position: 'relative',
-    marginTop: 'clamp(28px, 3.5vw, 48px)',
+    marginTop: 'clamp(30px, 3.2vw, 42px)',
 
     [theme.breakpoints.down('sm')]: {
         marginTop: '28px',
@@ -202,8 +202,8 @@ const NumberWrap = styled(Box)({
 const StepNumber = styled(Box)({
     display: 'grid',
     placeItems: 'center',
-    width: 'clamp(64px, 6.5vw, 88px)',
-    height: 'clamp(64px, 6.5vw, 88px)',
+    width: 'clamp(68px, 7vw, 100px)',
+    height: 'clamp(68px, 7vw, 100px)',
     borderRadius: '50%',
 
     fontFamily: tokens.font.display,
@@ -224,8 +224,8 @@ const StepNumber = styled(Box)({
 const CarouselViewport = styled(Box)(({ theme }) => ({
     position: 'relative',
     width: '100%',
-    height: 'clamp(260px, 29vw, 370px)',
-    marginTop: 'clamp(26px, 3vw, 42px)',
+    height: 'clamp(300px, 30vw, 390px)',
+    marginTop: 'clamp(34px, 3.2vw, 46px)',
 
     touchAction: 'pan-y',
 
@@ -234,7 +234,7 @@ const CarouselViewport = styled(Box)(({ theme }) => ({
     },
 
     [theme.breakpoints.down('md')]: {
-        height: '280px',
+        height: '270px',
         marginTop: '24px',
     },
 
@@ -253,8 +253,8 @@ const Slide = styled(Box)(({ theme }) => ({
     left: '50%',
     zIndex: 1,
 
-    width: 'min(34vw, 420px)',
-    height: 'min(22vw, 270px)',
+    width: 'min(38vw, 455px)',
+    height: 'min(25vw, 290px)',
 
     opacity: 0,
 
@@ -279,7 +279,7 @@ const Slide = styled(Box)(({ theme }) => ({
     },
 
     '&[data-position="prev"]': {
-        '--slide-x': '-min(39vw, 490px)',
+        '--slide-x': '-min(36vw, 440px)',
         '--slide-scale': '0.72',
 
         zIndex: 4,
@@ -289,7 +289,7 @@ const Slide = styled(Box)(({ theme }) => ({
     },
 
     '&[data-position="next"]': {
-        '--slide-x': 'min(39vw, 490px)',
+        '--slide-x': 'min(36vw, 440px)',
         '--slide-scale': '0.72',
 
         zIndex: 4,
@@ -317,15 +317,15 @@ const Slide = styled(Box)(({ theme }) => ({
     },
 
     [theme.breakpoints.down('lg')]: {
-        width: 'min(42vw, 390px)',
-        height: 'min(27vw, 250px)',
+        width: 'min(42vw, 410px)',
+        height: 'min(28vw, 260px)',
 
         '&[data-position="prev"]': {
-            '--slide-x': '-min(36vw, 330px)',
+            '--slide-x': '-min(35vw, 320px)',
         },
 
         '&[data-position="next"]': {
-            '--slide-x': 'min(36vw, 330px)',
+            '--slide-x': 'min(35vw, 320px)',
         },
     },
 
