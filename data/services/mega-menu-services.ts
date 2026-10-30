@@ -98,21 +98,139 @@ const makeService = (
         return { src, alt: `${name} — ${['planning', 'design', 'implementation', 'delivery'][index % 4]}` };
     };
 
-    const capabilityItems = [
-        { key: 'strategy', title: 'Discovery & strategy', description: `We clarify goals, users, constraints and success measures before recommending the right approach for ${name.toLowerCase()}.` },
-        { key: 'experience', title: 'User experience & planning', description: `We map key journeys, priorities and requirements so the solution fits real customer and team needs.` },
-        { key: 'design', title: 'Design & prototyping', description: `We shape the interface and validate important decisions early, before investing in full implementation.` },
-        { key: 'engineering', title: 'Development & integration', description: `We build the agreed scope and connect the systems, data and workflows needed for ${name.toLowerCase()}.` },
-        { key: 'quality', title: 'Testing & quality', description: 'We check core journeys, accessibility, responsiveness, reliability and edge cases before release.' },
-        { key: 'growth', title: 'Launch & improvement', description: 'We prepare the handover, monitor results and identify sensible improvements after launch.' },
-    ];
-
-    const processSteps = [
-        { key: 'discover', number: '01', title: 'Discovery & goals', description: 'Align on business goals, audience, current challenges and measurable outcomes.' },
-        { key: 'plan', number: '02', title: 'Planning & design', description: 'Define scope, user journeys, technical direction and a realistic delivery roadmap.' },
-        { key: 'build', number: '03', title: 'Build & validate', description: 'Deliver in reviewable stages, test important journeys and keep stakeholders involved.' },
-        { key: 'launch', number: '04', title: 'Launch & evolve', description: 'Prepare release, hand over documentation and plan ongoing improvements.' },
-    ];
+    const contentByGroup: Record<string, { capabilities: Array<{ key: string; title: string; description: string }>; process: Array<{ key: string; number: string; title: string; description: string }> }> = {
+        'App Development': {
+            capabilities: [
+                { key: 'product', title: 'Product discovery & roadmap', description: 'Prioritize user needs, platform requirements and a realistic first release before development begins.' },
+                { key: 'ux', title: 'Mobile UX & interface design', description: 'Map intuitive mobile journeys, accessible interactions and interface patterns that feel natural on the target devices.' },
+                { key: 'architecture', title: 'App architecture & APIs', description: 'Plan app structure, authentication, API contracts, offline states and secure data exchange.' },
+                { key: 'engineering', title: 'Native & cross-platform builds', description: 'Implement the app for the selected platforms with reusable components and maintainable code.' },
+                { key: 'qa', title: 'Device testing & performance', description: 'Validate layouts, permissions, loading states, crashes and performance across representative devices.' },
+                { key: 'release', title: 'Store release & iteration', description: 'Prepare store assets, release checks, analytics and a post-launch improvement backlog.' },
+            ],
+            process: [
+                { key: 'discover', number: '01', title: 'Product discovery', description: 'Confirm user needs, platform scope, must-have features and launch success measures.' },
+                { key: 'prototype', number: '02', title: 'UX & prototype', description: 'Validate navigation, key screens and important mobile interactions before full build.' },
+                { key: 'engineer', number: '03', title: 'Build & device QA', description: 'Develop in reviewable increments and test integrations, devices and release-critical flows.' },
+                { key: 'release', number: '04', title: 'Release & improve', description: 'Prepare the store submission, monitor feedback and prioritize the next improvements.' },
+            ],
+        },
+        'Business Solutions': {
+            capabilities: [
+                { key: 'workflow', title: 'Workflow & requirements mapping', description: 'Map how teams currently handle records, approvals, reporting and handoffs to identify the right system scope.' },
+                { key: 'data', title: 'Data model & migration planning', description: 'Define core entities, permissions, data quality rules and a safe approach to importing existing information.' },
+                { key: 'configuration', title: 'System configuration & UX', description: 'Shape dashboards, roles, forms and workflows around how your team actually works.' },
+                { key: 'integration', title: 'Business system integrations', description: 'Connect relevant finance, sales, inventory, content and communication tools through reliable integrations.' },
+                { key: 'security', title: 'Access control & validation', description: 'Test role permissions, critical workflows, reporting accuracy and recovery paths before rollout.' },
+                { key: 'adoption', title: 'Rollout & team enablement', description: 'Prepare documentation, team onboarding and a phased adoption plan to make the new system useful.' },
+            ],
+            process: [
+                { key: 'audit', number: '01', title: 'Process discovery', description: 'Review current systems, pain points, data sources and the outcomes teams need.' },
+                { key: 'model', number: '02', title: 'Solution blueprint', description: 'Agree on workflows, data structure, roles, reports and integration boundaries.' },
+                { key: 'configure', number: '03', title: 'Configure & validate', description: 'Build and integrate the solution, then validate representative real-world scenarios.' },
+                { key: 'adopt', number: '04', title: 'Rollout & optimize', description: 'Support adoption, monitor usage and refine workflows based on team feedback.' },
+            ],
+        },
+        'Web Development': {
+            capabilities: [
+                { key: 'strategy', title: 'Website strategy & structure', description: 'Plan audience journeys, page hierarchy, conversion goals and the content needed to support them.' },
+                { key: 'design', title: 'Responsive UI & UX', description: 'Create a consistent visual system with accessible layouts and clear actions across desktop and mobile.' },
+                { key: 'frontend', title: 'Frontend development', description: 'Build fast, maintainable interfaces with reusable components and responsive behavior.' },
+                { key: 'backend', title: 'CMS, commerce & integrations', description: 'Connect content management, product catalogs, checkout, APIs and business tools where required.' },
+                { key: 'performance', title: 'SEO, speed & quality', description: 'Improve semantic structure, loading performance, accessibility and key user journeys.' },
+                { key: 'growth', title: 'Launch & conversion improvement', description: 'Validate analytics and forms, support launch and use real behavior to guide future improvements.' },
+            ],
+            process: [
+                { key: 'discover', number: '01', title: 'Goals & site structure', description: 'Define audiences, conversion goals, content requirements and the page architecture.' },
+                { key: 'design', number: '02', title: 'Design & prototype', description: 'Establish the visual system and validate important pages and responsive layouts.' },
+                { key: 'develop', number: '03', title: 'Develop & integrate', description: 'Build the site, connect CMS or commerce features and test performance across devices.' },
+                { key: 'launch', number: '04', title: 'Launch & optimize', description: 'Check analytics, redirects, forms and SEO essentials before release and ongoing iteration.' },
+            ],
+        },
+        'AI Development': {
+            capabilities: [
+                { key: 'usecase', title: 'Use-case & data assessment', description: 'Identify a valuable workflow, available data, risk boundaries and measurable acceptance criteria.' },
+                { key: 'architecture', title: 'AI solution architecture', description: 'Choose suitable models, retrieval patterns and integrations based on accuracy, latency and cost.' },
+                { key: 'grounding', title: 'Knowledge & retrieval setup', description: 'Prepare source data, permissions and retrieval so responses can be grounded in approved information.' },
+                { key: 'integration', title: 'Workflow & tool integration', description: 'Connect AI capabilities to approved business tools while keeping important actions reviewable.' },
+                { key: 'evaluation', title: 'Evaluation & guardrails', description: 'Test representative cases, factuality, fallback behavior, privacy and unsafe or out-of-scope requests.' },
+                { key: 'monitoring', title: 'Deployment & monitoring', description: 'Track quality, usage and cost, then refine prompts, retrieval and workflows from observed results.' },
+            ],
+            process: [
+                { key: 'scope', number: '01', title: 'Use case & data audit', description: 'Agree on the target workflow, success measures, source data and risk boundaries.' },
+                { key: 'prototype', number: '02', title: 'Prototype & evaluate', description: 'Test model and retrieval options against realistic examples before committing to production.' },
+                { key: 'integrate', number: '03', title: 'Integrate with guardrails', description: 'Connect the workflow, permissions, monitoring and human review where decisions matter.' },
+                { key: 'improve', number: '04', title: 'Deploy & improve', description: 'Measure quality, cost and adoption, then improve using feedback and evaluation results.' },
+            ],
+        },
+        'Cloud Solutions': {
+            capabilities: [
+                { key: 'assessment', title: 'Cloud readiness assessment', description: 'Review workloads, dependencies, security needs and operating constraints before selecting a migration path.' },
+                { key: 'architecture', title: 'Cloud architecture & networking', description: 'Plan environments, network boundaries, identity, resilience and deployment patterns.' },
+                { key: 'migration', title: 'Migration & modernization', description: 'Move workloads in controlled phases with validation, rollback planning and continuity in mind.' },
+                { key: 'automation', title: 'Infrastructure automation', description: 'Standardize repeatable environments, configuration and deployment workflows.' },
+                { key: 'observability', title: 'Monitoring & reliability', description: 'Establish actionable logs, metrics, alerts, backups and recovery procedures.' },
+                { key: 'optimization', title: 'Cost & performance optimization', description: 'Review resource usage, scaling behavior and cloud spend to prioritize sustainable improvements.' },
+            ],
+            process: [
+                { key: 'assess', number: '01', title: 'Assess workloads', description: 'Inventory applications, dependencies, risks and service requirements.' },
+                { key: 'architect', number: '02', title: 'Plan target architecture', description: 'Define migration waves, security controls, recovery and rollback strategies.' },
+                { key: 'migrate', number: '03', title: 'Migrate & validate', description: 'Move workloads in controlled stages and test performance, data integrity and access.' },
+                { key: 'operate', number: '04', title: 'Monitor & optimize', description: 'Set up observability, cost reviews and a practical reliability improvement cycle.' },
+            ],
+        },
+        'Staff Augmentation': {
+            capabilities: [
+                { key: 'needs', title: 'Skills & delivery needs', description: 'Clarify the role, technical skills, collaboration style and outcomes the team needs to deliver.' },
+                { key: 'matching', title: 'Engineer matching', description: 'Match relevant experience to your stack, project stage and team working practices.' },
+                { key: 'onboarding', title: 'Team onboarding', description: 'Align access, code standards, communication routines and the first delivery milestones.' },
+                { key: 'delivery', title: 'Embedded delivery support', description: 'Collaborate within your existing planning, review and release workflows.' },
+                { key: 'visibility', title: 'Progress & quality reviews', description: 'Keep work visible through agreed tasks, code reviews, demos and regular feedback.' },
+                { key: 'scale', title: 'Flexible team scaling', description: 'Review priorities and adjust capacity as project needs and delivery phases change.' },
+            ],
+            process: [
+                { key: 'brief', number: '01', title: 'Define the role', description: 'Confirm responsibilities, stack, seniority, time zone and delivery expectations.' },
+                { key: 'match', number: '02', title: 'Match & interview', description: 'Review relevant experience and validate technical and collaboration fit.' },
+                { key: 'onboard', number: '03', title: 'Onboard to your team', description: 'Set up tools, access, code practices and a clear first milestone.' },
+                { key: 'deliver', number: '04', title: 'Review & scale', description: 'Track outcomes and adjust capacity as your roadmap evolves.' },
+            ],
+        },
+        'Blockchain & Emerging Tech': {
+            capabilities: [
+                { key: 'usecase', title: 'Use-case validation', description: 'Check whether distributed or immersive technology adds real value to the intended user journey.' },
+                { key: 'architecture', title: 'Product & system architecture', description: 'Define the user experience, platform boundaries, integrations and operational model.' },
+                { key: 'experience', title: 'Wallet & interaction design', description: 'Make onboarding, ownership, identity and interactive experiences understandable to users.' },
+                { key: 'engineering', title: 'Platform & contract development', description: 'Implement the agreed product features with attention to maintainability and security.' },
+                { key: 'security', title: 'Testing & security review', description: 'Test edge cases, permissions, transaction flows and recovery behavior before release.' },
+                { key: 'launch', title: 'Launch & ecosystem support', description: 'Prepare documentation, monitoring and a roadmap for measured post-launch improvements.' },
+            ],
+            process: [
+                { key: 'validate', number: '01', title: 'Validate the use case', description: 'Define user value, constraints, risks and the smallest useful product scope.' },
+                { key: 'design', number: '02', title: 'Design the experience', description: 'Map onboarding, interaction flows, architecture and security requirements.' },
+                { key: 'build', number: '03', title: 'Build & test', description: 'Implement the product and validate important flows and failure scenarios.' },
+                { key: 'launch', number: '04', title: 'Launch responsibly', description: 'Prepare monitoring, documentation and a controlled plan for future iterations.' },
+            ],
+        },
+        'Digital Marketing': {
+            capabilities: [
+                { key: 'research', title: 'Audience & search research', description: 'Understand customer intent, competitive context and the questions your content needs to answer.' },
+                { key: 'strategy', title: 'Channel & content strategy', description: 'Prioritize channels and content themes around business goals, audience needs and available resources.' },
+                { key: 'technical', title: 'Technical & on-page optimization', description: 'Improve crawlability, page structure, metadata, internal links and the clarity of key landing pages.' },
+                { key: 'campaigns', title: 'Campaign & creative execution', description: 'Plan consistent messaging, channel-specific creative and campaigns with clear calls to action.' },
+                { key: 'measurement', title: 'Analytics & attribution', description: 'Set up meaningful conversion events and reporting to understand which activity contributes to outcomes.' },
+                { key: 'iteration', title: 'Test & optimize', description: 'Use performance signals to refine content, targeting, landing pages and campaign spend.' },
+            ],
+            process: [
+                { key: 'audit', number: '01', title: 'Audit & research', description: 'Review the current presence, audience, competitors and measurable business goals.' },
+                { key: 'plan', number: '02', title: 'Strategy & priorities', description: 'Choose channels, content themes, campaign objectives and tracking requirements.' },
+                { key: 'execute', number: '03', title: 'Launch & measure', description: 'Publish, run campaigns and monitor agreed performance indicators.' },
+                { key: 'optimize', number: '04', title: 'Learn & improve', description: 'Use results to refine creative, content, targeting and conversion journeys.' },
+            ],
+        },
+    };
+    const selectedContent = contentByGroup[group];
+    const capabilityItems = selectedContent.capabilities;
+    const processSteps = selectedContent.process;
 
     return {
         slug,
