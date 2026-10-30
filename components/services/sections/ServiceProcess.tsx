@@ -253,8 +253,8 @@ const Slide = styled(Box)(({ theme }) => ({
     left: '50%',
     zIndex: 1,
 
-    width: 'min(36vw, 440px)',
-    height: 'min(23vw, 280px)',
+    width: 'min(34vw, 420px)',
+    height: 'min(22vw, 270px)',
 
     opacity: 0,
 
@@ -279,17 +279,18 @@ const Slide = styled(Box)(({ theme }) => ({
     },
 
     '&[data-position="prev"]': {
-        '--slide-x': '-min(35vw, 420px)',
+        '--slide-x': '-min(39vw, 490px)',
         '--slide-scale': '0.72',
 
         zIndex: 4,
         opacity: 1,
         filter: 'saturate(0.92)',
         cursor: 'pointer',
+        opacity: 0.82,
     },
 
     '&[data-position="next"]': {
-        '--slide-x': 'min(35vw, 420px)',
+        '--slide-x': 'min(39vw, 490px)',
         '--slide-scale': '0.72',
 
         zIndex: 4,
@@ -409,16 +410,16 @@ const ForegroundWrap = styled(Box)(({ theme }) => ({
     left: '50%',
     bottom: '-4px',
 
-    width: '76%',
-    height: '132%',
+    width: '64%',
+    height: '112%',
 
     transform: 'translateX(-50%)',
     transformOrigin: '50% 82%',
     pointerEvents: 'none',
 
     [theme.breakpoints.down('sm')]: {
-        width: '78%',
-        height: '126%',
+        width: '68%',
+        height: '108%',
     },
 
     '[data-position="active"][data-animate="true"] &': {
