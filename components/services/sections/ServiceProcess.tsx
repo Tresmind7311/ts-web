@@ -128,7 +128,7 @@ const Section = styled(Box)(({ theme }) => ({
     position: 'relative',
     width: '100%',
     overflow: 'hidden',
-    padding: '92px 0 120px',
+    padding: 'clamp(64px, 7vw, 96px) 0 clamp(68px, 8vw, 112px)',
     backgroundColor: tokens.color.neutral0,
 
     [theme.breakpoints.down('md')]: {
@@ -168,10 +168,10 @@ const Header = styled(Container)({
 // }));
 
 const Intro = styled(Typography)(({ theme }) => ({
-    maxWidth: '850px',
-    margin: '22px auto 0',
+    maxWidth: '760px',
+    margin: '18px auto 0',
     fontFamily: tokens.font.body,
-    fontSize: '18px',
+    fontSize: 'clamp(15px, 1.25vw, 18px)',
     fontWeight: 400,
     lineHeight: 1.55,
     color: tokens.color.ink900,
@@ -185,7 +185,7 @@ const Intro = styled(Typography)(({ theme }) => ({
 
 const ProcessArea = styled(Container)(({ theme }) => ({
     position: 'relative',
-    marginTop: '36px',
+    marginTop: 'clamp(28px, 3.5vw, 48px)',
 
     [theme.breakpoints.down('sm')]: {
         marginTop: '28px',
@@ -202,12 +202,12 @@ const NumberWrap = styled(Box)({
 const StepNumber = styled(Box)({
     display: 'grid',
     placeItems: 'center',
-    width: '100px',
-    height: '100px',
+    width: 'clamp(64px, 6.5vw, 88px)',
+    height: 'clamp(64px, 6.5vw, 88px)',
     borderRadius: '50%',
 
     fontFamily: tokens.font.display,
-    fontSize: '38px',
+    fontSize: 'clamp(26px, 3vw, 36px)',
     fontWeight: 800,
     lineHeight: 1,
     color: tokens.color.neutral0,
@@ -224,18 +224,18 @@ const StepNumber = styled(Box)({
 const CarouselViewport = styled(Box)(({ theme }) => ({
     position: 'relative',
     width: '100%',
-    height: '390px',
-    marginTop: '75px',
+    height: 'clamp(260px, 29vw, 370px)',
+    marginTop: 'clamp(26px, 3vw, 42px)',
 
     touchAction: 'pan-y',
 
     [theme.breakpoints.down('lg')]: {
-        height: '350px',
+        height: '310px',
     },
 
     [theme.breakpoints.down('md')]: {
-        height: '320px',
-        marginTop: '28px',
+        height: '280px',
+        marginTop: '24px',
     },
 
     [theme.breakpoints.down('sm')]: {
@@ -253,8 +253,8 @@ const Slide = styled(Box)(({ theme }) => ({
     left: '50%',
     zIndex: 1,
 
-    width: '455px',
-    height: '290px',
+    width: 'min(36vw, 440px)',
+    height: 'min(23vw, 280px)',
 
     opacity: 0,
 
@@ -279,7 +279,7 @@ const Slide = styled(Box)(({ theme }) => ({
     },
 
     '&[data-position="prev"]': {
-        '--slide-x': '-430px',
+        '--slide-x': '-min(35vw, 420px)',
         '--slide-scale': '0.72',
 
         zIndex: 4,
@@ -289,7 +289,7 @@ const Slide = styled(Box)(({ theme }) => ({
     },
 
     '&[data-position="next"]': {
-        '--slide-x': '430px',
+        '--slide-x': 'min(35vw, 420px)',
         '--slide-scale': '0.72',
 
         zIndex: 4,
@@ -317,37 +317,37 @@ const Slide = styled(Box)(({ theme }) => ({
     },
 
     [theme.breakpoints.down('lg')]: {
-        width: '410px',
-        height: '260px',
+        width: 'min(42vw, 390px)',
+        height: 'min(27vw, 250px)',
 
         '&[data-position="prev"]': {
-            '--slide-x': '-360px',
+            '--slide-x': '-min(36vw, 330px)',
         },
 
         '&[data-position="next"]': {
-            '--slide-x': '360px',
+            '--slide-x': 'min(36vw, 330px)',
         },
     },
 
     [theme.breakpoints.down('md')]: {
-        width: '360px',
-        height: '230px',
+        width: 'min(48vw, 340px)',
+        height: '220px',
 
         '&[data-position="prev"]': {
-            '--slide-x': '-290px',
+            '--slide-x': '-min(35vw, 250px)',
             '--slide-scale': '0.68',
         },
 
         '&[data-position="next"]': {
-            '--slide-x': '290px',
+            '--slide-x': 'min(35vw, 250px)',
             '--slide-scale': '0.68',
         },
     },
 
     [theme.breakpoints.down('sm')]: {
-        width: '78vw',
+        width: 'min(78vw, 330px)',
         maxWidth: '330px',
-        height: '220px',
+        height: '210px',
 
         '&[data-position="prev"]': {
             '--slide-x': '-72vw',
@@ -442,8 +442,8 @@ const ActiveContent = styled(Box)(({ theme }) => ({
     position: 'relative',
     zIndex: 20,
     maxWidth: '720px',
-    minHeight: '110px',
-    margin: '-34px auto 0',
+    minHeight: '100px',
+    margin: '-22px auto 0',
     textAlign: 'center',
 
     [theme.breakpoints.down('md')]: {
@@ -463,7 +463,7 @@ const ActiveContentInner = styled(Box)({
 const StepTitle = styled(Typography)(({ theme }) => ({
     margin: 0,
     fontFamily: tokens.font.display,
-    fontSize: '32px',
+    fontSize: 'clamp(24px, 2.5vw, 32px)',
     fontWeight: 700,
     lineHeight: 1.15,
     letterSpacing: '-0.025em',
@@ -476,9 +476,9 @@ const StepTitle = styled(Typography)(({ theme }) => ({
 
 const StepDescription = styled(Typography)(({ theme }) => ({
     maxWidth: '600px',
-    margin: '20px auto 0',
+    margin: '16px auto 0',
     fontFamily: tokens.font.body,
-    fontSize: '17px',
+    fontSize: 'clamp(15px, 1.2vw, 17px)',
     fontWeight: 400,
     lineHeight: 1.6,
     color: tokens.color.ink900,
