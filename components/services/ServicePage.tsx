@@ -21,8 +21,9 @@ interface ServicePageProps {
 }
 
 const TechnologySection = styled(Box)(({ theme }) => ({
-    padding: '88px 24px',
-    background: '#f7f9ff',
+    position: 'relative',
+    padding: 'clamp(64px, 7vw, 100px) 24px',
+    background: 'linear-gradient(180deg, #f7f9ff 0%, #ffffff 100%)',
     [theme.breakpoints.down('md')]: { padding: '68px 20px' },
     [theme.breakpoints.down('sm')]: { padding: '52px 16px' },
 }));
@@ -30,8 +31,8 @@ const TechnologySection = styled(Box)(({ theme }) => ({
 const TechnologyGrid = styled(Box)(({ theme }) => ({
     display: 'grid',
     gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-    gap: '14px',
-    marginTop: '34px',
+    gap: '16px',
+    marginTop: 'clamp(28px, 3vw, 40px)',
     [theme.breakpoints.down('md')]: { gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' },
     [theme.breakpoints.down('sm')]: { gap: '10px', marginTop: '24px' },
 }));
@@ -39,16 +40,23 @@ const TechnologyGrid = styled(Box)(({ theme }) => ({
 const TechnologyItem = styled(Box)({
     display: 'flex',
     alignItems: 'center',
-    minHeight: '66px',
-    padding: '16px 18px',
+    minHeight: '72px',
+    padding: '18px 20px',
     border: '1px solid #e2e8f5',
-    borderRadius: '14px',
+    borderRadius: '18px',
     background: '#fff',
     color: tokens.color.uv800,
     fontFamily: tokens.font.body,
     fontSize: '15px',
     fontWeight: 600,
-    boxShadow: '0 8px 24px rgba(20, 42, 100, 0.04)',
+    boxShadow: '0 10px 28px rgba(20, 42, 100, 0.045)',
+    transition: 'transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease',
+    '&:hover': {
+        transform: 'translateY(-3px)',
+        borderColor: '#b8d7ff',
+        boxShadow: '0 16px 34px rgba(20, 42, 100, 0.09)',
+    },
+    '@media (prefers-reduced-motion: reduce)': { transition: 'none', '&:hover': { transform: 'none' } },
 });
 
 const ContactSection = styled(Box)(({ theme }) => ({
