@@ -5,6 +5,7 @@ import {
     useMemo,
     useRef,
     useState,
+    type CSSProperties,
 } from 'react';
 import Image from 'next/image';
 
@@ -216,6 +217,21 @@ const Column = styled(Box)(({ theme }) => ({
     },
 }));
 
+const PlaceholderCard = styled(Box)(({ theme }) => ({
+    position: 'relative',
+    flexShrink: 0,
+    width: '100%',
+    aspectRatio: 'var(--placeholder-aspect)',
+    borderRadius: '20px',
+    backgroundColor: '#BFBFBF',
+    opacity: 0.1,
+    pointerEvents: 'none',
+
+    [theme.breakpoints.down('sm')]: {
+        borderRadius: '15px',
+    },
+}));
+
 /*
  * Static cards: no opacity reveal, keyframes, delay or transform animation.
  * 0.79 width/height ratio matches the taller reference cards.
@@ -288,6 +304,7 @@ const Description = styled(Typography)(({ theme }) => ({
 }));
 
 interface CollageColumnLayout {
+    placeholderAspect: number;
     imageIndexes: number[];
 }
 
@@ -315,16 +332,16 @@ interface CollageColumnLayout {
  */
 
 const COLLAGE_LAYOUT: CollageColumnLayout[] = [
-    { imageIndexes: [0, 1] },
-    { imageIndexes: [2, 3] },
-    { imageIndexes: [4] },
-    { imageIndexes: [5] },
-    { imageIndexes: [6] },
-    { imageIndexes: [7] },
-    { imageIndexes: [8] },
-    { imageIndexes: [9, 10] },
-    { imageIndexes: [11, 12] },
-    { imageIndexes: [13, 0] },
+    { placeholderAspect: 0.98, imageIndexes: [0, 1] },
+    { placeholderAspect: 1.65, imageIndexes: [2, 3] },
+    { placeholderAspect: 0.88, imageIndexes: [4] },
+    { placeholderAspect: 1.52, imageIndexes: [5] },
+    { placeholderAspect: 1.04, imageIndexes: [6] },
+    { placeholderAspect: 1.52, imageIndexes: [7] },
+    { placeholderAspect: 0.88, imageIndexes: [8] },
+    { placeholderAspect: 1.66, imageIndexes: [9, 10] },
+    { placeholderAspect: 0.96, imageIndexes: [11, 12] },
+    { placeholderAspect: 0.96, imageIndexes: [13, 0] },
 ];
 
 
@@ -400,7 +417,13 @@ export default function ServiceShowcase({
 
                 <CollageStage>
                     {COLLAGE_LAYOUT.map((column, columnIndex) => (
-                        <Column key={columnIndex}>
+                        <Column
+                            key={columnIndex}
+                            style={{
+                                '--placeholder-aspect': String(column.placeholderAspect),
+                            } as CSSProperties}
+                        >
+                            <PlaceholderCard aria-hidden="true" />
                             {column.imageIndexes.map((imageIndex, imagePosition) => {
                                 if (imagePool.length === 0) {
                                     return null;

@@ -8,6 +8,15 @@ import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
 import { tokens } from '@/theme/theme';
 import { serviceMenu } from '@/data/services/menu';
+import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
+import CodeIcon from '@mui/icons-material/Code';
+import LanguageIcon from '@mui/icons-material/Language';
+import CloudQueueIcon from '@mui/icons-material/CloudQueue';
+import BrushIcon from '@mui/icons-material/Brush';
+import GroupsIcon from '@mui/icons-material/Groups';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 
 // ─── Nav data ─────────────────────────────────────────────────────
 const NAV_LINKS = [
@@ -125,44 +134,185 @@ const ServicesNavItem = styled(Box)({
     alignItems: 'center',
 });
 
-const ServicesDropdown = styled(Box)({
-    position: 'absolute',
-    top: '100%',
-    left: 0,
-    right: 0,
-    maxHeight: 'calc(100dvh - var(--navbar-height))',
-    overflowY: 'auto',
-    padding: 'clamp(24px, 3vw, 48px) clamp(24px, 4vw, 64px)',
-    backgroundColor: '#fff',
-    boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
-    color: '#121343',
-    zIndex: 10,
-});
-
-const ServicesDropdownLink = styled('a')({
-    display: 'inline-block',
-    padding: '6px 0',
-    borderRadius: '8px',
-    fontFamily: 'var(--font-body)',
-    fontSize: '14px',
-    fontWeight: 500,
-    color: '#121343',
-    textDecoration: 'none',
-    transition: 'background 200ms ease, color 200ms ease',
-
-    '&:hover, &:focus-visible': {
-        backgroundColor: 'rgba(4, 182, 216, 0.08)',
-        color: '#071463',
-    },
-    '&:focus-visible': { outline: '2px solid #071463', outlineOffset: '2px' },
-});
-
 const menuHeadingGradient = {
     background: `linear-gradient(90deg, ${tokens.color.uv800} 20%, ${tokens.color.uv300} 80%)`,
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
 };
+
+const ServicesDropdown = styled(Box)(({ theme }) => ({
+    position: 'absolute',
+    top: '100%',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: 'calc(100% - clamp(32px, 3vw, 56px))',
+    maxWidth: '1800px',
+    maxHeight: 'calc(100dvh - var(--navbar-height))',
+    overflowY: 'auto',
+    padding: 'clamp(10px, 1vw, 16px)',
+    border: `1px solid ${alpha(tokens.color.uv300, 0.2)}`,
+    borderRadius: '28px',
+    background: 'linear-gradient(145deg, #ffffff 5%, #f5faff 100%)',
+    boxShadow: '0 22px 70px rgba(16, 45, 105, 0.16)',
+    color: tokens.color.ink900,
+    zIndex: 10,
+    '@media (prefers-reduced-motion: reduce)': {
+        scrollBehavior: 'auto',
+    },
+    [theme.breakpoints.down('md')]: { display: 'none' },
+}));
+
+const MegaMenuLayout = styled(Box)(({ theme }) => ({
+    display: 'grid',
+    gridTemplateColumns: 'minmax(220px, 0.78fr) minmax(0, 3fr)',
+    gap: 'clamp(14px, 1.4vw, 24px)',
+    [theme.breakpoints.down('lg')]: {
+        gridTemplateColumns: 'minmax(190px, 0.68fr) minmax(0, 3fr)',
+    },
+}));
+
+const MegaIntro = styled(Box)(({ theme }) => ({
+    minHeight: '100%',
+    padding: 'clamp(20px, 2vw, 34px)',
+    borderRadius: '22px',
+    background: 'linear-gradient(150deg, #f0f7ff 0%, #e5f1ff 100%)',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    '& .mega-kicker': {
+        marginBottom: '15px',
+        color: tokens.color.uv500,
+        fontSize: '11px',
+        fontWeight: 700,
+        letterSpacing: '0.18em',
+        textTransform: 'uppercase',
+    },
+    '& .mega-title': {
+        margin: 0,
+        fontFamily: 'var(--font-display)',
+        fontSize: 'clamp(25px, 2.1vw, 36px)',
+        lineHeight: 1.12,
+        letterSpacing: '-0.035em',
+        color: tokens.color.uv800,
+    },
+    '& .mega-title span': {
+        ...menuHeadingGradient,
+    },
+    '& .mega-description': {
+        marginTop: '18px',
+        color: tokens.color.neutral700,
+        fontSize: '14px',
+        lineHeight: 1.65,
+    },
+    [theme.breakpoints.down('lg')]: { padding: '20px' },
+}));
+
+const AllServicesLink = styled('a')({
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginTop: 'auto',
+    padding: '12px 18px',
+    borderRadius: tokens.radius.full,
+    background: `linear-gradient(100deg, ${tokens.color.uv800}, ${tokens.color.uv500})`,
+    color: tokens.color.neutral0,
+    fontSize: '14px',
+    fontWeight: 600,
+    textDecoration: 'none',
+    transition: `transform ${tokens.motion.fast} ${tokens.motion.ease}, box-shadow ${tokens.motion.fast} ${tokens.motion.ease}`,
+    '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 8px 20px rgba(16, 19, 108, 0.2)' },
+    '&:focus-visible': { outline: `3px solid ${tokens.color.uv300}`, outlineOffset: '3px' },
+    '@media (prefers-reduced-motion: reduce)': { transition: 'none', '&:hover': { transform: 'none' } },
+});
+
+const ServiceCardGrid = styled(Box)(({ theme }) => ({
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+    gridTemplateRows: 'repeat(3, minmax(132px, auto))',
+    gap: 'clamp(8px, 0.8vw, 14px)',
+    [theme.breakpoints.down('lg')]: { gridTemplateRows: 'repeat(3, minmax(140px, auto))' },
+}));
+
+const ServiceCard = styled(Box)(({ theme }) => ({
+    minWidth: 0,
+    padding: 'clamp(12px, 1.15vw, 18px)',
+    border: `1px solid ${alpha(tokens.color.uv300, 0.16)}`,
+    borderRadius: '18px',
+    background: 'rgba(255, 255, 255, 0.72)',
+    boxShadow: '0 4px 14px rgba(18, 48, 106, 0.035)',
+    transition: `border-color ${tokens.motion.fast} ${tokens.motion.ease}, box-shadow ${tokens.motion.fast} ${tokens.motion.ease}, transform ${tokens.motion.fast} ${tokens.motion.ease}`,
+    '&:hover, &:focus-within': {
+        borderColor: alpha(tokens.color.uv300, 0.48),
+        boxShadow: '0 10px 24px rgba(18, 48, 106, 0.09)',
+        transform: 'translateY(-2px)',
+    },
+    '&:focus-within': { outline: `2px solid ${alpha(tokens.color.uv500, 0.42)}`, outlineOffset: '2px' },
+    '@media (prefers-reduced-motion: reduce)': {
+        transition: 'none',
+        '&:hover, &:focus-within': { transform: 'none' },
+    },
+    [theme.breakpoints.down('lg')]: { padding: '12px' },
+}));
+
+const CategoryHeader = styled(Box)({
+    display: 'grid',
+    gridTemplateColumns: '42px minmax(0, 1fr)',
+    alignItems: 'center',
+    gap: '10px',
+    minHeight: '42px',
+    marginBottom: '9px',
+});
+
+const CategoryIcon = styled(Box)({
+    width: '42px',
+    height: '42px',
+    display: 'grid',
+    placeItems: 'center',
+    borderRadius: '13px',
+    color: tokens.color.uv500,
+    background: `linear-gradient(145deg, ${alpha(tokens.color.uv300, 0.13)}, ${alpha(tokens.color.uv300, 0.04)})`,
+    '& svg': { fontSize: '24px' },
+});
+
+const CategoryLink = styled('a')({
+    ...menuHeadingGradient,
+    display: 'inline-flex',
+    alignItems: 'center',
+    minWidth: 0,
+    gap: '5px',
+    fontFamily: 'var(--font-display)',
+    fontSize: 'clamp(13px, 1vw, 15px)',
+    fontWeight: 700,
+    lineHeight: 1.3,
+    textDecoration: 'none',
+    '&:hover span:last-child': { transform: 'translateX(3px)' },
+    '& span:last-child': { color: tokens.color.uv300, transition: `transform ${tokens.motion.fast} ${tokens.motion.ease}` },
+    '&:focus-visible': { outline: `2px solid ${tokens.color.uv500}`, outlineOffset: '3px', borderRadius: '3px' },
+});
+
+const ChildLink = styled('a')({
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: '7px',
+    minWidth: 0,
+    padding: '4px 2px',
+    color: tokens.color.neutral700,
+    fontFamily: 'var(--font-body)',
+    fontSize: 'clamp(11px, 0.82vw, 13px)',
+    lineHeight: 1.35,
+    textDecoration: 'none',
+    '&:hover': { color: tokens.color.uv800 },
+    '&:focus-visible': { outline: `2px solid ${tokens.color.uv500}`, outlineOffset: '2px', borderRadius: '3px' },
+    '&::before': { content: '"›"', color: tokens.color.uv300, fontWeight: 700 },
+});
+
+const CATEGORY_ICONS = [
+    PhoneIphoneIcon, SmartToyIcon, CodeIcon,
+    LanguageIcon, CloudQueueIcon, BrushIcon,
+    GroupsIcon, AccountTreeIcon, QueryStatsIcon,
+];
+const MEGA_MENU_ORDER = [0, 3, 6, 1, 4, 7, 2, 5, 8];
 
 const QuoteLink = styled('a')(({ theme }) => ({
     display: 'none',
@@ -523,6 +673,7 @@ export default function Navbar() {
                                             href={link.href}
                                             className={isLinkActive(link.href) ? 'active' : ''}
                                             aria-expanded={megaOpen}
+                                            aria-haspopup="true"
                                             aria-controls="services-mega-menu"
                                             onClick={() => setMegaOpen(false)}
                                         >
@@ -542,24 +693,35 @@ export default function Navbar() {
                             )}
                         </DesktopNav>
 
-                        {megaOpen && <ServicesDropdown id="services-mega-menu" onMouseEnter={() => setMegaOpen(true)}>
-                            <Box sx={{ maxWidth: '1600px', mx: 'auto', display: 'grid', gridTemplateColumns: 'minmax(180px, 0.9fr) minmax(0, 3fr)', gap: 'clamp(24px, 3vw, 56px)' }}>
-                                <Box>
-                                    <Box sx={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px, 2vw, 30px)', fontWeight: 700, mb: 2 }}>Build what comes next</Box>
-                                    <Box sx={{ color: '#596477', lineHeight: 1.6, maxWidth: 280 }}>Explore Tresmind services and find the right starting point for your project.</Box>
-                                    <ServicesDropdownLink href="/services" onClick={() => setMegaOpen(false)} sx={{ mt: 2, fontWeight: 600 }}>All services →</ServicesDropdownLink>
-                                </Box>
-                                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 'clamp(18px, 2.5vw, 44px)' }}>
-                                    {[0, 1, 2].map(column => <Box key={column}>
-                                        {serviceMenu.slice(column * 3, column * 3 + 3).map(category => <Box key={category.label} sx={{ pb: 2, mb: 2, borderBottom: '1px solid #dce3e9', '&:last-child': { borderBottom: 0 } }}>
-                                            {'href' in category ? <ServicesDropdownLink href={category.href} onClick={() => setMegaOpen(false)} sx={{ fontSize: 'clamp(15px, 1.15vw, 18px)', fontWeight: 700, ...menuHeadingGradient }}>{category.label}</ServicesDropdownLink> : <Box sx={{ display: 'inline-block', py: '6px', fontSize: 'clamp(15px, 1.15vw, 18px)', fontWeight: 700, ...menuHeadingGradient }}>{category.label}</Box>}
-                                            {category.children.map(child => typeof child === 'string'
-                                                ? <Box key={child} aria-disabled="true" title="Page coming soon" sx={{ py: '5px', pl: 1, color: '#697586', fontSize: '14px', lineHeight: 1.4 }}>› {child} <Box component="span" sx={{ fontSize: '11px', whiteSpace: 'nowrap' }}>(Coming soon)</Box></Box>
-                                                : <ServicesDropdownLink key={child.href} href={child.href} onClick={() => setMegaOpen(false)} sx={{ display: 'block', py: '5px', pl: 1, color: '#697586', fontWeight: 400 }}>› {child.label}</ServicesDropdownLink>)}
-                                        </Box>)}
-                                    </Box>)}
-                                </Box>
-                            </Box>
+                        {megaOpen && <ServicesDropdown role="navigation" id="services-mega-menu" aria-label="Services menu" onMouseEnter={() => setMegaOpen(true)}>
+                            <MegaMenuLayout>
+                                <MegaIntro>
+                                    <Box className="mega-kicker">Our Services</Box>
+                                    <Box component="h2" className="mega-title">Build what<br />comes <span>next</span></Box>
+                                    <Box className="mega-description">Explore Tresmind services and find the right starting point for your project.</Box>
+                                    <AllServicesLink href="/services" onClick={() => setMegaOpen(false)}>All services <span aria-hidden="true">→</span></AllServicesLink>
+                                </MegaIntro>
+                                <ServiceCardGrid>
+                                    {MEGA_MENU_ORDER.map(index => {
+                                        const category = serviceMenu[index];
+                                        if (!category) return null;
+                                        const Icon = CATEGORY_ICONS[index];
+                                        return (
+                                            <ServiceCard key={category.label}>
+                                                <CategoryHeader>
+                                                    <CategoryIcon aria-hidden="true"><Icon /></CategoryIcon>
+                                                    <CategoryLink href={'href' in category ? category.href : '/services'} onClick={() => setMegaOpen(false)}>
+                                                        <span>{category.label}</span><span aria-hidden="true">→</span>
+                                                    </CategoryLink>
+                                                </CategoryHeader>
+                                                {category.children.map(child => typeof child === 'string'
+                                                    ? <Box key={child} aria-disabled="true" title="Page coming soon" sx={{ py: '4px', color: tokens.color.neutral700, fontSize: '12px', lineHeight: 1.35 }}>› {child} <Box component="span" sx={{ fontSize: '10px', whiteSpace: 'nowrap' }}>(Coming soon)</Box></Box>
+                                                    : <ChildLink key={child.href} href={child.href} onClick={() => setMegaOpen(false)}>{child.label}</ChildLink>)}
+                                            </ServiceCard>
+                                        );
+                                    })}
+                                </ServiceCardGrid>
+                            </MegaMenuLayout>
                         </ServicesDropdown>}
 
                         <QuoteLink href="/contact">Get a Quote</QuoteLink>
