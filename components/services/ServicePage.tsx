@@ -52,12 +52,16 @@ const TechnologyItem = styled(Box)({
 });
 
 const ContactSection = styled(Box)(({ theme }) => ({
+    boxSizing: 'border-box',
+    margin: '50px 20px',
     padding: 'clamp(64px, 7vw, 96px) 24px',
+    borderRadius: '50px',
+    overflow: 'hidden',
     color: '#fff',
     textAlign: 'center',
     background: 'linear-gradient(125deg, #071963 0%, #075db6 58%, #08a8d1 100%)',
-    [theme.breakpoints.down('md')]: { padding: '70px 20px' },
-    [theme.breakpoints.down('sm')]: { padding: '54px 16px' },
+    [theme.breakpoints.down('md')]: { margin: '40px 18px', padding: '70px 20px', borderRadius: '42px' },
+    [theme.breakpoints.down('sm')]: { margin: '28px 12px', padding: '54px 16px', borderRadius: '30px' },
 }));
 
 const ContactLink = styled(Link)({
