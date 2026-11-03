@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { styled, alpha } from '@mui/material/styles';
@@ -17,7 +16,6 @@ import BrushIcon from '@mui/icons-material/Brush';
 import GroupsIcon from '@mui/icons-material/Groups';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
-
 // ─── Nav data ─────────────────────────────────────────────────────
 const NAV_LINKS = [
     { label: 'Home', href: '/' },
@@ -25,17 +23,14 @@ const NAV_LINKS = [
     { label: 'Portfolio', href: '/portfolio' },
     { label: 'Contact', href: '/contact' },
 ];
-
 // ═══════════════════════════════════════════════════════════════════
 // Styled components
 // ═══════════════════════════════════════════════════════════════════
-
 const NavSpace = styled('div')<{ reserve: number }>(({ theme, reserve }) => ({
     '--navbar-height': '88px',
     height: reserve ? 'var(--navbar-measured-height, var(--navbar-height))' : 0,
     [theme.breakpoints.down('md')]: { '--navbar-height': '68px' },
 }));
-
 const NavRoot = styled('header')<{ scrolled: number; visible: number; dark: number }>(({ theme, scrolled, visible, dark }) => ({
     position: 'fixed',
     top: 0,
@@ -76,7 +71,6 @@ const NavRoot = styled('header')<{ scrolled: number; visible: number; dark: numb
         pointerEvents: 'auto',
     },
 }));
-
 const NavInner = styled(Container)(({ theme }) => ({
     width: '100%',
     maxWidth: 'none !important',
@@ -90,7 +84,6 @@ const NavInner = styled(Container)(({ theme }) => ({
         columnGap: '20px',
     },
 }));
-
 const LogoLink = styled('a')(() => ({
     display: 'flex',
     alignItems: 'center',
@@ -99,7 +92,6 @@ const LogoLink = styled('a')(() => ({
     transition: `opacity ${tokens.motion.fast} ${tokens.motion.ease}`,
     '&:hover': { opacity: 0.7 },
 }));
-
 const DesktopNav = styled('nav')(({ theme }) => ({
     display: 'none',
     [theme.breakpoints.up('md')]: {
@@ -108,7 +100,6 @@ const DesktopNav = styled('nav')(({ theme }) => ({
         gap: 'clamp(16px, 1.8vw, 28px)',
     },
 }));
-
 const NavLink = styled('a')(() => ({
     fontFamily: 'var(--font-body)',
     fontWeight: 400,
@@ -139,14 +130,12 @@ const ServicesNavItem = styled(Box)({
     display: 'flex',
     alignItems: 'center',
 });
-
 const menuHeadingGradient = {
     background: `linear-gradient(90deg, ${tokens.color.uv800} 20%, ${tokens.color.uv300} 80%)`,
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
 };
-
 const ServicesDropdown = styled(Box)(({ theme }) => ({
     position: 'absolute',
     top: '100%',
@@ -156,6 +145,7 @@ const ServicesDropdown = styled(Box)(({ theme }) => ({
     maxWidth: '1800px',
     maxHeight: 'calc(100dvh - var(--navbar-height))',
     overflowY: 'auto',
+    overscrollBehaviorY: 'contain',
     padding: 'clamp(10px, 1vw, 16px)',
     border: `1px solid ${alpha(tokens.color.uv300, 0.2)}`,
     borderRadius: '28px',
@@ -168,7 +158,6 @@ const ServicesDropdown = styled(Box)(({ theme }) => ({
     },
     [theme.breakpoints.down('md')]: { display: 'none' },
 }));
-
 const MegaMenuLayout = styled(Box)(({ theme }) => ({
     display: 'grid',
     gridTemplateColumns: 'minmax(220px, 0.78fr) minmax(0, 3fr)',
@@ -177,7 +166,6 @@ const MegaMenuLayout = styled(Box)(({ theme }) => ({
         gridTemplateColumns: 'minmax(190px, 0.68fr) minmax(0, 3fr)',
     },
 }));
-
 const MegaIntro = styled(Box)(({ theme }) => ({
     minHeight: '100%',
     padding: 'clamp(20px, 2vw, 34px)',
@@ -213,7 +201,6 @@ const MegaIntro = styled(Box)(({ theme }) => ({
     },
     [theme.breakpoints.down('lg')]: { padding: '20px' },
 }));
-
 const AllServicesLink = styled('a')({
     display: 'inline-flex',
     alignItems: 'center',
@@ -231,7 +218,6 @@ const AllServicesLink = styled('a')({
     '&:focus-visible': { outline: `3px solid ${tokens.color.uv300}`, outlineOffset: '3px' },
     '@media (prefers-reduced-motion: reduce)': { transition: 'none', '&:hover': { transform: 'none' } },
 });
-
 const ServiceCardGrid = styled(Box)(({ theme }) => ({
     display: 'grid',
     gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
@@ -239,7 +225,6 @@ const ServiceCardGrid = styled(Box)(({ theme }) => ({
     gap: 'clamp(8px, 0.8vw, 14px)',
     [theme.breakpoints.down('lg')]: { gridTemplateRows: 'repeat(3, minmax(140px, auto))' },
 }));
-
 const ServiceCard = styled(Box)(({ theme }) => ({
     minWidth: 0,
     padding: 'clamp(12px, 1.15vw, 18px)',
@@ -260,7 +245,6 @@ const ServiceCard = styled(Box)(({ theme }) => ({
     },
     [theme.breakpoints.down('lg')]: { padding: '12px' },
 }));
-
 const CategoryHeader = styled(Box)({
     display: 'grid',
     gridTemplateColumns: '42px minmax(0, 1fr)',
@@ -269,7 +253,6 @@ const CategoryHeader = styled(Box)({
     minHeight: '42px',
     marginBottom: '9px',
 });
-
 const CategoryIcon = styled(Box)({
     width: '42px',
     height: '42px',
@@ -280,7 +263,6 @@ const CategoryIcon = styled(Box)({
     background: `linear-gradient(145deg, ${alpha(tokens.color.uv300, 0.13)}, ${alpha(tokens.color.uv300, 0.04)})`,
     '& svg': { fontSize: '24px' },
 });
-
 const CategoryLink = styled('a')({
     ...menuHeadingGradient,
     display: 'inline-flex',
@@ -296,7 +278,6 @@ const CategoryLink = styled('a')({
     '& span:last-child': { color: tokens.color.uv300, transition: `transform ${tokens.motion.fast} ${tokens.motion.ease}` },
     '&:focus-visible': { outline: `2px solid ${tokens.color.uv500}`, outlineOffset: '3px', borderRadius: '3px' },
 });
-
 const ChildLink = styled('a')({
     display: 'flex',
     alignItems: 'baseline',
@@ -312,14 +293,12 @@ const ChildLink = styled('a')({
     '&:focus-visible': { outline: `2px solid ${tokens.color.uv500}`, outlineOffset: '2px', borderRadius: '3px' },
     '&::before': { content: '"›"', color: tokens.color.uv300, fontWeight: 700 },
 });
-
 const CATEGORY_ICONS = [
     PhoneIphoneIcon, SmartToyIcon, CodeIcon,
     LanguageIcon, CloudQueueIcon, BrushIcon,
     GroupsIcon, AccountTreeIcon, QueryStatsIcon,
 ];
 const MEGA_MENU_ORDER = [0, 3, 6, 1, 4, 7, 2, 5, 8];
-
 const QuoteLink = styled('a')(({ theme }) => ({
     display: 'none',
     [theme.breakpoints.up('md')]: {
@@ -344,7 +323,6 @@ const QuoteLink = styled('a')(({ theme }) => ({
         outlineOffset: '4px',
     },
 }));
-
 const HamburgerBtn = styled(IconButton)(({ theme }) => ({
     display: 'flex',
     padding: '11px',
@@ -353,7 +331,6 @@ const HamburgerBtn = styled(IconButton)(({ theme }) => ({
     color: 'inherit',
     [theme.breakpoints.up('md')]: { display: 'none' },
 }));
-
 const HamburgerBox = styled(Box)(() => ({
     width: 22,
     height: 16,
@@ -362,7 +339,6 @@ const HamburgerBox = styled(Box)(() => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
 }));
-
 const HamLine = styled(Box)<{ open: number; pos: 'top' | 'mid' | 'bot' }>(
     ({ open, pos }) => ({
         width: '100%',
@@ -377,7 +353,6 @@ const HamLine = styled(Box)<{ open: number; pos: 'top' | 'mid' | 'bot' }>(
         ...(open && pos === 'bot' && { transform: 'translateY(-7px) rotate(-45deg)' }),
     })
 );
-
 const DrawerInner = styled(Box)(() => ({
     width: '100vw',
     height: '100dvh',
@@ -387,7 +362,6 @@ const DrawerInner = styled(Box)(() => ({
     padding: '0 28px 48px',
     overflowY: 'auto',
 }));
-
 const DrawerHeader = styled(Box)(() => ({
     height: '68px',
     display: 'flex',
@@ -395,7 +369,6 @@ const DrawerHeader = styled(Box)(() => ({
     justifyContent: 'space-between',
     flexShrink: 0,
 }));
-
 const DrawerNav = styled('nav')(() => ({
     flex: 1,
     display: 'flex',
@@ -404,7 +377,6 @@ const DrawerNav = styled('nav')(() => ({
     paddingTop: '24px',
     gap: '0px',
 }));
-
 const DrawerLink = styled('a')(() => ({
     fontFamily: 'var(--font-display)',
     fontWeight: 700,
@@ -419,11 +391,8 @@ const DrawerLink = styled('a')(() => ({
     '&:hover': { color: tokens.color.uv500 },
     '&:last-child': { borderBottom: 'none' },
 }));
-
-
 import Image from 'next/image';
 import { Container } from '@mui/material';
-
 function LogoMark() {
     return (
         <Box
@@ -447,11 +416,9 @@ function LogoMark() {
         </Box>
     );
 }
-
 // ═══════════════════════════════════════════════════════════════════
 // Component
 // ═══════════════════════════════════════════════════════════════════
-
 // Sample painted surfaces at navbar height, including pointer-inert canvas frames.
 function isBackdropDark(header: HTMLElement) {
     const visibility = header.style.visibility;
@@ -500,26 +467,22 @@ function isBackdropDark(header: HTMLElement) {
         canvases.forEach((canvas, i) => { canvas.style.pointerEvents = pointerEvents[i]; });
     }
 }
-
 export default function Navbar() {
     const pathname = usePathname();
     const headerRef = useRef<HTMLElement>(null);
     const spaceRef = useRef<HTMLDivElement>(null);
     const [scrollHidden, setScrollHidden] = useState(false);
     const [darkBackdrop, setDarkBackdrop] = useState(false);
-
     const [scrolled, setScrolled] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [megaOpen, setMegaOpen] = useState(false);
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
     const [activeLink, setActiveLink] = useState('');
-
     // The homepage keeps its existing hero reveal gate.
     // Every other route shows the navbar immediately.
     const [homeNavVisible, setHomeNavVisible] = useState(false);
     const navVisible = (pathname !== '/' || homeNavVisible)
-        && (!scrollHidden || drawerOpen);
-
+        && (!scrollHidden || drawerOpen || megaOpen);
     // Reserve the actual rendered height on inner pages, including after resize.
     useEffect(() => {
         const header = headerRef.current;
@@ -533,7 +496,6 @@ export default function Navbar() {
         observer.observe(header);
         return () => observer.disconnect();
     }, []);
-
     // Direction uses actual scroll changes; viewport geometry supplies contrast.
     useEffect(() => {
         let previousY = Math.max(0, window.scrollY);
@@ -569,30 +531,24 @@ export default function Navbar() {
             observer.disconnect();
         };
     }, [pathname]);
-
     // Lock body scroll when drawer open
     useEffect(() => {
         document.body.style.overflow = drawerOpen ? 'hidden' : '';
         return () => { document.body.style.overflow = ''; };
     }, [drawerOpen]);
-
     // Highlight homepage sections only.
     useEffect(() => {
         if (pathname !== '/') {
             setActiveLink('');
             return;
         }
-
         const ids = NAV_LINKS
             .filter(link => link.href.startsWith('/#'))
             .map(link => link.href.slice(2));
-
         const els = ids
             .map(id => document.getElementById(id))
             .filter((el): el is HTMLElement => Boolean(el));
-
         if (!els.length) return;
-
         const obs = new IntersectionObserver(
             entries =>
                 entries.forEach(entry => {
@@ -602,50 +558,39 @@ export default function Navbar() {
                 }),
             { threshold: 0.4 },
         );
-
         els.forEach(el => obs.observe(el));
         return () => obs.disconnect();
     }, [pathname]);
-
     // Reset the homepage reveal state whenever we enter the homepage.
     useEffect(() => {
         if (pathname === '/') {
             setHomeNavVisible(false);
         }
     }, [pathname]);
-
     // ── Homepage hero reveal-gate listener ─────────────────────────
     useEffect(() => {
         const onHeroChange = (e: Event) => {
             if (pathname !== '/') return;
-
             const { complete } = (
                 e as CustomEvent<{ complete: boolean }>
             ).detail;
-
             setHomeNavVisible(complete);
         };
-
         window.addEventListener('hero-complete-change', onHeroChange);
         return () =>
             window.removeEventListener('hero-complete-change', onHeroChange);
     }, [pathname]);
-
     const isLinkActive = (href: string) => {
         if (href === '/services') {
             return pathname.startsWith('/services');
         }
-
         if (pathname === '/' && href.startsWith('/#')) {
             return activeLink === href.slice(2);
         }
-
         return false;
     };
-
     const [servicesOpen, setServicesOpen] = useState(false);
     const closeDrawer = useCallback(() => { setDrawerOpen(false); setServicesOpen(false); setExpandedCategory(null); }, []);
-
     useEffect(() => {
         if (!megaOpen) return;
         const dismiss = (event: PointerEvent) => {
@@ -654,7 +599,6 @@ export default function Navbar() {
         document.addEventListener('pointerdown', dismiss);
         return () => document.removeEventListener('pointerdown', dismiss);
     }, [megaOpen]);
-
     return (
         <>
             <NavSpace ref={spaceRef} reserve={pathname !== '/' ? 1 : 0}>
@@ -663,12 +607,10 @@ export default function Navbar() {
                     onMouseLeave={() => setMegaOpen(false)}
                     onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setMegaOpen(false); }}>
                     <NavInner maxWidth="xl">
-
                         {/* Logo */}
-                        <LogoLink href="/" aria-label="Tresmind — home">
+                        <LogoLink href="/" aria-label="Tresmind — home" onMouseEnter={() => setMegaOpen(false)}>
                             <LogoMark />
                         </LogoLink>
-
                         {/* Desktop nav */}
                         <DesktopNav aria-label="Main navigation">
                             {NAV_LINKS.map(link =>
@@ -691,6 +633,7 @@ export default function Navbar() {
                                         key={link.label}
                                         href={link.href}
                                         className={isLinkActive(link.href) ? 'active' : ''}
+                                        onMouseEnter={() => setMegaOpen(false)}
                                         onClick={() => setMegaOpen(false)}
                                     >
                                         {link.label}
@@ -698,8 +641,14 @@ export default function Navbar() {
                                 )
                             )}
                         </DesktopNav>
-
-                        {megaOpen && <ServicesDropdown role="navigation" id="services-mega-menu" aria-label="Services menu" onMouseEnter={() => setMegaOpen(true)}>
+                        {megaOpen && <ServicesDropdown
+                            role="navigation"
+                            id="services-mega-menu"
+                            aria-label="Services menu"
+                            data-lenis-prevent=""
+                            onMouseEnter={() => setMegaOpen(true)}
+                            onMouseLeave={() => setMegaOpen(false)}
+                        >
                             <MegaMenuLayout>
                                 <MegaIntro>
                                     <Box className="mega-kicker">Our Services</Box>
@@ -729,9 +678,7 @@ export default function Navbar() {
                                 </ServiceCardGrid>
                             </MegaMenuLayout>
                         </ServicesDropdown>}
-
-                        <QuoteLink href="/contact">Get a Quote</QuoteLink>
-
+                        <QuoteLink href="/contact" onMouseEnter={() => setMegaOpen(false)}>Get a Quote</QuoteLink>
                         {/* Mobile hamburger */}
                         <HamburgerBtn
                             onClick={() => setDrawerOpen(o => !o)}
@@ -745,11 +692,9 @@ export default function Navbar() {
                                 <HamLine open={drawerOpen ? 1 : 0} pos="bot" />
                             </HamburgerBox>
                         </HamburgerBtn>
-
                     </NavInner>
                 </NavRoot>
             </NavSpace>
-
             {/* Full-screen mobile menu */}
             <Drawer
                 anchor="right"
@@ -762,7 +707,6 @@ export default function Navbar() {
                 ModalProps={{ keepMounted: true }}
             >
                 <DrawerInner role="dialog" aria-modal="true" aria-label="Navigation menu">
-
                     <DrawerHeader>
                         <LogoLink href="/" onClick={closeDrawer} aria-label="Tresmind — home">
                             <LogoMark />
@@ -775,7 +719,6 @@ export default function Navbar() {
                             </HamburgerBox>
                         </HamburgerBtn>
                     </DrawerHeader>
-
                     <DrawerNav aria-label="Mobile navigation">
                         {NAV_LINKS.map(link =>
                             link.href === '/services' ? (
@@ -788,7 +731,6 @@ export default function Navbar() {
                                         >
                                             {link.label}
                                         </DrawerLink>
-
                                         <IconButton
                                             onClick={() => setServicesOpen(open => !open)}
                                             aria-label="Toggle services submenu"
@@ -810,7 +752,6 @@ export default function Navbar() {
                                             </Box>
                                         </IconButton>
                                     </Box>
-
                                     {servicesOpen && (
                                         <Box id="mobile-services-submenu" sx={{ pl: 2, pb: 2 }}>
                                             {serviceMenu.map(category => <Box key={category.label} sx={{ borderBottom: `1px solid ${tokens.color.borderSubtle}` }}>
@@ -839,7 +780,6 @@ export default function Navbar() {
                             )
                         )}
                     </DrawerNav>
-
                 </DrawerInner>
             </Drawer>
         </>
