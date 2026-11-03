@@ -108,14 +108,42 @@ const Hero = styled('section')({
 
 const Breadcrumbs = styled('nav')({
     '& ol': {
-        display: 'flex', flexWrap: 'wrap', gap: '8px', padding: 0,
-        margin: '0 0 72px', listStyle: 'none', fontSize: '14px',
-        '@media (max-width: 599px)': { marginBottom: '48px' },
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        columnGap: '8px',
+        rowGap: '4px',
+        padding: 0,
+        margin: '0 0 72px',
+        listStyle: 'none',
+        fontSize: '14px',
+
+        '@media (max-width: 599px)': {
+            marginBottom: '48px',
+        },
     },
+
+    '& li': {
+        display: 'inline-flex',
+        alignItems: 'center',
+        minHeight: '44px',
+        lineHeight: 1.5,
+    },
+
     '& li:not(:last-child)::after': {
-        content: "'/'", paddingLeft: '8px', color: tokens.color.neutral600,
+        content: "'/'",
+        paddingLeft: '8px',
+        color: tokens.color.neutral600,
     },
-    '& a': { display: 'inline-flex', alignItems: 'center', minWidth: '44px', minHeight: '44px', color: tokens.color.uv800, textUnderlineOffset: '3px' },
+
+    '& a': {
+        display: 'inline-flex',
+        alignItems: 'center',
+        minWidth: '44px',
+        minHeight: '44px',
+        color: tokens.color.uv800,
+        textUnderlineOffset: '3px',
+    },
 });
 
 const leadStyles = {
@@ -347,14 +375,18 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                             number: String(index + 1).padStart(2, '0'),
                             title: step,
                             description: '',
-                            ...((page.processImage || processArt) && { backgroundImage: {
-                                src: page.processImage?.src ?? processArt!.backgroundImage,
-                                alt: '',
-                            } }),
-                            ...((page.processForegroundImage || processArt) && { foregroundImage: {
-                                src: page.processForegroundImage?.src ?? processArt!.foregroundImage,
-                                alt: page.processForegroundImage?.alt ?? processArt!.foregroundAlt,
-                            } }),
+                            ...((page.processImage || processArt) && {
+                                backgroundImage: {
+                                    src: page.processImage?.src ?? processArt!.backgroundImage,
+                                    alt: '',
+                                }
+                            }),
+                            ...((page.processForegroundImage || processArt) && {
+                                foregroundImage: {
+                                    src: page.processForegroundImage?.src ?? processArt!.foregroundImage,
+                                    alt: page.processForegroundImage?.alt ?? processArt!.foregroundAlt,
+                                }
+                            }),
                         };
                     }),
                 } satisfies ServiceProcessData}
@@ -363,9 +395,11 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
             <ServiceEcosystemSection data={{
                 title: page.why.title,
                 description: page.why.text,
-                ...(page.why.image ? { image: page.why.image } : processArt && { image: page.parentPath === '/services/mobile-app-development'
-                    ? { src: '/images/services/mobile-app-development/mobile-ecosystem.png', alt: 'Mobile application, API and backend ecosystem illustration' }
-                    : processArt.explainerImage }),
+                ...(page.why.image ? { image: page.why.image } : processArt && {
+                    image: page.parentPath === '/services/mobile-app-development'
+                        ? { src: '/images/services/mobile-app-development/mobile-ecosystem.png', alt: 'Mobile application, API and backend ecosystem illustration' }
+                        : processArt.explainerImage
+                }),
             }} />
 
             <ServiceFaq data={page.faq} />
