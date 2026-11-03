@@ -29,7 +29,11 @@ export const serviceMenu: readonly ServiceMenuCategory[] = [
         { label: 'Cloud Migration', href: '/services/cloud-consulting/cloud-migration' },
         { label: 'Cloud Support & Maintenance', href: '/services/cloud-consulting/cloud-support-and-maintenance' },
     ] },
-    { label: 'Graphic Design', href: '/services/graphic-designing', children: [] },
+    { label: 'Graphic Design', href: '/services/graphic-designing', children: [
+        { label: '2D/3D Animation', href: '/services/graphic-designing/2d-3d-animation' },
+        { label: '3D Modeling', href: '/services/graphic-designing/3d-modeling' },
+        { label: 'Complete Branding', href: '/services/graphic-designing/complete-branding' },
+    ] },
     { label: 'Staff Augmentation', href: '/services/staff-augmentation', children: [
         { label: 'Hire MERN Stack Developers', href: '/services/staff-augmentation/hire-mern-stack-developers' },
         { label: 'Hire Node.js Developers', href: '/services/staff-augmentation/hire-nodejs-developers' },

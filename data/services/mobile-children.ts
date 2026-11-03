@@ -6,14 +6,15 @@ export type ChildPage = {
     name: string;
     seo: { title: string; description: string };
     hero: { title: string; description: string; cta: string };
-    introduction: { title: string; text: string };
+    introduction: { title: string; text: string; image?: { src: string; alt: string } };
     capabilitiesDescription: string;
     cards: Card[];
     deliverables: string[];
     useCases: { title: string; items: string[] };
-    explainer: { title: string; text: string };
+    explainer: { title: string; text: string; image?: { src: string; alt: string } };
     process: string[];
-    why: { title: string; text: string };
+    processImage?: { src: string; alt: string };
+    why: { title: string; text: string; image?: { src: string; alt: string } };
     faq: ServiceFaqData;
     closing: { title: string; text: string };
 };

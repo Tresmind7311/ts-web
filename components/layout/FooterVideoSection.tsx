@@ -348,6 +348,7 @@ const NavRow = styled('nav')({
 });
 
 const NavLink = styled('a')({
+    display: 'inline-flex', alignItems: 'center', minWidth: '44px', minHeight: '44px',
     fontSize: '13px',
     fontWeight: 500,
     letterSpacing: '0.05em',
@@ -366,6 +367,7 @@ const BottomRow = styled('div')({
 });
 
 const BottomLink = styled('a')({
+    display: 'inline-flex', alignItems: 'center', minWidth: '44px', minHeight: '44px',
     fontSize: '12px',
     fontWeight: 400,
     letterSpacing: '0.03em',

@@ -5,6 +5,7 @@ import { gsap, ScrollTrigger } from '@/lib/gsap';
 
 export interface ImageSequenceCanvasProps extends ImageSequenceProps {
     mouseInteraction?: boolean;
+    mobileObjectFit?: 'cover' | 'contain';
 }
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
@@ -50,6 +51,7 @@ export default function ImageSequenceCanvas({
     mobileFrames,
     containerRef,
     objectFit = 'cover',
+    mobileObjectFit,
     mouseInteraction = false,
 }: ImageSequenceCanvasProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -519,14 +521,14 @@ export default function ImageSequenceCanvas({
                 lastDrawnIdxRef.current = drawIdx;
 
                 ctx.clearRect(0, 0, cw, ch);
-                if (objectFit === 'cover') drawCover(ctx, img, cw, ch);
+                if ((isMobileRef.current ? mobileObjectFit ?? objectFit : objectFit) === 'cover') drawCover(ctx, img, cw, ch);
                 else drawContain(ctx, img, cw, ch);
             }
         };
 
         gsap.ticker.add(tick);
         return () => gsap.ticker.remove(tick);
-    }, [containerRef, getFrames, objectFit, mouseInteraction]);
+    }, [containerRef, getFrames, objectFit, mobileObjectFit, mouseInteraction]);
 
     return (
         <canvas

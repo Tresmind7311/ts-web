@@ -69,6 +69,12 @@ const NavRoot = styled('header')<{ scrolled: number; visible: number; dark: numb
     visibility: visible ? 'visible' : 'hidden',
     opacity: visible ? 1 : 0,
     pointerEvents: visible ? 'auto' : 'none',
+    [theme.breakpoints.down('md')]: {
+        transform: 'translateY(0)',
+        visibility: 'visible',
+        opacity: 1,
+        pointerEvents: 'auto',
+    },
 }));
 
 const NavInner = styled(Container)(({ theme }) => ({
@@ -652,7 +658,7 @@ export default function Navbar() {
     return (
         <>
             <NavSpace ref={spaceRef} reserve={pathname !== '/' ? 1 : 0}>
-                <NavRoot ref={headerRef} scrolled={scrolled ? 1 : 0} visible={navVisible ? 1 : 0} dark={darkBackdrop ? 1 : 0} role="banner" inert={!navVisible}
+                <NavRoot ref={headerRef} scrolled={scrolled ? 1 : 0} visible={navVisible ? 1 : 0} dark={darkBackdrop ? 1 : 0} role="banner"
                     onKeyDown={event => { if (event.key === 'Escape') { setMegaOpen(false); (headerRef.current?.querySelector('#services-trigger') as HTMLElement | null)?.focus(); } }}
                     onMouseLeave={() => setMegaOpen(false)}
                     onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setMegaOpen(false); }}>

@@ -15,14 +15,14 @@ const Map = styled('div')(({ theme }) => ({
     backgroundRepeat: 'no-repeat', [theme.breakpoints.down('md')]: {
         height: 540, backgroundSize: 'auto 100%'
     }, [theme.breakpoints.down('sm')]: {
-        height: 520, backgroundSize: 'auto 90%', opacity: 0.7
+        height: 520, backgroundSize: 'auto 90%', opacity: 0.35
     }
 }));
 const Marker = styled('div')(({ theme }) => ({
     position: 'absolute', width: 66, '& img': {
         display: 'block', width: '100%', height: 'auto'
-    }, [theme.breakpoints.down('sm')]: {
-        width: 40
+    }, [theme.breakpoints.down('md')]: {
+        display: 'none'
     }
 }));
 const positions = [

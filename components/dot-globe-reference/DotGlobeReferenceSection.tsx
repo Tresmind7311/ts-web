@@ -506,7 +506,7 @@ export default function DotGlobeReferenceSection({
                         { label: "Markets we serve", value: locationText, href: undefined, icon: "location" },
                         phoneNumber
                             ? { label: "Call us", value: phoneNumber, href: `tel:${phoneNumber.replace(/[^+\d]/g, "")}`, icon: "phone" }
-                            : { label: "Book a call", value: "Use the contact form", href: "#contact", icon: "phone" },
+                            : { label: "Send an enquiry", value: "Use the contact form", href: "#contact", icon: "phone" },
                         { label: "Email us", value: emailAddress, href: `mailto:${emailAddress}`, icon: "email" },
                     ].map((item, index) => (
                         <div

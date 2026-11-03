@@ -174,7 +174,7 @@ export default function ServiceEcosystemSection({ data }: Props) {
                         alt={data.image.alt}
                         width={1440}
                         height={756}
-                        sizes="(max-width: 600px) 200vw, 100vw"
+                        sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 900px) calc(50vw - 64px), 640px"
                     />
                 </Illustration> : <FallbackIllustration aria-hidden="true" />}
             </Content>

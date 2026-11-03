@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import MobileChildPage from '@/components/services/MobileChildPage';
+import GraphicDesignJsonLd from '@/components/services/GraphicDesignJsonLd';
 import { childServicePages, getChildServicePage } from '@/data/services/child-pages';
 
 type Props = { params: Promise<{ slug: string; child: string }> };
@@ -37,5 +38,8 @@ export default async function ChildServiceRoute({ params }: Props) {
     const { slug, child } = await params;
     const page = getChildServicePage(slug, child);
     if (!page) notFound();
-    return <MobileChildPage page={page} />;
+    return <>
+        {slug === 'graphic-designing' && <GraphicDesignJsonLd name={page.name} description={page.seo.description} path={`${page.parentPath}/${page.slug}`} child />}
+        <MobileChildPage page={page} />
+    </>;
 }

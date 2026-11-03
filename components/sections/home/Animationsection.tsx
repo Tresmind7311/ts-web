@@ -271,7 +271,8 @@ const CardDivider = styled(Box)({
     background: alpha(tokens.color.ink900, 0.14),
 });
 
-const CardHeading = styled(Typography)(({ theme }) => ({
+const CardHeading = styled('h2')(({ theme }) => ({
+    margin: 0,
     marginTop: '24px',
     color: tokens.color.ink900,
     fontFamily: 'var(--font-display)',

@@ -4,6 +4,7 @@ import { webChildList } from './web-children';
 import { aiChildList, cloudChildList } from './ai-cloud-children';
 import { staffChildList, blockchainChildList } from './staff-blockchain-pages';
 import { digitalMarketingChildList } from './digital-marketing-pages';
+import { graphicDesignChildList } from './graphic-design-children';
 
 const mobilePath = '/services/mobile-app-development';
 const softwarePath = '/services/software-development';
@@ -13,8 +14,22 @@ const cloudPath = '/services/cloud-consulting';
 const staffPath = '/services/staff-augmentation';
 const blockchainPath = '/services/blockchain-development';
 const digitalMarketingPath = '/services/digital-marketing';
+const graphicDesignPath = '/services/graphic-designing';
 
 export const childServicePages = [
+    ...graphicDesignChildList.map(page => ({
+        ...page,
+        parentName: 'Graphic Design',
+        parentPath: graphicDesignPath,
+        related: [
+            ...graphicDesignChildList.filter(item => item.slug !== page.slug).map(item => ({
+                label: item.name,
+                href: `${graphicDesignPath}/${item.slug}`,
+            })),
+            ...(page.slug === '3d-modeling' ? [{ label: 'Metaverse Development', href: '/services/blockchain-development/metaverse-development' }] : []),
+            ...(page.slug === 'complete-branding' ? [{ label: 'Web Development', href: '/services/web-development' }] : []),
+        ],
+    })),
     ...mobileChildList.map(page => ({
         ...page,
         parentName: 'Mobile App Development',

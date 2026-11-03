@@ -73,6 +73,7 @@ const StickyFrame = styled(Box)({
 const CanvasLayer = styled(Box)({
     position: 'absolute',
     inset: 0,
+    '@media (max-width: 767px)': { backgroundColor: '#000' },
 });
 
 const ContentOverlay = styled(Box)(({ theme }) => ({
@@ -139,6 +140,8 @@ const SubCopy = styled(Typography)(({ theme }) => ({
     [theme.breakpoints.down('sm')]: {
         fontSize: '16px',
         maxWidth: '100%',
+        color: tokens.color.neutral0,
+        textShadow: '0 2px 12px rgba(0, 0, 0, 0.85)',
     },
 }));
 
@@ -241,6 +244,7 @@ export default function HeroSection() {
                         mobileFrames={MOBILE_FRAMES}
                         containerRef={scrollRef}
                         objectFit="cover"
+                        mobileObjectFit="contain"
                     />
                 </CanvasLayer>
 

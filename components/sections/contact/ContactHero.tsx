@@ -23,7 +23,7 @@ const CONTACT_ITEMS = [
         href: 'mailto:hello@tresmind.com',
     },
     {
-        label: 'Book a call',
+        label: 'Send an enquiry',
         value: 'Use the contact form',
         href: '#contact-form',
     },
@@ -57,7 +57,7 @@ const Description = styled('p')(({ theme }) => ({
 }));
 const Actions = styled('div')(({ theme }) => ({
     display: 'flex', gap: 26, flexWrap: 'wrap', justifyContent: 'center', '& a': {
-        minHeight: 66, borderRadius: 14, fontSize: 24
+        minHeight: 66, borderRadius: tokens.radius.md, fontSize: 24
     }, [theme.breakpoints.down('sm')]: {
         width: '100%', maxWidth: 360, gap: 12, '& a': {
             minHeight: 54, fontSize: 17

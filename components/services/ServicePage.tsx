@@ -7,6 +7,7 @@ import ServiceProcess from './sections/ServiceProcess';
 import ServiceEcosystemSection from './sections/ServiceEcosystemSection';
 import ServiceFaq from './sections/ServiceFaq';
 import MobileChildPage from './MobileChildPage';
+import { GraphicDesignClosing, GraphicDesignDetails } from './GraphicDesignDetails';
 
 interface ServicePageProps {
     service: ServiceData;
@@ -28,6 +29,7 @@ export default function ServicePage({
                     data={service.capabilities}
                 />
             ) : null}
+            {service.slug === 'graphic-designing' && <GraphicDesignDetails />}
             {service.process ? (
                 <ServiceProcess data={service.process} />
             ) : null}
@@ -35,6 +37,7 @@ export default function ServicePage({
                 <ServiceEcosystemSection data={service.ecosystem} />
             )}
             {service.faq && <ServiceFaq data={service.faq} />}
+            {service.slug === 'graphic-designing' && <GraphicDesignClosing />}
         </main>
     );
 }

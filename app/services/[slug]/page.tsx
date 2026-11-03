@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import ServicePage from '@/components/services/ServicePage';
+import GraphicDesignJsonLd from '@/components/services/GraphicDesignJsonLd';
 import { getServiceBySlug, serviceList } from '@/data/services';
 
 interface ServiceRouteProps {
@@ -50,5 +51,8 @@ export default async function ServiceRoute({ params }: ServiceRouteProps) {
         notFound();
     }
 
-    return <ServicePage service={service} />;
+    return <>
+        {slug === 'graphic-designing' && <GraphicDesignJsonLd name="Graphic Design" description={service.seo.description} path="/services/graphic-designing" />}
+        <ServicePage service={service} />
+    </>;
 }

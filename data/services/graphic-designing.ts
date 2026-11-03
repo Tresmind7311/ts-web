@@ -6,21 +6,21 @@ export const graphicDesigningService: ServiceData = {
     slug: 'graphic-designing',
     name: 'Graphic Designing',
     seo: {
-        title: 'Graphic Design Services | Branding & Print | Tresmind',
+        title: 'Graphic Design Services | Logos, UI/UX & Print | Tresmind',
         description:
-            'Brand identity, logos, marketing and social graphics, print and packaging design that keep your business consistent and recognisable on every channel.',
+            'Graphic design services for logos, UI/UX, marketing graphics, print and packaging, plus branding, 3D modeling and animation for growing businesses.',
     },
     hero: {
         title: 'Graphic design services',
         description:
-            'We create visual designs that help your business communicate clearly and look consistent, from your logo to your latest campaign.',
+            'We design the everyday visuals your business relies on, from logos and app screens to ads, brochures and packaging, so every touchpoint looks clear and consistent.',
         primaryCta: {
-            label: 'Start your project',
-            href: '#contact',
+            label: 'Start a design project',
+            href: '/contact',
         },
         secondaryCta: {
-            label: 'Book a consultation',
-            href: '#contact',
+            label: 'Discuss your project',
+            href: '/contact',
         },
         image: {
             src: `${imageBase}/graphic-designing-hero.png`,
@@ -41,9 +41,9 @@ export const graphicDesigningService: ServiceData = {
         order: 5,
     },
     showcase: {
-        title: 'Visuals Built Around Your Brand',
+        title: 'Design that works where your audience sees it',
         description:
-            'From brand identities to campaign graphics and printed materials, we turn your message into designs that fit your business and every place your audience sees it.',
+            'Good design is practical. A logo must read at small sizes, an app screen must guide users, and a brochure must print correctly. This page covers individual design assets. For a full identity system, see Complete Branding; for static product assets, see 3D Modeling; for motion, see 2D/3D Animation.',
         columns: [
             {
                 images: [
@@ -98,27 +98,32 @@ export const graphicDesigningService: ServiceData = {
         ],
     },
     capabilities: {
-        eyebrow: 'Our Expertise',
+        eyebrow: 'Graphic Design',
         title: 'What we design',
         description:
-            'From brand identity to campaign graphics and print materials, we create designs that communicate your message clearly.',
+            'Logos, interfaces, campaign graphics and print materials for everyday business use.',
         initialVisibleCount: 4,
         items: [
             {
-                id: 'brand-identity',
-                title: 'Brand Identity',
+                id: 'logo-design',
+                title: 'Logo Design',
                 description:
-                    'Logos, colour palettes, typography and brand guidelines.',
+                    'A logo and variations for use across web, print and social.',
                 image: {
                     src: `${imageBase}/what-we-build/Brand-Identity.png`,
-                    alt: 'Brand identity design',
+                    alt: 'Logo and brand identity design',
                 },
+            },
+            {
+                id: 'ui-ux-design',
+                title: 'UI/UX Design',
+                description: 'Interface and user-journey design for websites and mobile apps, scoped to product needs.',
             },
             {
                 id: 'marketing-social-graphics',
                 title: 'Marketing & Social Graphics',
                 description:
-                    'Campaign visuals, social posts, ads and banners.',
+                    'Ads, banners, social posts, presentations and email graphics aligned to your brand.',
                 image: {
                     src: `${imageBase}/what-we-build/Marketing-Social-Graphics.png`,
                     alt: 'Marketing and social graphics',
@@ -128,26 +133,16 @@ export const graphicDesigningService: ServiceData = {
                 id: 'print-packaging-design',
                 title: 'Print & Packaging Design',
                 description:
-                    'Brochures, business cards, labels and packaging, ready for production.',
+                    'Brochures, business cards, signage, labels and packaging prepared for the intended format.',
                 image: {
                     src: `${imageBase}/what-we-build/Print-Packaging-Design.png`,
                     alt: 'Print and packaging design',
                 },
             },
-            {
-                id: 'illustrations-custom-graphics',
-                title: 'Illustrations & Custom Graphics',
-                description:
-                    'Original illustrations, icons and visual assets for your brand.',
-                image: {
-                    src: `${imageBase}/what-we-build/Illustrations-Custom-Graphics.png`,
-                    alt: 'Illustrations and custom graphics',
-                },
-            },
         ],
     },
     process: {
-        title: 'Our design process',
+        title: 'Our process',
         description:
             'We understand your message, explore a visual direction, and refine the designs for their intended use.',
         autoplayMs: 3500,
@@ -196,10 +191,10 @@ export const graphicDesigningService: ServiceData = {
                 },
             },
             {
-                id: 'final-files-guidelines',
+                id: 'production',
                 number: '04',
-                title: 'Final files & guidelines',
-                description: 'Prepare the agreed assets for handover.',
+                title: 'Production',
+                description: 'Prepare final artwork for each agreed format.',
                 backgroundImage: {
                     src: `${imageBase}/process-bg.png`,
                     alt: '',
@@ -209,12 +204,18 @@ export const graphicDesigningService: ServiceData = {
                     alt: '',
                 },
             },
+            {
+                id: 'handover', number: '05', title: 'Handover',
+                description: 'Organise agreed files and usage notes.',
+                backgroundImage: { src: `${imageBase}/process-bg.png`, alt: '' },
+                foregroundImage: { src: `${imageBase}/process-img.png`, alt: '' },
+            },
         ],
     },
     ecosystem: {
-        title: 'More Than Just a Visual',
+        title: 'Why work with Tresmind on design',
         description:
-            'Effective design connects how your brand looks with what it needs to say. We bring together your message, identity, layout and production needs, so every asset works where your audience sees it.',
+            'Design should connect your message, identity, layout and production needs. Agree the formats, feedback stages and final files early so assets can be used across the intended touchpoints.',
         flow: 'Brand & Message → Visual Identity → Layout & Imagery → Production → Audience',
         closingText: '',
         image: {
@@ -223,12 +224,16 @@ export const graphicDesigningService: ServiceData = {
         },
     },
     faq: {
-        title: 'Graphic design FAQs',
+        title: 'Graphic Design Services FAQs',
         items: [
             {
                 question: 'Can you work with our existing brand?',
                 answer: 'Yes. We design within your current guidelines, or help refresh them.',
             },
+            { question: 'What files will I receive?', answer: 'File formats depend on the agreed use. Confirm print, digital and editable source files during scoping.' },
+            { question: 'How many revisions are included?', answer: 'Agree the review rounds and any additional revisions in the project scope.' },
+            { question: 'Do you design for print as well as digital?', answer: 'Print and digital artwork have different production requirements. Share printer specifications where available.' },
+            { question: 'Do I need a logo or complete branding?', answer: 'A logo is one asset. Complete branding also defines positioning, voice and a wider identity system.' },
         ],
     },
 };

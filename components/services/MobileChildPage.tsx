@@ -13,7 +13,7 @@ import ServiceShowcase from './sections/ServiceShowcase';
 import type { ServiceData, ServiceProcessData } from '@/data/services/types';
 import { tokens } from '@/theme/theme';
 
-type ChildServicePage = NonNullable<ServiceData['detail']>;
+type ChildServicePage = NonNullable<ServiceData['detail']> & { processForegroundImage?: { src: string; alt: string } };
 
 const processArtByParent: Record<string, {
     backgroundImage: string;
@@ -115,7 +115,7 @@ const Breadcrumbs = styled('nav')({
     '& li:not(:last-child)::after': {
         content: "'/'", paddingLeft: '8px', color: tokens.color.neutral600,
     },
-    '& a': { color: tokens.color.uv800, textUnderlineOffset: '3px' },
+    '& a': { display: 'inline-flex', alignItems: 'center', minWidth: '44px', minHeight: '44px', color: tokens.color.uv800, textUnderlineOffset: '3px' },
 });
 
 const leadStyles = {
@@ -128,7 +128,7 @@ const Actions = styled('div')({ display: 'flex', flexWrap: 'wrap', gap: '14px', 
 
 const buttonStyles = {
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-    minHeight: '48px', padding: '10px 22px', borderRadius: '12px',
+    minHeight: '52px', padding: '12px 24px', borderRadius: tokens.radius.md,
     textDecoration: 'none', fontWeight: 600,
 };
 
@@ -257,13 +257,17 @@ const Cta = styled(Section)({
 const Related = styled('nav')({
     ...containerStyles,
     display: 'flex', flexWrap: 'wrap', gap: '20px', paddingBlock: '20px 64px',
-    '& a': { color: tokens.color.uv800, textUnderlineOffset: '3px' },
+    '& a': { display: 'inline-flex', alignItems: 'center', minWidth: '44px', minHeight: '44px', color: tokens.color.uv800, textUnderlineOffset: '3px' },
 });
 
 export default function MobileChildPage({ page }: { page: ChildServicePage }) {
-    const processArt = processArtByParent[page.parentPath] ??
+    const graphicDesignChild = page.parentPath === '/services/graphic-designing';
+    const processArt = graphicDesignChild ? undefined : processArtByParent[page.parentPath] ??
         processArtByParent[`/services/${page.slug}`];
     const showcaseImages = processArt?.showcaseImages ?? [];
+    const graphicShowcaseImages = [page.introduction.image, ...page.cards.map(card => card.image)]
+        .filter((image): image is NonNullable<typeof image> => Boolean(image));
+    const explainerImage = page.explainer.image ?? processArt?.explainerImage;
 
     return (
         <Page>
@@ -291,7 +295,9 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
             <ServiceShowcase data={{
                 title: page.introduction.title,
                 description: page.introduction.text,
-                columns: page.cards.map((card, index) => ({ images: [card.image ?? showcaseImages[index % Math.max(showcaseImages.length, 1)]].filter((image): image is NonNullable<typeof image> => Boolean(image)) })),
+                columns: graphicDesignChild
+                    ? graphicShowcaseImages.map(image => ({ images: [image] }))
+                    : page.cards.map((card, index) => ({ images: [card.image ?? showcaseImages[index % Math.max(showcaseImages.length, 1)]].filter((image): image is NonNullable<typeof image> => Boolean(image)) })),
             }} />
 
             <ServiceCapabilities data={{
@@ -310,7 +316,6 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                 <Split>
                     <DetailCard>
                         <Heading id="child-deliverables" variant="h2">What you get</Heading>
-                        <p>These are topics to define in the project scope; exact deliverables depend on the agreed work.</p>
                         <DetailList>{page.deliverables.map(item => <DetailItem key={item}>{item}</DetailItem>)}</DetailList>
                     </DetailCard>
                     <DetailCard>
@@ -326,8 +331,8 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                         <Heading id="child-explainer" variant="h2">{page.explainer.title}</Heading>
                         <Lead>{page.explainer.text}</Lead>
                     </ExplainerCopy>
-                    {processArt?.explainerImage ? <ExplainerVisual>
-                        <Image src={processArt.explainerImage.src} alt={processArt.explainerImage.alt} fill sizes="(max-width: 600px) 100vw, 50vw" />
+                    {explainerImage ? <ExplainerVisual>
+                        <Image src={explainerImage.src} alt={explainerImage.alt} fill sizes="(max-width: 767px) calc(100vw - 32px), 45vw" loading="lazy" />
                     </ExplainerVisual> : <ExplainerVisual aria-hidden="true" />}
                 </ExplainerLayout>
             </WhiteSection>
@@ -342,13 +347,13 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                             number: String(index + 1).padStart(2, '0'),
                             title: step,
                             description: '',
-                            ...(processArt && { backgroundImage: {
-                                src: processArt.backgroundImage,
+                            ...((page.processImage || processArt) && { backgroundImage: {
+                                src: page.processImage?.src ?? processArt!.backgroundImage,
                                 alt: '',
                             } }),
-                            ...(processArt && { foregroundImage: {
-                                src: processArt.foregroundImage,
-                                alt: processArt.foregroundAlt,
+                            ...((page.processForegroundImage || processArt) && { foregroundImage: {
+                                src: page.processForegroundImage?.src ?? processArt!.foregroundImage,
+                                alt: page.processForegroundImage?.alt ?? processArt!.foregroundAlt,
                             } }),
                         };
                     }),
@@ -358,10 +363,9 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
             <ServiceEcosystemSection data={{
                 title: page.why.title,
                 description: page.why.text,
-                ...(page.parentPath !== '/services' && { image: {
-                    src: '/images/services/mobile-app-development/mobile-ecosystem.png',
-                    alt: 'Mobile application, API and backend ecosystem illustration',
-                } }),
+                ...(page.why.image ? { image: page.why.image } : processArt && { image: page.parentPath === '/services/mobile-app-development'
+                    ? { src: '/images/services/mobile-app-development/mobile-ecosystem.png', alt: 'Mobile application, API and backend ecosystem illustration' }
+                    : processArt.explainerImage }),
             }} />
 
             <ServiceFaq data={page.faq} />
