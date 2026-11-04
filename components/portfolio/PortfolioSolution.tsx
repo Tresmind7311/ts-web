@@ -82,7 +82,7 @@ const Content = styled(Box)({
     maxWidth: '620px',
 });
 
-const Title = styled(Typography)(({ theme }) => ({
+const Title = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     margin: 0,
 
     fontFamily: tokens.font.display,

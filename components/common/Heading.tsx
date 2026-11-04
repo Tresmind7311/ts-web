@@ -16,6 +16,7 @@ export interface HeadingProps extends Omit<TypographyProps, 'component' | 'varia
 }
 
 interface StyledHeadingProps {
+    component?: React.ElementType;
     headingVariant: HeadingVariant;
     gradient: string | false;
 }

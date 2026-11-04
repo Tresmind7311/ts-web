@@ -17,7 +17,7 @@ export const mobileAppDevelopmentService: ServiceData = {
             href: '#contact',
         },
         secondaryCta: {
-            label: 'Book a consultation',
+            label: 'Request a consultation',
             href: '#contact',
         },
         image: {

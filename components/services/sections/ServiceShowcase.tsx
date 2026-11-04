@@ -38,7 +38,7 @@ const contentReveal = keyframes`
     }
 `;
 
-const Section = styled(Box)(({ theme }) => ({
+const Section = styled(Box)<{ component?: React.ElementType }>(({ theme }) => ({
     position: 'relative',
     width: '100%',
     overflow: 'hidden',
@@ -282,7 +282,7 @@ const ContentContainer = styled(Container)(({ theme }) => ({
     },
 }));
 
-const Description = styled(Typography)(({ theme }) => ({
+const Description = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     maxWidth: '620px',
     margin: '22px auto 0',
     fontFamily: tokens.font.body,

@@ -100,6 +100,7 @@ export interface ServiceShowcaseImage {
 }
 
 export interface ServiceShowcaseColumn {
+    placeholder?: boolean;
     images: ServiceShowcaseImage[];
 }
 

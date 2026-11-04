@@ -60,7 +60,7 @@ const fadeUp = keyframes`
     }
 `;
 
-const Section = styled(Box)(({ theme }) => ({
+const Section = styled(Box)<{ component?: React.ElementType }>(({ theme }) => ({
     position: 'relative',
     width: '100%',
     overflow: 'hidden',
@@ -87,7 +87,7 @@ const SectionContainer = styled(Container)(({ theme }) => ({
     },
 }));
 
-const Heading = styled(Typography)(({ theme }) => ({
+const Heading = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     margin: 0,
     textAlign: 'center',
     fontFamily: tokens.font.display,

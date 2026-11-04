@@ -25,7 +25,7 @@ const cardIn = keyframes`
     }
 `;
 
-const Section = styled(Box)(({ theme }) => ({
+const Section = styled(Box)<{ component?: React.ElementType }>(({ theme }) => ({
     position: 'relative',
     zIndex: 10,
     width: '100%',
@@ -41,6 +41,9 @@ const Section = styled(Box)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
         marginTop: '-54px',
         padding: '0 16px 0px',
+    },
+    [theme.breakpoints.down('sm')]: {
+        marginTop: 0,
     },
 }));
 

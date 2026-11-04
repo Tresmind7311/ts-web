@@ -124,7 +124,7 @@ const textReveal = keyframes`
     }
 `;
 
-const Section = styled(Box)(({ theme }) => ({
+const Section = styled(Box)<{ component?: React.ElementType }>(({ theme }) => ({
     position: 'relative',
     width: '100%',
     overflow: 'hidden',
@@ -167,7 +167,7 @@ const Header = styled(Container)({
 //     },
 // }));
 
-const Intro = styled(Typography)(({ theme }) => ({
+const Intro = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     maxWidth: '850px',
     margin: '22px auto 0',
     fontFamily: tokens.font.body,
@@ -468,7 +468,7 @@ const ActiveContentInner = styled(Box)({
     animation: `${textReveal} 520ms ${tokens.motion.ease} both`,
 });
 
-const StepTitle = styled(Typography)(({ theme }) => ({
+const StepTitle = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     margin: 0,
     fontFamily: tokens.font.display,
     fontSize: '32px',
@@ -482,7 +482,7 @@ const StepTitle = styled(Typography)(({ theme }) => ({
     },
 }));
 
-const StepDescription = styled(Typography)(({ theme }) => ({
+const StepDescription = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     maxWidth: '600px',
     margin: '20px auto 0',
     fontFamily: tokens.font.body,

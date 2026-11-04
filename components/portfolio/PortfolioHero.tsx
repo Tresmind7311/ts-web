@@ -194,7 +194,7 @@ export default function PortfolioHero() {
                 <Description>Powering bold ideas with strategy, creativity, and growth.</Description>
                 <Actions>
                     <PrimaryButton component="a" href="/contact">Start your project</PrimaryButton>
-                    <SecondaryButton component="a" href="/contact">Book a consultation</SecondaryButton>
+                    <SecondaryButton component="a" href="/contact">Request a consultation</SecondaryButton>
                 </Actions>
             </Content>
             <Cards>

@@ -248,7 +248,7 @@ export default function ContactHero() {
     return (<>
         <HeroSection aria-labelledby="contact-hero-heading">
             <ContactLocations />
-            <HeroIntro><Eyebrow>Let&apos;s connect</Eyebrow><HeroHeading id="contact-hero-heading" variant="h1">Talk to our team</HeroHeading><Description>We work remotely with clients across the United States, United Kingdom, Europe, Australia, the UAE and Saudi Arabia. Send a message and we will arrange a call at a time that suits your time zone.</Description><Actions><PrimaryButton component="a" href="#contact-form">Start your project</PrimaryButton><SecondaryButton component="a" href="#contact-form">Book a consultation</SecondaryButton></Actions></HeroIntro>
+            <HeroIntro><Eyebrow>Let&apos;s connect</Eyebrow><HeroHeading id="contact-hero-heading" variant="h1">Talk to our team</HeroHeading><Description>We work remotely with clients across the United States, United Kingdom, Europe, Australia, the UAE and Saudi Arabia. Send a message and we will arrange a call at a time that suits your time zone.</Description><Actions><PrimaryButton component="a" href="#contact-form">Start your project</PrimaryButton><SecondaryButton component="a" href="#contact-form">Request a consultation</SecondaryButton></Actions></HeroIntro>
             <ContactStrip maxWidth={false} sx={{
                 maxWidth: 1328
             }}>{CONTACT_ITEMS.map(item => <ContactLink key={item.label} href={item.href} aria-label={item.label + ': ' + item.value}><Image src="/images/send-icon.svg" alt="" width={48} height={48} /><span><strong>{item.label}</strong>{item.value}</span></ContactLink>)}</ContactStrip>

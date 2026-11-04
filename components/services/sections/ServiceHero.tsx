@@ -17,7 +17,7 @@ interface ServiceHeroProps {
 
 const SERVICE_HERO_BACKGROUND = '/images/services/Main/hero-background.jpg';
 
-const HeroSection = styled(Box)(({ theme }) => ({
+const HeroSection = styled(Box)<{ component?: React.ElementType }>(({ theme }) => ({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
@@ -87,7 +87,7 @@ const Content = styled(Box)(({ theme }) => ({
     },
 }));
 
-const Eyebrow = styled(Typography)(({ theme }) => ({
+const Eyebrow = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     margin: '0 0 18px',
     fontFamily: tokens.font.body,
     fontSize: '11px',
@@ -102,7 +102,7 @@ const Eyebrow = styled(Typography)(({ theme }) => ({
     },
 }));
 
-const Title = styled(Typography)(({ theme }) => ({
+const Title = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     margin: 0,
     maxWidth: '660px',
     fontFamily: tokens.font.display,
@@ -128,7 +128,7 @@ const Title = styled(Typography)(({ theme }) => ({
     },
 }));
 
-const Description = styled(Typography)(({ theme }) => ({
+const Description = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     margin: 'clamp(22px, 2.1vw, 30px) 0 0',
     maxWidth: '590px',
     fontFamily: tokens.font.body,

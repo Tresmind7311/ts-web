@@ -59,7 +59,7 @@ const Arrow = styled(Box)({
     transition: `transform ${tokens.motion.base} ${tokens.motion.ease}`,
 });
 
-const Title = styled(Typography)(({ theme }) => ({
+const Title = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     margin: 0,
     maxWidth: '240px',
     fontFamily: tokens.font.display,
@@ -74,7 +74,7 @@ const Title = styled(Typography)(({ theme }) => ({
     },
 }));
 
-const Description = styled(Typography)({
+const Description = styled(Typography)<{ component?: React.ElementType }>({
     marginTop: '14px',
     fontFamily: tokens.font.body,
     fontSize: '14px',
@@ -83,7 +83,7 @@ const Description = styled(Typography)({
     color: tokens.color.neutral600,
 });
 
-const SeeMore = styled(Typography)({
+const SeeMore = styled(Typography)<{ component?: React.ElementType }>({
     display: 'inline-block',
     width: 'fit-content',
     marginTop: '4px',
@@ -142,7 +142,7 @@ const CardLink = styled(Link)(({ theme }) => ({
     },
 }));
 
-const CardArticle = styled(Box)(({ theme }) => ({
+const CardArticle = styled(Box)<{ component?: React.ElementType }>(({ theme }) => ({
     ...cardBaseStyles,
 
     [theme.breakpoints.down('sm')]: {

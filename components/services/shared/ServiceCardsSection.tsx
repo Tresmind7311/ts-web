@@ -40,7 +40,7 @@ const fadeUp = keyframes`
     }
 `;
 
-const Section = styled(Box)(({ theme }) => ({
+const Section = styled(Box)<{ component?: React.ElementType }>(({ theme }) => ({
     position: 'relative',
     overflow: 'hidden',
     width: '100%',
@@ -84,7 +84,7 @@ const Header = styled(Box)({
     textAlign: 'center',
 });
 
-const Eyebrow = styled(Typography)({
+const Eyebrow = styled(Typography)<{ component?: React.ElementType }>({
     fontFamily: tokens.font.display,
     fontSize: '20px',
     fontWeight: 600,
@@ -109,7 +109,7 @@ const Eyebrow = styled(Typography)({
 //     },
 // }));
 
-const Intro = styled(Typography)({
+const Intro = styled(Typography)<{ component?: React.ElementType }>({
     maxWidth: '620px',
     margin: '16px auto 0',
     fontFamily: tokens.font.heroBody,

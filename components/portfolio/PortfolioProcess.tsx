@@ -107,7 +107,7 @@ const Chip = styled(Box)({
     lineHeight: 1,
 });
 
-const Heading = styled(Typography)(({ theme }) => ({
+const Heading = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     marginTop: '28px',
     fontFamily: tokens.font.display,
     fontSize: '58px',

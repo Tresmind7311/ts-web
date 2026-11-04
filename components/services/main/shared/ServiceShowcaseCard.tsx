@@ -84,7 +84,7 @@ const Header = styled(Box)(({ theme }) => ({
     },
 }));
 
-const Title = styled(Typography)(({ theme }) => ({
+const Title = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     margin: 0,
     maxWidth: '190px',
     fontFamily: tokens.font.display,

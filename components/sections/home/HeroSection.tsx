@@ -91,7 +91,7 @@ const ContentOverlay = styled(Box)(({ theme }) => ({
     transition: `opacity 600ms ${EASE}`,
 }));
 
-const Eyebrow = styled(Typography)({
+const Eyebrow = styled(Typography)<{ component?: React.ElementType }>({
     fontFamily: 'var(--font-body)',
     fontWeight: 600,
     fontSize: '0.9vw',
@@ -106,7 +106,7 @@ const Eyebrow = styled(Typography)({
     animation: `${fadeSlideIn} 0.8s ${EASE} 0.05s both`,
 });
 
-const Headline = styled(Typography)(({ theme }) => ({
+const Headline = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     fontFamily: 'var(--font-display)',
     fontWeight: 700,
     fontSize: '6.5vw',

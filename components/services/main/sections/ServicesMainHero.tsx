@@ -8,7 +8,7 @@ import { styled } from '@mui/material/styles';
 import { PrimaryButton, SecondaryButton } from '@/components/common/Button';
 import { tokens } from '@/theme/theme';
 
-const HeroSection = styled(Box)(({ theme }) => ({
+const HeroSection = styled(Box)<{ component?: React.ElementType }>(({ theme }) => ({
     position: 'relative',
     width: '100%',
     minHeight: 'clamp(430px, 42vw, 570px)',
@@ -41,7 +41,7 @@ const HeroContainer = styled(Container)(({ theme }) => ({
 
     [theme.breakpoints.down('sm')]: {
         paddingTop: '58px',
-        // paddingBottom: '96px',
+        paddingBottom: '40px',
     },
 }));
 
@@ -54,7 +54,7 @@ const Content = styled(Box)(({ theme }) => ({
     },
 }));
 
-const Title = styled(Typography)(({ theme }) => ({
+const Title = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     margin: 0,
     fontFamily: tokens.font.display,
     fontSize: 'clamp(42px, 4.5vw, 64px)',
@@ -77,7 +77,7 @@ const Title = styled(Typography)(({ theme }) => ({
     },
 }));
 
-const Description = styled(Typography)(({ theme }) => ({
+const Description = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
     maxWidth: '780px',
     margin: 'clamp(18px, 1.8vw, 24px) auto 0',
     fontFamily: tokens.font.body,
@@ -137,7 +137,7 @@ export default function ServicesMainHero() {
                         <SecondaryButton
                             href="#contact"
                         >
-                            Book a consultation
+                            Request a consultation
                         </SecondaryButton>
                     </Actions>
                 </Content>
