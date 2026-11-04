@@ -132,9 +132,11 @@ const SubCopy = styled(Typography)(({ theme }) => ({
     maxWidth: '22vw',
     marginBottom: '40px',
     animation: `${fadeSlideIn} 0.8s ${EASE} 0.42s both`,
-
+    
     [theme.breakpoints.down('md')]: {
+        fontSize: '1.8vw',
         marginBottom: '28px',
+        maxWidth: '40vw',
     },
 
     [theme.breakpoints.down('sm')]: {
@@ -267,14 +269,14 @@ export default function HeroSection() {
                     </CtaButton> */}
                     <SecondaryButton
                         sx={{
-                            maxWidth: '18vw',
+                            maxWidth: '22vw',
 
                             [theme.breakpoints.down('md')]: {
-                                maxWidth: '20vw',
+                                maxWidth: '28vw',
                             },
 
                             [theme.breakpoints.down('sm')]: {
-                                maxWidth: '50vw',
+                                maxWidth: '59vw',
                             },
                         }}
                         textColor="#FFFFFF"
