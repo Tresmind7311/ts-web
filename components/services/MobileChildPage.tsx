@@ -10,6 +10,7 @@ import ServiceEcosystemSection from './sections/ServiceEcosystemSection';
 import ServiceFaq from './sections/ServiceFaq';
 import ServiceProcess from './sections/ServiceProcess';
 import ServiceShowcase from './sections/ServiceShowcase';
+import ServiceHero from './sections/ServiceHero';
 import type { ServiceData, ServiceProcessData } from '@/data/services/types';
 import { tokens } from '@/theme/theme';
 
@@ -86,6 +87,57 @@ const processArtByParent: Record<string, {
         explainerImage: { src: '/images/services/graphic-designing/graphic-designing-hero.png', alt: 'Digital campaign creative design' },
     },
 };
+
+const iosProcessForegroundImages = Array.from({ length: 5 }, (_, index) => ({
+    src: `/images/services/mobile-app-development/ios-development/ios-process-foreground-${index + 1}.png`,
+    alt: `iOS app development process step ${index + 1}`,
+}));
+
+const androidProcessForegroundImages = Array.from({ length: 5 }, (_, index) => ({
+    src: `/images/services/mobile-app-development/android-development/android-process-foreground-${index + 1}.png`,
+    alt: `Android app development process step ${index + 1}`,
+}));
+
+const crossPlatformProcessForegroundImages = Array.from({ length: 5 }, (_, index) => ({
+    src: `/images/services/mobile-app-development/cross-platform-development/cross-platform-process-foreground-${index + 1}.png`,
+    alt: `Cross-platform app development process step ${index + 1}`,
+}));
+
+const iosShowcaseImages = Array.from({ length: 13 }, (_, index) => ({
+    src: `/images/services/mobile-app-development/ios-development/ios-app-development-${index + 1}.jpg`,
+    alt: `iOS app development showcase ${index + 1}`,
+}));
+
+const iosShowcaseColumns = [
+    { images: iosShowcaseImages.slice(0, 4) },
+    { images: iosShowcaseImages.slice(4, 7) },
+    { images: iosShowcaseImages.slice(7, 10) },
+    { images: iosShowcaseImages.slice(10, 13) },
+];
+
+const androidShowcaseImages = Array.from({ length: 13 }, (_, index) => ({
+    src: `/images/services/mobile-app-development/android-development/android-app-development-${index + 1}.jpg`,
+    alt: `Android app development showcase ${index + 1}`,
+}));
+
+const androidShowcaseColumns = [
+    { images: androidShowcaseImages.slice(0, 4) },
+    { images: androidShowcaseImages.slice(4, 7) },
+    { images: androidShowcaseImages.slice(7, 10) },
+    { images: androidShowcaseImages.slice(10, 13) },
+];
+
+const crossPlatformShowcaseImages = Array.from({ length: 13 }, (_, index) => ({
+    src: `/images/services/mobile-app-development/cross-platform-development/cross-platform-app-development-${index + 1}.jpg`,
+    alt: `Cross-platform app development showcase ${index + 1}`,
+}));
+
+const crossPlatformShowcaseColumns = [
+    { images: crossPlatformShowcaseImages.slice(0, 4) },
+    { images: crossPlatformShowcaseImages.slice(4, 7) },
+    { images: crossPlatformShowcaseImages.slice(7, 10) },
+    { images: crossPlatformShowcaseImages.slice(10, 13) },
+];
 
 const containerStyles = {
     width: 'min(100% - 48px, 1200px)',
@@ -289,6 +341,9 @@ const Related = styled('nav')({
 });
 
 export default function MobileChildPage({ page }: { page: ChildServicePage }) {
+    const iosChild = page.slug === 'ios-app-development';
+    const androidChild = page.slug === 'android-app-development';
+    const crossPlatformChild = page.slug === 'cross-platform-app-development';
     const graphicDesignChild = page.parentPath === '/services/graphic-designing';
     const processArt = graphicDesignChild ? undefined : processArtByParent[page.parentPath] ??
         processArtByParent[`/services/${page.slug}`];
@@ -297,18 +352,45 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
         .filter((image): image is NonNullable<typeof image> => Boolean(image));
     const explainerImage = page.explainer.image ?? processArt?.explainerImage;
 
+    const breadcrumbs = (
+        <Breadcrumbs aria-label="Breadcrumb">
+            <ol>
+                <li><Link href="/">Home</Link></li>
+                <li><Link href="/services">Services</Link></li>
+                {page.parentPath !== '/services' && <li><Link href={page.parentPath}>{page.parentName}</Link></li>}
+                <li aria-current="page">{page.name}</li>
+            </ol>
+        </Breadcrumbs>
+    );
+
     return (
         <Page>
-            <Hero aria-labelledby="child-service-title">
+            {iosChild || androidChild || crossPlatformChild ? (
+                <ServiceHero
+                    headingId="child-service-title"
+                    breadcrumbs={breadcrumbs}
+                    data={{
+                        title: page.hero.title,
+                        description: page.hero.description,
+                        primaryCta: { label: page.hero.cta, href: '/contact' },
+                        secondaryCta: { label: `Explore ${page.parentName.toLowerCase()}`, href: page.parentPath },
+                        image: {
+                            src: iosChild
+                                ? '/images/services/mobile-app-development/ios-development/ios-hero.png'
+                                : androidChild
+                                    ? '/images/services/mobile-app-development/android-development/android-hero.png'
+                                    : '/images/services/mobile-app-development/cross-platform-development/cross-platform-hero.png',
+                            alt: iosChild
+                                ? 'iOS app interface displayed across Apple devices'
+                                : androidChild
+                                    ? 'Android app interface displayed across mobile devices'
+                                    : 'Hand holding a phone with cross-platform app and app store visuals',
+                        },
+                    }}
+                />
+            ) : <Hero aria-labelledby="child-service-title">
                 <Container>
-                    <Breadcrumbs aria-label="Breadcrumb">
-                        <ol>
-                            <li><Link href="/">Home</Link></li>
-                            <li><Link href="/services">Services</Link></li>
-                            {page.parentPath !== '/services' && <li><Link href={page.parentPath}>{page.parentName}</Link></li>}
-                            <li aria-current="page">{page.name}</li>
-                        </ol>
-                    </Breadcrumbs>
+                    {breadcrumbs}
                     <HeroContent>
                         <Heading id="child-service-title" variant="h1">{page.hero.title}</Heading>
                         <p>{page.hero.description}</p>
@@ -318,12 +400,18 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                         </Actions>
                     </HeroContent>
                 </Container>
-            </Hero>
+            </Hero>}
 
             <ServiceShowcase data={{
                 title: page.introduction.title,
                 description: page.introduction.text,
-                columns: graphicDesignChild
+                columns: page.slug === 'ios-app-development'
+                    ? iosShowcaseColumns
+                    : page.slug === 'android-app-development'
+                    ? androidShowcaseColumns
+                    : page.slug === 'cross-platform-app-development'
+                    ? crossPlatformShowcaseColumns
+                    : graphicDesignChild
                     ? graphicShowcaseImages.map(image => ({ images: [image] }))
                     : page.cards.map((card, index) => ({ images: [card.image ?? showcaseImages[index % Math.max(showcaseImages.length, 1)]].filter((image): image is NonNullable<typeof image> => Boolean(image)) })),
             }} />
@@ -381,10 +469,22 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                                     alt: '',
                                 }
                             }),
-                            ...((page.processForegroundImage || processArt) && {
+                            ...((iosChild || page.processForegroundImage || processArt) && {
                                 foregroundImage: {
-                                    src: page.processForegroundImage?.src ?? processArt!.foregroundImage,
-                                    alt: page.processForegroundImage?.alt ?? processArt!.foregroundAlt,
+                                    src: iosChild
+                                        ? iosProcessForegroundImages[index]?.src ?? processArt!.foregroundImage
+                                        : androidChild
+                                            ? androidProcessForegroundImages[index]?.src ?? processArt!.foregroundImage
+                                            : crossPlatformChild
+                                                ? crossPlatformProcessForegroundImages[index]?.src ?? processArt!.foregroundImage
+                                                : page.processForegroundImage?.src ?? processArt!.foregroundImage,
+                                    alt: iosChild
+                                        ? iosProcessForegroundImages[index]?.alt ?? processArt!.foregroundAlt
+                                        : androidChild
+                                            ? androidProcessForegroundImages[index]?.alt ?? processArt!.foregroundAlt
+                                            : crossPlatformChild
+                                                ? crossPlatformProcessForegroundImages[index]?.alt ?? processArt!.foregroundAlt
+                                                : page.processForegroundImage?.alt ?? processArt!.foregroundAlt,
                                 }
                             }),
                         };

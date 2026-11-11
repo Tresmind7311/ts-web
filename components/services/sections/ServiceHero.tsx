@@ -13,6 +13,8 @@ import Heading from '@/components/common/Heading';
 
 interface ServiceHeroProps {
     data: ServiceHeroData;
+    breadcrumbs?: React.ReactNode;
+    headingId?: string;
 }
 
 const SERVICE_HERO_BACKGROUND = '/images/services/Main/hero-background.jpg';
@@ -75,6 +77,16 @@ const HeroContainer = styled(Container)(({ theme }) => ({
         paddingTop: '56px',
         paddingBottom: '38px',
     },
+}));
+
+const BreadcrumbSlot = styled(Box)(({ theme }) => ({
+    position: 'absolute',
+    top: '16px',
+    left: 0,
+    zIndex: 2,
+    '& ol': { marginBottom: 0 },
+    [theme.breakpoints.down('md')]: { left: '24px' },
+    [theme.breakpoints.down('sm')]: { top: '4px' },
 }));
 
 const Content = styled(Box)(({ theme }) => ({
@@ -189,10 +201,14 @@ const HeroImage = styled(Image)({
     filter: 'drop-shadow(0 24px 34px rgba(7, 20, 99, 0.10))',
 });
 
-export default function ServiceHero({ data }: ServiceHeroProps) {
+export default function ServiceHero({ data, breadcrumbs, headingId }: ServiceHeroProps) {
     return (
-        <HeroSection component="section">
-            <HeroContainer maxWidth="xl">
+        <HeroSection component="section" aria-labelledby={headingId}>
+            <HeroContainer
+                maxWidth="xl"
+                sx={breadcrumbs ? { '@media (max-width: 599px)': { paddingTop: '120px' } } : undefined}
+            >
+                {breadcrumbs ? <BreadcrumbSlot>{breadcrumbs}</BreadcrumbSlot> : null}
                 <Content>
                     {data.eyebrow ? (
                         <Eyebrow component="p">
@@ -200,7 +216,7 @@ export default function ServiceHero({ data }: ServiceHeroProps) {
                         </Eyebrow>
                     ) : null}
 
-                    <Heading variant="h1">
+                    <Heading id={headingId} variant="h1">
                         {data.title}
                     </Heading>
                     <Description component="p">
