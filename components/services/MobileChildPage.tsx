@@ -344,6 +344,7 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
     const iosChild = page.slug === 'ios-app-development';
     const androidChild = page.slug === 'android-app-development';
     const crossPlatformChild = page.slug === 'cross-platform-app-development';
+    const generativeAiChild = page.slug === 'generative-ai';
     const graphicDesignChild = page.parentPath === '/services/graphic-designing';
     const processArt = graphicDesignChild ? undefined : processArtByParent[page.parentPath] ??
         processArtByParent[`/services/${page.slug}`];
@@ -365,7 +366,7 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
 
     return (
         <Page>
-            {iosChild || androidChild || crossPlatformChild ? (
+            {iosChild || androidChild || crossPlatformChild || generativeAiChild ? (
                 <ServiceHero
                     headingId="child-service-title"
                     breadcrumbs={breadcrumbs}
@@ -374,7 +375,7 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                         description: page.hero.description,
                         primaryCta: { label: page.hero.cta, href: '/contact' },
                         secondaryCta: { label: `Explore ${page.parentName.toLowerCase()}`, href: page.parentPath },
-                        image: {
+                        image: page.hero.image ?? {
                             src: iosChild
                                 ? '/images/services/mobile-app-development/ios-development/ios-hero.png'
                                 : androidChild
@@ -411,6 +412,8 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                     ? androidShowcaseColumns
                     : page.slug === 'cross-platform-app-development'
                     ? crossPlatformShowcaseColumns
+                    : page.showcaseImages
+                    ? page.showcaseImages.map(images => ({ images }))
                     : graphicDesignChild
                     ? graphicShowcaseImages.map(image => ({ images: [image] }))
                     : page.cards.map((card, index) => ({ images: [card.image ?? showcaseImages[index % Math.max(showcaseImages.length, 1)]].filter((image): image is NonNullable<typeof image> => Boolean(image)) })),
@@ -477,14 +480,14 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                                             ? androidProcessForegroundImages[index]?.src ?? processArt!.foregroundImage
                                             : crossPlatformChild
                                                 ? crossPlatformProcessForegroundImages[index]?.src ?? processArt!.foregroundImage
-                                                : page.processForegroundImage?.src ?? processArt!.foregroundImage,
+                                                : page.processForegroundImages?.[index]?.src ?? page.processForegroundImage?.src ?? processArt!.foregroundImage,
                                     alt: iosChild
                                         ? iosProcessForegroundImages[index]?.alt ?? processArt!.foregroundAlt
                                         : androidChild
                                             ? androidProcessForegroundImages[index]?.alt ?? processArt!.foregroundAlt
                                             : crossPlatformChild
                                                 ? crossPlatformProcessForegroundImages[index]?.alt ?? processArt!.foregroundAlt
-                                                : page.processForegroundImage?.alt ?? processArt!.foregroundAlt,
+                                                : page.processForegroundImages?.[index]?.alt ?? page.processForegroundImage?.alt ?? processArt!.foregroundAlt,
                                 }
                             }),
                         };

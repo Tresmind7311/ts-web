@@ -5,8 +5,9 @@ export type ChildPage = {
     slug: string;
     name: string;
     seo: { title: string; description: string };
-    hero: { title: string; description: string; cta: string };
+    hero: { title: string; description: string; cta: string; image?: { src: string; alt: string } };
     introduction: { title: string; text: string; image?: { src: string; alt: string } };
+    showcaseImages?: { src: string; alt: string }[][];
     capabilitiesDescription: string;
     cards: Card[];
     deliverables: string[];
@@ -14,6 +15,7 @@ export type ChildPage = {
     explainer: { title: string; text: string; image?: { src: string; alt: string } };
     process: string[];
     processImage?: { src: string; alt: string };
+    processForegroundImages?: { src: string; alt: string }[];
     why: { title: string; text: string; image?: { src: string; alt: string } };
     faq: ServiceFaqData;
     closing: { title: string; text: string };

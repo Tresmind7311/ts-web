@@ -20,15 +20,35 @@ export const aiChildren = {
     'generative-ai': {
         slug: 'generative-ai', name: 'Generative AI',
         seo: { title: 'Generative AI Development Services | Tresmind', description: 'Explore grounded knowledge assistants, content generation and generative AI features with evaluation, privacy and human review in scope.' },
-        hero: { title: 'Generative AI development', description: 'Explore AI features for drafts, answers, summaries and images, with your content and review needs at the centre.', cta: 'Discuss a use case' },
+        hero: { title: 'Generative AI development', description: 'Explore AI features for drafts, answers, summaries and images, with your content and review needs at the centre.', cta: 'Discuss a use case', image: { src: '/images/services/ai-development/generative-ai/generative-ai-hero.png', alt: 'Generative AI assistant interface and grounded content workflow' } },
         introduction: { title: 'From prompts to production features', text: 'A useful generative AI feature needs grounding in approved data, evaluation, cost controls, privacy planning and fallbacks when a model is unsure. Start with a realistic use case and the workflow it serves.' },
+        showcaseImages: [1, 2, 3, 4].map((_, column) => {
+            const start = column === 0 ? 0 : 4 + 3 * (column - 1);
+            const count = column === 0 ? 4 : 3;
+            return Array.from({ length: count }, (_, index) => {
+                const imageNumber = start + index + 1;
+                return {
+                    src: `/images/services/ai-development/generative-ai/generative-ai-${imageNumber}.jpg`,
+                    alt: `Generative AI showcase ${imageNumber}`,
+                };
+            });
+        }),
         capabilitiesDescription: 'Consider where generative features could support existing work.',
-        cards: cards([['Knowledge assistants (RAG)', 'Explore answers grounded in approved documents with source references.'], ['Content generation tools', 'Plan drafts of descriptions, reports or proposals for human editing.'], ['Image and media generation', 'Assess visual workflows against brand and licensing rules.'], ['LLM integration', 'Consider generative features within existing applications and tools.']], aiImages),
+        cards: [
+            { title: 'Knowledge assistants (RAG)', description: 'Explore answers grounded in approved documents with source references.', image: { src: '/images/services/ai-development/generative-ai/generative-ai-capability-1.jpg', alt: '' } },
+            { title: 'Content generation tools', description: 'Plan drafts of descriptions, reports or proposals for human editing.', image: { src: '/images/services/ai-development/generative-ai/generative-ai-capability-2.jpg', alt: '' } },
+            { title: 'Image and media generation', description: 'Assess visual workflows against brand and licensing rules.', image: { src: '/images/services/ai-development/generative-ai/generative-ai-capability-3.jpg', alt: '' } },
+            { title: 'LLM integration', description: 'Consider generative features within existing applications and tools.', image: { src: '/images/services/ai-development/generative-ai/generative-ai-capability-4.jpg', alt: '' } },
+        ],
         deliverables: ['Use-case assessment and risk review', 'Prototype requirements using approved content', 'Evaluation set and quality criteria', 'Integration and guardrail plan', 'Usage, cost and feedback requirements'],
         useCases: { title: 'Generative AI use cases', items: ['Internal knowledge search', 'First drafts of routine documents', 'Product catalogue enrichment', 'Customer answers grounded in approved help content'] },
-        explainer: { title: 'How we keep answers grounded', text: 'Retrieval-augmented generation can search approved content before producing an answer. Source references, evaluation questions, low-confidence fallbacks and human review reduce but do not eliminate errors.' },
+        explainer: { title: 'How we keep answers grounded', text: 'Retrieval-augmented generation can search approved content before producing an answer. Source references, evaluation questions, low-confidence fallbacks and human review reduce but do not eliminate errors.', image: { src: '/images/services/ai-development/generative-ai/generative-ai-explainer.jpg', alt: 'Team reviewing a whiteboard diagram for grounded AI answers, source references, evaluation, fallback, and human review' } },
         process: ['Define use case, data sources, risks and success measures', 'Prototype on approved content', 'Evaluate quality, safety and cost', 'Plan guardrails, logging and access controls', 'Monitor feedback and refine retrieval'],
-        why: { title: 'Why Tresmind for generative AI', text: 'A sensible plan measures answer quality, makes sources visible and keeps people involved where incorrect output could matter. Confirm model, data handling and delivery capabilities before implementation.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map((step) => ({
+            src: `/images/services/ai-development/generative-ai/generative-ai-process-foreground-${step}.png`,
+            alt: `Generative AI process step ${step}`,
+        })),
+        why: { title: 'Why Tresmind for generative AI', text: 'A sensible plan measures answer quality, makes sources visible and keeps people involved where incorrect output could matter. Confirm model, data handling and delivery capabilities before implementation.', image: { src: '/images/services/ai-development/generative-ai/generative-ai-ecosystem.png', alt: 'Grounded AI knowledge workflow connecting approved documents, search, linked answers, quality checks, and human review' } },
         faq: { title: 'Generative AI FAQs', items: [
             { question: 'Will the AI make things up?', answer: 'Language models can produce errors. Sources, evaluation and human review can reduce that risk without removing it.' },
             { question: 'Is our data used to train public models?', answer: 'Data use depends on the provider and configuration. Review the proposed provider terms and data flow before sharing information.' },
