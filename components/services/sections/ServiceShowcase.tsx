@@ -57,8 +57,7 @@ const Section = styled(Box)<{ component?: React.ElementType }>(({ theme }) => ({
 
 /*
  * Reference collage is almost full viewport width.
- * maxWidth is disabled on the JSX Container below so MUI's lg max-width
- * no longer compresses the collage.
+ * The collage stays outside the constrained text content boundary.
  */
 const CollageViewport = styled(Container)(({ theme }) => ({
     position: 'relative',
@@ -156,7 +155,7 @@ const CollageStage = styled(Box)(({ theme }) => ({
     alignItems: 'start',
     gap: '11px',
     width: '92vw',
-    maxWidth: '1290px',
+    maxWidth: '1490px',
     height: '616px',
     margin: '0 auto',
     overflow: 'hidden',
@@ -410,7 +409,7 @@ export default function ServiceShowcase({
             aria-labelledby="service-showcase-heading"
         >
             {imagePool.length > 0 && <CollageViewport
-                maxWidth="lg"
+                maxWidth={false}
                 disableGutters
             >
                 <TopFade aria-hidden="true" />
@@ -456,7 +455,7 @@ export default function ServiceShowcase({
             </CollageViewport>}
 
             <ContentContainer
-                maxWidth="lg"
+                maxWidth="xl"
                 data-visible={inView ? 'true' : 'false'}
                 sx={imagePool.length === 0 ? { marginTop: 0, paddingTop: 'clamp(64px, 7vw, 96px)' } : undefined}
             >

@@ -8,9 +8,9 @@ import type { ServiceFaqData } from '@/data/services/types';
 import { tokens } from '@/theme/theme';
 
 const Section = styled('section')(({ theme }) => ({
-    padding: '80px 24px',
+    padding: '80px 0',
     backgroundColor: tokens.color.neutral0,
-    [theme.breakpoints.down('sm')]: { padding: '56px 16px' },
+    [theme.breakpoints.down('sm')]: { padding: '56px 0' },
 }));
 
 const Question = styled('summary')({
@@ -29,7 +29,7 @@ const Item = styled('details')({
 export default function ServiceFaq({ data }: { data: ServiceFaqData }) {
     return (
         <Section aria-labelledby="service-faq-heading">
-            <Container maxWidth="lg">
+            <Container maxWidth="xl">
                 <Heading id="service-faq-heading" variant="h2">{data.title}</Heading>
                 {data.items.map((item) => (
                     <Item key={item.question}>

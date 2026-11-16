@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
@@ -20,13 +21,8 @@ const Section = styled('section')(({ theme }) => ({
     backgroundColor: '#D9F3FF',
 }));
 
-const Content = styled(Box)(({ theme }) => ({
-    width: '100%',
-    maxWidth: '1536px',
-    margin: '0 auto',
+const Content = styled(Container)(({ theme }) => ({
     minHeight: 'clamp(620px, 52vw, 820px)',
-    paddingLeft: 'clamp(40px, 5.5vw, 88px)',
-    paddingRight: 'clamp(40px, 5.5vw, 88px)',
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
     alignItems: 'center',
@@ -36,8 +32,6 @@ const Content = styled(Box)(({ theme }) => ({
         minHeight: 'auto',
         paddingTop: '64px',
         paddingBottom: '64px',
-        paddingLeft: '32px',
-        paddingRight: '32px',
     },
 
     [theme.breakpoints.down('sm')]: {
@@ -45,8 +39,6 @@ const Content = styled(Box)(({ theme }) => ({
         gap: '32px',
         paddingTop: '48px',
         paddingBottom: '48px',
-        paddingLeft: '20px',
-        paddingRight: '20px',
     },
 }));
 
@@ -148,7 +140,7 @@ const ClosingText = styled(Typography)(({ theme }) => ({
 export default function ServiceEcosystemSection({ data }: Props) {
     return (
         <Section aria-labelledby="service-ecosystem-heading" sx={{ backgroundColor: data.backgroundColor ?? '#D9F3FF' }}>
-            <Content>
+            <Content maxWidth="xl">
                     <Copy>
                         <Heading
                             id="service-ecosystem-heading"

@@ -670,7 +670,7 @@ export default function ServiceProcess({
             onFocus={() => setPaused(true)}
             onBlur={() => setPaused(false)}
         >
-            <Header maxWidth="lg">
+            <Header maxWidth="xl">
                 <Heading
                     id="service-process-heading"
                     variant="h2"
@@ -687,7 +687,7 @@ export default function ServiceProcess({
                 </Intro>
             </Header>
 
-            <ProcessArea maxWidth="lg">
+            <ProcessArea maxWidth="xl">
                 <NumberWrap>
                     <StepNumber key={activeStep.id}>
                         {activeStep.number}

@@ -59,8 +59,6 @@ const HeroContainer = styled(Container)(({ theme }) => ({
     gap: 'clamp(24px, 4vw, 72px)',
     paddingTop: 'clamp(72px, 8vw, 112px)',
     paddingBottom: '0',
-    paddingLeft: 0,
-    paddingRight: 0,
 
     [theme.breakpoints.down('lg')]: {
         gridTemplateColumns: 'minmax(0, 0.92fr) minmax(420px, 1.08fr)',
@@ -70,7 +68,8 @@ const HeroContainer = styled(Container)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
         gridTemplateColumns: '1fr',
         gap: '28px',
-        padding: '64px 24px',
+        paddingTop: '64px',
+        paddingBottom: '64px',
     },
 
     [theme.breakpoints.down('sm')]: {

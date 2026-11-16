@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import Container from '@mui/material/Container';
 import { styled } from '@mui/material/styles';
 
 import Heading from '@/components/common/Heading';
@@ -139,18 +140,10 @@ const crossPlatformShowcaseColumns = [
     { images: crossPlatformShowcaseImages.slice(10, 13) },
 ];
 
-const containerStyles = {
-    width: 'min(100% - 48px, 1200px)',
-    marginInline: 'auto',
-    '@media (max-width: 599px)': { width: 'min(100% - 32px, 1200px)' },
-};
-
 const Page = styled('main')({
     color: tokens.color.ink900,
     '& a:focus-visible': { outline: `2px solid ${tokens.color.uv800}`, outlineOffset: '4px' },
 });
-
-const Container = styled('div')(containerStyles);
 
 const Hero = styled('section')({
     background: "#f7fafc url('/images/services/Main/hero-background.jpg') center / cover no-repeat",
@@ -278,11 +271,9 @@ const ExplainerVisual = styled('div')({
     '@media (max-width: 767px)': { minHeight: '280px' },
 });
 
-const Split = styled('div')({
-    ...containerStyles,
+const Split = styled(Container)({
     display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '24px',
     '@media (max-width: 767px)': { gridTemplateColumns: '1fr' },
-    '@media (max-width: 599px)': containerStyles['@media (max-width: 599px)'],
 });
 
 const DetailCard = styled('div')(({ theme }) => ({
@@ -334,8 +325,7 @@ const Cta = styled(Section)({
     '& a:focus-visible': { outlineColor: tokens.color.neutral0 },
 });
 
-const Related = styled('nav')({
-    ...containerStyles,
+const Related = styled(Container)({
     display: 'flex', flexWrap: 'wrap', gap: '20px', paddingBlock: '20px 64px',
     '& a': { display: 'inline-flex', alignItems: 'center', minWidth: '44px', minHeight: '44px', color: tokens.color.uv800, textUnderlineOffset: '3px' },
 });
@@ -390,7 +380,7 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                     }}
                 />
             ) : <Hero aria-labelledby="child-service-title">
-                <Container>
+                <Container maxWidth="xl">
                     {breadcrumbs}
                     <HeroContent>
                         <Heading id="child-service-title" variant="h1">{page.hero.title}</Heading>
@@ -409,14 +399,14 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                 columns: page.slug === 'ios-app-development'
                     ? iosShowcaseColumns
                     : page.slug === 'android-app-development'
-                    ? androidShowcaseColumns
-                    : page.slug === 'cross-platform-app-development'
-                    ? crossPlatformShowcaseColumns
-                    : page.showcaseImages
-                    ? page.showcaseImages.map(images => ({ images }))
-                    : graphicDesignChild
-                    ? graphicShowcaseImages.map(image => ({ images: [image] }))
-                    : page.cards.map((card, index) => ({ images: [card.image ?? showcaseImages[index % Math.max(showcaseImages.length, 1)]].filter((image): image is NonNullable<typeof image> => Boolean(image)) })),
+                        ? androidShowcaseColumns
+                        : page.slug === 'cross-platform-app-development'
+                            ? crossPlatformShowcaseColumns
+                            : page.showcaseImages
+                                ? page.showcaseImages.map(images => ({ images }))
+                                : graphicDesignChild
+                                    ? graphicShowcaseImages.map(image => ({ images: [image] }))
+                                    : page.cards.map((card, index) => ({ images: [card.image ?? showcaseImages[index % Math.max(showcaseImages.length, 1)]].filter((image): image is NonNullable<typeof image> => Boolean(image)) })),
             }} />
 
             <ServiceCapabilities data={{
@@ -432,7 +422,7 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
             }} />
 
             <Section aria-labelledby="child-deliverables">
-                <Split>
+                <Split maxWidth="xl">
                     <DetailCard>
                         <Heading id="child-deliverables" variant="h2">What you get</Heading>
                         <DetailList>{page.deliverables.map(item => <DetailItem key={item}>{item}</DetailItem>)}</DetailList>
@@ -445,7 +435,7 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
             </Section>
 
             <WhiteSection aria-labelledby="child-explainer">
-                <ExplainerLayout>
+                <ExplainerLayout maxWidth="xl">
                     <ExplainerCopy>
                         <Heading id="child-explainer" variant="h2">{page.explainer.title}</Heading>
                         <Lead>{page.explainer.text}</Lead>
@@ -508,14 +498,14 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
             <ServiceFaq data={page.faq} />
 
             <Cta aria-labelledby="child-contact">
-                <Container>
+                <Container maxWidth="xl">
                     <Heading id="child-contact" variant="h2" gradient={false}>{page.closing.title}</Heading>
                     <Lead>{page.closing.text}</Lead>
                     <PrimaryButton href="/contact">{page.hero.cta}</PrimaryButton>
                 </Container>
             </Cta>
 
-            <Related aria-label={`Related ${page.parentName.toLowerCase()} services`}>
+            <Related component="nav" maxWidth="xl" aria-label={`Related ${page.parentName.toLowerCase()} services`}>
                 <Link href={page.parentPath}>{page.parentName}</Link>
                 {page.related.map(item => <Link key={item.href} href={item.href}>{item.label}</Link>)}
             </Related>

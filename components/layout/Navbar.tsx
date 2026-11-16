@@ -41,9 +41,9 @@ const NavRoot = styled('header')<{ scrolled: number; visible: number; dark: numb
     boxSizing: 'border-box',
     display: 'flex',
     alignItems: 'center',
-    padding: '12px clamp(24px, 4vw, 64px)',
+    padding: '12px 0',
     [theme.breakpoints.down('md')]: {
-        padding: '8px 20px',
+        padding: '8px 0',
     },
     transition: `background ${tokens.motion.base} ${tokens.motion.ease},
                       box-shadow ${tokens.motion.base} ${tokens.motion.ease},
@@ -73,8 +73,6 @@ const NavRoot = styled('header')<{ scrolled: number; visible: number; dark: numb
 }));
 const NavInner = styled(Container)(({ theme }) => ({
     width: '100%',
-    maxWidth: 'none !important',
-    padding: '0 !important',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
