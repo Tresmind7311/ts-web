@@ -325,16 +325,16 @@ const Cta = styled(Section)({
     '& a:focus-visible': { outlineColor: tokens.color.neutral0 },
 });
 
-const Related = styled(Container)({
-    display: 'flex', flexWrap: 'wrap', gap: '20px', paddingBlock: '20px 64px',
-    '& a': { display: 'inline-flex', alignItems: 'center', minWidth: '44px', minHeight: '44px', color: tokens.color.uv800, textUnderlineOffset: '3px' },
-});
-
 export default function MobileChildPage({ page }: { page: ChildServicePage }) {
     const iosChild = page.slug === 'ios-app-development';
     const androidChild = page.slug === 'android-app-development';
     const crossPlatformChild = page.slug === 'cross-platform-app-development';
     const generativeAiChild = page.slug === 'generative-ai';
+    const nlpChild = page.slug === 'natural-language-processing';
+    const aiAgentChild = page.slug === 'ai-agent-development';
+    const staffAugmentationParent = page.slug === 'staff-augmentation';
+    const mernChild = page.slug === 'hire-mern-stack-developers';
+    const nodejsChild = page.slug === 'hire-nodejs-developers';
     const graphicDesignChild = page.parentPath === '/services/graphic-designing';
     const processArt = graphicDesignChild ? undefined : processArtByParent[page.parentPath] ??
         processArtByParent[`/services/${page.slug}`];
@@ -356,7 +356,7 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
 
     return (
         <Page>
-            {iosChild || androidChild || crossPlatformChild || generativeAiChild ? (
+            {iosChild || androidChild || crossPlatformChild || generativeAiChild || nlpChild || aiAgentChild || staffAugmentationParent || mernChild || nodejsChild ? (
                 <ServiceHero
                     headingId="child-service-title"
                     breadcrumbs={breadcrumbs}
@@ -505,10 +505,18 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                 </Container>
             </Cta>
 
-            <Related component="nav" maxWidth="xl" aria-label={`Related ${page.parentName.toLowerCase()} services`}>
+            <Container
+                component="nav"
+                maxWidth="xl"
+                aria-label={`Related ${page.parentName.toLowerCase()} services`}
+                sx={{
+                    display: 'flex', flexWrap: 'wrap', gap: '20px', paddingBlock: '20px 64px',
+                    '& a': { display: 'inline-flex', alignItems: 'center', minWidth: '44px', minHeight: '44px', color: tokens.color.uv800, textUnderlineOffset: '3px' },
+                }}
+            >
                 <Link href={page.parentPath}>{page.parentName}</Link>
                 {page.related.map(item => <Link key={item.href} href={item.href}>{item.label}</Link>)}
-            </Related>
+            </Container>
         </Page>
     );
 }

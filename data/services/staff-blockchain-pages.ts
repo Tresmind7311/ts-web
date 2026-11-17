@@ -3,20 +3,35 @@ import type { ChildPage } from './mobile-children';
 export const staffParent: ChildPage = {
     slug: 'staff-augmentation', name: 'Staff Augmentation',
     seo: { title: 'IT Staff Augmentation Services | Tresmind Solutions', description: 'Explore staff augmentation for developers and designers, with role requirements, interviews, onboarding and working arrangements agreed in advance.' },
-    hero: { title: 'IT staff augmentation services', description: 'Explore adding development or design capacity to a team you direct, with the role and working arrangements defined up front.', cta: 'Request developers' },
+    hero: { title: 'IT staff augmentation services', description: 'Explore adding development or design capacity to a team you direct, with the role and working arrangements defined up front.', cta: 'Request developers', image: { src: '/images/services/staff-augmentation/staff-augmentation-hero.png', alt: 'Staff augmentation talent pool with vetted experts, flexible hiring, quick integration, and global availability' } },
     introduction: { title: 'Extra capacity without a long hiring cycle', text: 'Staff augmentation can add a specific skill or extra capacity while your team keeps day-to-day direction. Define the role, seniority, working hours, code ownership and onboarding before engagement.' },
+    showcaseImages: [1, 2, 3, 4].map((_, column) => {
+        const start = column === 0 ? 0 : 4 + 3 * (column - 1);
+        const count = column === 0 ? 4 : 3;
+        return Array.from({ length: count }, (_, index) => {
+            const imageNumber = start + index + 1;
+            return {
+                src: `/images/services/staff-augmentation/staff-augmentation-${imageNumber}.jpg`,
+                alt: `Staff augmentation showcase ${imageNumber}`,
+            };
+        });
+    }),
     capabilitiesDescription: 'Consider the roles and team structure your roadmap needs.',
     cards: [
-        { title: 'Dedicated developers', description: 'Define the development skills and collaboration expected within your team.' },
-        { title: 'Specialist roles', description: 'Assess short-term needs in areas such as QA, design or cloud operations.' },
-        { title: 'Team extension', description: 'Plan how a small group would work with your existing team.' },
-        { title: 'Scale up or down', description: 'Agree notice periods and how capacity can change over time.' },
+        { title: 'Dedicated developers', description: 'Define the development skills and collaboration expected within your team.', image: { src: '/images/services/staff-augmentation/staff-augmentation-capability-1.jpg', alt: '' } },
+        { title: 'Specialist roles', description: 'Assess short-term needs in areas such as QA, design or cloud operations.', image: { src: '/images/services/staff-augmentation/staff-augmentation-capability-2.jpg', alt: '' } },
+        { title: 'Team extension', description: 'Plan how a small group would work with your existing team.', image: { src: '/images/services/staff-augmentation/staff-augmentation-capability-3.jpg', alt: '' } },
+        { title: 'Scale up or down', description: 'Agree notice periods and how capacity can change over time.', image: { src: '/images/services/staff-augmentation/staff-augmentation-capability-4.jpg', alt: '' } },
     ],
     deliverables: ['Role profiles matched to the agreed stack', 'Confidentiality and IP terms for review', 'Onboarding plan', 'Check-in and feedback expectations', 'Replacement terms for agreement'],
     useCases: { title: 'When staff augmentation fits', items: ['A clear roadmap but limited capacity', 'A skill needed for a defined period', 'Product ownership retained in-house', 'Evaluating remote collaboration'] },
-    explainer: { title: 'Staff augmentation or a managed project?', text: 'With augmentation, your team sets priorities and directs daily work. A managed project places delivery responsibility with a provider against an agreed scope. Choose based on your leadership capacity and desired ownership.' },
+    explainer: { title: 'Staff augmentation or a managed project?', text: 'With augmentation, your team sets priorities and directs daily work. A managed project places delivery responsibility with a provider against an agreed scope. Choose based on your leadership capacity and desired ownership.', image: { src: '/images/services/staff-augmentation/staff-augmentation-explainer.jpg', alt: 'Team comparing staff augmentation and managed project delivery models on a whiteboard' } },
     process: ['Brief role, skills, seniority, time zone and duration', 'Review matching profiles and availability', 'Interview and choose candidates', 'Agree access, tools and working practices', 'Review feedback and any changes to the arrangement'],
-    why: { title: 'Why augment your team with Tresmind', text: 'Agree candidate approval, working-hour overlap, confidentiality and code ownership before an engagement. Availability and replacement terms need confirmation in the contract.' },
+    processForegroundImages: [1, 2, 3, 4, 5].map((step) => ({
+        src: `/images/services/staff-augmentation/staff-augmentation-process-foreground-${step}.png`,
+        alt: `Staff augmentation process step ${step}`,
+    })),
+    why: { title: 'Why augment your team with Tresmind', text: 'Agree candidate approval, working-hour overlap, confidentiality and code ownership before an engagement. Availability and replacement terms need confirmation in the contract.', image: { src: '/images/services/staff-augmentation/staff-augmentation-ecosystem.png', alt: 'Staff augmentation workflow showing developer teams, candidate screening, timely integration, secure files, and code ownership' } },
     faq: { title: 'Staff Augmentation FAQs', items: [
         { question: 'How is this different from outsourcing a project?', answer: 'With augmentation, your team directs the work; in a managed project, the provider leads delivery against a scope.' },
         { question: 'Can we interview candidates?', answer: 'Candidate interview and approval steps should be agreed in the engagement process.' },
@@ -32,20 +47,35 @@ export const staffChildren = {
     'hire-mern-stack-developers': {
         slug: 'hire-mern-stack-developers', name: 'Hire MERN Stack Developers',
         seo: { title: 'Hire MERN Stack Developers | Tresmind Solutions', description: 'Explore MERN developer roles for MongoDB, Express, React and Node.js work, with skills, interviews and onboarding matched to your team.' },
-        hero: { title: 'Hire MERN stack developers', description: 'Define the full-stack JavaScript skills your product team needs across data, APIs and React interfaces.', cta: 'Request MERN profiles' },
+        hero: { title: 'Hire MERN stack developers', description: 'Define the full-stack JavaScript skills your product team needs across data, APIs and React interfaces.', cta: 'Request MERN profiles', image: { src: '/images/services/staff-augmentation/hire-mern-stack-developers/mern-hero.png', alt: 'MERN developer profiles showing stack skills, technical vetting, flexible hiring, team scaling, and rapid onboarding' } },
         introduction: { title: 'Full-stack developers for JavaScript products', text: 'MERN combines MongoDB, Express, React and Node.js. Clarify which layers, seniority and codebase experience matter most before assessing candidates.' },
+        showcaseImages: [1, 2, 3, 4].map((_, column) => {
+            const start = column === 0 ? 0 : 4 + 3 * (column - 1);
+            const count = column === 0 ? 4 : 3;
+            return Array.from({ length: count }, (_, index) => {
+                const imageNumber = start + index + 1;
+                return {
+                    src: `/images/services/staff-augmentation/hire-mern-stack-developers/mern-${imageNumber}.jpg`,
+                    alt: `MERN stack developers showcase ${imageNumber}`,
+                };
+            });
+        }),
         capabilitiesDescription: 'Set expectations for the feature work and technical depth required.',
         cards: [
-            { title: 'Feature development', description: 'Plan data, API and interface work across a feature.' },
-            { title: 'MVP and SaaS builds', description: 'Identify focused product work for a first release.' },
-            { title: 'Legacy modernisation', description: 'Assess older React, Express or Node.js code before updates.' },
-            { title: 'Performance and testing', description: 'Review queries, caching and test coverage requirements.' },
+            { title: 'Feature development', description: 'Plan data, API and interface work across a feature.', image: { src: '/images/services/staff-augmentation/hire-mern-stack-developers/mern-capability-1.jpg', alt: '' } },
+            { title: 'MVP and SaaS builds', description: 'Identify focused product work for a first release.', image: { src: '/images/services/staff-augmentation/hire-mern-stack-developers/mern-capability-2.jpg', alt: '' } },
+            { title: 'Legacy modernisation', description: 'Assess older React, Express or Node.js code before updates.', image: { src: '/images/services/staff-augmentation/hire-mern-stack-developers/mern-capability-3.jpg', alt: '' } },
+            { title: 'Performance and testing', description: 'Review queries, caching and test coverage requirements.', image: { src: '/images/services/staff-augmentation/hire-mern-stack-developers/mern-capability-4.jpg', alt: '' } },
         ],
         deliverables: ['Role brief and matching profile criteria', 'Interview and assessment plan', 'Repository and tool onboarding', 'Working-hour and communication agreement', 'Feedback expectations'],
         useCases: { title: 'Typical MERN roles', items: ['Senior full-stack product work', 'Extra capacity on an existing React and Node.js codebase', 'Stabilising a previously built application', 'Temporary cover during a launch'] },
-        explainer: { title: 'How to assess a MERN developer', text: 'Discuss a feature from data model through API security and interface error handling. Agree expectations for tests, code review and documentation in the interview.' },
+        explainer: { title: 'How to assess a MERN developer', text: 'Discuss a feature from data model through API security and interface error handling. Agree expectations for tests, code review and documentation in the interview.', image: { src: '/images/services/staff-augmentation/hire-mern-stack-developers/mern-explainer.jpg', alt: 'Team reviewing MERN developer assessment criteria for data models, API security, error handling, tests, code review, and documentation' } },
         process: ['Brief seniority, stack, time zone and duration', 'Review relevant profiles', 'Run technical interview or practical assessment', 'Prepare repository access and first tasks', 'Review feedback after onboarding'],
-        why: { title: 'What to expect from MERN developers', text: 'A useful brief should cover React, Node.js and MongoDB experience as well as your Git and review practices. Available experience levels must be confirmed against actual candidates.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map((step) => ({
+            src: `/images/services/staff-augmentation/hire-mern-stack-developers/mern-process-foreground-${step}.png`,
+            alt: `MERN stack developers process step ${step}`,
+        })),
+        why: { title: 'What to expect from MERN developers', text: 'A useful brief should cover React, Node.js and MongoDB experience as well as your Git and review practices. Available experience levels must be confirmed against actual candidates.', image: { src: '/images/services/staff-augmentation/hire-mern-stack-developers/mern-ecosystem.png', alt: 'MERN development workflow showing stack implementation, MongoDB data flow, secure Express and Node.js APIs, testing, code review, and documentation' } },
         faq: { title: 'Hire MERN Stack Developers FAQs', items: [
             { question: 'What is the MERN stack?', answer: 'MongoDB, Express, React and Node.js form a JavaScript stack for full-stack web applications.' },
             { question: 'Can MERN developers work with PostgreSQL instead of MongoDB?', answer: 'Database experience varies by candidate; include PostgreSQL in the role brief if required.' },
@@ -59,20 +89,35 @@ export const staffChildren = {
     'hire-nodejs-developers': {
         slug: 'hire-nodejs-developers', name: 'Hire Node.js Developers',
         seo: { title: 'Hire Node.js Developers | Tresmind Solutions', description: 'Explore Node.js developer roles for APIs, real-time services and integrations, with experience assessed against your codebase and team.' },
-        hero: { title: 'Hire Node.js developers', description: 'Define the backend skills your team needs for APIs, integrations and real-time product features.', cta: 'Request Node.js profiles' },
+        hero: { title: 'Hire Node.js developers', description: 'Define the backend skills your team needs for APIs, integrations and real-time product features.', cta: 'Request Node.js profiles', image: { src: '/images/services/staff-augmentation/hire-nodejs-developers/nodejs-hero.png', alt: 'Node.js developer profiles showing backend and API skills, technical vetting, flexible engagement, team scaling, and fast onboarding' } },
         introduction: { title: 'Back-end specialists for APIs and services', text: 'Node.js can power APIs, real-time features and integration layers. A specialist role can focus on data design, authentication, performance and reliability when backend depth matters.' },
+        showcaseImages: [1, 2, 3, 4].map((_, column) => {
+            const start = column === 0 ? 0 : 4 + 3 * (column - 1);
+            const count = column === 0 ? 4 : 3;
+            return Array.from({ length: count }, (_, index) => {
+                const imageNumber = start + index + 1;
+                return {
+                    src: `/images/services/staff-augmentation/hire-nodejs-developers/nodejs-${imageNumber}.jpg`,
+                    alt: `Node.js developers showcase ${imageNumber}`,
+                };
+            });
+        }),
         capabilitiesDescription: 'Map the backend responsibilities and systems involved.',
         cards: [
-            { title: 'REST and GraphQL APIs', description: 'Define API versioning, documentation and access requirements.' },
-            { title: 'Microservices and event-driven systems', description: 'Assess service boundaries and messaging needs.' },
-            { title: 'Real-time features', description: 'Plan chat, notifications or live data updates.' },
-            { title: 'Integrations', description: 'Map payment, CRM, ERP or other API connections and failure handling.' },
+            { title: 'REST and GraphQL APIs', description: 'Define API versioning, documentation and access requirements.', image: { src: '/images/services/staff-augmentation/hire-nodejs-developers/nodejs-capability-1.jpg', alt: '' } },
+            { title: 'Microservices and event-driven systems', description: 'Assess service boundaries and messaging needs.', image: { src: '/images/services/staff-augmentation/hire-nodejs-developers/nodejs-capability-2.jpg', alt: '' } },
+            { title: 'Real-time features', description: 'Plan chat, notifications or live data updates.', image: { src: '/images/services/staff-augmentation/hire-nodejs-developers/nodejs-capability-3.jpg', alt: '' } },
+            { title: 'Integrations', description: 'Map payment, CRM, ERP or other API connections and failure handling.', image: { src: '/images/services/staff-augmentation/hire-nodejs-developers/nodejs-capability-4.jpg', alt: '' } },
         ],
         deliverables: ['Role and stack brief', 'Technical interview plan', 'Repository and environment onboarding', 'Working-hour and communication agreement', 'Feedback expectations'],
         useCases: { title: 'Typical Node.js roles', items: ['API capacity for a mobile product', 'Modernising a monolithic Express app', 'Integrating internal systems', 'Improving service performance and observability'] },
-        explainer: { title: 'What a good Node.js back end looks like', text: 'Good backend work avoids blocking the event loop, validates input, handles failures and protects secrets. Ask candidates about production debugging and unreliable external APIs.' },
+        explainer: { title: 'What a good Node.js back end looks like', text: 'Good backend work avoids blocking the event loop, validates input, handles failures and protects secrets. Ask candidates about production debugging and unreliable external APIs.', image: { src: '/images/services/staff-augmentation/hire-nodejs-developers/nodejs-explainer.jpg', alt: 'Team reviewing Node.js backend practices for the event loop, input validation, failure handling, secret protection, production debugging, and unreliable APIs' } },
         process: ['Brief frameworks, data, cloud and seniority', 'Review relevant profiles', 'Interview on code and system design', 'Prepare access and first tasks', 'Review feedback and adjustments'],
-        why: { title: 'What to expect from Node.js developers', text: 'Assess API documentation, tests, logging and security habits against your team standards. Specific framework and cloud experience depends on available candidates.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map((step) => ({
+            src: `/images/services/staff-augmentation/hire-nodejs-developers/nodejs-process-foreground-${step}.png`,
+            alt: `Node.js developers process step ${step}`,
+        })),
+        why: { title: 'What to expect from Node.js developers', text: 'Assess API documentation, tests, logging and security habits against your team standards. Specific framework and cloud experience depends on available candidates.', image: { src: '/images/services/staff-augmentation/hire-nodejs-developers/nodejs-ecosystem.png', alt: 'Node.js backend workflow showing the async event loop, validation and recovery, secret protection, debugging and monitoring, and resilient API retries, timeouts, and fallbacks' } },
         faq: { title: 'Hire Node.js Developers FAQs', items: [
             { question: 'When should I hire a Node.js developer rather than a full-stack developer?', answer: 'Choose backend depth when APIs, integrations, performance or scaling dominate the work.' },
             { question: 'Do your developers use NestJS?', answer: 'Framework experience must be checked against actual candidates and your codebase.' },

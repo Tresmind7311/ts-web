@@ -62,15 +62,35 @@ export const aiChildren = {
     'natural-language-processing': {
         slug: 'natural-language-processing', name: 'Natural Language Processing',
         seo: { title: 'Natural Language Processing (NLP) Services | Tresmind', description: 'Explore NLP for classification, extraction, feedback analysis and multilingual search with measurable accuracy on your own text.' },
-        hero: { title: 'Natural language processing services', description: 'Explore ways to sort, search and extract information from emails, documents, reviews and support tickets.', cta: 'Assess my data' },
+        hero: { title: 'Natural language processing services', description: 'Explore ways to sort, search and extract information from emails, documents, reviews and support tickets.', cta: 'Assess my data', image: { src: '/images/services/ai-development/natural-language-processing/nlp-hero.png', alt: 'Natural language processing illustration' } },
         introduction: { title: 'Turning unstructured text into usable data', text: 'Contracts, invoices, messages and feedback contain information that can be structured for search, routing and analysis. The right technique depends on the text, labels and accuracy needs.' },
+        showcaseImages: [1, 2, 3, 4].map((_, column) => {
+            const start = column === 0 ? 0 : 4 + 3 * (column - 1);
+            const count = column === 0 ? 4 : 3;
+            return Array.from({ length: count }, (_, index) => {
+                const imageNumber = start + index + 1;
+                return {
+                    src: `/images/services/ai-development/natural-language-processing/nlp-${imageNumber}.jpg`,
+                    alt: `Natural language processing showcase ${imageNumber}`,
+                };
+            });
+        }),
         capabilitiesDescription: 'Define the text tasks and the quality measures for each.',
-        cards: cards([['Text classification and routing', 'Categorise and route messages or forms by topic.'], ['Entity and data extraction', 'Identify names, dates, amounts or clauses in documents.'], ['Sentiment and feedback analysis', 'Explore themes across reviews, surveys and comments.'], ['Multilingual and semantic search', 'Assess meaning-based search across the required languages.']], aiImages),
+        cards: cards([['Text classification and routing', 'Categorise and route messages or forms by topic.'], ['Entity and data extraction', 'Identify names, dates, amounts or clauses in documents.'], ['Sentiment and feedback analysis', 'Explore themes across reviews, surveys and comments.'], ['Multilingual and semantic search', 'Assess meaning-based search across the required languages.']], [
+            '/images/services/ai-development/natural-language-processing/nlp-capability-1.jpg',
+            '/images/services/ai-development/natural-language-processing/nlp-capability-2.jpg',
+            '/images/services/ai-development/natural-language-processing/nlp-capability-3.jpg',
+            '/images/services/ai-development/natural-language-processing/nlp-capability-4.jpg',
+        ]),
         deliverables: ['Data assessment and labelling plan', 'Model or rule-based approach', 'Accuracy measures on held-out examples', 'API or workflow integration scope', 'Monitoring for accuracy drift'],
         useCases: { title: 'Where NLP adds value', items: ['Support ticket triage', 'Invoice and contract extraction', 'Customer feedback analysis', 'Search across multilingual content'] },
-        explainer: { title: 'Choosing the right technique', text: 'Rules suit predictable formats; trained models can work well with labelled data; language models handle varied wording at different cost. Compare accuracy, speed and review needs on representative samples.' },
+        explainer: { title: 'Choosing the right technique', text: 'Rules suit predictable formats; trained models can work well with labelled data; language models handle varied wording at different cost. Compare accuracy, speed and review needs on representative samples.', image: { src: '/images/services/ai-development/natural-language-processing/nlp-explainer.jpg', alt: 'Team comparing rules, trained models, and language models on a whiteboard' } },
         process: ['Review text samples, labels and accuracy targets', 'Compare rules, trained models and language models', 'Build a prototype with a labelled test set', 'Measure errors, precision and recall', 'Plan integration and monitoring'],
-        why: { title: 'Why Tresmind for NLP', text: 'Quality should be measured on your own data, with confidence thresholds and human review where errors could affect downstream decisions.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map((step) => ({
+            src: `/images/services/ai-development/natural-language-processing/nlp-process-foreground-${step}.png`,
+            alt: `Natural language processing process step ${step}`,
+        })),
+        why: { title: 'Why Tresmind for NLP', text: 'Quality should be measured on your own data, with confidence thresholds and human review where errors could affect downstream decisions.', image: { src: '/images/services/ai-development/natural-language-processing/nlp-ecosystem.png', alt: 'NLP workflow connecting text analysis, training data, evaluation metrics, monitoring, and human review' } },
         faq: { title: 'Natural Language Processing FAQs', items: [
             { question: 'Do we need a lot of labelled data?', answer: 'It depends on the task and approach. Review representative samples before estimating labelling needs.' },
             { question: 'Can you process scanned PDFs?', answer: 'Scanned documents usually require OCR first; extraction quality should be tested on real samples.' },
@@ -84,15 +104,35 @@ export const aiChildren = {
     'ai-agent-development': {
         slug: 'ai-agent-development', name: 'AI Agent Development',
         seo: { title: 'AI Agent Development Services | Tresmind Solutions', description: 'Explore AI agents for defined workflows with tool permissions, human approvals, action logs and evaluation before rollout.' },
-        hero: { title: 'AI agent development', description: 'Explore agents that can plan steps and use approved tools, with clear permissions and people involved in sensitive decisions.', cta: 'Explore an AI agent' },
+        hero: { title: 'AI agent development', description: 'Explore agents that can plan steps and use approved tools, with clear permissions and people involved in sensitive decisions.', cta: 'Explore an AI agent', image: { src: '/images/services/ai-development/ai-agent-development/ai-agent-hero.png', alt: 'AI agent development interface with orchestration, memory, integrations, and autonomous execution' } },
         introduction: { title: 'AI that takes action, safely', text: 'An agent combines a model with tools such as search, calendars or business systems. Start with a narrow task, explicit permissions and review points because actions carry more risk than answers.' },
+        showcaseImages: [1, 2, 3, 4].map((_, column) => {
+            const start = column === 0 ? 0 : 4 + 3 * (column - 1);
+            const count = column === 0 ? 4 : 3;
+            return Array.from({ length: count }, (_, index) => {
+                const imageNumber = start + index + 1;
+                return {
+                    src: `/images/services/ai-development/ai-agent-development/ai-agent-development-${imageNumber}.jpg`,
+                    alt: `AI agent development showcase ${imageNumber}`,
+                };
+            });
+        }),
         capabilitiesDescription: 'Select a defined workflow and the tools it needs.',
-        cards: cards([['Task agents', 'Plan narrowly defined workflows such as scheduling or data entry.'], ['Internal copilots', 'Prepare information and proposed actions for staff review.'], ['Customer-facing agents', 'Explore routine requests with clear escalation to a person.'], ['Multi-agent orchestration', 'Assess whether specialised research, drafting and review steps need coordination.']], aiImages),
+        cards: cards([['Task agents', 'Plan narrowly defined workflows such as scheduling or data entry.'], ['Internal copilots', 'Prepare information and proposed actions for staff review.'], ['Customer-facing agents', 'Explore routine requests with clear escalation to a person.'], ['Multi-agent orchestration', 'Assess whether specialised research, drafting and review steps need coordination.']], [
+            '/images/services/ai-development/ai-agent-development/ai-agent-capability-1.jpg',
+            '/images/services/ai-development/ai-agent-development/ai-agent-capability-2.jpg',
+            '/images/services/ai-development/ai-agent-development/ai-agent-capability-3.jpg',
+            '/images/services/ai-development/ai-agent-development/ai-agent-capability-4.jpg',
+        ]),
         deliverables: ['Workflow map and risk assessment', 'Tool and permission requirements', 'Human approval points', 'Action logging and evaluation criteria', 'Staged rollout plan'],
         useCases: { title: 'Good first candidates for agents', items: ['Repetitive tasks spanning several systems', 'Sales operations with reviewable follow-ups', 'Common IT or HR help-desk requests', 'Research summaries prepared for human review'] },
-        explainer: { title: 'Keeping agents safe and predictable', text: 'Limit access to the tools and data a task needs. Require approval for sensitive changes or external communication, log actions and evaluate realistic edge cases before increasing autonomy.' },
+        explainer: { title: 'Keeping agents safe and predictable', text: 'Limit access to the tools and data a task needs. Require approval for sensitive changes or external communication, log actions and evaluate realistic edge cases before increasing autonomy.', image: { src: '/images/services/ai-development/ai-agent-development/ai-agent-explainer.jpg', alt: 'Team reviewing AI agent access limits, approvals, action logs, edge cases, and controlled autonomy' } },
         process: ['Map task steps, tools, decisions and risks', 'Define permissions, approvals and fallbacks', 'Prototype in a controlled environment', 'Evaluate logging, limits and error handling', 'Increase autonomy only when evidence supports it'],
-        why: { title: 'Why Tresmind for AI agents', text: 'A safe first scope keeps actions reviewable and permissions narrow. Agree the evaluation and escalation rules before an agent acts in production.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map((step) => ({
+            src: `/images/services/ai-development/ai-agent-development/ai-agent-process-foreground-${step}.png`,
+            alt: `AI agent development process step ${step}`,
+        })),
+        why: { title: 'Why Tresmind for AI agents', text: 'A safe first scope keeps actions reviewable and permissions narrow. Agree the evaluation and escalation rules before an agent acts in production.', image: { src: '/images/services/ai-development/ai-agent-development/ai-agent-ecosystem.png', alt: 'AI agent workflow connecting security, integrations, approval gates, monitoring, evaluation, and scaled rollout' } },
         faq: { title: 'AI Agent Development FAQs', items: [
             { question: 'What is the difference between a chatbot and an AI agent?', answer: 'A chatbot answers questions; an agent may also use permitted tools to take actions.' },
             { question: 'Can an agent make mistakes?', answer: 'Yes. Limit permissions, test realistic scenarios and require approval for sensitive actions.' },
