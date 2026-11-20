@@ -3,20 +3,28 @@ import type { ChildPage } from './mobile-children';
 export const digitalMarketingParent: ChildPage = {
     slug: 'digital-marketing', name: 'Digital Marketing Services',
     seo: { title: 'Digital Marketing Services | SEO, AEO, GEO & Social', description: 'Digital marketing planning across SEO, answer and generative engine optimisation, and social media, with measurement and clear reporting.' },
-    hero: { title: 'Digital marketing services', description: 'Plan how people find and evaluate your business through search, AI answers and social channels, with clear measures of what works.', cta: 'Request an audit' },
+    hero: { title: 'Digital marketing services', description: 'Plan how people find and evaluate your business through search, AI answers and social channels, with clear measures of what works.', cta: 'Request an audit', image: { src: '/images/services/digital-marketing/digital-marketing-hero.png', alt: 'Digital marketing services illustration' } },
     introduction: { title: 'Visibility across search, AI answers and social', text: 'Buyers discover businesses through search results, answer features, AI tools and social feeds. Each channel needs its own approach, while accurate content and measurement connect them. No channel can guarantee rankings or traffic.' },
+    showcaseImages: [0, 1, 2, 3].map(column => {
+        const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+        return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+            const imageNumber = start + index;
+            return { src: `/images/services/digital-marketing/digital-marketing-${imageNumber}.jpg`, alt: `Digital marketing showcase concept ${imageNumber}` };
+        });
+    }),
     capabilitiesDescription: 'Choose channels according to your audience, goals and available evidence.',
     cards: [
-        { title: 'Search Engine Optimization', description: 'Review technical health, page relevance and content for traditional search.' },
-        { title: 'Answer Engine Optimization', description: 'Structure clear answers for search answer features and assistants.' },
-        { title: 'Generative Engine Optimization', description: 'Assess whether AI tools describe and cite your business accurately.' },
-        { title: 'Social Media Marketing', description: 'Plan organic content and potential paid campaigns on relevant platforms.' },
+        { title: 'Search Engine Optimization', description: 'Review technical health, page relevance and content for traditional search.', image: { src: '/images/services/digital-marketing/digital-marketing-capability-1.jpg', alt: 'Search engine optimization concept' } },
+        { title: 'Answer Engine Optimization', description: 'Structure clear answers for search answer features and assistants.', image: { src: '/images/services/digital-marketing/digital-marketing-capability-2.jpg', alt: 'Answer engine optimization concept' } },
+        { title: 'Generative Engine Optimization', description: 'Assess whether AI tools describe and cite your business accurately.', image: { src: '/images/services/digital-marketing/digital-marketing-capability-3.jpg', alt: 'Generative engine optimization concept' } },
+        { title: 'Social Media Marketing', description: 'Plan organic content and potential paid campaigns on relevant platforms.', image: { src: '/images/services/digital-marketing/digital-marketing-capability-4.jpg', alt: 'Social media marketing concept' } },
     ],
     deliverables: ['Search, AI answer and social audit scope', 'Channel strategy and priorities', 'Content and campaign calendar', 'Analytics and conversion tracking requirements', 'Performance reporting plan'],
     useCases: { title: 'Who we work with', items: ['B2B services seeking search enquiries', 'Ecommerce brands assessing organic channels', 'Startups entering a new category', 'Businesses expanding into new markets'] },
-    explainer: { title: 'How the channels work together', text: 'Useful content and a technically sound site support search and answer visibility. Consistent facts across your site and profiles help accurate descriptions, while social activity can build awareness. Measure channels against meaningful enquiries or sales.' },
+    explainer: { title: 'How the channels work together', text: 'Useful content and a technically sound site support search and answer visibility. Consistent facts across your site and profiles help accurate descriptions, while social activity can build awareness. Measure channels against meaningful enquiries or sales.', image: { src: '/images/services/digital-marketing/digital-marketing-explainer.jpg', alt: 'Digital marketing channels and measurement concept' } },
     process: ['Audit the website, content, search and social presence', 'Prioritise channels by audience and market', 'Plan technical, content and campaign work', 'Measure using analytics and platform data', 'Report findings and next steps'],
-    why: { title: 'Why Tresmind for digital marketing', text: 'Use evidence to prioritise work and avoid ranking guarantees or manipulative tactics. Agree tracking, reporting and delivery responsibilities before a campaign begins.' },
+    processForegroundImages: [1, 2, 3, 4, 5].map(step => ({ src: `/images/services/digital-marketing/digital-marketing-process-foreground-${step}.png`, alt: `Digital marketing process step ${step}` })),
+    why: { title: 'Why Tresmind for digital marketing', text: 'Use evidence to prioritise work and avoid ranking guarantees or manipulative tactics. Agree tracking, reporting and delivery responsibilities before a campaign begins.', image: { src: '/images/services/digital-marketing/digital-marketing-ecosystem.png', alt: 'Digital marketing ecosystem illustration' } },
     faq: { title: 'Digital Marketing Services FAQs', items: [
         { question: 'What is the difference between SEO, AEO and GEO?', answer: 'SEO targets traditional search results, AEO direct answer features, and GEO mentions or citations in AI-generated answers.' },
         { question: 'Do I need all four services?', answer: 'Choose the mix after reviewing your audience, goals and budget.' },
@@ -32,20 +40,28 @@ export const digitalMarketingChildren = {
     'search-engine-optimization': {
         slug: 'search-engine-optimization', name: 'Search Engine Optimization',
         seo: { title: 'SEO Services | Technical, On-Page & Content SEO', description: 'Explore technical SEO, on-page optimisation, content strategy and site migration planning to improve qualified organic visibility.' },
-        hero: { title: 'Search engine optimization services', description: 'Assess how search engines crawl, understand and rank your website so the right people can find it.', cta: 'Get an SEO audit' },
+        hero: { title: 'Search engine optimization services', description: 'Assess how search engines crawl, understand and rank your website so the right people can find it.', cta: 'Get an SEO audit', image: { src: '/images/services/digital-marketing/search-engine-optimization/seo-hero.png', alt: 'Search engine optimization services illustration' } },
         introduction: { title: 'The foundation of organic visibility', text: 'SEO concerns access and indexing, page relevance, and trustworthy references from elsewhere. Start with evidence of what is limiting the site most.' },
+        showcaseImages: [0, 1, 2, 3].map(column => {
+            const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+            return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+                const imageNumber = start + index;
+                return { src: `/images/services/digital-marketing/search-engine-optimization/seo-${imageNumber}.jpg`, alt: `Search engine optimization showcase concept ${imageNumber}` };
+            });
+        }),
         capabilitiesDescription: 'Review the technical, content and regional parts of search visibility.',
         cards: [
-            { title: 'Technical SEO', description: 'Crawling, indexing, speed, redirects, canonicals and sitemaps.' },
-            { title: 'On-page optimisation', description: 'Titles, descriptions, headings, internal links and relevance.' },
-            { title: 'Content strategy', description: 'Search intent, topic mapping and page briefs.' },
-            { title: 'International and local SEO', description: 'Assess regional signals and local profile requirements.' },
+            { title: 'Technical SEO', description: 'Crawling, indexing, speed, redirects, canonicals and sitemaps.', image: { src: '/images/services/digital-marketing/search-engine-optimization/seo-capability-1.jpg', alt: 'Technical SEO concept' } },
+            { title: 'On-page optimisation', description: 'Titles, descriptions, headings, internal links and relevance.', image: { src: '/images/services/digital-marketing/search-engine-optimization/seo-capability-2.jpg', alt: 'On-page optimization concept' } },
+            { title: 'Content strategy', description: 'Search intent, topic mapping and page briefs.', image: { src: '/images/services/digital-marketing/search-engine-optimization/seo-capability-3.jpg', alt: 'SEO content strategy concept' } },
+            { title: 'International and local SEO', description: 'Assess regional signals and local profile requirements.', image: { src: '/images/services/digital-marketing/search-engine-optimization/seo-capability-4.jpg', alt: 'International and local SEO concept' } },
         ],
         deliverables: ['Technical audit with prioritised fixes', 'Keyword and intent map', 'Title, heading and internal-link recommendations', 'Content briefs or refresh plan', 'Search performance reporting requirements'],
         useCases: { title: 'Common SEO projects', items: ['Pages with indexing or post-redesign traffic issues', 'Service businesses seeking non-branded enquiries', 'Sites expanding into new countries or languages', 'Pre-launch website or migration planning'] },
-        explainer: { title: 'Technical, on-page and off-page explained', text: 'Technical SEO helps engines access and index pages. On-page SEO aligns content with intent. Off-page SEO concerns relevant, trustworthy references. Priorities should follow crawl and search performance evidence.' },
+        explainer: { title: 'Technical, on-page and off-page explained', text: 'Technical SEO helps engines access and index pages. On-page SEO aligns content with intent. Off-page SEO concerns relevant, trustworthy references. Priorities should follow crawl and search performance evidence.', image: { src: '/images/services/digital-marketing/search-engine-optimization/seo-explainer.jpg', alt: 'Technical, on-page, and off-page SEO concept' } },
         process: ['Review crawl, index coverage and performance', 'Map keywords and intent to pages', 'Prioritise technical and on-page changes', 'Plan new or refreshed content and legitimate outreach', 'Measure results in search and analytics data'],
-        why: { title: 'Why Tresmind for SEO', text: 'Use search engine guidance and evidence-based priorities. Avoid purchased links, keyword stuffing and thin pages created solely for rankings.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map(step => ({ src: `/images/services/digital-marketing/search-engine-optimization/seo-process-foreground-${step}.png`, alt: `Search engine optimization process step ${step}` })),
+        why: { title: 'Why Tresmind for SEO', text: 'Use search engine guidance and evidence-based priorities. Avoid purchased links, keyword stuffing and thin pages created solely for rankings.', image: { src: '/images/services/digital-marketing/search-engine-optimization/seo-ecosystem.png', alt: 'Search engine optimization ecosystem illustration' } },
         faq: { title: 'Search Engine Optimization FAQs', items: [
             { question: 'How long does SEO take?', answer: 'Technical changes may be visible sooner than content gains; timing depends on indexing, competition and the site.' },
             { question: 'Do you build backlinks?', answer: 'Plan relevant, earned references through useful content and outreach; do not buy links.' },
@@ -59,20 +75,28 @@ export const digitalMarketingChildren = {
     'answer-engine-optimization': {
         slug: 'answer-engine-optimization', name: 'Answer Engine Optimization',
         seo: { title: 'Answer Engine Optimization (AEO) Services | Tresmind', description: 'Explore AEO for clear answers to customer questions, featured snippets, People Also Ask and assistant responses.' },
-        hero: { title: 'Answer engine optimization (AEO)', description: 'Make your content answer real customer questions clearly for people and answer features in search.', cta: 'Review my answers' },
+        hero: { title: 'Answer engine optimization (AEO)', description: 'Make your content answer real customer questions clearly for people and answer features in search.', cta: 'Review my answers', image: { src: '/images/services/digital-marketing/answer-engine-optimization/aeo-hero.png', alt: 'Answer engine optimization services illustration' } },
         introduction: { title: 'Be the answer, not just a link', text: 'Search engines can answer questions directly in snippets, People Also Ask and voice responses. AEO identifies buyer questions and makes accurate answers easy to find and understand.' },
+        showcaseImages: [0, 1, 2, 3].map(column => {
+            const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+            return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+                const imageNumber = start + index;
+                return { src: `/images/services/digital-marketing/answer-engine-optimization/aeo-${imageNumber}.jpg`, alt: `Answer engine optimization showcase concept ${imageNumber}` };
+            });
+        }),
         capabilitiesDescription: 'Use real questions to shape concise, useful content.',
         cards: [
-            { title: 'Question research', description: 'Gather questions from search, sales and support sources.' },
-            { title: 'Answer-first content', description: 'Put a direct answer before supporting detail, steps or comparisons.' },
-            { title: 'Snippet and PAA optimisation', description: 'Structure pages for relevant direct-answer formats.' },
-            { title: 'Voice and assistant readiness', description: 'Use natural phrasing and concise, self-contained answers.' },
+            { title: 'Question research', description: 'Gather questions from search, sales and support sources.', image: { src: '/images/services/digital-marketing/answer-engine-optimization/aeo-capability-1.jpg', alt: 'Customer question research concept' } },
+            { title: 'Answer-first content', description: 'Put a direct answer before supporting detail, steps or comparisons.', image: { src: '/images/services/digital-marketing/answer-engine-optimization/aeo-capability-2.jpg', alt: 'Answer-first content concept' } },
+            { title: 'Snippet and PAA optimisation', description: 'Structure pages for relevant direct-answer formats.', image: { src: '/images/services/digital-marketing/answer-engine-optimization/aeo-capability-3.jpg', alt: 'Search snippet and People Also Ask concept' } },
+            { title: 'Voice and assistant readiness', description: 'Use natural phrasing and concise, self-contained answers.', image: { src: '/images/services/digital-marketing/answer-engine-optimization/aeo-capability-4.jpg', alt: 'Voice and assistant answer concept' } },
         ],
         deliverables: ['Question inventory', 'Answer-to-page ownership map', 'Answer and FAQ rewrite plan', 'Structured data review', 'Snippet and query tracking plan'],
         useCases: { title: 'Where AEO helps most', items: ['Service pages with pricing or process questions', 'Help centres and FAQs', 'How-to and comparison content', 'Local opening-hours and location questions'] },
-        explainer: { title: 'How to write an extractable answer', text: 'Place a short, self-contained answer after the question heading, then add useful detail. Keep facts current, visible and consistent across the site; use lists or tables only where they clarify the answer.' },
+        explainer: { title: 'How to write an extractable answer', text: 'Place a short, self-contained answer after the question heading, then add useful detail. Keep facts current, visible and consistent across the site; use lists or tables only where they clarify the answer.', image: { src: '/images/services/digital-marketing/answer-engine-optimization/aeo-explainer.jpg', alt: 'Answer engine optimization content structure concept' } },
         process: ['Audit questions answered well or poorly', 'Assign one owner page to each question', 'Write direct answers with supporting structure', 'Review accurate and eligible markup', 'Track queries and answer features'],
-        why: { title: 'Why Tresmind for AEO', text: 'Accuracy comes first. Assign each question to the most relevant page and use structured data only where it truthfully describes visible content.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map(step => ({ src: `/images/services/digital-marketing/answer-engine-optimization/aeo-process-foreground-${step}.png`, alt: `Answer engine optimization process step ${step}` })),
+        why: { title: 'Why Tresmind for AEO', text: 'Accuracy comes first. Assign each question to the most relevant page and use structured data only where it truthfully describes visible content.', image: { src: '/images/services/digital-marketing/answer-engine-optimization/aeo-ecosystem.png', alt: 'Answer engine optimization ecosystem illustration' } },
         faq: { title: 'Answer Engine Optimization FAQs', items: [
             { question: 'What is answer engine optimization?', answer: 'It is the practice of making content useful for direct answer formats such as snippets or assistant responses.' },
             { question: 'How is AEO different from SEO?', answer: 'SEO targets visibility in search results; AEO focuses on direct answer formats.' },
@@ -86,20 +110,28 @@ export const digitalMarketingChildren = {
     'generative-engine-optimization': {
         slug: 'generative-engine-optimization', name: 'Generative Engine Optimization',
         seo: { title: 'Generative Engine Optimization (GEO) Services | Tresmind', description: 'Explore GEO through accurate brand facts, citable content and repeatable checks of AI-generated answers.' },
-        hero: { title: 'Generative engine optimization (GEO)', description: 'Assess how AI tools describe and cite your business, then improve the clarity and consistency of available facts.', cta: 'Benchmark my brand' },
+        hero: { title: 'Generative engine optimization (GEO)', description: 'Assess how AI tools describe and cite your business, then improve the clarity and consistency of available facts.', cta: 'Benchmark my brand', image: { src: '/images/services/digital-marketing/generative-engine-optimization/geo-hero.png', alt: 'Generative engine optimization services illustration' } },
         introduction: { title: 'Visibility inside AI-generated answers', text: 'AI tools may summarise options and cite a small set of sources. GEO examines brand clarity, consistent facts and useful content. Outputs vary, so measure repeated results without promising placement.' },
+        showcaseImages: [0, 1, 2, 3].map(column => {
+            const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+            return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+                const imageNumber = start + index;
+                return { src: `/images/services/digital-marketing/generative-engine-optimization/geo-${imageNumber}.jpg`, alt: `Generative engine optimization showcase concept ${imageNumber}` };
+            });
+        }),
         capabilitiesDescription: 'Focus on accurate, discoverable facts and repeatable measurement.',
         cards: [
-            { title: 'AI visibility audit', description: 'Test how tools describe the business for relevant prompts.' },
-            { title: 'Entity and brand clarity', description: 'Check company facts across pages and profiles.' },
-            { title: 'Citable content', description: 'Plan clear definitions, comparisons and original evidence.' },
-            { title: 'Third-party presence', description: 'Review accurate listings and earned industry mentions.' },
+            { title: 'AI visibility audit', description: 'Test how tools describe the business for relevant prompts.', image: { src: '/images/services/digital-marketing/generative-engine-optimization/geo-capability-1.jpg', alt: 'AI visibility audit concept' } },
+            { title: 'Entity and brand clarity', description: 'Check company facts across pages and profiles.', image: { src: '/images/services/digital-marketing/generative-engine-optimization/geo-capability-2.jpg', alt: 'Brand and entity clarity concept' } },
+            { title: 'Citable content', description: 'Plan clear definitions, comparisons and original evidence.', image: { src: '/images/services/digital-marketing/generative-engine-optimization/geo-capability-3.jpg', alt: 'Citable content concept' } },
+            { title: 'Third-party presence', description: 'Review accurate listings and earned industry mentions.', image: { src: '/images/services/digital-marketing/generative-engine-optimization/geo-capability-4.jpg', alt: 'Third-party brand presence concept' } },
         ],
         deliverables: ['Repeatable AI visibility benchmark', 'Brand fact sheet and correction plan', 'Citable content plan', 'Relevant listing and mention review', 'Re-benchmark reporting requirements'],
         useCases: { title: 'When GEO matters', items: ['Buyers researching vendors through AI tools', 'Inaccurate or missing descriptions of a brand', 'New categories with unclear information', 'Competitors appearing more often in relevant answers'] },
-        explainer: { title: 'What AI assistants look for', text: 'AI answers draw from retrievable sources. Clear facts, specific content and consistency across reputable profiles can help accurate descriptions. Test a fixed prompt set repeatedly because individual answers vary.' },
+        explainer: { title: 'What AI assistants look for', text: 'AI answers draw from retrievable sources. Clear facts, specific content and consistency across reputable profiles can help accurate descriptions. Test a fixed prompt set repeatedly because individual answers vary.', image: { src: '/images/services/digital-marketing/generative-engine-optimization/geo-explainer.jpg', alt: 'AI assistant source and brand information concept' } },
         process: ['Benchmark a fixed set of buyer prompts', 'Find missing or inconsistent facts', 'Update on-site content and relevant profiles', 'Plan legitimate third-party coverage', 'Repeat tests and compare trends'],
-        why: { title: 'Why Tresmind for GEO', text: 'Report trends across repeated tests, correct facts at their source and avoid fake reviews or hidden text intended to manipulate AI systems.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map(step => ({ src: `/images/services/digital-marketing/generative-engine-optimization/geo-process-foreground-${step}.png`, alt: `Generative engine optimization process step ${step}` })),
+        why: { title: 'Why Tresmind for GEO', text: 'Report trends across repeated tests, correct facts at their source and avoid fake reviews or hidden text intended to manipulate AI systems.', image: { src: '/images/services/digital-marketing/generative-engine-optimization/geo-ecosystem.png', alt: 'Generative engine optimization ecosystem illustration' } },
         faq: { title: 'Generative Engine Optimization FAQs', items: [
             { question: 'What is generative engine optimization?', answer: 'It explores how AI tools understand and cite a business in generated answers.' },
             { question: 'How is GEO different from SEO and AEO?', answer: 'SEO targets search results, AEO direct answer features, and GEO AI-generated mentions or citations.' },
@@ -113,20 +145,28 @@ export const digitalMarketingChildren = {
     'social-media-marketing': {
         slug: 'social-media-marketing', name: 'Social Media Marketing',
         seo: { title: 'Social Media Marketing Services | Tresmind Solutions', description: 'Explore social media strategy, content, community management and paid campaigns with audience and measurement defined first.' },
-        hero: { title: 'Social media marketing services', description: 'Plan social content and campaigns around your audience, business goals and the platforms they use.', cta: 'Plan my social strategy' },
+        hero: { title: 'Social media marketing services', description: 'Plan social content and campaigns around your audience, business goals and the platforms they use.', cta: 'Plan my social strategy', image: { src: '/images/services/digital-marketing/social-media-marketing/smm-hero.png', alt: 'Social media marketing services illustration' } },
         introduction: { title: 'Social media with a business purpose', text: 'Choose platforms and content formats after reviewing the audience and goals. Track paid activity against meaningful outcomes as well as reach and engagement.' },
+        showcaseImages: [0, 1, 2, 3].map(column => {
+            const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+            return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+                const imageNumber = start + index;
+                return { src: `/images/services/digital-marketing/social-media-marketing/smm-${imageNumber}.jpg`, alt: `Social media marketing showcase concept ${imageNumber}` };
+            });
+        }),
         capabilitiesDescription: 'Plan the work needed to publish, engage and measure consistently.',
         cards: [
-            { title: 'Social strategy', description: 'Audience, platform choice, messages and goals.' },
-            { title: 'Content creation', description: 'Plan posts, graphics, carousels and short videos.', image: { src: '/images/services/graphic-designing/what-we-build/Marketing-Social-Graphics.png', alt: 'Social media graphics illustration' } },
-            { title: 'Community management', description: 'Define response hours, tone and escalation rules.' },
-            { title: 'Paid social campaigns', description: 'Assess platform fit, budget and conversion tracking.' },
+            { title: 'Social strategy', description: 'Audience, platform choice, messages and goals.', image: { src: '/images/services/digital-marketing/social-media-marketing/smm-capability-1.jpg', alt: 'Social media strategy concept' } },
+            { title: 'Content creation', description: 'Plan posts, graphics, carousels and short videos.', image: { src: '/images/services/digital-marketing/social-media-marketing/smm-capability-2.jpg', alt: 'Social media content creation concept' } },
+            { title: 'Community management', description: 'Define response hours, tone and escalation rules.', image: { src: '/images/services/digital-marketing/social-media-marketing/smm-capability-3.jpg', alt: 'Social media community management concept' } },
+            { title: 'Paid social campaigns', description: 'Assess platform fit, budget and conversion tracking.', image: { src: '/images/services/digital-marketing/social-media-marketing/smm-capability-4.jpg', alt: 'Paid social campaign concept' } },
         ],
         deliverables: ['Social audit and strategy scope', 'Content calendar', 'Post and creative requirements', 'Community management guidelines', 'Performance reporting plan'],
         useCases: { title: 'Who we help on social', items: ['B2B teams exploring LinkedIn', 'Consumer brands launching products', 'Businesses entering new markets', 'Teams needing a consistent publishing process'] },
-        explainer: { title: 'Organic and paid social working together', text: 'Organic content can build familiarity; paid activity can extend reach. Evaluate messages, conversion paths and market-specific creative before spending, and agree approval workflows.' },
+        explainer: { title: 'Organic and paid social working together', text: 'Organic content can build familiarity; paid activity can extend reach. Evaluate messages, conversion paths and market-specific creative before spending, and agree approval workflows.', image: { src: '/images/services/digital-marketing/social-media-marketing/smm-explainer.jpg', alt: 'Organic and paid social media concept' } },
         process: ['Review profiles, competitors and audience', 'Set strategy, formats and calendar', 'Create content for approval', 'Publish and engage within the agreed scope', 'Report results and next steps'],
-        why: { title: 'Why Tresmind for social media', text: 'A clear approval process, consistent brand guidance and conversion tracking should be part of any social engagement. Confirm team capacity and platform coverage before work begins.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map(step => ({ src: `/images/services/digital-marketing/social-media-marketing/smm-process-foreground-${step}.png`, alt: `Social media marketing process step ${step}` })),
+        why: { title: 'Why Tresmind for social media', text: 'A clear approval process, consistent brand guidance and conversion tracking should be part of any social engagement. Confirm team capacity and platform coverage before work begins.', image: { src: '/images/services/digital-marketing/social-media-marketing/smm-ecosystem.png', alt: 'Social media marketing ecosystem illustration' } },
         faq: { title: 'Social Media Marketing FAQs', items: [
             { question: 'Which platforms should we be on?', answer: 'Choose the platforms your buyers use and that fit your goals and resources.' },
             { question: 'Do you create the content?', answer: 'Content formats and production capacity need agreement in the scope before publishing.' },

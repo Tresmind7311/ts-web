@@ -149,15 +149,40 @@ export const cloudChildren = {
     'cloud-application-development': {
         slug: 'cloud-application-development', name: 'Cloud Application Development',
         seo: { title: 'Cloud Application Development | Tresmind Solutions', description: 'Explore cloud-native application architecture, managed services, deployment automation, resilience and cost planning.' },
-        hero: { title: 'Cloud application development', description: 'Plan an application around workload, resilience, deployment and operating costs in the cloud.', cta: 'Discuss architecture' },
+        hero: { title: 'Cloud application development', description: 'Plan an application around workload, resilience, deployment and operating costs in the cloud.', cta: 'Discuss architecture', image: { src: '/images/services/cloud-consulting/Cloud-App-Development/cloud-app-hero.png', alt: 'Cloud application development dashboard with architecture, deployment, and security panels' } },
         introduction: { title: 'Applications built for the cloud, not just hosted in it', text: 'Cloud-native design can use managed services, stateless components and automation. Compare serverless, containers and managed platforms against traffic, reliability needs and budget.' },
+        showcaseImages: [0, 1, 2, 3].map(column => {
+            const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+            return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+                const imageNumber = start + index;
+                return {
+                    src: `/images/services/cloud-consulting/Cloud-App-Development/cloud-app-${imageNumber}.jpg`,
+                    alt: `Cloud application architecture and deployment concept ${imageNumber}`,
+                };
+            });
+        }),
         capabilitiesDescription: 'Explore the architecture and operations needed for a cloud application.',
-        cards: cards([['Serverless applications', 'Assess event-driven functions and APIs for variable workloads.'], ['Containerised microservices', 'Consider service boundaries and managed container platforms.'], ['Cloud-native APIs and backends', 'Plan data, queues and storage behind documented APIs.'], ['DevOps and CI/CD', 'Define infrastructure and release automation requirements.']], cloudImages),
+        cards: cards([['Serverless applications', 'Assess event-driven functions and APIs for variable workloads.'], ['Containerised microservices', 'Consider service boundaries and managed container platforms.'], ['Cloud-native APIs and backends', 'Plan data, queues and storage behind documented APIs.'], ['DevOps and CI/CD', 'Define infrastructure and release automation requirements.']], cloudImages).map((card, index) => ({
+            ...card,
+            image: {
+                src: `/images/services/cloud-consulting/Cloud-App-Development/cloud-app-capability-${index + 1}.jpg`,
+                alt: [
+                    'Developer working on code with a phone and laptop',
+                    'Engineer reviewing systems beside server racks',
+                    'Application code displayed on a computer screen',
+                    'Developer working at a desk with multiple code displays',
+                ][index],
+            },
+        })),
         deliverables: ['Architecture and cost estimate', 'Application and infrastructure code scope', 'Test and deployment pipeline requirements', 'Monitoring and alerting plan', 'Runbooks and handover requirements'],
         useCases: { title: 'Typical cloud application projects', items: ['SaaS products with variable traffic', 'Scheduled or event-driven data processing', 'Web and mobile backends', 'Modernising a monolithic application'] },
-        explainer: { title: 'Designing for resilience and cost', text: 'Plan for restarts, slow dependencies and traffic spikes while estimating expected and peak costs. Region choice, backups and recovery should reflect data and business requirements.' },
+        explainer: { title: 'Designing for resilience and cost', text: 'Plan for restarts, slow dependencies and traffic spikes while estimating expected and peak costs. Region choice, backups and recovery should reflect data and business requirements.', image: { src: '/images/services/cloud-consulting/Cloud-App-Development/cloud-app-explainer.jpg', alt: 'Team reviewing cloud resilience, cost planning, and data recovery on a whiteboard' } },
         process: ['Analyse workload, data and latency', 'Compare service choices, cost and resilience', 'Plan application and infrastructure code', 'Define deployment, monitoring and backup automation', 'Test and prepare launch handover'],
-        why: { title: 'Why Tresmind for cloud applications', text: 'Architecture choices should show their operating costs and trade-offs before implementation, including recovery and monitoring needs.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map(step => ({
+            src: `/images/services/cloud-consulting/Cloud-App-Development/cloud-app-process-foreground-${step}.png`,
+            alt: `Cloud application development process step ${step}`,
+        })),
+        why: { title: 'Why Tresmind for cloud applications', text: 'Architecture choices should show their operating costs and trade-offs before implementation, including recovery and monitoring needs.', image: { src: '/images/services/cloud-consulting/Cloud-App-Development/cloud-app-ecosystem.png', alt: 'Cloud application ecosystem illustrating architecture, deployment, scaling, costs, and recovery' } },
         faq: { title: 'Cloud Application Development FAQs', items: [
             { question: 'Serverless or containers: which should we use?', answer: 'Serverless can suit event-driven workloads; containers can suit long-running services. Compare both against actual usage.' },
             { question: 'Which cloud provider do you recommend?', answer: 'Choose based on existing tools, data location, team skills and service requirements.' },
@@ -171,15 +196,34 @@ export const cloudChildren = {
     'cloud-migration': {
         slug: 'cloud-migration', name: 'Cloud Migration',
         seo: { title: 'Cloud Migration Services | Tresmind Solutions', description: 'Explore cloud migration planning, dependency mapping, rehosting, replatforming, data validation and rollback needs.' },
-        hero: { title: 'Cloud migration services', description: 'Plan a staged move of applications, databases or files with dependencies and rollback requirements understood first.', cta: 'Request an assessment' },
+        hero: { title: 'Cloud migration services', description: 'Plan a staged move of applications, databases or files with dependencies and rollback requirements understood first.', cta: 'Request an assessment', image: { src: '/images/services/cloud-consulting/Cloud-Migration/cloud-migration-hero.png', alt: 'Cloud migration dashboard on a laptop with data assessment, transfer, and security panels' } },
         introduction: { title: 'A migration plan before any servers move', text: 'Undocumented dependencies, data volume and licence terms can complicate a move. Inventory each workload and choose a strategy before scheduling cut-over.' },
+        showcaseImages: [0, 1, 2, 3].map(column => {
+            const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+            return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+                const imageNumber = start + index;
+                return { src: `/images/services/cloud-consulting/Cloud-Migration/cloud-migration-${imageNumber}.jpg`, alt: `Cloud migration showcase concept ${imageNumber}` };
+            });
+        }),
         capabilitiesDescription: 'Identify the systems, data and migration path for each workload.',
-        cards: cards([['Migration assessment', 'Inventory dependencies, costs and priorities.'], ['Rehost and replatform', 'Compare moving as-is with targeted changes to managed services.'], ['Database and data migration', 'Plan transfer, validation and cut-over requirements.'], ['Cloud-to-cloud moves', 'Assess provider changes or account consolidation.']], cloudImages),
+        cards: cards([['Migration assessment', 'Inventory dependencies, costs and priorities.'], ['Rehost and replatform', 'Compare moving as-is with targeted changes to managed services.'], ['Database and data migration', 'Plan transfer, validation and cut-over requirements.'], ['Cloud-to-cloud moves', 'Assess provider changes or account consolidation.']], cloudImages).map((card, index) => ({
+            ...card,
+            image: { src: `/images/services/cloud-consulting/Cloud-Migration/cloud-migration-capability-${index + 1}.jpg`, alt: [
+                'Team reviewing migration costs and reports at a desk',
+                'Engineer using a laptop beside server racks',
+                'Cloud infrastructure dashboard displayed on a laptop',
+                'Close-up of server rack hardware and status lights',
+            ][index] },
+        })),
         deliverables: ['Inventory and dependency map', 'Strategy per workload', 'Target environment requirements', 'Data validation and rollback plan', 'Decommissioning and optimisation plan'],
         useCases: { title: 'When companies migrate', items: ['Hosting or hardware contracts ending', 'On-premise systems becoming difficult to maintain', 'Specific data residency needs', 'Consolidating scattered hosting'] },
-        explainer: { title: 'Choosing a strategy for each workload', text: 'Rehosting keeps most of a system intact; replatforming makes targeted changes; refactoring changes the application more deeply. Some systems may be retired or replaced. Balance speed, cost and long-term benefit per workload.' },
+        explainer: { title: 'Choosing a strategy for each workload', text: 'Rehosting keeps most of a system intact; replatforming makes targeted changes; refactoring changes the application more deeply. Some systems may be retired or replaced. Balance speed, cost and long-term benefit per workload.', image: { src: '/images/services/cloud-consulting/Cloud-Migration/cloud-migration-explainer.jpg', alt: 'Team planning cloud migration strategies for different workloads' } },
         process: ['Inventory applications, data and dependencies', 'Plan strategy, schedule, costs and risks', 'Prepare networking, access and backups', 'Move in tested waves with rollback options', 'Review costs and old infrastructure'],
-        why: { title: 'Why Tresmind for cloud migration', text: 'A migration plan should agree cut-over windows, validation and rollback before each wave. Start with lower-risk workloads where practical.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map(step => ({
+            src: `/images/services/cloud-consulting/Cloud-Migration/cloud-migration-process-foreground-${step}.png`,
+            alt: `Cloud migration process step ${step}`,
+        })),
+        why: { title: 'Why Tresmind for cloud migration', text: 'A migration plan should agree cut-over windows, validation and rollback before each wave. Start with lower-risk workloads where practical.', image: { src: '/images/services/cloud-consulting/Cloud-Migration/cloud-migration-ecosystem.png', alt: 'Layered cloud migration illustration showing assessment, server transfer, application updates, and validation' } },
         faq: { title: 'Cloud Migration FAQs', items: [
             { question: 'Will there be downtime?', answer: 'Some workloads need a cut-over window. The likely impact should be assessed and planned in advance.' },
             { question: 'Will the cloud be cheaper?', answer: 'Not automatically. Compare current costs and expected cloud usage before moving.' },
@@ -193,15 +237,29 @@ export const cloudChildren = {
     'cloud-support-and-maintenance': {
         slug: 'cloud-support-and-maintenance', name: 'Cloud Support & Maintenance',
         seo: { title: 'Cloud Support & Maintenance Services | Tresmind', description: 'Explore cloud support plans covering monitoring, patching, backups, incident handling and cost reviews, with scope agreed in writing.' },
-        hero: { title: 'Cloud support and maintenance', description: 'Define the monitoring, maintenance and recovery work your cloud environment needs after launch.', cta: 'Get a support plan' },
+        hero: { title: 'Cloud support and maintenance', description: 'Define the monitoring, maintenance and recovery work your cloud environment needs after launch.', cta: 'Get a support plan', image: { src: '/images/services/cloud-consulting/Cloud-Support-&-Maintenance/cloud-support-hero.png', alt: 'Cloud support and maintenance dashboard' } },
         introduction: { title: 'Keep your cloud secure, current and cost-effective', text: 'Cloud environments change over time. A written support plan should cover monitoring, updates, backups, access and how incidents are handled.' },
+        showcaseImages: [0, 1, 2, 3].map(column => {
+            const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+            return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+                const imageNumber = start + index;
+                return { src: `/images/services/cloud-consulting/Cloud-Support-&-Maintenance/cloud-support-${imageNumber}.jpg`, alt: `Cloud support showcase concept ${imageNumber}` };
+            });
+        }),
         capabilitiesDescription: 'Define the operating tasks and coverage your environment requires.',
-        cards: cards([['Monitoring and alerting', 'Set requirements for uptime, performance and error alerts.'], ['Patching and updates', 'Plan updates within agreed maintenance windows.'], ['Backup and recovery checks', 'Define backup monitoring and restore-test needs.'], ['Cost and security reviews', 'Review usage, permissions and exposed resources.']], cloudImages),
+        cards: cards([['Monitoring and alerting', 'Set requirements for uptime, performance and error alerts.'], ['Patching and updates', 'Plan updates within agreed maintenance windows.'], ['Backup and recovery checks', 'Define backup monitoring and restore-test needs.'], ['Cost and security reviews', 'Review usage, permissions and exposed resources.']], cloudImages).map((card, index) => ({
+            ...card,
+            image: { src: `/images/services/cloud-consulting/Cloud-Support-&-Maintenance/cloud-support-capability-${index + 1}.jpg`, alt: `${card.title} for cloud environments` },
+        })),
         deliverables: ['Written service scope and response expectations', 'Monitoring and alerting requirements', 'Patching and backup schedule', 'Operations and cost reporting plan', 'Runbook and documentation requirements'],
         useCases: { title: 'Who uses this service', items: ['Teams without dedicated cloud operations capacity', 'Systems with incomplete handover documentation', 'Recently migrated environments', 'Products requiring planned incident response'] },
-        explainer: { title: 'What a support plan covers', text: 'A plan should name the environments, alert rules, patch windows, backup checks, response targets and exclusions. Coverage hours and change allowances must be agreed explicitly.' },
+        explainer: { title: 'What a support plan covers', text: 'A plan should name the environments, alert rules, patch windows, backup checks, response targets and exclusions. Coverage hours and change allowances must be agreed explicitly.', image: { src: '/images/services/cloud-consulting/Cloud-Support-&-Maintenance/cloud-support-explainer.jpg', alt: 'Team reviewing cloud support plan coverage and response expectations' } },
         process: ['Review access, documents and current health', 'Prioritise urgent issues and monitoring needs', 'Agree patching, backups and incident handling', 'Report incidents, changes and costs', 'Review reliability and cost improvements'],
-        why: { title: 'Why Tresmind for cloud support', text: 'Documentation and clear service boundaries help teams understand what is covered. Confirm response times, hours and escalation routes in the agreement.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map(step => ({
+            src: `/images/services/cloud-consulting/Cloud-Support-&-Maintenance/cloud-support-process-foreground-${step}.png`,
+            alt: `Cloud support and maintenance process step ${step}`,
+        })),
+        why: { title: 'Why Tresmind for cloud support', text: 'Documentation and clear service boundaries help teams understand what is covered. Confirm response times, hours and escalation routes in the agreement.', image: { src: '/images/services/cloud-consulting/Cloud-Support-&-Maintenance/cloud-support-ecosystem.png', alt: 'Cloud support ecosystem for monitoring, maintenance, backup, and security' } },
         faq: { title: 'Cloud Support & Maintenance FAQs', items: [
             { question: 'Do you offer 24/7 support?', answer: 'Coverage hours and out-of-hours options require confirmation in a written service plan.' },
             { question: 'Can you support a system someone else built?', answer: 'An onboarding health check can establish the system, access and documentation before scope is agreed.' },

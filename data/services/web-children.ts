@@ -5,20 +5,28 @@ export const webChildren = {
         slug: 'ecommerce-website-development',
         name: 'Ecommerce Website Development',
         seo: { title: 'Ecommerce Website Development | Tresmind Solutions', description: 'Plan an ecommerce website with product browsing, checkout, payments, shipping and inventory integrations tailored to your store.' },
-        hero: { title: 'Ecommerce website development', description: 'Plan an online store that makes products easy to find and connects checkout with the operations behind it.', cta: 'Plan my store' },
+        hero: { title: 'Ecommerce website development', description: 'Plan an online store that makes products easy to find and connects checkout with the operations behind it.', cta: 'Plan my store', image: { src: '/images/services/web-development/ecommerce-website-development/ecommerce-hero.png', alt: 'Ecommerce website development illustration' } },
         introduction: { title: 'Online stores built to sell', text: 'A store brings product data, search, checkout, payments, shipping, taxes and stock together. Platform choice and mobile experience should follow your catalogue, markets and operational needs.' },
+        showcaseImages: [0, 1, 2, 3].map(column => {
+            const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+            return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+                const imageNumber = start + index;
+                return { src: `/images/services/web-development/ecommerce-website-development/ecommerce-${imageNumber}.jpg`, alt: `Ecommerce website showcase concept ${imageNumber}` };
+            });
+        }),
         capabilitiesDescription: 'Explore the store models and workflows that fit your products and customers.',
         cards: [
-            { title: 'Shopify stores', description: 'Consider managed commerce, themes, apps and checkout requirements.', image: { src: '/images/services/web-development/what-we-build/E-commerce-Websites.png', alt: 'Ecommerce website illustration' } },
-            { title: 'WooCommerce stores', description: 'Explore a WordPress-based store with control over hosting and content.', image: { src: '/images/services/web-development/what-we-build/CMS-Websites.png', alt: 'Content management website illustration' } },
-            { title: 'Headless commerce', description: 'Assess a custom storefront connected to a commerce backend when the experience calls for it.', image: { src: '/images/services/web-development/what-we-build/web-applications.png', alt: 'Web application illustration' } },
-            { title: 'B2B and wholesale', description: 'Define customer pricing, bulk orders and account approval workflows.', image: { src: '/images/services/web-development/what-we-build/Business-Websites.png', alt: 'Business website illustration' } },
+            { title: 'Shopify stores', description: 'Consider managed commerce, themes, apps and checkout requirements.', image: { src: '/images/services/web-development/ecommerce-website-development/ecommerce-capability-1.jpg', alt: 'Shopify store concept' } },
+            { title: 'WooCommerce stores', description: 'Explore a WordPress-based store with control over hosting and content.', image: { src: '/images/services/web-development/ecommerce-website-development/ecommerce-capability-2.jpg', alt: 'WooCommerce store concept' } },
+            { title: 'Headless commerce', description: 'Assess a custom storefront connected to a commerce backend when the experience calls for it.', image: { src: '/images/services/web-development/ecommerce-website-development/ecommerce-capability-3.jpg', alt: 'Headless commerce storefront concept' } },
+            { title: 'B2B and wholesale', description: 'Define customer pricing, bulk orders and account approval workflows.', image: { src: '/images/services/web-development/ecommerce-website-development/ecommerce-capability-4.jpg', alt: 'Business-to-business ecommerce concept' } },
         ],
         deliverables: ['Store UX and key template requirements', 'Product and collection setup scope', 'Payment, shipping and tax requirements', 'Inventory or fulfilment integration plan', 'Analytics and conversion tracking requirements'],
         useCases: { title: 'Store projects we can help with', items: ['A brand planning its first direct-to-consumer store', 'A retailer moving beyond a marketplace', 'A store reviewing a slow or complex platform', 'A business planning sales across currencies and regions'] },
-        explainer: { title: 'Selling across borders', text: 'Markets can differ in tax, duties, shipping, payment methods and language. Define the target regions and checkout requirements early; confirm final tax and legal settings with your advisers.' },
+        explainer: { title: 'Selling across borders', text: 'Markets can differ in tax, duties, shipping, payment methods and language. Define the target regions and checkout requirements early; confirm final tax and legal settings with your advisers.', image: { src: '/images/services/web-development/ecommerce-website-development/ecommerce-explainer.jpg', alt: 'Ecommerce team discussing international sales and checkout requirements' } },
         process: ['Map catalogue, payments, shipping, taxes and integrations', 'Design product, collection, cart and checkout journeys', 'Build the store and agreed operational connections', 'Test orders, refunds, tax and shipping scenarios', 'Plan launch, analytics and improvement priorities'],
-        why: { title: 'Planning the whole store', text: 'Store planning should include how orders reach fulfilment, how stock changes and how returns are handled, alongside the customer experience.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map(step => ({ src: `/images/services/web-development/ecommerce-website-development/ecommerce-process-foreground-${step}.png`, alt: `Ecommerce website development process step ${step}` })),
+        why: { title: 'Planning the whole store', text: 'Store planning should include how orders reach fulfilment, how stock changes and how returns are handled, alongside the customer experience.', image: { src: '/images/services/web-development/ecommerce-website-development/ecommerce-ecosystem.png', alt: 'Ecommerce store ecosystem illustration' } },
         faq: { title: 'Ecommerce Website Development FAQs', items: [
             { question: 'Shopify or WooCommerce: which should we choose?', answer: 'Compare a managed platform with the hosting and content control of WordPress against your catalogue, integrations and maintenance needs.' },
             { question: 'Can you migrate our existing store?', answer: 'Migration scope should cover products, customers, order history and redirects after the source platform and data are reviewed.' },
@@ -33,20 +41,28 @@ export const webChildren = {
         slug: 'web-application-development',
         name: 'Web Application Development',
         seo: { title: 'Web Application Development Services | Tresmind', description: 'Plan a web application for SaaS, portals, dashboards or booking, with clear user journeys, access controls, integrations and deployment needs.' },
-        hero: { title: 'Web application development', description: 'Plan a browser-based product for the tasks your users need to complete, from portals and booking to dashboards and SaaS.', cta: 'Scope my web app' },
+        hero: { title: 'Web application development', description: 'Plan a browser-based product for the tasks your users need to complete, from portals and booking to dashboards and SaaS.', cta: 'Scope my web app', image: { src: '/images/services/web-development/web-application-development/web-app-hero.png', alt: 'Web application development illustration' } },
         introduction: { title: 'Software that runs in the browser', text: 'A web application can manage accounts, permissions and data as well as present information. Define the user journeys, security needs and integrations before choosing architecture or hosting.' },
+        showcaseImages: [0, 1, 2, 3].map(column => {
+            const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+            return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+                const imageNumber = start + index;
+                return { src: `/images/services/web-development/web-application-development/web-app-${imageNumber}.jpg`, alt: `Web application showcase concept ${imageNumber}` };
+            });
+        }),
         capabilitiesDescription: 'Explore common browser-based products and the requirements behind them.',
         cards: [
-            { title: 'SaaS products', description: 'Plan subscriptions, user roles and administration around a focused product scope.', image: { src: '/images/services/web-development/what-we-build/web-applications.png', alt: 'Web application illustration' } },
-            { title: 'Portals and dashboards', description: 'Define access to data and documents for clients, partners or staff.', image: { src: '/images/services/software-development/what-we-build/Dashboards-Portals.png', alt: 'Business dashboard illustration' } },
-            { title: 'Progressive web apps', description: 'Assess installation and offline use where the user journey requires them.', image: { src: '/images/services/web-development/web-dev-4.png', alt: 'Web interface illustration' } },
-            { title: 'Booking and marketplaces', description: 'Map scheduling, listings, payments and the needs of each user group.', image: { src: '/images/services/web-development/what-we-build/Business-Websites.png', alt: 'Business website illustration' } },
+            { title: 'SaaS products', description: 'Plan subscriptions, user roles and administration around a focused product scope.', image: { src: '/images/services/web-development/web-application-development/web-app-capability-1.jpg', alt: 'SaaS product concept' } },
+            { title: 'Portals and dashboards', description: 'Define access to data and documents for clients, partners or staff.', image: { src: '/images/services/web-development/web-application-development/web-app-capability-2.jpg', alt: 'Portal and dashboard concept' } },
+            { title: 'Progressive web apps', description: 'Assess installation and offline use where the user journey requires them.', image: { src: '/images/services/web-development/web-application-development/web-app-capability-3.jpg', alt: 'Progressive web app concept' } },
+            { title: 'Booking and marketplaces', description: 'Map scheduling, listings, payments and the needs of each user group.', image: { src: '/images/services/web-development/web-application-development/web-app-capability-4.jpg', alt: 'Booking and marketplace concept' } },
         ],
         deliverables: ['Product scope and user journeys', 'Architecture and API requirements', 'Responsive application and admin scope', 'Testing and deployment requirements', 'Hosting, monitoring and handover plan'],
         useCases: { title: 'Who web apps can serve', items: ['Founders validating a SaaS idea', 'Companies planning a client-facing portal', 'Teams modernising a legacy web system', 'Service businesses needing online booking and payments'] },
-        explainer: { title: 'Building an MVP that can grow', text: 'Start with the smallest useful version of the core journeys. Plan the data model, access controls and hosting with later changes in mind, then prioritize further features using user feedback.' },
+        explainer: { title: 'Building an MVP that can grow', text: 'Start with the smallest useful version of the core journeys. Plan the data model, access controls and hosting with later changes in mind, then prioritize further features using user feedback.', image: { src: '/images/services/web-development/web-application-development/web-app-explainer.jpg', alt: 'Web application planning and development concept' } },
         process: ['Identify users, core journeys and MVP scope', 'Plan data, APIs, authentication and hosting', 'Build and review the agreed features in stages', 'Test access controls, functionality and performance', 'Prepare deployment, monitoring and the next roadmap'],
-        why: { title: 'Planning for maintainability', text: 'Documented APIs, test requirements and clear deployment ownership help a future team understand and maintain the application. Agree these expectations in the project scope.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map(step => ({ src: `/images/services/web-development/web-application-development/web-app-process-foreground-${step}.png`, alt: `Web application development process step ${step}` })),
+        why: { title: 'Planning for maintainability', text: 'Documented APIs, test requirements and clear deployment ownership help a future team understand and maintain the application. Agree these expectations in the project scope.', image: { src: '/images/services/web-development/web-application-development/web-app-ecosystem.png', alt: 'Web application ecosystem illustration' } },
         faq: { title: 'Web Application Development FAQs', items: [
             { question: 'What is the difference between a website and a web app?', answer: 'A website mainly presents information; a web app lets people manage data or complete tasks in a browser.' },
             { question: 'Can you build an MVP first?', answer: 'Define a focused first version around the most important user journey, then use feedback to decide what comes next.' },

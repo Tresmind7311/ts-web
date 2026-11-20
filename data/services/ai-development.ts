@@ -283,7 +283,7 @@ export const aiDevelopmentService: ServiceData = {
             'User Request → Relevant Data → AI Processing → Human Review → Action',
         closingText: '',
         image: {
-            src: '/images/services/ai-development/AI-Feature.PNG',
+            src: '/images/services/ai-development/AI-Feature.png',
             alt: 'Connected AI feature ecosystem',
         },
     },

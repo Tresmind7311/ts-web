@@ -332,6 +332,25 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
     const generativeAiChild = page.slug === 'generative-ai';
     const nlpChild = page.slug === 'natural-language-processing';
     const aiAgentChild = page.slug === 'ai-agent-development';
+    const erpChild = page.slug === 'erp-solutions' && page.parentPath === '/services/software-development';
+    const crmChild = page.slug === 'crm-solutions' && page.parentPath === '/services/software-development';
+    const cmsChild = page.slug === 'cms-solutions' && page.parentPath === '/services/software-development';
+    const cloudAppChild = page.slug === 'cloud-application-development' && page.parentPath === '/services/cloud-consulting';
+    const cloudMigrationChild = page.slug === 'cloud-migration' && page.parentPath === '/services/cloud-consulting';
+    const cloudSupportChild = page.slug === 'cloud-support-and-maintenance' && page.parentPath === '/services/cloud-consulting';
+    const blockchainParent = page.slug === 'blockchain-development' && page.parentPath === '/services';
+    const metaverseChild = page.slug === 'metaverse-development' && page.parentPath === '/services/blockchain-development';
+    const nftChild = page.slug === 'nft-development' && page.parentPath === '/services/blockchain-development';
+    const ecommerceChild = page.slug === 'ecommerce-website-development' && page.parentPath === '/services/web-development';
+    const webAppChild = page.slug === 'web-application-development' && page.parentPath === '/services/web-development';
+    const animationChild = page.slug === '2d-3d-animation' && page.parentPath === '/services/graphic-designing';
+    const modelingChild = page.slug === '3d-modeling' && page.parentPath === '/services/graphic-designing';
+    const brandingChild = page.slug === 'complete-branding' && page.parentPath === '/services/graphic-designing';
+    const digitalMarketingParent = page.slug === 'digital-marketing' && page.parentPath === '/services';
+    const seoChild = page.slug === 'search-engine-optimization' && page.parentPath === '/services/digital-marketing';
+    const aeoChild = page.slug === 'answer-engine-optimization' && page.parentPath === '/services/digital-marketing';
+    const geoChild = page.slug === 'generative-engine-optimization' && page.parentPath === '/services/digital-marketing';
+    const smmChild = page.slug === 'social-media-marketing' && page.parentPath === '/services/digital-marketing';
     const staffAugmentationParent = page.slug === 'staff-augmentation';
     const mernChild = page.slug === 'hire-mern-stack-developers';
     const nodejsChild = page.slug === 'hire-nodejs-developers';
@@ -356,7 +375,7 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
 
     return (
         <Page>
-            {iosChild || androidChild || crossPlatformChild || generativeAiChild || nlpChild || aiAgentChild || staffAugmentationParent || mernChild || nodejsChild ? (
+            {iosChild || androidChild || crossPlatformChild || generativeAiChild || nlpChild || aiAgentChild || erpChild || crmChild || cmsChild || cloudAppChild || cloudMigrationChild || cloudSupportChild || blockchainParent || metaverseChild || nftChild || ecommerceChild || webAppChild || animationChild || modelingChild || brandingChild || digitalMarketingParent || seoChild || aeoChild || geoChild || smmChild || staffAugmentationParent || mernChild || nodejsChild ? (
                 <ServiceHero
                     headingId="child-service-title"
                     breadcrumbs={breadcrumbs}
@@ -462,7 +481,7 @@ export default function MobileChildPage({ page }: { page: ChildServicePage }) {
                                     alt: '',
                                 }
                             }),
-                            ...((iosChild || page.processForegroundImage || processArt) && {
+                            ...((iosChild || page.processForegroundImages?.[index] || page.processForegroundImage || processArt) && {
                                 foregroundImage: {
                                     src: iosChild
                                         ? iosProcessForegroundImages[index]?.src ?? processArt!.foregroundImage

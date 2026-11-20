@@ -133,20 +133,28 @@ export const staffChildren = {
 export const blockchainParent: ChildPage = {
     slug: 'blockchain-development', name: 'Blockchain Development',
     seo: { title: 'Blockchain Development Services | Tresmind Solutions', description: 'Explore blockchain use cases, smart contracts, tokenisation and Web3 interfaces with security, privacy and legal review in scope.' },
-    hero: { title: 'Blockchain development services', description: 'Explore whether shared records or digital ownership call for blockchain, and what a secure product would require.', cta: 'Validate my idea' },
+    hero: { title: 'Blockchain development services', description: 'Explore whether shared records or digital ownership call for blockchain, and what a secure product would require.', cta: 'Validate my idea', image: { src: '/images/services/block-chain-development/blockchain-hero.png', alt: 'Blockchain development illustration' } },
     introduction: { title: 'Blockchain where it adds real value', text: 'Blockchain can help when several parties need a shared, tamper-evident record or transferable digital ownership. First test whether a conventional system would meet the need more simply.' },
+    showcaseImages: [0, 1, 2, 3].map(column => {
+        const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+        return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+            const imageNumber = start + index;
+            return { src: `/images/services/block-chain-development/blockchain-${imageNumber}.jpg`, alt: `Blockchain development showcase concept ${imageNumber}` };
+        });
+    }),
     capabilitiesDescription: 'Consider the on-chain and off-chain parts of the proposed product.',
     cards: [
-        { title: 'Smart contracts', description: 'Define contract behaviour, tests and independent audit needs.' },
-        { title: 'Decentralised applications', description: 'Plan interfaces for wallets and on-chain data.' },
-        { title: 'Tokenisation', description: 'Assess token purpose and legal implications before design.' },
-        { title: 'Integration', description: 'Map on-chain events to existing APIs and systems.' },
+        { title: 'Smart contracts', description: 'Define contract behaviour, tests and independent audit needs.', image: { src: '/images/services/block-chain-development/blockchain-capability-1.jpg', alt: 'Smart contract development concept' } },
+        { title: 'Decentralised applications', description: 'Plan interfaces for wallets and on-chain data.', image: { src: '/images/services/block-chain-development/blockchain-capability-2.jpg', alt: 'Decentralised application concept' } },
+        { title: 'Tokenisation', description: 'Assess token purpose and legal implications before design.', image: { src: '/images/services/block-chain-development/blockchain-capability-3.jpg', alt: 'Blockchain tokenisation concept' } },
+        { title: 'Integration', description: 'Map on-chain events to existing APIs and systems.', image: { src: '/images/services/block-chain-development/blockchain-capability-4.jpg', alt: 'Blockchain systems integration concept' } },
     ],
     deliverables: ['Use-case validation', 'Architecture and chain comparison', 'Contract and test requirements', 'Interface and wallet requirements', 'Deployment and monitoring plan'],
     useCases: { title: 'Where blockchain can help', items: ['Shared supply-chain traceability', 'Digital memberships or ticketing', 'Transferable loyalty rewards', 'Verifiable credentials'] },
-    explainer: { title: 'Questions to answer before building', text: 'Identify who needs to trust the record, what belongs on-chain, how people will use wallets, what can change later and which laws apply. Keep personal data and avoidable costs off public chains.' },
+    explainer: { title: 'Questions to answer before building', text: 'Identify who needs to trust the record, what belongs on-chain, how people will use wallets, what can change later and which laws apply. Keep personal data and avoidable costs off public chains.', image: { src: '/images/services/block-chain-development/blockchain-explainer.jpg', alt: 'Team discussing blockchain architecture and product requirements' } },
     process: ['Validate the use case and compare alternatives', 'Plan on-chain data, interfaces and costs', 'Define contracts and tests', 'Arrange independent audit where appropriate', 'Plan deployment and monitoring'],
-    why: { title: 'Why Tresmind for blockchain', text: 'Security and legal review matter because deployed contracts can be difficult to change. Treat independent audit and market-specific legal advice as separate requirements before launch.' },
+    processForegroundImages: [1, 2, 3, 4, 5].map(step => ({ src: `/images/services/block-chain-development/blockchain-process-foreground-${step}.png`, alt: `Blockchain development process step ${step}` })),
+    why: { title: 'Why Tresmind for blockchain', text: 'Security and legal review matter because deployed contracts can be difficult to change. Treat independent audit and market-specific legal advice as separate requirements before launch.', image: { src: '/images/services/block-chain-development/blockchain-ecosystem.png', alt: 'Blockchain ecosystem illustration' } },
     faq: { title: 'Blockchain Development FAQs', items: [
         { question: 'Do we need blockchain?', answer: 'Only if shared verifiable records or digital ownership add value over a conventional database.' },
         { question: 'Which blockchain should we use?', answer: 'Compare fees, speed, ecosystem, security and audience during validation.' },
@@ -162,20 +170,28 @@ export const blockchainChildren = {
     'metaverse-development': {
         slug: 'metaverse-development', name: 'Metaverse Development',
         seo: { title: 'Metaverse Development Services | Tresmind', description: 'Explore browser-based 3D spaces, virtual showrooms, events or training with accessibility, performance and optional Web3 features.' },
-        hero: { title: 'Metaverse development', description: 'Explore immersive 3D experiences for showrooms, events or training, with optional digital ownership where it serves users.', cta: 'Discuss a concept' },
+        hero: { title: 'Metaverse development', description: 'Explore immersive 3D experiences for showrooms, events or training, with optional digital ownership where it serves users.', cta: 'Discuss a concept', image: { src: '/images/services/block-chain-development/metaverse-development/metaverse-hero.png', alt: 'Metaverse development illustration' } },
         introduction: { title: 'Immersive spaces with a clear purpose', text: 'A virtual space needs a reason to visit. Begin with audience, tasks and device access, then decide whether a browser experience, headset support or blockchain feature is useful.' },
+        showcaseImages: [0, 1, 2, 3].map(column => {
+            const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+            return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+                const imageNumber = start + index;
+                return { src: `/images/services/block-chain-development/metaverse-development/metaverse-${imageNumber}.jpg`, alt: `Metaverse development showcase concept ${imageNumber}` };
+            });
+        }),
         capabilitiesDescription: 'Define the experience before selecting 3D or Web3 features.',
         cards: [
-            { title: 'Virtual showrooms', description: 'Plan interactive product displays for browser users.' },
-            { title: 'Virtual events and venues', description: 'Assess spaces for launches, exhibitions or meetings.' },
-            { title: 'Training and onboarding worlds', description: 'Map guided practice and learning journeys.' },
-            { title: 'Web3 features', description: 'Evaluate optional wallet access or digital collectibles.' },
+            { title: 'Virtual showrooms', description: 'Plan interactive product displays for browser users.', image: { src: '/images/services/block-chain-development/metaverse-development/metaverse-capability-1.jpg', alt: 'Virtual showroom concept' } },
+            { title: 'Virtual events and venues', description: 'Assess spaces for launches, exhibitions or meetings.', image: { src: '/images/services/block-chain-development/metaverse-development/metaverse-capability-2.jpg', alt: 'Virtual event venue concept' } },
+            { title: 'Training and onboarding worlds', description: 'Map guided practice and learning journeys.', image: { src: '/images/services/block-chain-development/metaverse-development/metaverse-capability-3.jpg', alt: 'Immersive training environment concept' } },
+            { title: 'Web3 features', description: 'Evaluate optional wallet access or digital collectibles.', image: { src: '/images/services/block-chain-development/metaverse-development/metaverse-capability-4.jpg', alt: 'Web3 feature concept' } },
         ],
         deliverables: ['Experience concept and journey map', '3D asset and performance requirements', 'Interaction and multi-user scope', 'Engagement measurement plan', 'Content update requirements'],
         useCases: { title: 'Metaverse use cases', items: ['Showing proposed property spaces', 'Interactive retail displays', 'Hybrid events', 'Training in simulated environments'] },
-        explainer: { title: 'Making 3D experiences accessible', text: 'Heavy assets can exclude people on older devices or slower connections. Plan progressive loading, simpler modes and clear controls, then test on the target devices.' },
+        explainer: { title: 'Making 3D experiences accessible', text: 'Heavy assets can exclude people on older devices or slower connections. Plan progressive loading, simpler modes and clear controls, then test on the target devices.', image: { src: '/images/services/block-chain-development/metaverse-development/metaverse-explainer.jpg', alt: 'Team discussing accessible 3D experiences' } },
         process: ['Define audience, goals and device access', 'Plan world layout and assets', 'Build interactions and agreed integrations', 'Test loading and frame rate across devices', 'Prepare hosting and content updates'],
-        why: { title: 'Why Tresmind for metaverse projects', text: 'Accessibility and performance should guide the concept. Blockchain features should be optional and tied to a user need.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map(step => ({ src: `/images/services/block-chain-development/metaverse-development/metaverse-process-foreground-${step}.png`, alt: `Metaverse development process step ${step}` })),
+        why: { title: 'Why Tresmind for metaverse projects', text: 'Accessibility and performance should guide the concept. Blockchain features should be optional and tied to a user need.', image: { src: '/images/services/block-chain-development/metaverse-development/metaverse-ecosystem.png', alt: 'Metaverse project ecosystem illustration' } },
         faq: { title: 'Metaverse Development FAQs', items: [
             { question: 'Do visitors need a VR headset?', answer: 'A browser-first design can make a 3D experience available without a headset.' },
             { question: 'Does a metaverse project require blockchain?', answer: 'No. Add blockchain only if it supports the experience.' },
@@ -189,20 +205,28 @@ export const blockchainChildren = {
     'nft-development': {
         slug: 'nft-development', name: 'NFT Development',
         seo: { title: 'NFT Development Services | Tresmind Solutions', description: 'Explore utility NFTs for memberships, tickets or credentials, with contract design, wallet experience, security and legal review.' },
-        hero: { title: 'NFT development services', description: 'Explore NFTs for memberships, tickets or digital ownership, starting with what holders should actually receive.', cta: 'Plan my NFT project' },
+        hero: { title: 'NFT development services', description: 'Explore NFTs for memberships, tickets or digital ownership, starting with what holders should actually receive.', cta: 'Plan my NFT project', image: { src: '/images/services/block-chain-development/NFT-development/nft-hero.png', alt: 'NFT development illustration' } },
         introduction: { title: 'NFTs with real utility', text: 'An NFT can represent access, membership, attendance or ownership. Plan holder benefits, metadata, wallet experience, security and legal questions before choosing a token design.' },
+        showcaseImages: [0, 1, 2, 3].map(column => {
+            const start = column === 0 ? 1 : 5 + 3 * (column - 1);
+            return Array.from({ length: column === 0 ? 4 : 3 }, (_, index) => {
+                const imageNumber = start + index;
+                return { src: `/images/services/block-chain-development/NFT-development/nft-${imageNumber}.jpg`, alt: `NFT development showcase concept ${imageNumber}` };
+            });
+        }),
         capabilitiesDescription: 'Define the contract and holder experience together.',
         cards: [
-            { title: 'NFT smart contracts', description: 'Compare token standards and define minting and access rules.' },
-            { title: 'Minting websites', description: 'Plan a clear wallet and minting journey.' },
-            { title: 'NFT marketplaces', description: 'Assess listing, buying and transfer requirements.' },
-            { title: 'Utility NFTs', description: 'Explore memberships, tickets, loyalty or credentials.' },
+            { title: 'NFT smart contracts', description: 'Compare token standards and define minting and access rules.', image: { src: '/images/services/block-chain-development/NFT-development/nft-capability-1.jpg', alt: 'NFT smart contract concept' } },
+            { title: 'Minting websites', description: 'Plan a clear wallet and minting journey.', image: { src: '/images/services/block-chain-development/NFT-development/nft-capability-2.jpg', alt: 'NFT minting website concept' } },
+            { title: 'NFT marketplaces', description: 'Assess listing, buying and transfer requirements.', image: { src: '/images/services/block-chain-development/NFT-development/nft-capability-3.jpg', alt: 'NFT marketplace concept' } },
+            { title: 'Utility NFTs', description: 'Explore memberships, tickets, loyalty or credentials.', image: { src: '/images/services/block-chain-development/NFT-development/nft-capability-4.jpg', alt: 'NFT membership and ticket utility concept' } },
         ],
         deliverables: ['Token and utility design', 'Contract and test requirements', 'Minting or marketplace interface scope', 'Metadata and storage plan', 'Launch and monitoring checklist'],
         useCases: { title: 'NFT use cases', items: ['Event tickets with holder benefits', 'Membership passes', 'Collectible loyalty rewards', 'Verifiable certificates'] },
-        explainer: { title: 'Designing NFTs people can actually use', text: 'Wallet onboarding, benefits, transfer rules and metadata storage affect trust and access. Decide these early, and check payment availability and legal implications in each market.' },
+        explainer: { title: 'Designing NFTs people can actually use', text: 'Wallet onboarding, benefits, transfer rules and metadata storage affect trust and access. Decide these early, and check payment availability and legal implications in each market.', image: { src: '/images/services/block-chain-development/NFT-development/nft-explainer.jpg', alt: 'Team discussing NFT wallet access and holder benefits' } },
         process: ['Define holder utility', 'Plan standard, supply, metadata and storage', 'Scope contract and interface work', 'Test and consider independent audit', 'Plan deployment and monitoring'],
-        why: { title: 'Why Tresmind for NFTs', text: 'Begin with a holder benefit and a review of security and legal risks. Test contracts before mainnet and consider independent audit.' },
+        processForegroundImages: [1, 2, 3, 4, 5].map(step => ({ src: `/images/services/block-chain-development/NFT-development/nft-process-foreground-${step}.png`, alt: `NFT development process step ${step}` })),
+        why: { title: 'Why Tresmind for NFTs', text: 'Begin with a holder benefit and a review of security and legal risks. Test contracts before mainnet and consider independent audit.', image: { src: '/images/services/block-chain-development/NFT-development/nft-ecosystem.png', alt: 'NFT ecosystem illustration' } },
         faq: { title: 'NFT Development FAQs', items: [
             { question: 'Which NFT standard should we use?', answer: 'ERC-721 suits unique tokens; ERC-1155 can suit editions and mixed collections. Choose for the actual use case.' },
             { question: 'Where is NFT artwork stored?', answer: 'Artwork and metadata may be stored off-chain, with references in token metadata. Document durability and update rules.' },
