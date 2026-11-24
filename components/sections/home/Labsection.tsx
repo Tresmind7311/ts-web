@@ -191,13 +191,17 @@ const CardLabel = styled('p')({
   whiteSpace: 'nowrap',
 });
 
-const CardImage = styled('img')({
+const CardImage = styled('img')(({ theme }) => ({
   display: 'block',
+  height: 'auto',
   objectFit: 'cover',
   borderRadius: '4px',
   boxShadow: '0 20px 48px rgba(0,0,0,0.10)',
   userSelect: 'none',
-});
+  [theme.breakpoints.down('sm')]: {
+    maxWidth: 'calc(100vw - 48px)',
+  },
+}));
 
 // Closing column — final horizontal item after all cards.
 // Content and layout match the reference screenshot.
@@ -256,12 +260,24 @@ const ClosingCta = styled('a')({
 
 export default function LabSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
+    const frame = frameRef.current;
     const track = trackRef.current;
-    if (!section || !track) return;
+    const cta = ctaRef.current;
+    if (!section || !frame || !track || !cta) return;
+
+    const syncCtaFocus = () => {
+      const frameRect = frame.getBoundingClientRect();
+      const ctaRect = cta.getBoundingClientRect();
+      const visible = ctaRect.left >= frameRect.left && ctaRect.right <= frameRect.right;
+      cta.tabIndex = visible ? 0 : -1;
+      if (!visible && document.activeElement === cta) cta.blur();
+    };
 
     const ctx = gsap.context(() => {
       const getScrollAmount = () => -(track.scrollWidth - window.innerWidth);
@@ -270,6 +286,7 @@ export default function LabSection() {
         x: () => getScrollAmount(),
         ease: 'none',
         paused: true,
+        onUpdate: syncCtaFocus,
       });
 
       ScrollTrigger.create({
@@ -282,15 +299,22 @@ export default function LabSection() {
         // Restore Lab pin spacing before the following Services pin (priority 30).
         refreshPriority: 31,
         invalidateOnRefresh: true,
+        onUpdate: syncCtaFocus,
+        onRefresh: syncCtaFocus,
       });
     }, section);
 
-    return () => ctx.revert();
+    syncCtaFocus();
+
+    return () => {
+      ctx.revert();
+      cta.tabIndex = -1;
+    };
   }, []);
 
   return (
     <SectionWrapper ref={sectionRef} id="lab">
-      <StickyFrame>
+      <StickyFrame ref={frameRef}>
         <GridBackground />
 
         <GalleryTrack ref={trackRef}>
@@ -312,7 +336,7 @@ export default function LabSection() {
                 src={item.image}
                 alt={item.code}
                 draggable={false}
-                style={{ width: `${item.width}px`, height: `${item.height}px` }}
+                style={{ width: `${item.width}px`, aspectRatio: `${item.width} / ${item.height}` }}
               />
             </CardWrap>
           ))}
@@ -323,7 +347,7 @@ export default function LabSection() {
             <ClosingSubCopy>
               Innovation is not a department. It&rsquo;s our mindset.
             </ClosingSubCopy>
-            <ClosingCta href="#contact">Explore More &rarr;</ClosingCta>
+            <ClosingCta ref={ctaRef} href="#contact" tabIndex={-1}>Explore More &rarr;</ClosingCta>
           </ClosingColumn>
 
         </GalleryTrack>

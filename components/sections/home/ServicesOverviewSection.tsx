@@ -277,7 +277,7 @@ const Products = styled(OutlineWord)(({ theme }) => ({
     [theme.breakpoints.down('sm')]: {
         top: '74vh',
         right: '5.5vw',
-        fontSize: '0.5vw',
+        fontSize: '9vw',
     },
 }));
 
@@ -478,6 +478,7 @@ export default function ServicesOverviewSection({
         ).matches;
 
         if (reduceMotion) {
+            exploreLink.tabIndex = 0;
             return;
         }
 
@@ -606,6 +607,14 @@ export default function ServicesOverviewSection({
             reveal(brandCaption, 0.565, 0.07);
             reveal(exploreLink, 0.60, 0.07);
 
+            timeline.eventCallback('onUpdate', () => {
+                const visible = timeline.progress() >= 0.67;
+                exploreLink.tabIndex = visible ? 0 : -1;
+                if (!visible && document.activeElement === exploreLink) {
+                    exploreLink.blur();
+                }
+            });
+
             timeline.to(
                 scene,
                 {
@@ -707,6 +716,7 @@ export default function ServicesOverviewSection({
                     <ExploreLink
                         ref={exploreLinkRef}
                         href={exploreHref}
+                        tabIndex={-1}
                     >
                         Explore services
                         <span aria-hidden="true">↗</span>
