@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Agency workflow concept</title><desc id="desc">Abstract connected workflow cards. Concept illustration, not GHL Automation Agency client work.</desc>
+  <rect width="1200" height="750" fill="#071463"/><circle cx="1010" cy="130" r="270" fill="#0DB0DC" opacity=".14"/>
+  <rect x="145" y="160" width="910" height="420" rx="24" fill="#FFFFFF"/><rect x="180" y="195" width="840" height="65" rx="14" fill="#DBD6FD"/>
+  <path d="M305 397h590" stroke="#0DB0DC" stroke-width="14" stroke-linecap="round"/><path d="M875 372l35 25-35 25" fill="none" stroke="#0DB0DC" stroke-width="14" stroke-linecap="round"/>
+  <rect x="220" y="330" width="190" height="155" rx="18" fill="#071463"/><rect x="500" y="305" width="190" height="180" rx="18" fill="#0783FC"/><rect x="780" y="330" width="190" height="155" rx="18" fill="#071463"/>
+  <rect x="250" y="365" width="130" height="18" rx="9" fill="#FFFFFF"/><rect x="530" y="345" width="130" height="18" rx="9" fill="#FFFFFF"/><rect x="810" y="365" width="130" height="18" rx="9" fill="#FFFFFF"/>
+  <text x="145" y="650" fill="#FFFFFF" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="25" font-weight="700">GHL Automation Agency</text><text x="1055" y="650" text-anchor="end" fill="#DBD6FD" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="17">CONCEPT ILLUSTRATION</text>
+</svg>

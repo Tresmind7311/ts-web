@@ -252,6 +252,7 @@ let theme = createTheme({
         MuiCssBaseline: {
             styleOverrides: {
                 '*': { boxSizing: 'border-box', margin: 0, padding: 0 },
+                body: { background: 'radial-gradient(ellipse at 85% 65%, #dff6fd 0%, transparent 45%), #f3fdff' },
                 html: {
                     WebkitFontSmoothing: 'antialiased',
                     MozOsxFontSmoothing: 'grayscale',

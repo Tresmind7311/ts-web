@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Project } from '@/data/projects/types';
+import { tokens } from '@/theme/theme';
+import { alpha } from '@mui/material/styles';
 
 const CardRoot = styled(Link)({
   display: 'block',
@@ -32,14 +34,17 @@ const CardImg = styled(Box)({
 const Overlay = styled(Box)({
   position: 'absolute',
   inset: 0,
-  background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%)',
-  opacity: 0,
+  background: `linear-gradient(to top, ${alpha(tokens.color.ink900, 0.8)} 0%, ${alpha(tokens.color.ink900, 0.1)} 60%)`,
+  opacity: 1,
   transition: 'opacity 0.3s ease',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-end',
   padding: '24px',
 });
+const CardImage = styled(Image)({ objectFit: 'cover' });
+const CardTitle = styled(Typography)({ color: tokens.color.neutral0, fontWeight: 700, lineHeight: 1.25 });
+const CardDescription = styled(Typography)({ color: tokens.color.neutral0, marginTop: 4, fontSize: '0.8rem' });
 
 const CategoryRow = styled(Box)({
   display: 'flex',
@@ -51,8 +56,8 @@ const CategoryRow = styled(Box)({
 const CategoryTag = styled('span')({
   fontSize: '0.7rem',
   fontWeight: 600,
-  color: 'rgba(255,255,255,0.85)',
-  background: 'rgba(255,255,255,0.15)',
+  color: tokens.color.neutral0,
+  background: alpha(tokens.color.uv800, 0.75),
   borderRadius: '999px',
   padding: '3px 10px',
   backdropFilter: 'blur(4px)',
@@ -66,13 +71,12 @@ interface Props {
 
 export default function ProjectCard({ project }: Props) {
   return (
-    <CardRoot href={`/projects/${project.slug}`}>
+    <CardRoot href={`/projects/${project.slug}#case-study-top`}>
       <CardImg className="card-img">
-        <Image
+        <CardImage
           src={project.featuredImage}
-          alt={project.title}
+          alt={project.hero.imageAlt ?? project.title}
           fill
-          style={{ objectFit: 'cover' }}
           sizes="(max-width: 768px) 100vw, 50vw"
         />
       </CardImg>
@@ -82,18 +86,12 @@ export default function ProjectCard({ project }: Props) {
             <CategoryTag key={cat}>{cat}</CategoryTag>
           ))}
         </CategoryRow>
-        <Typography
-          variant="h6"
-          sx={{ color: '#fff', fontWeight: 700, lineHeight: 1.25 }}
-        >
+        <CardTitle variant="h6">
           {project.title}
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{ color: 'rgba(255,255,255,0.75)', mt: 0.5, fontSize: '0.8rem' }}
-        >
+        </CardTitle>
+        <CardDescription variant="body2">
           {project.shortDescription}
-        </Typography>
+        </CardDescription>
       </Overlay>
     </CardRoot>
   );

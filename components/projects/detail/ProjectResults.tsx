@@ -4,10 +4,12 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Project } from '@/data/projects/types';
+import { tokens } from '@/theme/theme';
+import { alpha } from '@mui/material/styles';
 
 const Root = styled(Box)(({ theme }) => ({
   padding: '96px 40px',
-  background: 'linear-gradient(135deg, #060d2e 0%, #0d1b5e 100%)',
+  background: tokens.color.uv800,
   [theme.breakpoints.down('md')]: {
     padding: '64px 20px',
   },
@@ -31,17 +33,21 @@ const Grid = styled(Box)(({ theme }) => ({
 }));
 
 const StatCard = styled(Box)({
-  background: 'rgba(255,255,255,0.06)',
-  border: '1px solid rgba(255,255,255,0.12)',
+  background: alpha(tokens.color.neutral0, 0.06),
+  border: `1px solid ${alpha(tokens.color.neutral0, 0.12)}`,
   borderRadius: '16px',
   padding: '32px 24px',
   textAlign: 'center',
   backdropFilter: 'blur(8px)',
   transition: 'background 0.3s ease',
   '&:hover': {
-    background: 'rgba(255,255,255,0.1)',
+    background: alpha(tokens.color.neutral0, 0.1),
   },
 });
+const ResultsLabel = styled(Typography)(({ theme }) => ({ color: theme.palette.primary.light, fontWeight: 700, letterSpacing: '0.1em', display: 'block', marginBottom: theme.spacing(1) }));
+const ResultsTitle = styled(Typography)(({ theme }) => ({ fontWeight: 800, color: tokens.color.neutral0, marginBottom: theme.spacing(6), fontSize: '2.2rem', [theme.breakpoints.down('md')]: { fontSize: '1.8rem' } }));
+const StatValue = styled(Typography)(({ theme }) => ({ color: tokens.color.neutral0, fontWeight: 800, marginBottom: theme.spacing(1), fontSize: '2.4rem', [theme.breakpoints.down('md')]: { fontSize: '2rem' } }));
+const StatLabel = styled(Typography)({ color: tokens.color.neutral0, fontSize: '0.85rem', lineHeight: 1.5 });
 
 interface Props {
   project: Project;
@@ -53,38 +59,21 @@ export default function ProjectResults({ project }: Props) {
   return (
     <Root>
       <Inner>
-        <Typography
-          variant="overline"
-          sx={{ color: 'primary.light', fontWeight: 700, letterSpacing: '0.1em', display: 'block', mb: 1 }}
-        >
+        <ResultsLabel variant="overline">
           Results
-        </Typography>
-        <Typography
-          variant="h3"
-          sx={{
-            fontWeight: 800,
-            color: '#fff',
-            mb: 6,
-            fontSize: { xs: '1.8rem', md: '2.2rem' },
-          }}
-        >
+        </ResultsLabel>
+        <ResultsTitle variant="h3">
           Impact Delivered
-        </Typography>
+        </ResultsTitle>
         <Grid>
           {project.results.map((r, i) => (
             <StatCard key={i}>
-              <Typography
-                variant="h3"
-                sx={{ color: '#fff', fontWeight: 800, mb: 1, fontSize: { xs: '2rem', md: '2.4rem' } }}
-              >
+              <StatValue variant="h3">
                 {r.value}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem', lineHeight: 1.5 }}
-              >
+              </StatValue>
+              <StatLabel variant="body2">
                 {r.label}
-              </Typography>
+              </StatLabel>
             </StatCard>
           ))}
         </Grid>

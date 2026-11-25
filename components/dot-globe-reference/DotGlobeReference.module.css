@@ -52,7 +52,7 @@
     height: 100vh;
     min-height: 100svh;
     overflow: hidden;
-    background: var(--color-neutral50);
+    background: radial-gradient(ellipse at 85% 65%, #dff6fd 0%, transparent 45%), #f3fdff;
     isolation: isolate;
     touch-action: pan-y;
     user-select: none;
@@ -128,7 +128,7 @@
     flex-direction: column;
     gap: 1px;
     padding: 7px 9px 8px;
-    background: rgba(var(--color-neutral50-rgb), 0.78);
+    background: radial-gradient(ellipse at 85% 65%, #dff6fd 0%, transparent 45%), #f3fdff;
     backdrop-filter: blur(7px);
     -webkit-backdrop-filter: blur(7px);
     box-shadow: 0 3px 16px rgba(var(--color-ink900-rgb), 0.07);

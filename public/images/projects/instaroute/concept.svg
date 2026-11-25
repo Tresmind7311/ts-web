@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Fleet route concept</title><desc id="desc">Abstract route map and fleet information cards. Concept illustration, not InstaRoute client work.</desc>
+  <rect width="1200" height="750" fill="#071463"/><circle cx="1030" cy="120" r="270" fill="#0DB0DC" opacity=".14"/>
+  <rect x="140" y="150" width="920" height="450" rx="24" fill="#FFFFFF"/><rect x="170" y="180" width="515" height="390" rx="16" fill="#F6F5F2"/>
+  <path d="M220 470c95-155 165-45 218-150s135-78 190 30" fill="none" stroke="#0DB0DC" stroke-width="18" stroke-linecap="round"/><circle cx="220" cy="470" r="24" fill="#071463"/><circle cx="438" cy="320" r="24" fill="#0783FC"/><circle cx="628" cy="350" r="24" fill="#071463"/>
+  <rect x="720" y="200" width="305" height="70" rx="14" fill="#DBD6FD"/><rect x="720" y="295" width="305" height="70" rx="14" fill="#DBD6FD"/><rect x="720" y="390" width="305" height="70" rx="14" fill="#DBD6FD"/><rect x="745" y="225" width="180" height="15" rx="7" fill="#071463" opacity=".6"/><rect x="745" y="320" width="210" height="15" rx="7" fill="#071463" opacity=".6"/><rect x="745" y="415" width="165" height="15" rx="7" fill="#071463" opacity=".6"/>
+  <text x="140" y="660" fill="#FFFFFF" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="25" font-weight="700">InstaRoute</text><text x="1060" y="660" text-anchor="end" fill="#DBD6FD" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="17">CONCEPT ILLUSTRATION</text>
+</svg>

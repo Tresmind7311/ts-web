@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Senior services directory concept</title><desc id="desc">Abstract directory and regional resource cards. Concept illustration, not Silver Streak client work.</desc>
+  <rect width="1200" height="750" fill="#071463"/><circle cx="1030" cy="100" r="270" fill="#0DB0DC" opacity=".14"/>
+  <rect x="140" y="150" width="920" height="450" rx="24" fill="#FFFFFF"/><rect x="170" y="180" width="860" height="65" rx="14" fill="#DBD6FD"/>
+  <rect x="175" y="280" width="255" height="280" rx="16" fill="#F6F5F2"/><circle cx="303" cy="360" r="48" fill="#0783FC"/><rect x="220" y="445" width="165" height="18" rx="9" fill="#071463" opacity=".6"/>
+  <rect x="455" y="280" width="255" height="280" rx="16" fill="#F6F5F2"/><circle cx="583" cy="360" r="48" fill="#0DB0DC"/><rect x="500" y="445" width="165" height="18" rx="9" fill="#071463" opacity=".6"/>
+  <rect x="735" y="280" width="255" height="280" rx="16" fill="#F6F5F2"/><circle cx="863" cy="360" r="48" fill="#0783FC"/><rect x="780" y="445" width="165" height="18" rx="9" fill="#071463" opacity=".6"/>
+  <text x="140" y="660" fill="#FFFFFF" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="25" font-weight="700">Silver Streak Senior Services</text><text x="1060" y="660" text-anchor="end" fill="#DBD6FD" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="17">CONCEPT ILLUSTRATION</text>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Skincare storefront concept</title><desc id="desc">Abstract skincare bottles and product cards. Concept illustration, not Skinsational Mobile client work.</desc>
+  <rect width="1200" height="750" fill="#071463"/><circle cx="1030" cy="110" r="280" fill="#0DB0DC" opacity=".14"/>
+  <rect x="140" y="150" width="920" height="450" rx="24" fill="#FFFFFF"/><rect x="170" y="180" width="465" height="390" rx="16" fill="#DBD6FD"/>
+  <rect x="245" y="310" width="110" height="210" rx="12" fill="#0783FC"/><rect x="266" y="270" width="68" height="45" rx="7" fill="#071463"/><rect x="390" y="350" width="145" height="170" rx="20" fill="#0DB0DC"/><rect x="428" y="309" width="69" height="45" rx="7" fill="#071463"/>
+  <rect x="680" y="210" width="325" height="40" rx="10" fill="#071463" opacity=".8"/><rect x="680" y="285" width="278" height="19" rx="9" fill="#DBD6FD"/><rect x="680" y="322" width="310" height="19" rx="9" fill="#DBD6FD"/>
+  <rect x="680" y="400" width="95" height="135" rx="12" fill="#F6F5F2"/><rect x="790" y="400" width="95" height="135" rx="12" fill="#F6F5F2"/><rect x="900" y="400" width="95" height="135" rx="12" fill="#F6F5F2"/>
+  <text x="140" y="660" fill="#FFFFFF" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="25" font-weight="700">Skinsational Mobile</text><text x="1060" y="660" text-anchor="end" fill="#DBD6FD" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="17">CONCEPT ILLUSTRATION</text>
+</svg>

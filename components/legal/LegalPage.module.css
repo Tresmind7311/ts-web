@@ -1,5 +1,5 @@
 .main {
-  background: var(--neutral-50);
+  background: radial-gradient(ellipse at 85% 65%, #dff6fd 0%, transparent 45%), #f3fdff;
   color: var(--ink-900);
   min-height: 100vh;
   padding: clamp(112px, 13vw, 176px) 24px 96px;

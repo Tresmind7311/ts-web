@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Residential portfolio concept</title><desc id="desc">Abstract house and project gallery cards. Concept illustration, not Source One Homes client work.</desc>
+  <rect width="1200" height="750" fill="#071463"/><circle cx="1020" cy="100" r="270" fill="#0DB0DC" opacity=".14"/>
+  <rect x="140" y="150" width="920" height="450" rx="24" fill="#FFFFFF"/><rect x="170" y="180" width="510" height="390" rx="16" fill="#DBD6FD"/>
+  <path d="M220 365l205-145 205 145v170H220z" fill="#0783FC"/><path d="M195 365l230-165 230 165" fill="none" stroke="#071463" stroke-width="23" stroke-linecap="round" stroke-linejoin="round"/><rect x="370" y="410" width="110" height="125" fill="#FFFFFF"/>
+  <rect x="710" y="195" width="315" height="108" rx="13" fill="#F6F5F2"/><rect x="710" y="325" width="315" height="108" rx="13" fill="#F6F5F2"/><rect x="710" y="455" width="315" height="108" rx="13" fill="#F6F5F2"/>
+  <text x="140" y="660" fill="#FFFFFF" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="25" font-weight="700">Source One Homes</text><text x="1060" y="660" text-anchor="end" fill="#DBD6FD" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="17">CONCEPT ILLUSTRATION</text>
+</svg>

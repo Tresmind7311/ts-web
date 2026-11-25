@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Funeral tribute media concept illustration</title>
+  <desc id="desc">Abstract music, photographs and a play symbol. Concept illustration, not a Funeral Music Online product screenshot.</desc>
+  <rect width="1200" height="750" fill="#071463"/>
+  <circle cx="1020" cy="100" r="260" fill="#0DB0DC" opacity=".12"/>
+  <circle cx="190" cy="690" r="300" fill="#0783FC" opacity=".15"/>
+  <rect x="142" y="160" width="916" height="430" rx="24" fill="#F6F5F2"/>
+  <rect x="166" y="184" width="438" height="382" rx="16" fill="#DBD6FD"/>
+  <circle cx="386" cy="340" r="95" fill="#071463" opacity=".16"/>
+  <path d="M354 286v125a34 34 0 1 1-18-30v-78l85-19v108a34 34 0 1 1-18-30v-98z" fill="#071463"/>
+  <rect x="632" y="212" width="396" height="40" rx="8" fill="#071463" opacity=".2"/>
+  <rect x="632" y="277" width="312" height="20" rx="8" fill="#071463" opacity=".14"/>
+  <rect x="632" y="317" width="360" height="20" rx="8" fill="#071463" opacity=".14"/>
+  <path d="M641 450v-30m28 55v-80m28 95V380m28 55v-20m28 80V375m28 90v-60m28 70v-80m28 50v-40m28 85V380m28 65v-40m28 70v-80m28 55v-30m28 55v-80" fill="none" stroke="#0DB0DC" stroke-width="12" stroke-linecap="round"/>
+  <text x="144" y="650" fill="#FFFFFF" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="25" font-weight="700">Funeral Music Online</text>
+  <text x="1056" y="650" text-anchor="end" fill="#DBD6FD" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="17">CONCEPT ILLUSTRATION</text>
+</svg>

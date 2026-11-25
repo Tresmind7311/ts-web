@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Podcast publishing concept</title><desc id="desc">Abstract microphone, audio waveform, and editorial cards. Concept illustration, not This Is Woodstock client work.</desc>
+  <rect width="1200" height="750" fill="#071463"/><circle cx="985" cy="110" r="280" fill="#0DB0DC" opacity=".14"/>
+  <rect x="135" y="160" width="930" height="420" rx="24" fill="#FFFFFF"/><rect x="165" y="190" width="440" height="360" rx="17" fill="#DBD6FD"/>
+  <rect x="332" y="255" width="105" height="170" rx="52" fill="#071463"/><path d="M305 366a79 79 0 0 0 158 0M384 445v53m-66 0h132" fill="none" stroke="#0783FC" stroke-width="16" stroke-linecap="round"/>
+  <rect x="640" y="205" width="365" height="38" rx="10" fill="#071463" opacity=".85"/><path d="M650 365v-50m35 80V290m35 120V285m35 86v-55m35 104V270m35 105v-66m35 90V290m35 110V300m35 76v-55m35 59v-65" fill="none" stroke="#0DB0DC" stroke-width="13" stroke-linecap="round"/>
+  <rect x="640" y="460" width="170" height="75" rx="12" fill="#F6F5F2"/><rect x="835" y="460" width="170" height="75" rx="12" fill="#F6F5F2"/>
+  <text x="135" y="650" fill="#FFFFFF" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="25" font-weight="700">This Is Woodstock</text><text x="1065" y="650" text-anchor="end" fill="#DBD6FD" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="17">CONCEPT ILLUSTRATION</text>
+</svg>

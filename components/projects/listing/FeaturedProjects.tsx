@@ -18,18 +18,18 @@ import Heading from '@/components/common/Heading';
 
 const Section = styled(Box)(({ theme }) => ({
   padding: '80px 40px',
-  background: theme.palette.background.default,
+  background: 'radial-gradient(ellipse at 85% 65%, #dff6fd 0%, transparent 45%), #f3fdff',
   [theme.breakpoints.down('md')]: {
     padding: '60px 20px',
   },
 }));
 
-const Inner = styled(Container)(({ theme }) => ({
+const Inner = styled(Container)({
   // maxWidth: '1200px',
   // margin: '0 auto',
   paddingLeft: 0,
   paddingRight: 0,
-}));
+});
 
 const Header = styled(Box)(({ theme }) => ({
   display: 'grid',
@@ -83,7 +83,7 @@ const CtaCard = styled(Link)(({ theme }) => ({
   },
 }));
 
-const ArrowCircle = styled(Box)(({ theme }) => ({
+const ArrowCircle = styled(Box)({
   position: 'absolute',
   bottom: '28px',
   right: '28px',
@@ -96,7 +96,7 @@ const ArrowCircle = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   color: '#fff',
   transition: 'transform 0.3s ease',
-}));
+});
 
 /* ─── heading ─────────────────────────────────────────────── */
 

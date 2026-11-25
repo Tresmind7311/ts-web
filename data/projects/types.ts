@@ -18,17 +18,24 @@ export interface Project {
   shortDescription: string;
   hero: {
     image: string;
+    imageAlt?: string;
   };
   overview: {
     description: string;
     client: string;
-    timeline: string;
+    timeline?: string;
     role: string;
     liveUrl?: string;
   };
   challenge: string;
   solution: string;
   gallery: string[];
+  galleryDimensions?: { width: number; height: number }[];
+  galleryAlts?: string[];
   results: ProjectResult[];
   technologies: string[];
+  technologyGroups?: { title: string; items: string[] }[];
+  features?: { title: string; description: string }[];
+  architecture?: { title: string; description: string }[];
+  outcome?: string;
 }

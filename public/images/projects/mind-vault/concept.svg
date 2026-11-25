@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Digital library concept illustration</title>
+  <desc id="desc">An abstract open book beside a catalogue of resources. This is a conceptual image, not a Mind Vault screenshot.</desc>
+  <rect width="1200" height="750" fill="#071463"/>
+  <circle cx="1010" cy="105" r="245" fill="#0DB0DC" opacity=".11"/>
+  <circle cx="160" cy="675" r="285" fill="#0783FC" opacity=".13"/>
+  <g fill="none" stroke="#0DB0DC" stroke-width="2" opacity=".45">
+    <path d="M140 188h345M140 210h245M715 188h345M815 210h245"/>
+    <path d="M600 104v465" stroke-dasharray="4 12"/>
+  </g>
+  <g transform="translate(158 275)">
+    <path d="M0 33C147-19 296-8 442 53v312C295 304 148 292 0 344Z" fill="#F6F5F2"/>
+    <path d="M884 33C737-19 588-8 442 53v312c147-61 294-73 442-21Z" fill="#EFEFEB"/>
+    <path d="M442 53v312" stroke="#0DB0DC" stroke-width="8"/>
+    <g stroke="#071463" stroke-linecap="round" opacity=".35" stroke-width="9">
+      <path d="M70 99h270M70 142h298M70 185h250M70 228h288M70 271h196"/>
+      <path d="M543 99h270M543 142h298M543 185h250M543 228h288M543 271h196"/>
+    </g>
+  </g>
+  <text x="74" y="74" fill="#FFFFFF" font-family="Arial,sans-serif" font-size="23" font-weight="700">Mind Vault</text>
+  <text x="1126" y="74" text-anchor="end" fill="#DBD6FD" font-family="Arial,sans-serif" font-size="15">Digital reading</text>
+  <text x="74" y="707" fill="#DBD6FD" font-family="Arial,sans-serif" font-size="16">Concept illustration · not product UI</text>
+</svg>

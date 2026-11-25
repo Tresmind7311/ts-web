@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Water service website concept</title><desc id="desc">Abstract water waves and service cards. Concept illustration, not AquaCore client work.</desc>
+  <rect width="1200" height="750" fill="#071463"/><circle cx="1040" cy="100" r="280" fill="#0DB0DC" opacity=".14"/>
+  <rect x="140" y="150" width="920" height="450" rx="24" fill="#FFFFFF"/><rect x="170" y="180" width="860" height="225" rx="16" fill="#DBD6FD"/>
+  <path d="M170 290c100-75 180 75 280 0s180 75 280 0 180 75 300 0v115H170z" fill="#0783FC" opacity=".75"/><path d="M170 345c100-75 180 75 280 0s180 75 280 0 180 75 300 0v60H170z" fill="#0DB0DC"/>
+  <rect x="170" y="430" width="265" height="140" rx="15" fill="#F6F5F2"/><rect x="468" y="430" width="265" height="140" rx="15" fill="#F6F5F2"/><rect x="766" y="430" width="264" height="140" rx="15" fill="#F6F5F2"/><rect x="200" y="465" width="145" height="18" rx="9" fill="#071463" opacity=".68"/><rect x="498" y="465" width="165" height="18" rx="9" fill="#071463" opacity=".68"/><rect x="796" y="465" width="130" height="18" rx="9" fill="#071463" opacity=".68"/>
+  <text x="140" y="660" fill="#FFFFFF" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="25" font-weight="700">AquaCore</text><text x="1060" y="660" text-anchor="end" fill="#DBD6FD" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="17">CONCEPT ILLUSTRATION</text>
+</svg>

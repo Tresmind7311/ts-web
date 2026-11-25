@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Specialty coffee storefront concept illustration</title>
+  <desc id="desc">Abstract coffee packaging, beans, and storefront cards. Concept illustration, not Monoblend client work or a product screenshot.</desc>
+  <rect width="1200" height="750" fill="#071463"/>
+  <circle cx="1060" cy="100" r="260" fill="#0DB0DC" opacity=".12"/>
+  <circle cx="145" cy="650" r="280" fill="#0783FC" opacity=".14"/>
+  <rect x="145" y="155" width="910" height="440" rx="24" fill="#FFFFFF"/>
+  <rect x="170" y="180" width="860" height="42" rx="12" fill="#F6F5F2"/>
+  <circle cx="195" cy="201" r="7" fill="#0DB0DC"/>
+  <circle cx="220" cy="201" r="7" fill="#0783FC"/>
+  <circle cx="245" cy="201" r="7" fill="#DBD6FD"/>
+  <rect x="185" y="249" width="490" height="315" rx="16" fill="#DBD6FD"/>
+  <path d="M341 321h180l-24 208H365z" fill="#071463"/>
+  <path d="M342 321h178l-18 38H360z" fill="#0783FC"/>
+  <ellipse cx="431" cy="446" rx="43" ry="61" transform="rotate(-24 431 446)" fill="#0DB0DC"/>
+  <path d="M448 394c-36 33-42 77-37 105" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+  <rect x="704" y="258" width="296" height="34" rx="8" fill="#071463" opacity=".85"/>
+  <rect x="704" y="313" width="260" height="17" rx="8" fill="#071463" opacity=".22"/>
+  <rect x="704" y="344" width="228" height="17" rx="8" fill="#071463" opacity=".22"/>
+  <rect x="704" y="399" width="134" height="45" rx="12" fill="#0783FC"/>
+  <rect x="704" y="480" width="83" height="77" rx="10" fill="#F6F5F2"/>
+  <rect x="807" y="480" width="83" height="77" rx="10" fill="#F6F5F2"/>
+  <rect x="910" y="480" width="83" height="77" rx="10" fill="#F6F5F2"/>
+  <text x="145" y="658" fill="#FFFFFF" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="25" font-weight="700">Monoblend Coffee Roaster</text>
+  <text x="1054" y="658" text-anchor="end" fill="#DBD6FD" font-family="Plus Jakarta Sans,system-ui,sans-serif" font-size="17">CONCEPT ILLUSTRATION</text>
+</svg>
