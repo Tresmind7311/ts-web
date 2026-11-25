@@ -5,7 +5,7 @@ import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
-import { tokens } from '@/theme/theme';
+import theme, { tokens } from '@/theme/theme';
 import { serviceMenu } from '@/data/services/menu';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
@@ -31,7 +31,7 @@ const NavSpace = styled('div')<{ reserve: number }>(({ theme, reserve }) => ({
     height: reserve ? 'var(--navbar-measured-height, var(--navbar-height))' : 0,
     [theme.breakpoints.down('md')]: { '--navbar-height': '68px' },
 }));
-const NavRoot = styled('header')<{ scrolled: number; visible: number; dark: number }>(({ theme, scrolled, visible, dark }) => ({
+const NavRoot = styled('header')<{ scrolled: number; visible: number; dark: number; glass: number }>(({ theme, scrolled, visible, dark, glass }) => ({
     position: 'fixed',
     top: 0,
     left: 0,
@@ -49,17 +49,17 @@ const NavRoot = styled('header')<{ scrolled: number; visible: number; dark: numb
                       box-shadow ${tokens.motion.base} ${tokens.motion.ease},
                       opacity 200ms cubic-bezier(0.16,1,0.3,1),
                       transform 200ms cubic-bezier(0.16,1,0.3,1)`,
-    backgroundColor: scrolled
+    backgroundColor: glass ? 'transparent' : scrolled
         ? alpha(tokens.color.neutral0, 0.08)
         : dark ? 'transparent' : '#f7fafc',
-    backgroundImage: scrolled || dark
+    backgroundImage: glass || scrolled || dark
         ? 'none'
         : 'radial-gradient(ellipse at 25% 50%, rgba(14, 165, 190, 0.06), transparent 65%)',
     backdropFilter: scrolled ? 'blur(12px) saturate(1.4)' : 'none',
     WebkitBackdropFilter: scrolled ? 'blur(12px) saturate(1.4)' : 'none',
-    color: dark ? '#fff' : '#121343',
-    '--navbar-accent': dark ? '#fff' : '#071463',
-    '& img': { filter: dark ? 'brightness(0) invert(1)' : 'none' },
+    color: glass || dark ? '#fff' : '#121343',
+    '--navbar-accent': glass || dark ? '#fff' : '#071463',
+    '& img': { filter: glass || dark ? 'brightness(0) invert(1)' : 'none' },
     transform: visible ? 'translateY(0)' : 'translateY(-100%)',
     visibility: visible ? 'visible' : 'hidden',
     opacity: visible ? 1 : 0,
@@ -69,6 +69,12 @@ const NavRoot = styled('header')<{ scrolled: number; visible: number; dark: numb
         visibility: 'visible',
         opacity: 1,
         pointerEvents: 'auto',
+        ...(glass ? {
+            backgroundColor: dark ? 'transparent' : '#f7fafc',
+            color: dark ? '#fff' : '#121343',
+            '--navbar-accent': dark ? '#fff' : '#071463',
+            '& img': { filter: dark ? 'brightness(0) invert(1)' : 'none' },
+        } : {}),
     },
 }));
 const NavInner = styled(Container)(({ theme }) => ({
@@ -472,6 +478,7 @@ export default function Navbar() {
     const [scrollHidden, setScrollHidden] = useState(false);
     const [darkBackdrop, setDarkBackdrop] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [atTop, setAtTop] = useState(true);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [megaOpen, setMegaOpen] = useState(false);
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
@@ -479,7 +486,8 @@ export default function Navbar() {
     // The homepage keeps its existing hero reveal gate.
     // Every other route shows the navbar immediately.
     const [homeNavVisible, setHomeNavVisible] = useState(false);
-    const navVisible = (pathname !== '/' || homeNavVisible)
+    const heroGlass = pathname === '/' && atTop && !homeNavVisible;
+    const navVisible = (heroGlass || pathname !== '/' || homeNavVisible)
         && (!scrollHidden || drawerOpen || megaOpen);
     // Reserve the actual rendered height on inner pages, including after resize.
     useEffect(() => {
@@ -502,6 +510,7 @@ export default function Navbar() {
         const update = () => {
             raf = 0;
             const y = Math.max(0, window.scrollY);
+            setAtTop(y <= 0);
             setScrolled(y > 20);
             if (y <= 0) setScrollHidden(false);
             else if (y !== previousY) {
@@ -600,17 +609,25 @@ export default function Navbar() {
     return (
         <>
             <NavSpace ref={spaceRef} reserve={pathname !== '/' ? 1 : 0}>
-                <NavRoot ref={headerRef} scrolled={scrolled ? 1 : 0} visible={navVisible ? 1 : 0} dark={darkBackdrop ? 1 : 0} role="banner"
+                <NavRoot ref={headerRef} scrolled={scrolled ? 1 : 0} visible={navVisible ? 1 : 0} dark={darkBackdrop ? 1 : 0} glass={heroGlass ? 1 : 0} role="banner"
                     onKeyDown={event => { if (event.key === 'Escape') { setMegaOpen(false); (headerRef.current?.querySelector('#services-trigger') as HTMLElement | null)?.focus(); } }}
                     onMouseLeave={() => setMegaOpen(false)}
                     onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setMegaOpen(false); }}>
-                    <NavInner maxWidth="xl">
+                    <NavInner maxWidth="xl" sx={heroGlass ? { [theme.breakpoints.up('md')]: { justifyContent: 'center', gridTemplateColumns: '1fr' } } : undefined}>
                         {/* Logo */}
-                        <LogoLink href="/" aria-label="Tresmind — home" onMouseEnter={() => setMegaOpen(false)}>
+                        <LogoLink href="/" aria-label="Tresmind — home" onMouseEnter={() => setMegaOpen(false)} sx={heroGlass ? { [theme.breakpoints.up('md')]: { display: 'none' } } : undefined}>
                             <LogoMark />
                         </LogoLink>
                         {/* Desktop nav */}
-                        <DesktopNav aria-label="Main navigation">
+                        <DesktopNav aria-label="Main navigation" sx={heroGlass ? {
+                            justifySelf: 'center',
+                            px: 3,
+                            borderRadius: tokens.radius.full,
+                            border: `1px solid ${alpha(tokens.color.neutral0, 0.22)}`,
+                            backgroundColor: alpha(tokens.color.ink900, 0.5),
+                            backdropFilter: 'blur(16px)',
+                            WebkitBackdropFilter: 'blur(16px)',
+                        } : undefined}>
                             {NAV_LINKS.map(link =>
                                 link.href === '/services' ? (
                                     <ServicesNavItem key={link.label} onMouseEnter={() => setMegaOpen(true)} onFocus={event => { if (event.target.matches(':focus-visible')) setMegaOpen(true); }}>
@@ -676,7 +693,7 @@ export default function Navbar() {
                                 </ServiceCardGrid>
                             </MegaMenuLayout>
                         </ServicesDropdown>}
-                        <QuoteLink href="/contact" onMouseEnter={() => setMegaOpen(false)}>Get a Quote</QuoteLink>
+                        <QuoteLink href="/contact" onMouseEnter={() => setMegaOpen(false)} sx={heroGlass ? { [theme.breakpoints.up('md')]: { display: 'none' } } : undefined}>Get a Quote</QuoteLink>
                         {/* Mobile hamburger */}
                         <HamburgerBtn
                             onClick={() => setDrawerOpen(o => !o)}

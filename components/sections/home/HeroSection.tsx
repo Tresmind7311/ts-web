@@ -50,6 +50,10 @@ const fadeSlideIn = keyframes`
 `;
 
 const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+const arrowDrift = keyframes`
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+`;
 
 // ═══════════════════════════════════════════════════════════════════
 // Styled components
@@ -74,6 +78,31 @@ const CanvasLayer = styled(Box)({
     position: 'absolute',
     inset: 0,
     '@media (max-width: 767px)': { backgroundColor: '#000' },
+});
+
+const ScrollIndicator = styled(Box)({
+    position: 'absolute',
+    bottom: 'clamp(20px, 4vh, 40px)',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '6px',
+    color: tokens.color.neutral0,
+    fontFamily: 'var(--font-body)',
+    fontSize: '11px',
+    fontWeight: 600,
+    letterSpacing: '0.16em',
+    textTransform: 'uppercase',
+    textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)',
+    pointerEvents: 'none',
+    transition: 'opacity 250ms ease',
+    '& img': { display: 'block', width: '15px', height: '27px', animation: `${arrowDrift} 2s ease-in-out infinite` },
+    '@media (prefers-reduced-motion: reduce)': {
+        transition: 'none',
+        '& img': { animation: 'none' },
+    },
 });
 
 const ContentOverlay = styled(Box)(({ theme }) => ({
@@ -180,6 +209,7 @@ export default function HeroSection() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const frameRef = useRef<HTMLDivElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
+    const indicatorRef = useRef<HTMLDivElement>(null);
 
     const heroCompleteRef = useRef(false);
 
@@ -187,10 +217,12 @@ export default function HeroSection() {
         const container = scrollRef.current;
         const frame = frameRef.current;
         const overlay = overlayRef.current;
-        if (!container || !frame || !overlay) return;
+        const indicator = indicatorRef.current;
+        if (!container || !frame || !overlay || !indicator) return;
 
         const onScroll = () => {
             const rect = container.getBoundingClientRect();
+            indicator.style.opacity = rect.top < -20 ? '0' : '1';
             const scrollable =
                 container.offsetHeight - window.innerHeight;
 
@@ -290,6 +322,11 @@ export default function HeroSection() {
                         Start a project&nbsp;&nbsp;→
                     </SecondaryButton>
                 </ContentOverlay>
+
+                <ScrollIndicator ref={indicatorRef} aria-hidden="true">
+                    Scroll Down
+                    <Box component="img" src="/images/scroll-icon.svg" alt="" />
+                </ScrollIndicator>
 
             </StickyFrame>
         </ScrollContainer>
