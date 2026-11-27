@@ -1,3 +1,5 @@
+'use client';
+
 import { styled } from '@mui/material/styles';
 
 const Main = styled('main')({ padding: '80px 40px' });
