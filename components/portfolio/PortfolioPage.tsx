@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { tokens } from '@/theme/theme';
 import Heading from '@/components/common/Heading';
+import TestimonialsSection from '@/components/sections/home/TestimonialsSection';
+import { homeTestimonials } from '@/data/testimonials/home';
 
 const CaseStudies = styled(Box)<{ component?: React.ElementType }>(({ theme }) => ({
     padding: `${theme.spacing(16)} 0`,
@@ -54,6 +56,7 @@ export default function PortfolioPage() {
                     </CaseStudiesGrid>
                 </Container>
             </CaseStudies>
+            <TestimonialsSection testimonials={homeTestimonials} />
         </main>
     );
 }

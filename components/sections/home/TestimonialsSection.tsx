@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 
@@ -13,10 +13,9 @@ import Heading from '@/components/common/Heading';
 
 export interface Testimonial {
     id: number;
-    avatar: string;
+    initials: string;
     quote: string;
     name: string;
-    title: string;
 }
 
 interface Props {
@@ -26,17 +25,20 @@ interface Props {
 
 // ─── Styled components ────────────────────────────────────────────────────────
 
-const Section = styled(Box)(({ theme }) => ({
+const Section = styled(Box, {
+    shouldForwardProp: (prop) => prop !== 'flowing',
+})<{ flowing: boolean }>(({ theme, flowing }) => ({
     position: 'relative',
     width: '100%',
-    height: '100vh',
+    height: flowing ? 'auto' : '100vh',
+    minHeight: flowing ? '100vh' : undefined,
     background: tokens.color.neutral0,
     padding: 'clamp(64px, 9vh, 96px) 24px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    overflow: 'hidden',
+    overflow: flowing ? 'visible' : 'hidden',
 
     [theme.breakpoints.down('md')]: {
         minHeight: '100svh',
@@ -62,17 +64,41 @@ const Row = styled('span', {
     opacity: active ? 1 : 0.32,
     transition:
         'filter 480ms cubic-bezier(0.16,1,0.3,1), opacity 480ms cubic-bezier(0.16,1,0.3,1)',
+    '&:focus-visible': { outline: `2px solid ${tokens.color.uv800}`, outlineOffset: '2px' },
 }));
 
-const Avatar = styled('img')({
+const Avatar = styled('span')({
     display: 'inline-block',
     width: '34px',
     height: '34px',
     borderRadius: '50%',
-    objectFit: 'cover',
+    lineHeight: '34px',
+    textAlign: 'center',
     marginRight: '10px',
     verticalAlign: '-0.15em',
     background: alpha(tokens.color.ink900, 0.08),
+    color: tokens.color.uv800,
+    fontFamily: tokens.font.display,
+    fontSize: '11px',
+    fontWeight: 700,
+});
+
+const ClientName = styled('cite')({
+    display: 'inline',
+    fontFamily: tokens.font.display,
+    fontSize: '14px',
+    fontStyle: 'normal',
+    fontWeight: 700,
+    color: tokens.color.ink900,
+});
+
+const SectionHeading = styled(Heading)({
+    padding: 'clamp(24px, 5svh, 56px) 20px 0',
+    paddingBottom: '75px',
+    position: 'relative',
+    zIndex: 3,
+    margin: 0,
+    '@media (prefers-reduced-motion: reduce)': { paddingTop: 0, marginBottom: '32px' },
 });
 
 const QuoteText = styled('span')(({ theme }) => ({
@@ -82,7 +108,8 @@ const QuoteText = styled('span')(({ theme }) => ({
     lineHeight: 1.35,
     letterSpacing: '-0.01em',
     color: tokens.color.ink900,
-    textWrap: 'pretty' as any,
+    textWrap: 'pretty',
+    whiteSpace: 'pre-line',
 
     [theme.breakpoints.down('md')]: {
         fontSize: '18px',
@@ -123,6 +150,7 @@ export default function TestimonialsSection({
 
     const [expanded, setExpanded] = useState(false);
     const [revealed, setRevealed] = useState(false);
+    const [flowing, setFlowing] = useState(false);
 
     const [hoverActiveId, setHoverActiveId] = useState<number | null>(null);
     const [scrollActiveId, setScrollActiveId] = useState<number>(
@@ -133,6 +161,20 @@ export default function TestimonialsSection({
 
     useEffect(() => {
         expandedRef.current = expanded;
+    }, [expanded]);
+
+    useLayoutEffect(() => {
+        const section = sectionRef.current;
+        if (!section) return;
+
+        const updateFlow = () => {
+            setFlowing(expanded || section.scrollHeight > window.innerHeight + 1);
+        };
+
+        updateFlow();
+        const observer = new ResizeObserver(updateFlow);
+        observer.observe(section);
+        return () => observer.disconnect();
     }, [expanded]);
 
     useEffect(() => {
@@ -178,6 +220,16 @@ export default function TestimonialsSection({
         // ── Desktop ───────────────────────────────────────────────────────────
         // Existing desktop pin/scroll behaviour remains unchanged.
         mm.add('(min-width: 960px)', () => {
+            if (flowing) {
+                const trigger = ScrollTrigger.create({
+                    trigger: section,
+                    start: 'top 75%',
+                    end: 'bottom 25%',
+                    onUpdate: ({ progress }) => setActiveFromProgress(progress),
+                });
+                return () => trigger.kill();
+            }
+
             const trigger = ScrollTrigger.create({
                 trigger: section,
                 start: 'top top',
@@ -306,7 +358,7 @@ export default function TestimonialsSection({
         return () => {
             mm.revert();
         };
-    }, [testimonials, initialCount]);
+    }, [testimonials, initialCount, flowing]);
 
     const extra = testimonials.slice(initialCount);
 
@@ -334,38 +386,21 @@ export default function TestimonialsSection({
             active={activeId === item.id}
             onMouseEnter={() => setHoverActiveId(item.id)}
             onClick={() => setHoverActiveId(item.id)}
-            aria-label={`${item.name}, ${item.title}`}
+            onFocus={() => setHoverActiveId(item.id)}
+            onBlur={() => setHoverActiveId(null)}
+            tabIndex={0}
         >
-            <Avatar
-                src={item.avatar}
-                alt=""
-                aria-hidden="true"
-                draggable={false}
-            />
-
-            <QuoteText>{item.quote} </QuoteText>
+            <Avatar aria-hidden="true">{item.initials}</Avatar>
+            <QuoteText>{item.quote}</QuoteText>
+            <ClientName> — {item.name}</ClientName>{' '}
         </Row>
     );
 
     return (
-        <Section ref={sectionRef} id="testimonials">
-            <Heading
-                variant="h2"
-                sx={{
-                    padding: 'clamp(24px, 5svh, 56px) 20px 0',
-                    paddingBottom: '75px',
-                    position: 'relative',
-                    zIndex: 3,
-                    margin: 0,
-
-                    '@media (prefers-reduced-motion: reduce)': {
-                        paddingTop: 0,
-                        marginBottom: '32px',
-                    },
-                }}
-            >
+        <Section ref={sectionRef} id="testimonials" flowing={flowing}>
+            <SectionHeading variant="h2">
                 Good Work. Better Words.
-            </Heading>
+            </SectionHeading>
 
             <List onMouseLeave={() => setHoverActiveId(null)}>
                 {testimonials

@@ -1,60 +1,15 @@
 import type { Testimonial } from '@/components/sections/home/TestimonialsSection';
 
+// Manager-provided client feedback. Keep quotation text verbatim.
 export const homeTestimonials: Testimonial[] = [
-    {
-        id: 0,
-        avatar: 'https://i.pravatar.cc/150?img=12',
-        quote: "This product has completely transformed how we work. The interface is intuitive and the features are exactly what we needed.",
-        name: 'Cristiano Ronaldo',
-        title: 'CEO @CR7',
-    },
-    {
-        id: 1,
-        avatar: 'https://i.pravatar.cc/150?img=33',
-        quote: "I've tried many solutions, but this one stands out for its simplicity and power. Highly recommended!",
-        name: 'Jensen Huang',
-        title: 'CEO Nvidia',
-    },
-    {
-        id: 2,
-        avatar: 'https://i.pravatar.cc/150?img=51',
-        quote: 'The team behind this is incredibly responsive and the product keeps getting better with each update.',
-        name: 'Antony Raphy',
-        title: 'Founder @cndlhaus.studio',
-    },
-    {
-        id: 3,
-        avatar: 'https://i.pravatar.cc/150?img=8',
-        quote: 'Every feature feels considered. Nothing is there by accident, and nothing we need is missing.',
-        name: 'Amara Chen',
-        title: 'Design Lead @Halcyon',
-    },
-    {
-        id: 4,
-        avatar: 'https://i.pravatar.cc/150?img=59',
-        quote: "We evaluated six alternatives before landing here — nothing else came close on speed or support.",
-        name: 'Marcus Webb',
-        title: 'CTO @Ferrovia',
-    },
-    {
-        id: 5,
-        avatar: 'https://i.pravatar.cc/150?img=47',
-        quote: 'Onboarding took an afternoon. Adoption across the team took a day. That almost never happens.',
-        name: 'Priya Nadar',
-        title: 'Ops Director @Kestrel',
-    },
-    {
-        id: 6,
-        avatar: 'https://i.pravatar.cc/150?img=8',
-        quote: 'Every feature feels considered. Nothing is there by accident, and nothing we need is missing.',
-        name: 'Amara Chen',
-        title: 'Design Lead @Halcyon',
-    },
-    {
-        id: 7,
-        avatar: 'https://i.pravatar.cc/150?img=8',
-        quote: 'Every feature feels considered. Nothing is there by accident, and nothing we need is missing.',
-        name: 'Amara Chen',
-        title: 'Design Lead @Halcyon',
-    },
+    { id: 0, initials: 'PG', name: 'Paul G', quote: 'Finished job in great time and great quality! Would defiantly work with Tresmind again' },
+    { id: 1, initials: 'GE', name: 'Gretar Elfarson', quote: 'Communication was smooth, deadlines were respected, and they were always willing to make adjustments when needed. The quality of their work was excellent, and we are very satisfied with the final outcome.\n\nI would gladly work with Tresmind again and highly recommend them to anyone looking for a reliable and skilled developer.' },
+    { id: 2, initials: 'SB', name: 'Solomon Bass', quote: 'Really quick turn around time and exceptional video quality highly recommend' },
+    { id: 3, initials: 'SS', name: 'Sam Spridgeon', quote: 'It was a please working with Tresmind Solutions. They work fast, and and are quick with communications.' },
+    { id: 4, initials: 'EF', name: 'Emad Far', quote: 'Working with Tresmind Solutions was a great experience. They were attentive, consistently asked for feedback, and were committed to delivering a high-quality final product. They met deadlines and communicated clearly throughout the entire process.' },
+    { id: 5, initials: 'SP', name: 'Shane Petereson', quote: 'We had a very tight deadline, and Tresmind were extremely accommodating and worked hard to get everything completed on time. Despite the compressed timeline, they delivered a very high-quality user manual design that met our expectations perfectly. Great communication, strong design skills, and a very professional approach throughout. I would happily work with them again.' },
+    { id: 6, initials: 'OA', name: 'Osman Alimahomed', quote: 'Tresmind Solutions have been world class in their commitment and ownership. They went the extra mile and ensured client feedback is well managed.' },
+    { id: 7, initials: 'JS', name: 'Jake Snyder', quote: 'Tresmind did a great job on this first project for us, understanding our style and matching our current assets. Everything was completed quickly and efficiently. We will likely use them for future projects' },
+    { id: 8, initials: 'MZ', name: 'Marina Zubrod', quote: 'Tresmind have worked on several projects for us. Their skills were exceptional, demonstrating expertise and proficiency throughout the projects. They consistently delivered high-quality work, displaying attention to detail and surpassing our expectations. Their availability was commendable, always being accessible and responsive to address any concerns promptly. Moreover, their adherence to the schedule was exemplary, ensuring timely completion of tasks. Remind Solutions effective communication and cooperation greatly contributed to the overall success of the project.' },
+    { id: 9, initials: 'PL', name: 'Pablo Lopez', quote: 'Tresmind solutions were incredible to work with! Their design skills are top-notch, and they instantly understood exactly what I wanted — even better than I could describe it. Creative, professional, and truly talented. Highly recommend!' },
 ];

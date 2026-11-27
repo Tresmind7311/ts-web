@@ -25,6 +25,15 @@
     min-height: 450vh;
 }
 
+/* Shared testimonials use a pinned viewport on desktop. */
+.testimonialsReserve {
+    min-height: 300vh;
+}
+
+@media (max-width: 959.95px) and (prefers-reduced-motion: no-preference) {
+    .testimonialsReserve { min-height: 100svh; }
+}
+
 /*
  * Lab pin distance is track.scrollWidth - viewport width.
  * Track width = text panel + closing panel + card widths/margins (3910px).

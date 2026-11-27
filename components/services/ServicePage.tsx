@@ -8,6 +8,8 @@ import ServiceEcosystemSection from './sections/ServiceEcosystemSection';
 import ServiceFaq from './sections/ServiceFaq';
 import MobileChildPage from './MobileChildPage';
 import { GraphicDesignClosing, GraphicDesignDetails } from './GraphicDesignDetails';
+import TestimonialsSection from '@/components/sections/home/TestimonialsSection';
+import { homeTestimonials } from '@/data/testimonials/home';
 
 interface ServicePageProps {
     service: ServiceData;
@@ -38,6 +40,7 @@ export default function ServicePage({
             )}
             {service.faq && <ServiceFaq data={service.faq} />}
             {service.slug === 'graphic-designing' && <GraphicDesignClosing />}
+            <TestimonialsSection testimonials={homeTestimonials} />
         </main>
     );
 }

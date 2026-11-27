@@ -65,6 +65,17 @@ const loadDotGlobeSection: SectionLoader = async () => {
     };
 };
 
+const loadTestimonialsSection: SectionLoader = async () => {
+    const [{ default: TestimonialsSection }, { homeTestimonials }] = await Promise.all([
+        import('./TestimonialsSection'),
+        import('@/data/testimonials/home'),
+    ]);
+
+    return function LoadedTestimonialsSection() {
+        return <TestimonialsSection testimonials={homeTestimonials} />;
+    };
+};
+
 function DeferredSection({
     loader,
     reserveClassName,
@@ -232,6 +243,12 @@ export default function DeferredHomeSections() {
                 loader={loadServicesOverviewSection}
                 reserveClassName={styles.servicesOverviewReserve}
                 anchorId="services-v2"
+            />
+
+            <DeferredSection
+                loader={loadTestimonialsSection}
+                reserveClassName={styles.testimonialsReserve}
+                anchorId="testimonials"
             />
 
             <DeferredSection
