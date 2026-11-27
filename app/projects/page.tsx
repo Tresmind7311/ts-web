@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import ProjectsPage from '@/components/projects/ProjectsPage';
+import { permanentRedirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Projects | Tresmind',
@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <ProjectsPage />;
+  permanentRedirect('/portfolio');
 }

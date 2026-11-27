@@ -8,8 +8,7 @@ import Link from 'next/link';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ProjectCard from './ProjectCard';
 import ProjectFilters from './ProjectFilters';
-import { projectList } from '@/data/projects';
-import { ProjectCategory } from '@/data/projects/types';
+import type { Project, ProjectCategory } from '@/data/projects/types';
 import { Container } from '@mui/material';
 import { tokens } from '@/theme/theme';
 import Heading from '@/components/common/Heading';
@@ -112,15 +111,15 @@ const ArrowCircle = styled(Box)({
 
 /* ─── component ────────────────────────────────────────────── */
 
-export default function FeaturedProjects({ servicesHubCopy = false }: { servicesHubCopy?: boolean }) {
+export default function FeaturedProjects({ projects, servicesHubCopy = false }: { projects: Project[]; servicesHubCopy?: boolean }) {
   const [activeFilters, setActiveFilters] = useState<ProjectCategory[]>([]);
 
   const filtered = useMemo(() => {
-    if (activeFilters.length === 0) return projectList;
-    return projectList.filter((p) =>
+    if (activeFilters.length === 0) return projects;
+    return projects.filter((p) =>
       activeFilters.some((cat) => p.categories.includes(cat)),
     );
-  }, [activeFilters]);
+  }, [activeFilters, projects]);
 
   return (
     <Section>
@@ -152,7 +151,7 @@ export default function FeaturedProjects({ servicesHubCopy = false }: { services
           ))}
 
           {/* CTA card — always at bottom-right */}
-          <CtaCard href="/projects">
+          <CtaCard href="/portfolio">
             <Typography
               variant="h4"
               sx={{
@@ -160,7 +159,7 @@ export default function FeaturedProjects({ servicesHubCopy = false }: { services
                 fontSize: '55px'
               }}
             >
-              {servicesHubCopy ? 'See more projects' : <>See Our <br></br>More Projects</>}
+              {servicesHubCopy ? 'View all projects' : <>See Our <br></br>More Projects</>}
             </Typography>
             <Typography
               variant="body2"
